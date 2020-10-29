@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd">
+
+    <!--开启注释bean扫描-->
+    <context:component-scan base-package="com.hy.web"/>
+
+    <bean id="templateResolver" class="org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver">
+        <property name="characterEncoding" value="utf-8"/>
+        <!--prefix，用于指定template所在目录；-->
+        <property name="prefix" value="/templeate/"/>
+        <!--suffix，过滤请求，这里是处理所有以.html结尾的请求；-->
+        <property name="suffix" value=".html"/>
+        <!--是否缓存页面，开发时设置为false，这样就可以在不重启服务器的情况下刷新页面即可查看修改效果；-->
+        <property name="cacheable" value="false"/>
+        <!--templateMode，设置为html；-->
+        <property name="templateMode" value="HTML"/>
+    </bean>
+
+    <!--配置模板引擎-->
+    <bean id="templateEngine" class="org.thymeleaf.spring5.SpringTemplateEngine">
+        <property name="templateResolver" ref="templateResolver"/>
+    </bean>
+
+    <!--视图解析器-->
+    <bean class="org.thymeleaf.spring5.view.ThymeleafViewResolver">
+        <!--解决中文乱码-->
+        <property name="characterEncoding" value="utf-8"/>
+        <property name="templateEngine" ref="templateEngine"/>
+    </bean>
+
+    <!-- 激活@controller模式 -->
+    <mvc:annotation-driven />
+
+   <!-- 在spring-mvc.xml中启用默认Servlet-->
+    <mvc:default-servlet-handler/>
+
+    <bean class="com.hy.config.SwaggerConfig" />
+
+</beans>
