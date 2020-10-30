@@ -1,16 +1,8 @@
-package com.hy.util;
-
-import org.springframework.stereotype.Component;
+package com.hy.bean;
 
 import java.util.List;
 
-@Component
-public class ParseData {
-    private Integer code;
-    private String msg;
-    private Integer count;
-    private List data;
-
+public class Login {
     public Integer getCode() {
         return code;
     }
@@ -39,7 +31,12 @@ public class ParseData {
         return data;
     }
 
-    public void setData(List date) {
-        this.data = date;
+    public void setData(List data) {
+        this.data = data;
     }
+
+    private Integer code;
+    private String msg;
+    private  Integer count;
+    private List data;
 }

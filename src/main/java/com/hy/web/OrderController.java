@@ -1,8 +1,8 @@
 package com.hy.web;
 
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hy.bean.Order;
 import com.hy.service.OrderService;
+import com.hy.util.ParseData;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,10 +17,17 @@ import java.util.List;
 public class OrderController {
     @Autowired
     private OrderService service;
+    @Autowired
+    private ParseData parseData;
 
     @RequestMapping("/select")
     @ResponseBody
-    public List<Order> select() throws Exception {
-        return service.list();
+    public ParseData select() throws Exception {
+        List<Order> list=service.list();
+        parseData.setCode(0);
+        parseData.setCount(3);
+        parseData.setMsg("");
+        parseData.setData(list);
+        return parseData;
     }
 }
