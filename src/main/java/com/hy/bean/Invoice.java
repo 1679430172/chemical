@@ -1,5 +1,7 @@
 package com.hy.bean;
 
+import net.sf.jsqlparser.expression.DateTimeLiteralExpression;
+
 import java.util.Date;
 
 public class Invoice {
@@ -8,7 +10,7 @@ public class Invoice {
     private String cas;
     private Integer number;
     private Double price;
-    private Date create_time;
+    private String createTime;
 
     public Integer getSid() { return sid; }
 
@@ -30,9 +32,13 @@ public class Invoice {
 
     public void setPrice(Double price) { this.price = price; }
 
-    public Date getCreate_time() { return create_time; }
+    public String getCreateTime() {
+        return createTime;
+    }
 
-    public void setCreate_time(Date create_time) { this.create_time = create_time; }
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
+    }
 
     @Override
     public String toString() {
@@ -42,7 +48,7 @@ public class Invoice {
                 ", cas='" + cas + '\'' +
                 ", number=" + number +
                 ", price=" + price +
-                ", create_time=" + create_time +
+                ", create_time=" + createTime +
                 '}';
     }
 }

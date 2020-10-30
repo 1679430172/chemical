@@ -4,6 +4,7 @@ import com.hy.bean.Invoice;
 import com.hy.bean.Order;
 import com.hy.service.InvoiceService;
 import com.hy.service.OrderService;
+import com.hy.util.ParseData;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,10 +19,17 @@ import java.util.List;
 public class InvoiceController  {
     @Autowired
     private InvoiceService service;
+    @Autowired
+    private ParseData parseData;
 
     @RequestMapping("/select")
     @ResponseBody
-    public List<Invoice> select() throws Exception {
-        return service.list();
+    public ParseData select() throws Exception {
+        List<Invoice> list=service.list();
+        parseData.setCode(0);
+        parseData.setCount(3);
+        parseData.setMsg("");
+        parseData.setData(list);
+        return parseData;
     }
 }
