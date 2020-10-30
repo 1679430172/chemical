@@ -1,7 +1,6 @@
 package com.hy.web;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.hy.bean.Order;
 import com.hy.service.OrderService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
