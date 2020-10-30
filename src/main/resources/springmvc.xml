@@ -18,7 +18,7 @@
     <bean id="templateResolver" class="org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver">
         <property name="characterEncoding" value="utf-8"/>
         <!--prefix，用于指定template所在目录；-->
-        <property name="prefix" value="/templeate/"/>
+        <property name="prefix" value="/web/view/"/>
         <!--suffix，过滤请求，这里是处理所有以.html结尾的请求；-->
         <property name="suffix" value=".html"/>
         <!--是否缓存页面，开发时设置为false，这样就可以在不重启服务器的情况下刷新页面即可查看修改效果；-->

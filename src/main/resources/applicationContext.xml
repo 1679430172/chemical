@@ -19,7 +19,7 @@
     </bean>
 
     <!--开启注释bean扫描-->
-    <!--<context:component-scan base-package="com.lss.service"/>-->
+    <context:component-scan base-package="com.hy.service"/>
 
     <bean id="sqlSessionFactory" class="com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource"/>

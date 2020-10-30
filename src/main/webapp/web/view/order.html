@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>订单列表</title>
+    <script src="/web/component/layui/layui.js"></script>
+    <script type="text/javascript" src="/web/component/js/jquery-3.3.1.min.js"></script>
+    <script>
+        layui.use(['table'], function(){
+            var table = layui.table;
+            var form = layui.form;
+            var upload = layui.upload;
+
+            //第一个实例
+            table.render({
+                elem: '#demo'
+                ,toolbar: '#toolbarDemo'
+                ,url: '/Order/select' //数据接口
+                ,page: true //开启分页
+                ,limit:2
+                ,limits:[1,2,3]
+                ,cols: [[ //表头
+                    {type: 'checkbox', fixed: 'left'}
+                    ,{field: 'name', title: '姓名', width:80}
+                    ,{field: 'sex', title: '性别', width:80, sort: true, templet:"#sex"}
+                    ,{field: '', title: '班级', width:80, sort: true, templet:"<div>{{ d.cla.cname }}</div>"}
+                    ,{field: 'img', title: '照片', width:80}
+                    ,{fixed: 'right', width:230, align:'center', toolbar: '#barDemo'}
+                ]]
+            });
+        });
+    </script>
+</head>
+<body>
+    <table id="demo" lay-filter="test"></table>
+</body>
+</html>
