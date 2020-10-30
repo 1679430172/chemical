@@ -1,0 +1,227 @@
+<html >
+<head>
+    <meta charset="utf-8">
+    <title>发票管理</title>
+    <link rel="stylesheet" href="/layui/css/layui.css" media="all">
+</head>
+<body>
+
+<form class="layui-form" action="" lay-filter="example">
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">Cas号</label>
+            <div class="layui-input-block">
+                <input type="text" name="ename" lay-verify="title" autocomplete="off" placeholder="请输入" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <div class="layui-input-block">
+                <button type="submit" class="layui-btn" lay-submit="" lay-filter="formDemo">查询</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+<table id="demo" lay-filter="test"></table>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="detail"><i class="layui-icon">&#xe615;</i>查看</a>
+    <a class="layui-btn layui-btn-xs" lay-event="edit"><i class="layui-icon">&#xe642;</i>编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon">&#xe640;</i>删除</a>
+</script>
+<script type="text/html" id="toolbarDemo">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm" lay-event="add"><i class="layui-icon">&#xe654;</i></button>
+        <button class="layui-btn layui-btn-sm" lay-event="delete"><i class="layui-icon">&#xe640;</i>批量删除</button>
+        <button class="layui-btn layui-btn-sm" lay-event="import"id="test1"><i class="layui-icon">&#xe67c;</i>批量导入</button>
+        <button class="layui-btn layui-btn-sm" lay-event="download"id="test2"><i class="layui-icon">&#xe601;</i>批量下载</button>
+    </div>
+</script>
+<script src="/js/jquery-3.4.1.min.js"></script>
+<script src="/layui/layui.js"></script>
+<script type="text/javascript">
+
+    layui.use('table', function(){
+        var table = layui.table;
+        //第一个实例
+        var form=layui.form;
+        $(function (){
+            $.post("/queryClaName.do",function (result){
+                var list = eval(result);
+                for (var i = 0; i < list.length; i++){
+                    $("#sel_cla").append("<option  value='" + list[i].did + "'>" + list[i].dname + "</option>");
+                }
+                form.render(); //更新全部\
+            });
+        });
+
+        form.on('submit(formDemo)', function(data){
+            /*console.log(data.elem) //被执行事件的元素DOM对象，一般为button对象
+            console.log(data.form) //被执行提交的form对象，一般在存在form标签时才会返回
+            console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}*/
+            table.reload('demo', {
+                url: '/querylist.do'
+                ,where: data.field//设定异步数据接口的额外参数
+            });
+            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+        });
+
+        table.render({
+            elem: '#demo'
+            ,toolbar: '#toolbarDemo'
+            ,height: 430
+            ,url: '/querylist.do' //数据接口
+            ,page: true //开启分页
+            ,limit:7
+            ,limits:[3,5,7]
+            ,cols: [[ //表头
+                ,{field: 'sid', title: 'ID', width:80, sort: true}
+                ,{field: 'name', title: '发票品名', width:120}
+                ,{field: 'cas', title: 'Cas号', width:80}
+                ,{field:'number',title:'数量',width:100}
+                ,{field: 'price', title: '价格', width:80}
+                ,{field: 'create_time', title: '创建日期', width: 120}
+                ,{field:'',title: '操作', width: 120,toolbar: '#barDemo'}
+            ]]
+        });
+        var uploadInst = upload.render({
+            elem: '#test1' //绑定元素
+            ,url: '/importExcel.do' //上传接口
+            ,accept:'file'
+            ,done: function(res){
+                //上传完毕回调
+                if(res==1){
+                    layer.msg("导入成功！");
+                }else{
+                    layer.msg("导入失败！");
+                }
+            }
+            ,error: function(){
+                //请求异常回调
+            }
+        });
+
+        //监听头工具栏事件
+        table.on('toolbar(test)', function(obj){
+            var checkStatus = table.checkStatus(obj.config.id)
+                ,data = checkStatus.data; //获取选中的数据
+            var ids=new Array();
+            switch(obj.event){
+                case 'add':
+                    layer.open({
+                        type:2,
+                        content:'add.html',
+                        area: ['600px', '600px'],
+                        title:'添加员工',
+                        anim: 1,
+                        cancel: function(index, layero){
+                            if(confirm('确定要关闭么')){ //只有当点击confirm框的确定时，该层才会关闭
+                                layer.close(index);
+                            }
+                            return false;
+                        },
+                        end:function () {
+                            table.reload('demo', {
+                                url: '/querylist.do'
+                            });
+                        },
+                    });
+                    break;
+                case 'delete':
+                    if(data.length === 0){
+                        layer.msg('请选择一行');
+                    } else {
+                        layer.msg('批量删除');
+                        for (var i=0;i<data.length;i++){
+                            ids.push(data[i].eid);
+                        }
+                        $.ajax({
+                            url:"/dels.do",
+                            type:"get",
+                            data:{ids:ids},
+                            traditional:true,
+                            contentType:'application/json;charest=utf-8',
+                            success:function (result) {
+                                if (result==="1"){
+                                    layer.msg("批量删除成功！");
+                                }else{
+                                    layer.msg("批量删除失败！");
+                                }
+                                table.reload('demo', {
+                                    url: '/querylist.do'
+                                });
+                            }
+                        });
+                    }
+                    break;
+            };
+        });
+        //监听行工具事件
+        table.on('tool(test)', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+            var data = obj.data //获得当前行数据
+                ,layEvent = obj.event; //获得 lay-event 对应的值
+            if(layEvent === 'detail'){
+                layer.msg('查看操作');
+            } else if(layEvent === 'del'){
+                layer.confirm('真的删除这一行么？', function(index){
+                    $.ajax({
+                        url:"/del.do",
+                        type:"get",
+                        data:{eid:data.eid},
+                        contentType:'application/json;charest=utf-8',
+                        success:function (result) {
+                            if (result==="1"){
+                                layer.msg("删除成功！");
+                                table.reload('demo', {
+                                    url: '/querylist.do'
+                                });
+                            }else{
+                                layer.msg("删除失败！");
+                            }
+                        }
+                    });
+                    layer.close(index);
+                });
+            } else if(layEvent === 'edit'){
+                layer.confirm('真的修改这一行么？', function(index){
+                    layer.open({
+                        type:2,
+                        content:'update.html?eid',
+                        area: ['600px', '600px'],
+                        title:'修改员工',
+                        anim: 1,
+                        cancel: function(index, layero){
+                            if(confirm('确定要关闭么')){ //只有当点击confirm框的确定时，该层才会关闭
+                                layer.close(index);
+                            }
+                            return false;
+                        },
+                        end:function () {
+                            table.reload('demo', {
+                                url: '/querylist.do'
+                            });
+                        },
+                    });
+                    $.ajax({
+                        url:"/update.do",
+                        type:"get",
+                        data:{eid:data.eid},
+                        contentType:'application/json;charest=utf-8',
+                        success:function (result) {
+                            if (result==="1"){
+                                layer.msg("修改成功！");
+                                table.reload('demo', {
+                                    url: '/querylist.do'
+                                });
+                            }else{
+                                layer.msg("修改失败！");
+                            }
+                        }
+                    });
+                    layer.close(index);
+                });
+            }
+        });
+    });
+</script>
+</body>
+</html>
