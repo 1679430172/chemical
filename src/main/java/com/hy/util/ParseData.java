@@ -1,7 +1,10 @@
 package com.hy.util;
 
+import org.springframework.stereotype.Component;
+
 import java.util.List;
 
+@Component
 public class ParseData {
     private Integer code;
     private String msg;
