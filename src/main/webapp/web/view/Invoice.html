@@ -2,7 +2,9 @@
 <head>
     <meta charset="utf-8">
     <title>发票管理</title>
-    <link rel="stylesheet" href="/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="/web/component/layui/css/layui.css" media="all">
+    <script src="/web/component/layui/layui.js"></script>
+    <script type="text/javascript" src="/web/component/js/jquery-3.3.1.min.js"></script>
 </head>
 <body>
 
@@ -34,6 +36,7 @@
 <script type="text/javascript">
     layui.use(['table'], function(){
         var table = layui.table;
+        var upload = layui.upload;
 
         table.render({
             elem: '#demo'
