@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8">
+<head>
+		<meta charset="utf-8" content="text/html;charset=UTF-8" >
 		<title>Login Page</title>
 		<link rel="stylesheet" href="component/pear/css/pear.css" />
 		<link rel="stylesheet" href="admin/css/other/login.css" />
 	</head>
     <!-- 代 码 结 构 -->
 	<body background="admin/images/background2.svg" style="background-size: cover;">
-		<form class="layui-form" action="javascript:void(0);">
+		<form class="layui-form" action="javascript:void(0);" lay-filter="formtest">
 			<div class="layui-form-item">
 				<img class="logo" src="admin/images/logo.png" />
 				<div class="title">Pear Admin</div>
@@ -17,10 +17,10 @@
 				</div>
 			</div>
 			<div class="layui-form-item">
-				<input placeholder="账 户 : admin " hover class="layui-input"  />
+				<input placeholder="账 户 : admin " hover class="layui-input" name="username" />
 			</div>
 			<div class="layui-form-item">
-				<input placeholder="密 码 : admin " hover class="layui-input"  />
+				<input placeholder="密 码 : admin " hover class="layui-input" name="password" />
 			</div>
 			<div class="layui-form-item">
 				<input placeholder="验证码 : "  hover class="code layui-input layui-input-inline"  />
@@ -45,19 +45,28 @@
 				var button = layui.button;
 				var popup = layui.popup;
 				var $ = layui.jquery;
+				var layer = layui.layer;
 
                 // 登 录 提 交
 				form.on('submit(login)', function(data) {
-					button.load({
-						elem: '.login',
-						time: 1500,
-						done: function() {
-							popup.success("登录成功", function() {
-								location.href = "index.html"
-							});
+					var data1 = form.val("formtest");
+					var b=JSON.stringify(data1);
+					$.ajax({
+						url: '/login/login.do',
+						type: 'post',
+						data:b,
+						dataType:"json",
+						contentType:"application/json",
+						success: function(data) {
+							if(data=="1"){
+								location.href = "index.html";
+							}
+							if(data=="2"){
+								layer.msg("账号或者密码错误，请重新登陆");
+							}
 						}
-					})
-					return false;
+					});
+
 				});
 			})
 		</script>

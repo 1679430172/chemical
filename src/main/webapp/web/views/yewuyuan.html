@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>业务员管理</title>
+    <link rel="stylesheet" href="/component/layui/css/layui.css" media="all">
+    <script type="text/javascript" src="/jquery-3.3.1.min.js" ></script>
+    <script>
+        layui.use('table', function () {
+            var table = layui.table;
+            var layer = layui.layer;
+            //表头
+            table.render({
+                elem: '#demo'       //赋值到那个table
+                ,height:300
+                ,width:1400
+                ,url:'/student/pp.do' // 数据接口
+                ,page:true //开启分页
+                ,limit:3
+                ,toolbar: '#toolbarDemo'
+                ,defaultToolbar: ['filter', 'print', 'exports']
+                ,limits:[1,3,5]
+                ,cols: [[   //表头
+                    {type: 'checkbox', fixed: 'left'}
+                    ,{field:'id', width:300, title: 'ID', sort: true}
+                    ,{field:'name', width:350, title: '用户名'}
+                    ,{field:'sex', width:350, title: '性别', sort: true}
+                    ,{field:'classes.classname', width:250, title: '班级',templet:'<div>{{d.classnaem}}</div>'}
+                    ,{fixed: 'right', width:150, title: '操作',align:'center', toolbar: '#barDemo'}
+                ]]
+            });
+
+        });
+    </script>
+</head>
+<body>
+
+</body>
+</html>
