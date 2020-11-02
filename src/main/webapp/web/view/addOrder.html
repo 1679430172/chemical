@@ -11,6 +11,22 @@
         layui.use('form', function(){
             var form = layui.form;
 
+
+            $("#bills").click(function() {
+                if($("#bill").prop('checked')){
+                    $("#billInfo").show();
+                }else {
+                    $("#billInfo").hide();
+                }
+            });
+
+            var aaa = $("#bill").prop("checked");
+            if(aaa) {
+                $("#billInfo").show();
+            }else {
+                $("#billInfo").hide();
+            }
+
             //监听提交
             form.on('submit(formDemo)', function(data){
                 $.post("/Order/",data.field,function (d,s) {
@@ -27,6 +43,7 @@
                 });
                 return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
             });
+
         });
     </script>
 </head>
@@ -75,11 +92,11 @@
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">有无票据</label>
-        <div class="layui-input-inline">
-            <input type="checkbox" name="bill" value="1" lay-skin="switch" lay-text="有|无">
+        <div class="layui-input-inline" id="bills">
+            <input type="checkbox" id="bill" name="bill" value="1" lay-skin="switch" lay-text="有|无">
         </div>
     </div>
-    <div class="layui-form-item layui-form-text" style="display: none">
+    <div class="layui-form-item layui-form-text" style="display: none" id="billInfo">
         <label class="layui-form-label">开票资料</label>
         <div class="layui-input-inline">
             <textarea name="billInfo" placeholder="请输入开票资料" class="layui-textarea"></textarea>

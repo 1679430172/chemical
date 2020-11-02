@@ -18,7 +18,7 @@ public class Order {
     private Double costPrice;
     private Double royalties;
     private Double otherCost;
-    private String bill;
+    private Integer bill;
     private String billInfo;
     private Integer commodityId;
     private Integer invoiceId;
@@ -101,11 +101,11 @@ public class Order {
         this.otherCost = otherCost;
     }
 
-    public String getBill() {
+    public Integer getBill() {
         return bill;
     }
 
-    public void setBill(String bill) {
+    public void setBill(Integer bill) {
         this.bill = bill;
     }
 
@@ -193,7 +193,7 @@ public class Order {
                 ", costPrice=" + costPrice +
                 ", royalties=" + royalties +
                 ", otherCost=" + otherCost +
-                ", bill='" + bill + '\'' +
+                ", bill=" + bill +
                 ", billInfo='" + billInfo + '\'' +
                 ", commodityId=" + commodityId +
                 ", invoiceId=" + invoiceId +

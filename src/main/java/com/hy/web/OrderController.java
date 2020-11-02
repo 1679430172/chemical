@@ -37,6 +37,7 @@ public class OrderController {
     @PostMapping("/")
     @ResponseBody
     public Integer add(Order order) throws Exception {
+        System.out.println(order);
         return 1;
     }
 }
