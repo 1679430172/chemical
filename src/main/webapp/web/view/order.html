@@ -7,27 +7,28 @@
     <script src="/web/component/layui/layui.js"></script>
     <script type="text/javascript" src="/web/component/js/jquery-3.3.1.min.js"></script>
     <script>
-        layui.use(['table'], function(){
+        layui.use(['table','layer'], function(){
             var table = layui.table;
-            var upload = layui.upload;
 
             //第一个实例
             table.render({
                 elem: '#demo'
                 ,toolbar: '#toolbarDemo'
-                ,url: '/Order/select' //数据接口
+                ,height: 'full-20'
+                ,url: '/Order/' //数据接口
                 ,page: true //开启分页
                 ,limit:20
                 ,limits:[10,20,30]
                 ,cols: [[ //表头
-                    {field: 'did', title: '订单编号',}
-                    ,{field: 'name', title: '订单名称',}
-                    ,{field: 'amount', title: '数量',}
-                    ,{field: 'price', title: '单价',}
-                    ,{field: 'sumPrice', title: '总价',}
-                    ,{field: 'costPrice', title: '成本',}
-                    ,{field: '', title: '总成本', templet:"<div>{{ d.costPrice*d.amount }}</div>"}
-                    ,{field: 'royalties', title: '提成',}
+                    {field: 'did', title: '订单编号', sort: true}
+                    ,{field: 'name', title: '商品名称', sort: true}
+                    ,{field: 'amount', title: '数量', sort: true}
+                    ,{field: 'price', title: '单价', sort: true}
+                    ,{field: 'sumPrice', title: '总价', sort: true}
+                    ,{field: 'costPrice', title: '成本'}
+                    ,{field: 'otherCost', title: '其他成本'}
+                    ,{field: '', title: '总成本', templet:"<div>{{ d.costPrice*d.amount+d.otherCost }}</div>"}
+                    ,{field: 'royalties', title: '提成', sort: true}
                     ,{fixed: 'right', width:230, align:'center', toolbar: '#barDemo'}
                 ]]
             });
@@ -38,8 +39,73 @@
                 var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
 
                 if(layEvent === 'detail'){ //查看
-                    layer.alert(JSON.stringify(data), {
-                        title: '当前订单详情'
+                    layer.open({
+                        area: ['390px', '572px'],
+                        title:"订单详情",
+                        type: 1,
+                        content:
+                            "<table class='layui-table'>  " +
+                            "  <tr>" +
+                            "    <td>商品名称</td>" +
+                            "    <td>"+data.name+"</td>" +
+                            "  </tr>" +
+                            "  <tr>" +
+                            "    <td>数量</td>" +
+                            "    <td>"+data.amount+"</td>" +
+                            "  </tr>" +
+                            "  <tr>" +
+                            "    <td>单价</td>" +
+                            "    <td>"+data.price+"</td>" +
+                            "  </tr>" +
+                            "  <tr>" +
+                            "    <td>总价</td>" +
+                            "    <td>"+data.sumPrice+"</td>" +
+                            "  </tr>" +
+                            "  <tr>" +
+                            "    <td>成本</td>" +
+                            "    <td>"+data.costPrice+"</td>" +
+                            "  </tr>" +
+                            "  <tr>" +
+                            "    <td>其他成本</td>" +
+                            "    <td>"+data.otherCost+"</td>" +
+                            "  </tr>" +
+                            "  <tr>" +
+                            "    <td>总成本</td>" +
+                            "    <td>"+((data.costPrice*data.amount)+data.otherCost)+"</td>" +
+                            "  </tr>" +
+                            "  <tr>" +
+                            "    <td>提成</td>" +
+                            "    <td>"+data.royalties+"</td>" +
+                            "  </tr>" +
+                            "  <tr>" +
+                            "    <td>客户姓名</td>" +
+                            "    <td>"+data.userName+"</td>" +
+                            "  </tr>" +
+                            "  <tr>" +
+                            "    <td>地址</td>" +
+                            "    <td>"+data.address+"</td>" +
+                            "  </tr>" +
+                            "  <tr>" +
+                            "    <td>联系电话</td>" +
+                            "    <td>"+data.phone+"</td>" +
+                            "  </tr>" +
+                            "  <tr>" +
+                            "    <td>开票资料</td>" +
+                            "    <td>"+data.createTime+"</td>" +
+                            "  </tr>" +
+                            "  <tr>" +
+                            "    <td>库存编号</td>" +
+                            "    <td>"+data.invoiceId+"</td>" +
+                            "  </tr>" +
+                            "  <tr>" +
+                            "    <td>备注</td>" +
+                            "    <td>" +
+                            "       <div class='layui-input-inline'>" +
+                            "           <textarea  class='layui-textarea' disabled='disabled' style='width: 240px'>"+data.remarks+"</textarea>" +
+                            "       </div>" +
+                            "    </td>" +
+                            "  </tr>" +
+                            "</table>" //这里content是一个普通的String
                     });
                 } else { //编辑
 
@@ -49,7 +115,7 @@
             //执行实例
             $("#test1").click(function () {
                 layer.open({
-                    area: ['390px', '300px'],
+                    area: ['450px', '600px'],
                     type: 2,
                     content: 'addOrder.html' //这里content是一个普通的String
                 });
