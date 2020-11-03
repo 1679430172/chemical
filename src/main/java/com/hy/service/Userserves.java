@@ -50,7 +50,7 @@ public class Userserves extends ServiceImpl<UserMapper, User> {
     public ParseData selectlist(Integer page ,Integer limit){
         Page<User> page1 = new Page<User>(page,limit);
         IPage<User> iPage=userMapper.selectlist(page1);
-        return new ParseData(0,"",Integer.parseInt(Long.toString(page1.getTotal())),page1.getRecords());
+        return new ParseData(0,"",Integer.parseInt(Long.toString(iPage.getTotal())),iPage.getRecords());
     }
 
     /**
