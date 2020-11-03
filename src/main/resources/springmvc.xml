@@ -14,7 +14,6 @@
 
     <!--开启注释bean扫描-->
     <context:component-scan base-package="com.hy.web"/>
-    <context:component-scan base-package="com.hy.util"/>
 
     <bean id="templateResolver" class="org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver">
         <property name="characterEncoding" value="utf-8"/>
