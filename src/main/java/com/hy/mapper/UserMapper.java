@@ -4,11 +4,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hy.bean.User;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.Select;
-import org.apache.xmlbeans.impl.xb.xsdschema.Public;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -43,8 +39,29 @@ public interface UserMapper extends BaseMapper<User> {
     @Select("select * from users where  uid=#{id}")
     public User selectbyid(Integer id);
 
+    /**
+     * 修改业务员
+     * @param user
+     * @return
+     */
+    @Update("update users set password=#{password}, type=#{type},user_name=#{username} where  uid=#{id}")
+    public void update(User user);
 
-    @Select("update users set password=#{password}, type=#{type},user_name=#{username} where  uid=#{id}")
-    public Void update(User user);
+    /**
+     * 查询所有授权类型
+     * @return
+     */
+    @Select("select type from users where type not in (0)")
+    public List<User> selcttype();
 
+    /**
+     * 插入业务员信息
+     * @param user
+     * @return
+     */
+    @Results({
+            @Result(column = "uid",property = "id"),
+    })
+    @Insert("insert into users(user_name,password,type) values(#{username},#{password},#{type})")
+    public void ttt(User user);
 }

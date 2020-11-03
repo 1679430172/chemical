@@ -23,7 +23,7 @@ public class Userserves extends ServiceImpl<UserMapper, User> {
     private UserMapper userMapper;
 
     /**
-     * 登陆页面查询名字
+     * 登陆页面查询名字(id是权限类型，uid是编号)
      * @param user1
      * @return
      */
@@ -34,6 +34,8 @@ public class Userserves extends ServiceImpl<UserMapper, User> {
             HttpServletRequest request = requestAttributes.getRequest();
             HttpSession session = request.getSession();
             session.setAttribute("id",user.getType());
+            session.setAttribute("uid",user.getId());
+            session.setAttribute("username",user.getUsername());
             return Util.sueess;
         }else{
             return Util.defact;
@@ -55,13 +57,15 @@ public class Userserves extends ServiceImpl<UserMapper, User> {
     }
 
     /**
-     * 权限管理获取session
+     * 权限管理获取session(id是权限类型，uid是编号)
      * @param request
      * @return
      */
     public String getsession(HttpServletRequest request) {
         HttpSession session = request.getSession();
         String id = (String) session.getAttribute("id");
+        String uid = (String) session.getAttribute("uid");
+        String username = (String) session.getAttribute("username");
         return id;
     }
 
@@ -87,4 +91,28 @@ public class Userserves extends ServiceImpl<UserMapper, User> {
         }
         return Util.sueess;
     }
+
+    /**
+     * 查询权限类型
+     * @return
+     */
+    public List<User> selecttype(){
+        return userMapper.selcttype();
+    }
+
+    /**
+     * 插入业务员信息
+     * @param user
+     * @return
+     */
+    public String tt(User user){
+        try {
+            System.out.println(user);
+            userMapper.ttt(user);
+        } catch (Exception e) {
+            return Util.defact;
+        }
+        return Util.sueess;
+    }
+
 }

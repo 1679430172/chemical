@@ -9,6 +9,7 @@ import com.hy.service.Userserves;
 import com.hy.util.ParseData;
 import com.hy.util.Util;
 import com.mysql.cj.Session;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -67,7 +68,7 @@ public class Logincro {
      */
     @RequestMapping("/getbyid")
     @ResponseBody
-    public User getbyid(String id){
+    public User getbyid(@Param("id") String id){
         return userserves.getbyid(id);
     }
 
@@ -79,9 +80,28 @@ public class Logincro {
     @RequestMapping("/updated")
     @ResponseBody
     public String update( User user){
-        System.out.println("user======="+user);
         return  userserves.update(user);
     }
 
+    /**
+     * 查询权限类型
+     * @return
+     */
+    @RequestMapping("/selecttype")
+    @ResponseBody
+    public List<User> selecttype(){
+        return  userserves.selecttype();
+    }
+
+    /**
+     * 插入业务员信息
+     * @param user
+     * @return
+     */
+    @RequestMapping("/insertpp")
+    @ResponseBody
+    public String ttt(User user){
+        return  userserves.tt(user);
+    }
 
 }

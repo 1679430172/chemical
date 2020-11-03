@@ -346,7 +346,7 @@
 			"icon": "layui-icon layui-icon-face-smile",
 			"type": 1,
 			"openType": "_iframe",
-			"href": "views/yewuyuan.html"
+			"href": "view/yewuyuan.html"
 		}]
 	},
 	{

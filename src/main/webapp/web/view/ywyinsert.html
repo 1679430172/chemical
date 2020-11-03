@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" content="text/html;charset=UTF-8" >
+    <title>添加业务员信息</title>
+    <script type="text/javascript"  src="/web/component/js/jquery-3.3.1.min.js" ></script>
+    <link rel="stylesheet" href="/web/component/layui/css/layui.css" media="all">
+    <script src="/web/component/layui/layui.js" charset="utf-8"></script>
+    <script type="text/html" id="tranSort">
+        {{# if (d.type=="1") { }}
+        <span>业务员</span>
+        {{# } else if(d.type=="2") { }}
+        <span>授权的业务员</span>
+        {{# } else{ }}
+        <span>没有任何权限</span>
+        {{# }}}
+    </script>
+    <script>
+        layui.use('form', function(){
+            var form = layui.form;
+
+            //授权等级查询
+            $(function(){
+                $.ajax({
+                    url: '/login/selecttype',
+                    type: 'post',
+                    contentType:"application/json",
+                    success: function (data,textStatus) {
+                        var obj =eval(data);
+                        for(var b=0;b<obj.length;b++){
+                            alert(obj.length);
+                            var i=$("<option>").val(obj[b].type);
+                            var q=$("#p1").append(i);
+                            if(i.val()==="1"){
+                                i.selected;
+                                i.text("业务员");
+                            }
+                            if(i.val()==="2"){
+                                i.text("授权的业务员");
+                            }
+                        }
+                        form.render("select");
+                        //重新渲染 固定写法
+                    }
+                });
+            });
+
+            //监听提交
+            form.on('submit(aa)', function(data){
+                // console.log(data.elem) //被执行事件的元素DOM对象，一般为button对象
+                // console.log(data.form) //被执行提交的form对象，一般在存在form标签时才会返回
+                // console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
+                // layer.msg("修改");
+                $.ajax({
+                    url:'/login/insertpp',
+                    type:'get',
+                    data:data.field,
+                    success: function (data1) {
+                        if (data1==="1"){
+                            layer.msg("添加成功");
+                        }
+                        if(data1==="2"){
+                            layer.msg("添加失败");
+                        }
+                    }
+                });
+                return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+            });
+
+        });
+    </script>
+</head>
+<body>
+<form class="layui-form"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
+    <div class="layui-form-item">
+        <label class="layui-form-label">用户名</label>
+        <div class="layui-input-block">
+            <input type="text" name="username" placeholder="请输入" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">密码</label>
+        <div class="layui-input-block">
+            <input type="password" name="password" placeholder="请输入密码" autocomplete="off" class="layui-input" style="width: 300px;">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">授权等级</label>
+        <div class="layui-input-block">
+            <select name="type" lay-filter="aihao" id="p1">
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="aa">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+</body>
+</html>

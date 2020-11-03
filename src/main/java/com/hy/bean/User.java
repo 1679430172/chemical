@@ -15,7 +15,7 @@ public class User {
                 ", type='" + type + '\'' +
                 '}';
     }
-
+    @TableId(value = "uid",type =IdType.AUTO)
     private  Integer id;
 
     private  String username;
