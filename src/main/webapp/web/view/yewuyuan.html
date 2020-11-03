@@ -62,11 +62,32 @@
                                         location.reload();
                                     }
                                 });
-                            } else if(layEvent === 'del') { //删除
-                                layer.confirm('真的删除行么', function (index) {
-                                    layer.close(index);
-                                    obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
-                                });
+                            } else if(layEvent === 'del'){ //删除
+                                    layer.confirm('真的删除行么', function (index) {
+                                        obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
+                                        layer.close(index);
+                                        $.ajax({
+                                            url: '/login/delete?id='+data.id,
+                                            type: 'get',
+                                            dataType:"json",
+                                            contentType:"application/json",
+                                            success: function (data1) {
+                                                if (data1==="1"){
+                                                    layer.msg('删除成功！！！', {
+                                                        icon: 1,
+                                                        time: 1000 //2秒关闭（如果不配置，默认是3秒）
+                                                    }, function(){
+                                                        //假设这是iframe页
+                                                        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                                                        parent.layer.close(index); //再执行关闭
+                                                    });
+                                                }
+                                                if(data1==="2"){
+                                                    layer.msg("删除失败");
+                                                }
+                                            }
+                                        });
+                                    });
                             }
                         });
 

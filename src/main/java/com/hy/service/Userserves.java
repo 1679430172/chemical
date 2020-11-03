@@ -1,5 +1,6 @@
 package com.hy.service;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -106,9 +107,26 @@ public class Userserves extends ServiceImpl<UserMapper, User> {
      * @return
      */
     public String tt(User user){
+          List<User> userList= userMapper.list();
+           for (User user1:userList){
+               if(user1.getUsername().equals(user.getUsername())){
+                   return Util.defact;
+               }
+           }
+         userMapper.ttt(user);
+         return Util.sueess;
+
+    }
+
+    /**
+     * 删除业务员信息
+     * @param id
+     * @return
+     */
+    public String detele(Integer id){
         try {
-            System.out.println(user);
-            userMapper.ttt(user);
+            System.out.println("id============="+id);
+            userMapper.deleteById(id);
         } catch (Exception e) {
             return Util.defact;
         }
