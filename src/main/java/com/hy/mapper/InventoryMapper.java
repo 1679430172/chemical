@@ -11,4 +11,5 @@ public interface InventoryMapper extends BaseMapper<Inventory> {
     @Select("select * from inventory")
     public IPage<Inventory> Inventory(Page page);
 
+
 }
