@@ -18,7 +18,7 @@ public class Order {
     private Double costPrice;
     private Double royalties;
     private Double otherCost;
-    private String bill;
+    private Integer bill;
     private String billInfo;
     private Integer commodityId;
     private Integer invoiceId;
@@ -27,6 +27,7 @@ public class Order {
     private String address;
     private String phone;
     private Date createTime;
+    private String remarks;
 
     public Integer getDid() {
         return did;
@@ -100,11 +101,11 @@ public class Order {
         this.otherCost = otherCost;
     }
 
-    public String getBill() {
+    public Integer getBill() {
         return bill;
     }
 
-    public void setBill(String bill) {
+    public void setBill(Integer bill) {
         this.bill = bill;
     }
 
@@ -172,9 +173,17 @@ public class Order {
         this.createTime = createTime;
     }
 
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
+    }
+
     @Override
     public String toString() {
-        return "order{" +
+        return "Order{" +
                 "did=" + did +
                 ", userId=" + userId +
                 ", name='" + name + '\'' +
@@ -184,7 +193,7 @@ public class Order {
                 ", costPrice=" + costPrice +
                 ", royalties=" + royalties +
                 ", otherCost=" + otherCost +
-                ", bill='" + bill + '\'' +
+                ", bill=" + bill +
                 ", billInfo='" + billInfo + '\'' +
                 ", commodityId=" + commodityId +
                 ", invoiceId=" + invoiceId +
@@ -193,6 +202,7 @@ public class Order {
                 ", address='" + address + '\'' +
                 ", phone='" + phone + '\'' +
                 ", createTime=" + createTime +
+                ", remarks='" + remarks + '\'' +
                 '}';
     }
 }
