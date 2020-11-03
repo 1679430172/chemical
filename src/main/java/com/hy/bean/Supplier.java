@@ -7,14 +7,14 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import java.util.Date;
 @TableName(value = "supplier")
 public class Supplier {
-    @TableId(type = IdType.ASSIGN_ID)
+    //@TableId(type = IdType.ASSIGN_ID)
     private Integer gid;
-    private Integer user_id;
+    private Integer userId;
     private String name;
     private String phone;
     private String wechat;
     private String status;
-    private Date create_time;
+    private String  createTime;
 
     public Integer getGid() {
         return gid;
@@ -24,13 +24,6 @@ public class Supplier {
         this.gid = gid;
     }
 
-    public Integer getUser_id() {
-        return user_id;
-    }
-
-    public void setUser_id(Integer user_id) {
-        this.user_id = user_id;
-    }
 
     public String getName() {
         return name;
@@ -64,11 +57,32 @@ public class Supplier {
         this.status = status;
     }
 
-    public Date getCreate_time() {
-        return create_time;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setCreate_time(Date create_time) {
-        this.create_time = create_time;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
+    }
+
+    @Override
+    public String toString() {
+        return "Supplier{" +
+                "gid=" + gid +
+                ", userId=" + userId +
+                ", name='" + name + '\'' +
+                ", phone='" + phone + '\'' +
+                ", wechat='" + wechat + '\'' +
+                ", status='" + status + '\'' +
+                ", createTime=" + createTime +
+                '}';
     }
 }

@@ -9,7 +9,7 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "id=" + id +
+                "id=" + uid +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", type='" + type + '\'' +
@@ -17,7 +17,7 @@ public class User {
     }
 
     @TableId(value = "id",type = IdType.AUTO)
-    private  Integer id;
+    private  Integer uid;
 
     private  String username;
 
@@ -26,12 +26,12 @@ public class User {
    /* 0 管理员 1 业务员 2授权的业务员*/
     private  String type;
 
-    public Integer getId() {
-        return id;
+    public Integer getUid() {
+        return uid;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setUid(Integer uid) {
+        this.uid = uid;
     }
 
     public String getUsername() {

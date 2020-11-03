@@ -12,8 +12,6 @@ public class SupplierUsers {
     private String status;
     private String createTime;
 
-
-
     public Integer getGid() {
         return gid;
     }
@@ -68,5 +66,18 @@ public class SupplierUsers {
 
     public void setCreateTime(String createTime) {
         this.createTime = createTime;
+    }
+
+    @Override
+    public String toString() {
+        return "SupplierUsers{" +
+                "gid=" + gid +
+                ", userName='" + userName + '\'' +
+                ", name='" + name + '\'' +
+                ", phone='" + phone + '\'' +
+                ", wechat='" + wechat + '\'' +
+                ", status='" + status + '\'' +
+                ", createTime='" + createTime + '\'' +
+                '}';
     }
 }
