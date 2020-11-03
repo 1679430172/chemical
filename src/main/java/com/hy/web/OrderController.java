@@ -13,25 +13,20 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpSession;
+
 @Api
 @Controller
 @RequestMapping("Order")
 public class OrderController {
     @Autowired
     private OrderService service;
-    @Autowired
-    private ParseData parseData;
 
     @GetMapping("/")
     @ResponseBody
     public ParseData select(Integer page, Integer limit) throws Exception {
         Page page1=new Page(page,limit);
-        IPage<Order> iPage=service.selectList(page1);
-        parseData.setCode(0);
-        parseData.setCount(Integer.parseInt(Long.toString(iPage.getTotal())));
-        parseData.setMsg("");
-        parseData.setData(iPage.getRecords());
-        return parseData;
+        return service.selectList(page1);
     }
 
     @PostMapping("/")

@@ -9,15 +9,14 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "id=" + uid +
+                "id=" + id +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", type='" + type + '\'' +
                 '}';
     }
-
-    @TableId(value = "id",type = IdType.AUTO)
-    private  Integer uid;
+    @TableId(value = "uid",type =IdType.AUTO)
+    private  Integer id;
 
     private  String username;
 
@@ -27,11 +26,11 @@ public class User {
     private  String type;
 
     public Integer getUid() {
-        return uid;
+        return id;
     }
 
     public void setUid(Integer uid) {
-        this.uid = uid;
+        this.id = uid;
     }
 
     public String getUsername() {

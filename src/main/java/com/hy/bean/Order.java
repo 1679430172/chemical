@@ -11,7 +11,6 @@ public class Order {
     @TableId(type = IdType.AUTO)
     private Integer did;
     private Integer userId;
-    private String name;
     private Integer amount;
     private Double price;
     private Double sumPrice;
@@ -28,6 +27,7 @@ public class Order {
     private String phone;
     private Date createTime;
     private String remarks;
+    private String name;//商品名称
 
     public Integer getDid() {
         return did;
