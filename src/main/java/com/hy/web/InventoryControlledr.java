@@ -22,13 +22,7 @@ public class InventoryControlledr {
     @ResponseBody
     public ParseData inventory(Integer page, Integer limit){
         IPage<Inventory> iPage= InventoService.iPage(page,limit);
-        System.out.println(iPage.getRecords().get(0).getCreateTime()+"------------");
-        ParseData layuiDate=new ParseData();
-        layuiDate.setCode(0);
-        layuiDate.setCount(Integer.parseInt(Long.toString(iPage.getTotal())));
-        layuiDate.setMsg("");
-        layuiDate.setData(iPage.getRecords());
-        return layuiDate;
+        return new ParseData(0,"",Integer.parseInt(Long.toString(iPage.getTotal())),iPage.getRecords());
     }
 
 }
