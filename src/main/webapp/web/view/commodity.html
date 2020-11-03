@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/web/component/layui/css/layui.css" th:src="@{/web/component/layui/css/layui.css}"  media="all">
+    <script type="text/javascript" src="/web/component/js/jquery-3.3.1.min.js" th:src="@{/web/component/js/jquery-3.3.1.min.js}"></script>
+    <script src="/web/component/layui/layui.js" th:src="@{/web/component/layui/layui.js}" ></script>
+    <script type="text/javascript" >
+        layui.use(["form","table","layer","upload"], function() {
+            var table = layui.table;
+            var form = layui.form;
+            var layer = layui.layer;
+            var upload = layui.upload;
+
+            table.render({
+                elem: '#demo'
+                , url: '/Commoditys.do' //数据接口
+                ,page:true
+                ,limit:20
+                ,toolbar: '#toolbarDemo'
+                ,defaultToolbar:["filter"]
+                ,limits:[1,3,5]
+                , cols: [
+                    [ //表头
+                        {field: 'sid', title: '商品编号', width: 177}
+                        ,{field: 'userName', title: '业务员名称'}
+                        , {field: 'name', title: '产品名称'}
+                        , {field: 'cas', title: 'cas号', sort: true}
+                        , {field: 'createTime', title: '日期', sort: true}
+                        , {field: 'updateTime', title: '更新日期', sort: true}
+                        , {field: 'priceInfo', title: '报价信息', sort: true}
+                        ,{field:"",title:'操作',toolbar:'#barDemo', width: 550
+                       /* , templet: function(d) {//这里的参数d是templete的固定用法，可以取到该行的所有数据
+                            return '<button type="button"   class="layui-btn layui-btn-danger layui-btn-xs" lay-event="text" id="text">\n' +
+                                '        <i class="layui-icon">&#xe601;</i>下载图片\n' +
+                                '    </button>';
+                            /!*if (d.file_state == 0) {//未上传
+                                //class里的upload_btn是用来标志上传按钮的，没有定义实际的css样式
+
+                            } else { //已上传||被替换
+                                return '<button class="layui-btn layui-btn-xs replace_btn" value="">替换</button>' +
+                                    '<button class="layui-btn layui-btn-danger layui-btn-xs delete_btn" lay-event="delete" value="">删除</button>'; //删除按钮不需要渲染上传，只是一个动作按钮，可以通过lay-event进行行事件监听
+                            }*!/
+                        }*/
+                        }
+                    ]
+                ]
+            })
+
+            //执行实例
+            var uploadInst = upload.render({
+                elem: '#edit' //绑定元素
+                ,url: '/batch.do' //上传接口
+                ,accept: 'file'
+                ,done: function(res){
+                    if(res == "1"){
+                        layer.msg('导入成功!');
+                        table.reload('demo', {
+                            url: '/layuiDate.do?'
+                        });
+                    }
+                    //上传完毕回调
+                }
+                ,error: function(){
+                    //请求异常回调
+                }
+            });
+
+            //监听行工具
+            table.on('tool(test)',function (obj) {
+                var data = obj.data; //获得当前行数据
+                var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+                if(layEvent === 'detail'){
+
+                }else if(layEvent === 'edit'){
+                    /*layer.open({
+                        type: 2,
+                        //offset: 'auto',、
+                        skin: 'layui-layer-rim',
+                        area: ['314px', '450px'],
+                        content: '/sys/updat.jsp?empno='+data.empno, //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
+                        end:function () {
+                            table.reload('demo', {
+                                url: '/layuiDate.do?'
+                            });
+                        }
+                    });*/
+                }else if(layEvent === 'edit1'){
+
+                }else if(layEvent == "test1"){
+                    //执行实例
+                    var uploadInst = upload.render({
+                        elem: '#edit' //绑定元素
+                        ,url: '/batch.do' //上传接口
+                        ,accept: 'file'
+                        ,done: function(res){
+                            if(res == "1"){
+                                layer.msg('导入成功!');
+                                table.reload('demo', {
+                                    url: '/layuiDate.do?'
+                                });
+                            }
+                            //上传完毕回调
+                        }
+                        ,error: function(){
+                            //请求异常回调
+                        }
+                    });
+                }else if(layEvent === "test2"){
+                    //layer.msg("1231546");
+                    var uploadInst = upload.render({
+                        elem: '#test1' //绑定元素
+                        ,url: '/upload/' //上传接口
+                        ,done: function(res){
+                            //上传完毕回调
+                        }
+                        ,error: function(){
+                            //请求异常回调
+                        }
+                    });
+                }
+
+            })
+
+            //监听表头
+            table.on('toolbar(test)',function (obj) {
+                var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+
+                if(layEvent === 'add'){
+                    layer.open({
+                        type: 2,
+                        //offset: 'auto',、
+                        skin: 'layui-layer-rim',
+                        area: ['314px', '450px'],
+                        content: '/sys/add.jsp', //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
+                        end:function () {
+                            table.reload('demo', {
+                                url: '/layuiDate.do'
+                            });
+                        }
+                    });
+                }else if(layEvent === 'edit'){
+
+                }
+            })
+        })
+    </script>
+</head>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="detail"><i class="layui-icon">&#xe615;</i>查看供应商</a>
+    <button type="button" class="layui-btn" id="test1" lay-event="test1">
+        <i class="layui-icon">&#xe67c;</i>未上传图片
+    </button>
+    <button type="button" class="layui-btn" id="test2" lay-event="test2">
+        <i class="layui-icon">&#xe67c;</i>未上传文件
+    </button>
+</script>
+
+<script type="text/html" id="toolbarDemo">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm" lay-event="add">添加</button>
+    </div>
+</script>
+<body>
+<table id="demo" lay-filter="test"></table>
+
+</body>
+</html>
