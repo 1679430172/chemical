@@ -35,9 +35,9 @@ public class Userserves extends ServiceImpl<UserMapper, User> {
             ServletRequestAttributes requestAttributes = (ServletRequestAttributes)RequestContextHolder.getRequestAttributes();
             HttpServletRequest request = requestAttributes.getRequest();
             HttpSession session = request.getSession();
-            session.setAttribute("id",user.getType());
-            session.setAttribute("uid",user.getId());
-            session.setAttribute("username",user.getUsername());
+            session.setAttribute("userType",user.getType());
+            session.setAttribute("userId",user.getId());
+            session.setAttribute("userName",user.getUsername());
             return Util.sueess;
         }else{
             return Util.defact;
