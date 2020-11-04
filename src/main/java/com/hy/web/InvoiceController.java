@@ -21,34 +21,25 @@ import java.util.List;
 public class InvoiceController  {
     @Autowired
     private InvoiceService service;
-    @Autowired
-    private ParseData parseData;
 
     @RequestMapping("/select")
     @ResponseBody
     public ParseData select() throws Exception {
         List<Invoice> list=service.list();
-        parseData.setCode(0);
-        parseData.setCount(3);
-        parseData.setMsg("");
-        parseData.setData(list);
-        return parseData;
+        return new ParseData(0,"",null,list);
     }
 
     @RequestMapping("/queryByCas.do")
     @ResponseBody
     public ParseData queryByCas(String cas,Integer page,Integer limit){
         List<Invoice> list=service.queryByCas(cas);
-        parseData.setCode(0);
-        parseData.setCount(1);
-        parseData.setMsg("");
-        parseData.setData(list);
-        return parseData;
+        return new ParseData(0,"",null,list);
 
     }
     @ResponseBody
     @PostMapping ("/add.do" )
     public String add(Invoice invoice){
+        System.out.println("createTime="+invoice.getCreateTime());
         try {
             service.save(invoice);
         } catch (Exception e) {
