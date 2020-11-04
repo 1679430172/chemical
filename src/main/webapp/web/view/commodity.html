@@ -105,6 +105,19 @@
                             //请求异常回调
                         }
                     });
+                }else if (layEvent == "edit"){
+                    layer.open({
+                        type: 2,
+                        //offset: 'auto',、
+                        skin: 'layui-layer-rim',
+                        area: ['314px', '450px'],
+                        content: '/web/view/commoditySupplier.html?supplierId='+data.supplierId, //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
+                        end:function () {
+                            table.reload('demo', {
+                                url: '/layuiDate.do'
+                            });
+                        }
+                    });
                 }
 
             })
@@ -142,6 +155,7 @@
     </script>
 </head>
 <script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="edit"><i class="layui-icon">&#xe615;</i>修改</a>
     <a class="layui-btn layui-btn-xs" lay-event="detail"><i class="layui-icon">&#xe615;</i>查看供应商</a>
     <button type="button" class="layui-btn" id="test1" lay-event="test1">
         <i class="layui-icon">&#xe67c;</i>未上传图片
