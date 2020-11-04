@@ -16,12 +16,12 @@
 
         //部门的下拉框
         $(function () {
-            $.get("/deptById.do",function (d,s) {
+            $.get("/supplier/users.do",function (d,s) {
                 var i=eval(d);
                 for(var is=0; is<i.length;is++){
-                    var option=$("<option>").text(i[is].dname);
-                    option.attr("value",i[is].deptno);
-                    $("#deptno").append(option);
+                    var option=$("<option>").text(i[is].username);
+                    option.attr("value",i[is].uid);
+                    $("#userId").append(option);
                 }
                 form.render();
             })
@@ -41,9 +41,8 @@
             console.log(data.form) //被执行提交的form对象，一般在存在form标签时才会返回
             console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
             //阻止表单跳转。如果需要表单跳转，去掉这段即可。
-            $('#formId')[0].reset();//重置清空
-            form.render();//必须写
-            $.post("/save.do?", data.field, function (d) {
+            //{name:data.field.name,phone:data.field.phone,wechat:data.field.wechat,status:data.field.status,createTime:data.field.createTime,userId:data.field.userId}
+            $.post("/supplier/save.do?",data.field, function (d) {
                 if (d === "1") {
                     layer.msg('已添加成功!', {icon: 1, time: 3000});
                 } else {
@@ -60,21 +59,21 @@
     <div class="layui-form-item">
         <label class="layui-form-label">供应商名称</label>
         <div class="layui-input-block">
-            <input type="text" lay-verify="required"  style="width: 200px" name="name" required   placeholder="请输入标题" autocomplete="off" class="layui-input">
+            <input type="text" lay-verify="required"  style="width: 200px" name="name" required   placeholder="请输入名称" autocomplete="off" class="layui-input">
         </div>
     </div>
 
     <div class="layui-form-item">
         <label class="layui-form-label">电话</label>
         <div class="layui-input-block">
-            <input type="text" lay-verify="required" name="phone" style="width: 200px" required   placeholder="请输入标题" autocomplete="off" class="layui-input">
+            <input type="text" lay-verify="required" name="phone" style="width: 200px" required   placeholder="请输入电话" autocomplete="off" class="layui-input">
         </div>
     </div>
 
     <div class="layui-form-item">
         <label class="layui-form-label">微信或qq</label>
         <div class="layui-input-inline">
-            <input type="text" lay-verify="required|date" name="wechat" style="width: 200px" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
+            <input type="text"  name="wechat"  placeholder="请输入微信或qq"  autocomplete="off" class="layui-input">
         </div>
     </div>
 
@@ -88,20 +87,20 @@
     <div class="layui-inline">
         <label class="layui-form-label">日期选择</label>
         <div class="layui-input-block">
-            <input type="text" name="date" id="date1" autocomplete="off" class="layui-input">
+            <input type="text" name="createTime" id="date1" autocomplete="off" class="layui-input">
         </div>
     </div>
 
     <div class="layui-form-item">
         <label class="layui-form-label">业务员</label>
         <div class="layui-input-inline">
-            <select id ="userName" name="userName" ></select>
+            <select id ="userId" name="userId" ></select>
         </div>
     </div>
 
     <div class="layui-inline">
         <div class="layui-input-block">
-            <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+            <button class="layui-btn" lay-submit lay-filter="formDemo" >立即提交</button>
             <button type="reset" id="reset" class="layui-btn layui-btn-primary">重置</button>
         </div>
     </div>

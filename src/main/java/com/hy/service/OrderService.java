@@ -3,6 +3,7 @@ package com.hy.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.hy.bean.Authority;
 import com.hy.bean.Order;
 import com.hy.mapper.OrderMapper;
 import com.hy.util.ParseData;
@@ -20,7 +21,14 @@ public class OrderService extends ServiceImpl<OrderMapper, Order> {
 
     public ParseData selectList(Page page){
         HttpSession session = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession();
-        IPage<Order> iPage=orderMapper.selectList(1,page);
+        IPage<Order> iPage=null;
+        if(session.getAttribute("userType").equals(Authority.administrator)){
+            iPage=orderMapper.selectList(page);
+        }else if(session.getAttribute("userType").equals(Authority.authorizedSalesman)){
+            iPage=orderMapper.selectList(page);
+        }else if(session.getAttribute("userType").equals(Authority.salesman)){
+            iPage=orderMapper.selectListByUserId((Integer)session.getAttribute("userId"),page);
+        }
         return new ParseData(0,"",Integer.parseInt(Long.toString(iPage.getTotal())),iPage.getRecords());
     }
 

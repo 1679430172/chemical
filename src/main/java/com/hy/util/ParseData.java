@@ -18,6 +18,10 @@ public class ParseData {
         this.data = data;
     }
 
+    public ParseData() {
+
+    }
+
     public Integer getCode() {
         return code;
     }

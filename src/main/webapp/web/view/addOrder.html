@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
 <head>
     <meta charset="UTF-8">
     <title>添加订单</title>
@@ -11,6 +11,15 @@
         layui.use('form', function(){
             var form = layui.form;
 
+            $.get("/Commodity/commoditiesList",{},function (data) {
+                var list=eval(data);
+                for(var i=0;i<list.length;i++){
+                    var option=$("<option>").val(list[i].sid);
+                    option.text(list[i].name);
+                    $("#sid").append(option);
+                }
+                form.render('select');
+            });
 
             $("#bills").click(function() {
                 if($("#bill").prop('checked')){
@@ -52,18 +61,17 @@
     <div class="layui-form-item layui-form-text">
         <label class="layui-form-label">商品名称</label>
         <div class="layui-input-inline">
-            <select name="city" lay-verify="">
-                <option value="">请选择一个商品</option>
-                <option value="010">北京</option>
-                <option value="021">上海</option>
-                <option value="0571">杭州</option>
+            <select name="commodityId" lay-verify="" id="sid">
+                <option value="0">请选择一个商品</option>
             </select>
         </div>
     </div>
-    <div class="layui-form-item">
+    <div class="layui-form-item layui-form-text">
         <label class="layui-form-label">业务员</label>
         <div class="layui-input-inline">
-            <input type="text" name="userId" lay-verify="did" autocomplete="off" placeholder="" disabled="disabled" class="layui-input">
+            <select name="city" lay-verify="" disabled="disabled">
+                <option th:value="${session.userId}">[[${session.userName}]]</option>
+            </select>
         </div>
     </div>
     <div class="layui-form-item">

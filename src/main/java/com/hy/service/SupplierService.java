@@ -6,8 +6,10 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hy.bean.Order;
 import com.hy.bean.Supplier;
 import com.hy.bean.SupplierUsers;
+import com.hy.bean.User;
 import com.hy.mapper.OrderMapper;
 import com.hy.mapper.SupplierMapper;
+import com.hy.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +23,19 @@ public class SupplierService extends ServiceImpl<SupplierMapper, Supplier> {
 
     public IPage<SupplierUsers> iPage(Integer page, Integer limit){
         IPage<SupplierUsers> iPage= supplierMapper.supplier(new Page(page,limit));
-        System.out.println(iPage.getRecords().get(0).getCreateTime()+"------------");
         return iPage;
+    }
+
+    public List<SupplierUsers> iPage(){
+        List<SupplierUsers> iPage= supplierMapper.supplier();
+        return iPage;
+    }
+
+    public Supplier suppliers(String gid){
+        return supplierMapper.selectById(gid);
+    }
+
+    public List<SupplierUsers> users(){
+        return supplierMapper.users();
     }
 }

@@ -5,6 +5,7 @@ import java.util.Date;
 public class SupplierUsers {
 
     private Integer gid;
+    private Integer uid;
     private String userName;
     private String name;
     private String phone;
@@ -12,7 +13,13 @@ public class SupplierUsers {
     private String status;
     private String createTime;
 
+    public Integer getUid() {
+        return uid;
+    }
 
+    public void setUid(Integer uid) {
+        this.uid = uid;
+    }
 
     public Integer getGid() {
         return gid;
@@ -68,5 +75,18 @@ public class SupplierUsers {
 
     public void setCreateTime(String createTime) {
         this.createTime = createTime;
+    }
+
+    @Override
+    public String toString() {
+        return "SupplierUsers{" +
+                "gid=" + gid +
+                ", userName='" + userName + '\'' +
+                ", name='" + name + '\'' +
+                ", phone='" + phone + '\'' +
+                ", wechat='" + wechat + '\'' +
+                ", status='" + status + '\'' +
+                ", createTime='" + createTime + '\'' +
+                '}';
     }
 }

@@ -17,7 +17,6 @@
         //第一个实例
         table.render({
             elem: '#demo'
-
             , url: '/supplier/supplierInquire.do' //数据接口
             ,page:true
             ,limit:20
@@ -27,17 +26,55 @@
             , cols: [
                 [ //表头
                     {field:'',title:'',type:'checkbox'}
-                    ,{title: '序号', width: 80,width: 150, sort: true,  templet:"<div>{{ d.LAY_INDEX }}</div>"}
-                    , {field: 'userName', title: '业务员', width: 80}
-                    , {field: 'name', title: '供应商名称', width: 80, sort: true}
-                    , {field: 'phone', title: '电话', width: 150}
+                    ,{title: '序号', sort: true,  templet:"<div>{{ d.LAY_INDEX }}</div>"}
+                    , {field: 'userName', title: '业务员'}
+                    , {field: 'name', title: '供应商名称', sort: true}
+                    , {field: 'phone', title: '电话'}
                     , {field: 'wechat', title: '微信或qq', width: 177}
-                    , {field: 'status', title: '状态', width: 80, sort: true}
-                    , {field: 'createTime', title: '创建时间', width: 200, sort: true}
-                    ,{field:"",title:'操作',toolbar:'#barDemo'}
+                    , {field: 'status', title: '状态', sort: true}
+                    , {field: 'createTime', title: '创建时间', sort: true}
                 ]
             ]
+            /*,done: function (res, curr, count) {
+                Layui_SetDataTableRowColor(0,"#2c08b1");
+            }*/
+
         })
+
+        function Layui_SetDataTableRowColor(RowIndex, Color) {
+           /* var checkStatus = table.checkStatus('demo');
+            var data = checkStatus.data;
+            var table_main =$("table tr").text();//通过class获取table_main
+            console(data);
+            if (table_main != null && table_main.length > 0) {
+                for(var i=0;i<table_main.length;i++){
+                    if(table_main[i].status=="1"){
+
+                    }
+                    if (trs != null && trs.length > 0) {
+                        trs[RowIndex].style.backgroundColor= Color;
+                    }
+                }
+                var table = table_main[0].getElementsByClassName('layui-table');   //通过class获取table
+                if (table != null && table.length > 0) {
+                    var trs = table[0].querySelectorAll("tr");
+                    if (trs != null && trs.length > 0) {
+                        trs[RowIndex].style.backgroundColor= Color;
+                    }
+                }
+            }*/
+            /*try
+            {
+                var div = document.getElementById(DivId);
+                if(div != null) //找到对象了
+                {
+                }
+            }
+            catch(e)
+            {
+                console.log(e.message);
+            }*/
+        }
 
         //监听表头
         table.on('toolbar(test)',function (obj) {
