@@ -1,5 +1,7 @@
 package com.hy.bean;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+
 public class Commodity {
     private Integer sid;
     private String name;
@@ -11,9 +13,10 @@ public class Commodity {
     private String imgPath;
     private String fileStatus;
     private String filePath;
-    private Integer supplier;
     private String createTime;
     private String updateTime;
+    @TableField(exist = false)
+    private Integer supplier;
 
     public Integer getSid() {
         return sid;
