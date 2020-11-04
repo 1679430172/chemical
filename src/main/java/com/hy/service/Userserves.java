@@ -61,9 +61,9 @@ public class Userserves extends ServiceImpl<UserMapper, User> {
      */
     public String getsession(HttpServletRequest request) {
         HttpSession session = request.getSession();
-        String id = (String) session.getAttribute("id");
-        String uid = (String) session.getAttribute("uid");
-        String username = (String) session.getAttribute("username");
+        String id = (String) session.getAttribute("userType");
+        String uid = (String) session.getAttribute("userId");
+        String username = (String) session.getAttribute("userName");
         return id;
     }
 
@@ -122,7 +122,6 @@ public class Userserves extends ServiceImpl<UserMapper, User> {
      */
     public String detele(Integer id){
         try {
-            System.out.println("id============="+id);
             userMapper.deleteById(id);
         } catch (Exception e) {
             return Util.defact;
