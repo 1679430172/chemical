@@ -64,4 +64,15 @@ public interface UserMapper extends BaseMapper<User> {
     })
     @Insert("insert into users(user_name,password,type) values(#{username},#{password},#{type})")
     public void ttt(User user);
+
+
+    /**
+     * 查询所有账户
+     * @return
+     */
+    @Results({
+            @Result(column = "user_name",property = "username"),
+    })
+    @Select("select user_name from users ")
+    public List<User> list();
 }

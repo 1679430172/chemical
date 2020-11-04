@@ -101,7 +101,18 @@ public class Logincro {
     @RequestMapping("/insertpp")
     @ResponseBody
     public String ttt(User user){
-        return  userserves.tt(user);
+        return userserves.tt(user);
+    }
+
+    /**
+     * 删除业务员信息服务端
+     * @param id
+     * @return
+     */
+    @RequestMapping("/delete")
+    @ResponseBody
+    public String detele(Integer id){
+        return userserves.detele(id);
     }
 
 }
