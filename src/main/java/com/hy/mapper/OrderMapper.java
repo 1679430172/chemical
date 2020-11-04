@@ -11,6 +11,12 @@ public interface OrderMapper extends BaseMapper<Order> {
     @Results({
             @Result(column = "name",property = "name")
     })
+    @Select("select * from `order` o inner join commodity c on o.commodity_id=c.sid where c.user_id=#{userId} and o.user_id=#{userId}")
+    public IPage<Order> selectList(@Param("userId") Integer userId,Page page);
+
+    @Results({
+            @Result(column = "name",property = "name")
+    })
     @Select("select * from `order` o inner join commodity c on o.commodity_id=c.sid")
     public IPage<Order> selectList(Page page);
 }

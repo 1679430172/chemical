@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" content="text/html;charset=UTF-8" >
+    <script type="text/javascript"  src="/web/component/js/jquery-3.3.1.min.js" ></script>
+    <title>业务员管理</title>
+    <link rel="stylesheet" href="/web/component/layui/css/layui.css" media="all">
+    <script src="/web/component/layui/layui.js" charset="utf-8"></script>
+    <script type="text/html"
+            、id="tranSort">
+        {{# if (d.type=="1") { }}
+        <span>业务员</span>
+        {{# } else if(d.type=="2") { }}
+        <span>授权的业务员</span>
+        {{# } else{ }}
+        <span>没有任何权限</span>
+        {{# }}}
+    </script>
+    <script type="application/javascript">
+        $(function(){
+            $.ajax({
+                url: '/login/session',
+                type: 'post',
+                contentType:"application/json",
+                success: function (data) {
+                    layui.use('table', function () {
+                        var table = layui.table;
+                        var layer =layui.layer;
+                    if (data=="0"){
+                            //表头
+                            table.render({
+                                elem: '#demo'       //赋值到那个table
+                                ,height:600
+                                ,width:1300
+                                ,url:'/login/yewuyuan' // 数据接口
+                                ,page:true //开启分页
+                                ,limit:10
+                                ,toolbar: '#toolbarDemo'
+                                ,defaultToolbar: ['filter', 'print', 'exports']
+                                ,cols: [[   //表头
+                                    {type: 'checkbox', fixed: 'left'}
+                                    ,{field:'id', width:150, title: 'ID', sort: true}
+                                    ,{field:'username', width:300, title: '用户名'}
+                                    ,{field:'password', width:300, title: '密码', sort: true}
+                                    ,{field:'type', width:350, title: '权限级别',templet:'#tranSort'}
+                                    ,{fixed: 'right', width:200, title: '操作',align:'center', toolbar: '#barDemo'}
+                                ]]
+                            });
+
+                        //监听工具行
+                        table.on('tool(test)', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+                            var data = obj.data; //获得当前行数据
+                            var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+                            var tr = obj.tr; //获得当前行 tr 的 DOM 对象（如果有的话）
+
+                            if(layEvent === 'edit'){ //编辑
+                                layer.open({
+                                    type: 2
+                                    ,content: '/web/view/ywyupdate.html?id='+data.id //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
+                                    ,area: ['1200px', '620px']
+                                    ,end: function(index, layero){
+                                        location.reload();
+                                    }
+                                });
+                            } else if(layEvent === 'del'){ //删除
+                                    layer.confirm('真的删除行么', function (index) {
+                                        obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
+                                        layer.close(index);
+                                        $.ajax({
+                                            url: '/login/delete?id='+data.id,
+                                            type: 'get',
+                                            dataType:"json",
+                                            contentType:"application/json",
+                                            success: function (data1) {
+                                                if (data1==="1"){
+                                                    layer.msg('删除成功！！！', {
+                                                        icon: 1,
+                                                        time: 1000 //2秒关闭（如果不配置，默认是3秒）
+                                                    }, function(){
+                                                        //假设这是iframe页
+                                                        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                                                        parent.layer.close(index); //再执行关闭
+                                                    });
+                                                }
+                                                if(data1==="2"){
+                                                    layer.msg("删除失败");
+                                                }
+                                            }
+                                        });
+                                    });
+                            }
+                        });
+
+                        //头工具栏监听
+                        table.on('toolbar(test)', function(obj){
+                            var data = obj.data; //获得当前行数据
+                            var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+                            var tr = obj.tr; //获得当前行 tr 的 DOM 对象（如果有的话）
+
+                            if(layEvent === 'add'){ //添加
+                                layer.open({
+                                    type: 2
+                                    ,content: '/web/view/ywyinsert.html' //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
+                                    ,area: ['1200px', '620px']
+                                    ,end: function(index, layero){
+                                        location.reload();
+                                    }
+                                });
+                            }
+
+                        });
+
+                    }
+
+                        if (data=="1"){
+                            layer.msg("你没有权限访问");
+                        }
+                        if (data=="2"){
+                            layer.msg("你没有权限访问");
+                        }
+
+                    });
+
+                }
+            });
+        });
+    </script>
+
+    <!-- //工具栏-->
+    <script type="text/html" id="barDemo">
+        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    </script>
+
+     <!--工具栏头模板-->
+    <script type="text/html" id="toolbarDemo">
+        <div class="layui-btn-container">
+            <button class="layui-btn layui-btn-sm" lay-event="add">授权新业务员</button>
+        </div>
+    </script>
+
+</head>
+<body>
+<table class="layui-hide" id="demo" lay-filter="test"></table>
+</body>
+</html>

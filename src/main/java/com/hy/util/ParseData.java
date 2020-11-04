@@ -11,6 +11,13 @@ public class ParseData {
     private Integer count;
     private List data;
 
+    public ParseData(Integer code, String msg, Integer count, List data) {
+        this.code = code;
+        this.msg = msg;
+        this.count = count;
+        this.data = data;
+    }
+
     public Integer getCode() {
         return code;
     }
