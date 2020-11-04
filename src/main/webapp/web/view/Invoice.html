@@ -1,6 +1,6 @@
 <html >
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <title>发票管理</title>
     <link rel="stylesheet" href="/web/component/layui/css/layui.css" media="all">
     <script src="/web/component/layui/layui.js"></script>
@@ -13,7 +13,7 @@
         <div class="layui-inline">
             <label class="layui-form-label">Cas号</label>
             <div class="layui-input-block">
-                <input type="text" name="ename" lay-verify="title" autocomplete="off" placeholder="请输入" class="layui-input">
+                <input type="text" name="cas" lay-verify="title" autocomplete="off" placeholder="请输入" class="layui-input">
             </div>
         </div>
         <div class="layui-inline">
@@ -31,12 +31,18 @@
         <button type="button" class="layui-btn layui-btn-sm" lay-event="import" id="test1"><i class="layui-icon">&#xe654;</i>添加</button>
     </div>
 </script>
-<script src="/js/jquery-3.4.1.min.js"></script>
-<script src="/layui/layui.js"></script>
+
+
 <script type="text/javascript">
-    layui.use(['table'], function(){
+    layui.use(['layer','form','laydate','table'], function(){
         var table = layui.table;
         var upload = layui.upload;
+        var form=layui.form;
+        var laydate=layui.laydate;
+
+        laydate.render({
+            elem:'#date'
+        });
 
         table.render({
             elem: '#demo'
@@ -46,7 +52,8 @@
             ,limit:20
             ,limits:[10,20,30]
             ,cols: [[ //表头
-                {field: 'sid', title: 'ID'}
+                {type: 'checkbox', fixed: 'left'}
+                , {field: 'sid', title: 'ID'}
                 ,{field: 'name', title: '发票品名'}
                 ,{field: 'cas', title: 'Cas号'}
                 ,{field:'number',title:'数量'}
@@ -54,6 +61,14 @@
                 ,{field: 'createTime', title: '创建日期'}
                 ,{field:'',title: '操作',toolbar: '#barDemo'}
             ]]
+        });
+
+        form.on('submit(formDemo)', function(data){
+            table.reload('demo', {
+                url: '/Invoice/queryByCas.do'
+                ,where: data.field//设定异步数据接口的额外参数
+            });
+            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
         });
 
         //监听工具条
@@ -70,13 +85,22 @@
         });
 
         //执行实例
-        $("#test1").click(function () {
-            layer.open({
-                area: ['390px', '300px'],
-                type: 2,
-                content: 'add.html' //这里content是一个普通的String
-            });
-        })
+        table.on('toolbar(test)', function(obj) {
+            var layEvent = obj.event;
+            if (layEvent === 'import') {
+                layer.open({
+                    area: ['500px', '600px'],
+                    type: 2,
+                    content: 'addInvoice.html',
+                    end:function () {
+                        table.reload('demo', {
+                            url: '/Invoice/select.do'
+                        });
+                    },
+                });
+            }
+
+        });
     });
 </script>
 <script type="text/html" id="barDemo">
