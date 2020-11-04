@@ -20,7 +20,7 @@
                 ,limit:20
                 ,limits:[10,20,30]
                 ,cols: [[ //表头
-                    {field: 'did', title: '订单编号', sort: true}
+                    {field: 'did', title: '编号', sort: true}
                     ,{field: 'name', title: '商品名称', sort: true}
                     ,{field: 'amount', title: '数量', sort: true}
                     ,{field: 'price', title: '单价', sort: true}
@@ -28,9 +28,21 @@
                     ,{field: 'costPrice', title: '成本'}
                     ,{field: 'otherCost', title: '其他成本'}
                     ,{field: '', title: '总成本', templet:"<div>{{ d.costPrice*d.amount+d.otherCost }}</div>"}
-                    ,{field: 'royalties', title: '提成', sort: true}
-                    ,{fixed: 'right', width:230, align:'center', toolbar: '#barDemo'}
-                ]]
+                    ,{field: 'royalties', title: '提成'}
+                    ,{field: 'status', title: '是否出库', sort: true, templet:"#status"}
+                    ,{fixed: 'right', align:'center', toolbar: '#barDemo'}
+                ]],done: function (response) {
+                    //定位当前table视图
+                    var tableView = this.elem.next();
+                    $.each(response.data,function (index,item) {
+                        //逻辑判断
+                        if(item.status == "2"){
+                            //改变TR行颜色和标签内字体颜色
+                            tableView.find('tbody tr[data-index="'+ index +'"]').css('background-color','#FF5722');
+                            tableView.find('tbody tr[data-index="'+ index +'"]').css('color','#F0F0F0');
+                        }
+                    })
+                }
             });
 
             //监听工具条
@@ -129,6 +141,20 @@
         <div class="layui-btn-container">
             <button type="button" class="layui-btn layui-btn-sm" lay-event="import" id="test1"><i class="layui-icon">&#xe654;</i>添加订单</button>
         </div>
+    </script>
+    <style>
+        .layui-table-page {
+            text-align: center;
+        }
+    </style>
+    <script type="text/html" id="status">
+        {{#  if(d.status == 0){ }}
+        <input type="checkbox" name="status" value="{{d.status}}" title="出库" lay-filter="lockDemo">
+        {{#  } else if(d.status == 1){ }}
+        <input type="checkbox" name="status" value="{{d.status}}" title="出库" lay-filter="lockDemo" checked>
+        {{#  } else if(d.status == 2){ }}
+        <input type="checkbox" name="status" value="{{d.status}}" title="退货" disabled="disabled"  lay-filter="lockDemo" checked>
+        {{#  } }}
     </script>
 </head>
 <body>
