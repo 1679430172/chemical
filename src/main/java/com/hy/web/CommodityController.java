@@ -3,9 +3,7 @@ package com.hy.web;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.hy.bean.Commodity;
 import com.hy.bean.Commoditys;
-import com.hy.bean.SupplierUsers;
 import com.hy.service.CommodityService;
-import com.hy.service.SupplierService;
 import com.hy.util.ParseData;
 import com.hy.util.Util;
 import io.swagger.annotations.Api;
@@ -16,14 +14,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
-import java.util.UUID;
 
 @Api
 @Controller
+@RequestMapping("Commodity")
 public class CommodityController {
     @Autowired
     private CommodityService commodityService;
@@ -52,6 +47,7 @@ public class CommodityController {
         }
         return Util.succeed;
     }
+
 
     @RequestMapping("/save.do")
     @ResponseBody
