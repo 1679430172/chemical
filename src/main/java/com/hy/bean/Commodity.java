@@ -11,7 +11,7 @@ public class Commodity {
     private String imgPath;
     private String fileStatus;
     private String filePath;
-    private Integer supplier;
+    private Integer supplierId;
     private String createTime;
     private String updateTime;
 
@@ -95,12 +95,12 @@ public class Commodity {
         this.filePath = filePath;
     }
 
-    public Integer getSupplier() {
-        return supplier;
+    public Integer getSupplierId() {
+        return supplierId;
     }
 
-    public void setSupplier(Integer supplier) {
-        this.supplier = supplier;
+    public void setSupplierId(Integer supplierId) {
+        this.supplierId = supplierId;
     }
 
     public String getCreateTime() {
@@ -117,5 +117,24 @@ public class Commodity {
 
     public void setUpdateTime(String updateTime) {
         this.updateTime = updateTime;
+    }
+
+    @Override
+    public String toString() {
+        return "Commodity{" +
+                "sid=" + sid +
+                ", name='" + name + '\'' +
+                ", cas='" + cas + '\'' +
+                ", userId=" + userId +
+                ", priceInfo='" + priceInfo + '\'' +
+                ", commodityInfo='" + commodityInfo + '\'' +
+                ", imgStatus='" + imgStatus + '\'' +
+                ", imgPath='" + imgPath + '\'' +
+                ", fileStatus='" + fileStatus + '\'' +
+                ", filePath='" + filePath + '\'' +
+                ", supplierId=" + supplierId +
+                ", createTime='" + createTime + '\'' +
+                ", updateTime='" + updateTime + '\'' +
+                '}';
     }
 }

@@ -30,7 +30,6 @@ public class SupplierController {
     @ResponseBody
     public ParseData supplierInquire(Integer page, Integer limit){
         IPage<SupplierUsers> iPage= supplierService.iPage(page,limit);
-        System.out.println(iPage.getRecords().get(0).getUserName()+"------------");
         return new ParseData(0,"",Integer.parseInt(Long.toString(iPage.getTotal())),iPage.getRecords());
     }
 
@@ -39,6 +38,12 @@ public class SupplierController {
     public ParseData supplierInquire(){
         List<SupplierUsers> iPage= supplierService.iPage();
         return new ParseData(0,"",null,null);
+    }
+
+    @RequestMapping("get.do")
+    @ResponseBody
+    public ParseData get(){
+        return  new ParseData(0,"",null,supplierService.list());
     }
     @RequestMapping("/suppliers.do")
     @ResponseBody
@@ -51,7 +56,6 @@ public class SupplierController {
     public String supplierAdd(Supplier supplier){
         System.out.println(supplier.toString());
         boolean b= supplierService.save(supplier);
-        System.out.println(b+"-------------");
         if(b == true){
             return Util.succeed;
         }else {
@@ -68,7 +72,6 @@ public class SupplierController {
     @RequestMapping("/save.do")
     @ResponseBody
     public String supplierSave(Supplier supplier){
-        System.out.println(supplier.toString()+"-------");
         if (supplier.getStatus().equals("on")) {
             supplier.setStatus("0");
         }
