@@ -55,7 +55,7 @@ public class Userserves extends ServiceImpl<UserMapper, User> {
     }
 
     /**
-     * 权限管理获取session(id是权限类型，uid是编号)
+     * 权限管理获取session
      * @param request
      * @return
      */

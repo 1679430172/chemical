@@ -26,7 +26,7 @@
                     layui.use('table', function () {
                         var table = layui.table;
                         var layer =layui.layer;
-                    if (data=="0"){
+                    if (data=="0"||data==="1"){
                             //表头
                             table.render({
                                 elem: '#demo'       //赋值到那个table
@@ -112,9 +112,6 @@
 
                     }
 
-                        if (data=="1"){
-                            layer.msg("你没有权限访问");
-                        }
                         if (data=="2"){
                             layer.msg("你没有权限访问");
                         }
