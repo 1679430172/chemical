@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
 <head>
     <meta charset="UTF-8">
     <title>订单列表</title>
@@ -115,9 +115,9 @@
             //执行实例
             $("#test1").click(function () {
                 layer.open({
-                    area: ['450px', '600px'],
+                    area: ['450px', '500px'],
                     type: 2,
-                    content: 'addOrder.html' //这里content是一个普通的String
+                    content: '/Order/toAdd' //这里content是一个普通的String
                 });
             })
         });

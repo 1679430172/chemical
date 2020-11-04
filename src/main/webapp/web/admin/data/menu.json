@@ -263,55 +263,19 @@
 		]
 	},
 	{
-		"id": "system",
-		"title": "系统管理",
+		"id": "order",
+		"title": "订单管理",
 		"icon": "layui-icon layui-icon-set-fill",
 		"type": 0,
 		"href": "",
 		"children": [{
-				"id": 601,
-				"title": "用户管理",
-				"icon": "layui-icon layui-icon-face-smile",
-				"type": 1,
-				"openType": "_iframe",
-				"href": "view/system/user.html"
-			},
-			{
-				"id": 602,
-				"title": "角色管理",
-				"icon": "layui-icon layui-icon-face-cry",
-				"type": 1,
-				"openType": "_iframe",
-				"href": "view/system/role.html"
-			},
-
-			{
-				"id": 603,
-				"title": "权限管理",
-				"icon": "layui-icon layui-icon-face-cry",
-				"type": 1,
-				"openType": "_iframe",
-				"href": "view/system/power.html"
-			},
-			
-			{
-				"id": 604,
-				"title": "部门管理",
-				"icon": "layui-icon layui-icon-face-cry",
-				"type": 1,
-				"openType": "_iframe",
-				"href": "view/system/deptment.html"
-			},
-			{
-				"id": 605,
-				"title": "行为日志",
-				"icon": "layui-icon layui-icon-face-cry",
-				"type": 1,
-				"openType": "_iframe",
-				"href": "view/system/logging.html"
-			}
-
-		]
+			"id": 601,
+			"title": "订单管理",
+			"icon": "layui-icon layui-icon-face-smile",
+			"type": 1,
+			"openType": "_iframe",
+			"href": "view/order.html"
+		}]
 	},
 	{
 		"id": "common",
