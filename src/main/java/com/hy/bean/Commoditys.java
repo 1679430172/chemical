@@ -11,7 +11,7 @@ public class Commoditys {
     private String imgPath;
     private String fileStatus;
     private String filePath;
-    private Integer supplier;
+    private Integer supplierId;
     private String createTime;//开始时间
     private String createTimes;//结果时间
     private String updateTime;
@@ -113,12 +113,12 @@ public class Commoditys {
         this.filePath = filePath;
     }
 
-    public Integer getSupplier() {
-        return supplier;
+    public Integer getSupplierId() {
+        return supplierId;
     }
 
-    public void setSupplier(Integer supplier) {
-        this.supplier = supplier;
+    public void setSupplierId(Integer supplierId) {
+        this.supplierId = supplierId;
     }
 
     public String getCreateTime() {
@@ -135,5 +135,26 @@ public class Commoditys {
 
     public void setUpdateTime(String updateTime) {
         this.updateTime = updateTime;
+    }
+
+    @Override
+    public String toString() {
+        return "Commoditys{" +
+                "sid=" + sid +
+                ", name='" + name + '\'' +
+                ", cas='" + cas + '\'' +
+                ", userId=" + userId +
+                ", priceInfo='" + priceInfo + '\'' +
+                ", commodityInfo='" + commodityInfo + '\'' +
+                ", imgStatus='" + imgStatus + '\'' +
+                ", imgPath='" + imgPath + '\'' +
+                ", fileStatus='" + fileStatus + '\'' +
+                ", filePath='" + filePath + '\'' +
+                ", supplierId=" + supplierId +
+                ", createTime='" + createTime + '\'' +
+                ", createTimes='" + createTimes + '\'' +
+                ", updateTime='" + updateTime + '\'' +
+                ", userName='" + userName + '\'' +
+                '}';
     }
 }

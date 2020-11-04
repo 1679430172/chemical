@@ -26,13 +26,16 @@ public class SupplierService extends ServiceImpl<SupplierMapper, Supplier> {
         return iPage;
     }
 
-
     public List<SupplierUsers> iPage(){
         List<SupplierUsers> iPage= supplierMapper.supplier();
         return iPage;
     }
 
-    public List<User> users(){
+    public Supplier suppliers(String gid){
+        return supplierMapper.selectById(gid);
+    }
+
+    public List<SupplierUsers> users(){
         return supplierMapper.users();
     }
 }

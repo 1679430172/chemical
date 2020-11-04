@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import java.util.Date;
 @TableName(value = "supplier")
 public class Supplier {
-    //@TableId(type = IdType.ASSIGN_ID)
+    @TableId(type = IdType.AUTO)
     private Integer gid;
     private Integer userId;
     private String name;

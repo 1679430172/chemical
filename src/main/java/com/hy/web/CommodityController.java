@@ -16,9 +16,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.UUID;
 
 @Api
 @Controller
@@ -27,28 +29,28 @@ public class CommodityController {
     private CommodityService commodityService;
     @RequestMapping("/Commoditys.do")
     @ResponseBody
-    public ParseData  Commoditys(Integer page, Integer limit, Commoditys commoditys){
-        IPage<Commoditys> iPage=  commodityService.CommditysList(page,limit,commoditys);
-        ParseData layuiDate=new ParseData();
-        layuiDate.setCode(0);
-        layuiDate.setCount(Integer.parseInt(Long.toString(iPage.getTotal())));
-        layuiDate.setMsg("");
-        layuiDate.setData(iPage.getRecords());
-        return layuiDate;
+    public ParseData  Commoditys(Integer page, Integer limit, String createTime,String createTimes){
+        IPage<Commoditys> iPage=  commodityService.CommditysList(page,limit,createTime,createTimes);
+        System.out.println(createTime+"--------"+createTimes);
+        return new ParseData(0,"",Integer.parseInt(Long.toString(iPage.getTotal())),iPage.getRecords());
     }
 
     @RequestMapping("/pictures.do")
     @ResponseBody
     public String pictures(@RequestParam("file") MultipartFile pictureFile){
         try {
-            InputStream inputStream= pictureFile.getInputStream();
-            List<Commodity> empDepts= commodityService.pictures(inputStream);
-
-            commodityService.save((Commodity) empDepts);
-        } catch (IOException e) {
+            Commodity commodity= commodityService.pictures(pictureFile);
+            commodityService.save(commodity);
+        } catch (Exception e) {
             e.printStackTrace();
             return Util.fail;
         }
         return Util.succeed;
+    }
+
+    @RequestMapping("/commoditiesList.do")
+    @ResponseBody
+    public List<Commodity> commoditiesList(){
+        return commodityService.list();
     }
 }

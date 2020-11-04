@@ -25,11 +25,11 @@ public class User {
    /* 0 管理员 1 业务员 2授权的业务员*/
     private  String type;
 
-    public Integer getUid() {
+    public Integer getId() {
         return id;
     }
 
-    public void setUid(Integer uid) {
+    public void setId(Integer uid) {
         this.id = uid;
     }
 

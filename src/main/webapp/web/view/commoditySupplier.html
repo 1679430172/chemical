@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/web/component/layui/css/layui.css" th:src="@{/web/component/layui/css/layui.css}"  media="all">
+    <script type="text/javascript" src="/web/component/js/jquery-3.3.1.min.js" th:src="@{/web/component/js/jquery-3.3.1.min.js}"></script>
+    <script src="/web/component/layui/layui.js" th:src="@{/web/component/layui/layui.js}" ></script>
+</head>
+
+    <script type="text/javascript" >
+        layui.use(["form","table","layer","upload"], function() {
+            var table = layui.table;
+            var form = layui.form;
+            var layer = layui.layer;
+            var upload = layui.upload;
+
+
+            var id = location.search;
+            id = id.split("=");
+            $.get("/supplier/suppliers.do?gid="+id[1],function (d) {
+                var i=eval(d);
+                $("#name").val(i.name);
+                $("#phone").val(i.phone);
+            })
+
+        })
+</script>
+<body>
+<div class="layui-inline">
+    <label class="layui-form-label">供应商名称</label>
+    <div class="layui-input-block">
+        <input type="text" id="name" name="name" required   placeholder="请输入开始时间" autocomplete="off" class="layui-input">
+    </div>
+</div>
+<div class="layui-inline">
+    <label class="layui-form-label">电话</label>
+    <div class="layui-input-block">
+        <input type="text " id="phone" name="phone" required   placeholder="请输入结果时间" autocomplete="off" class="layui-input">
+    </div>
+</div>
+</body>
+</html>

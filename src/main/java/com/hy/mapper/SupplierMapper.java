@@ -20,5 +20,5 @@ public interface SupplierMapper extends BaseMapper<Supplier> {
     @Select("select * from supplier s inner join users u on s.user_id = u.uid")
     public List<SupplierUsers> supplier();
     @Select("select * from users")
-    public List<User> users();
+    public List<SupplierUsers> users();
 }

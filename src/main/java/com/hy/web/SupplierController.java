@@ -40,10 +40,28 @@ public class SupplierController {
         List<SupplierUsers> iPage= supplierService.iPage();
         return new ParseData(0,"",null,null);
     }
+    @RequestMapping("/suppliers.do")
+    @ResponseBody
+    public Supplier suppliers(String gid){
+        return supplierService.getById(gid);
+    }
+
+    @RequestMapping("/supplierAdd.do")
+    @ResponseBody
+    public String supplierAdd(Supplier supplier){
+        System.out.println(supplier.toString());
+        boolean b= supplierService.save(supplier);
+        System.out.println(b+"-------------");
+        if(b == true){
+            return Util.succeed;
+        }else {
+            return Util.fail;
+        }
+    }
 
     @RequestMapping("/users.do")
     @ResponseBody
-    public List<User> users(){
+    public List<SupplierUsers> users(){
         return supplierService.users();
     }
 

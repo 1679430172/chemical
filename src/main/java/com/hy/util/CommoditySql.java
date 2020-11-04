@@ -6,15 +6,17 @@ import org.apache.ibatis.annotations.Param;
 
 public class CommoditySql {
 
-    public String CommoditySql(@Param("commoditys") Commoditys commoditys){
-        StringBuffer sql=new StringBuffer("select c.sid, c.`name`,i.cas,u.user_name ,price_info,c.create_time,c.update_time\n" +
+    public String CommoditySql(@Param("createTime")String createTime,@Param("createTimes")String createTimes){
+        StringBuffer sql=new StringBuffer("select c.sid, c.`name`,i.cas,u.user_name ,price_info,c.create_time,c.update_time,c.supplier_id \n" +
                 "from commodity c, supplier s , users u,inventory i " +
-                "where c.user_id=u.uid and c.cas = i.cas and c.supplier_id=s.gid  order by i.amount desc ");
-        if(commoditys != null && !commoditys.equals("")){
-            if( !"".equals(commoditys.getUpdateTime()) && commoditys.getUpdateTime() != null && !"".equals(commoditys.getCreateTimes()) && commoditys.getCreateTimes() != null){
-                sql.append(" between '"+commoditys.getUpdateTime()+"' and '"+commoditys.getCreateTimes()+" ' ");
+                "where c.user_id=u.uid and c.cas = i.cas and c.supplier_id=s.gid  ");
+            if(createTime !=null && createTimes != null){
+                sql.append(" and c.create_time between '"+createTime+"' and '"+createTimes+" ' ");
             }
-        }
+
+            sql.append("order by i.amount desc ");
+            System.out.println(sql);
         return sql.toString();
     }
+
 }
