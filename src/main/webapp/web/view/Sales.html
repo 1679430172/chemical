@@ -41,6 +41,7 @@
             ,where:{userId: shuju}
             ,page:true //开启分页
             ,limit:10
+             , id: 'testReload'
             ,toolbar: '#toolbarDemo'
             ,defaultToolbar: ['filter', 'print', 'exports']
             ,cols: [[   //表头
@@ -70,6 +71,24 @@
                     });
                 }
 
+            });
+
+            $('.layui-btn').click(function () {
+                var inputVal = $('.layui-input').val();
+                table.reload('testReload', {
+                    url: '/Sales/SalesOrderbyid'
+                    // ,methods:"post"
+                    ,request: {
+                        pageName: 'page' //页码的参数名称，默认：page
+                        ,limitName: 'limit' //每页数据量的参数名，默认：limit
+                    }
+                    ,where: {
+                        trackingNumber : inputVal
+                    }
+                    ,page: {
+                        curr: 1
+                    }
+                });
             });
 
         });
@@ -107,7 +126,13 @@
     </div>
 </script>
 <body>
-
+<div class="demoTable">
+    搜索订单：
+    <div class="layui-inline">
+        <input class="layui-input" name="id" id="demoReload" autocomplete="off">
+    </div>
+    <button class="layui-btn" data-type="reload">搜索</button>
+</div>
 <table class="layui-hide" id="demo" lay-filter="test"></table>
 </body>
 </html>

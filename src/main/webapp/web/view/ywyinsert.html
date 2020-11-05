@@ -28,7 +28,6 @@
                     success: function (data,textStatus) {
                         var obj =eval(data);
                         for(var b=0;b<obj.length;b++){
-                            alert(obj.length);
                             var i=$("<option>").val(obj[b].type);
                             var q=$("#p1").append(i);
                             if(i.val()==="1"){
@@ -67,7 +66,7 @@
                             });
                         }
                         if(data1==="2"){
-                            layer.msg("添加失败");
+                            layer.msg("名字重复，请重新添加");
                         }
                     }
                 });

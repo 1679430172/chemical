@@ -13,7 +13,7 @@
     var layer =layui.layer;
      $(function(){
          $.ajax({
-             url: '/login/session',
+             url: '/login/getSessionUserId',
              type: 'post',
              contentType:"application/json",
              success: function (data1,textStatus) {

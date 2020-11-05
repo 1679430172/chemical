@@ -62,8 +62,6 @@ public class Userserves extends ServiceImpl<UserMapper, User> {
     public String getsession(HttpServletRequest request) {
         HttpSession session = request.getSession();
         String id = (String) session.getAttribute("userType");
-        String uid = (String) session.getAttribute("userId");
-        String username = (String) session.getAttribute("userName");
         return id;
     }
 
@@ -127,6 +125,16 @@ public class Userserves extends ServiceImpl<UserMapper, User> {
             return Util.defact;
         }
         return Util.sueess;
+    }
+
+    /**
+     * 获取session中的UseId
+     * @return
+     */
+    public String getSessionUserId() {
+        HttpSession session = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession();
+        Integer id =  (Integer) session.getAttribute("userId");
+        return String.valueOf(id);
     }
 
 }

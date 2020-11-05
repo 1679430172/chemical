@@ -115,4 +115,11 @@ public class Logincro {
         return userserves.detele(id);
     }
 
+
+    @RequestMapping("/getSessionUserId")
+    @ResponseBody
+    public String getSessionUserId(){
+        return userserves.getSessionUserId();
+    }
+
 }
