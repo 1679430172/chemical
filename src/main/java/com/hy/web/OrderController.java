@@ -30,8 +30,6 @@ public class OrderController {
     @ResponseBody
     public ParseData select(Integer page, Integer limit) throws Exception {
         Page page1=new Page(page,limit);
-        HttpSession session = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession();
-        System.out.println(session.getAttribute("userName"));
         return service.selectList(page1);
     }
 
@@ -47,9 +45,6 @@ public class OrderController {
     public ModelAndView toAdd(){
         ModelAndView modelAndView=new ModelAndView();
         modelAndView.setViewName("addOrder.html");
-        modelAndView.addObject("userId",1);
-        modelAndView.addObject("userName","hmy");
-        modelAndView.addObject("userType",2);
         return modelAndView;
     }
 
@@ -57,7 +52,14 @@ public class OrderController {
     @ResponseBody
     public ModelAndView toOrder(){
         ModelAndView modelAndView=new ModelAndView();
-        modelAndView.setViewName("Order.html");
+        modelAndView.setViewName("order.html");
         return modelAndView;
+    }
+
+    @PostMapping("/selectByStatus")
+    @ResponseBody
+    public ParseData selectByStatus(Integer page, Integer limit) throws Exception {
+        Page page1=new Page(page,limit);
+        return service.selectListByStatus(page1);
     }
 }
