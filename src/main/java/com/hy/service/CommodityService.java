@@ -22,8 +22,18 @@ public class CommodityService extends ServiceImpl<CommodityMapper, Commodity> {
     @Autowired
     private CommodityMapper commodityMapper;
 
-    public IPage<Commoditys> CommditysList(Integer page, Integer limit,String createTime,String createTimes){
-        return commodityMapper.CommditysList(new Page(page,limit),createTime,createTimes);
+    public IPage<Commoditys> CommditysList(Integer page, Integer limit,Commoditys commoditys){
+        return commodityMapper.CommditysList(new Page(page,limit),commoditys);
+    }
+
+    public Commodity byid(String sid){
+        return commodityMapper.byid(sid);
+    }
+
+    public String  equals(Commodity commodity){
+        System.out.println(commodity.getPriceInfo()+"----------"+commodity.getSid());
+        Integer sid= commodity.getSid();
+        return commodityMapper.equals(sid,commodity.getPriceInfo());
     }
 
     public Commodity pictures(MultipartFile pictureFile) throws IOException {
