@@ -42,6 +42,14 @@
     <!-- 激活@controller模式 -->
     <mvc:annotation-driven />
 
+    <!-- 配置拦截器-->
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <bean class="com.hy.filter.LoginInterceptor"></bean>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
    <!-- 在spring-mvc.xml中启用默认Servlet-->
     <mvc:default-servlet-handler/>
 
