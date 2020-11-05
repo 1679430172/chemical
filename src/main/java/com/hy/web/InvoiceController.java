@@ -34,7 +34,6 @@ public class InvoiceController  {
     public ParseData queryByCas(String cas,Integer page,Integer limit){
         List<Invoice> list=service.queryByCas(cas);
         return new ParseData(0,"",null,list);
-
     }
     @ResponseBody
     @PostMapping ("/add.do" )
