@@ -78,14 +78,22 @@
                         "    <td>"+data.name+"</td>" +
                         "  </tr>" +
                         "  <tr>" +
+                        "    <td>cas号</td>" +
+                        "    <td>"+data.cas+"</td>" +
+                        "  </tr>" +
+                        "  <tr>" +
                         "    <td>数量</td>" +
                         "    <td>"+data.number+"</td>" +
                         "  </tr>" +
                         "  <tr>" +
                         "    <td>修改数量</td>" +
-                        "    <td><input type='text' value='"+data.number+"'></td>" +
+                        "    <td><input type='text' value='"+data.number+"'>       " +
+                        "<button type=\"button\" class=\"layui-btn layui-btn-xs\">自动修改</button></td> " +
                         "  </tr>" +
-                        "</table>" //这里content是一个普通的String
+                        "</table>"+
+                        "<button type=\"button\" class=\"layui-btn layui-btn-sm\" >保存</button>"
+
+                    //这里content是一个普通的String
                 });
             } else { //编辑
 
