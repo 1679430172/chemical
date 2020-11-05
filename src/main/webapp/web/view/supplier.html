@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -35,9 +35,19 @@
                     , {field: 'createTime', title: '创建时间', sort: true}
                 ]
             ]
-            /*,done: function (res, curr, count) {
-                Layui_SetDataTableRowColor(0,"#2c08b1");
-            }*/
+            ,done: function (response) {
+                //定位当前table视图
+                var tableView = this.elem.next();
+                $.each(response.data, function (index, item) {
+                    console.log(item.amount);
+                    //逻辑判断
+                    if (item.status =="0") {
+                        //改变TR标签内字体颜色
+                        tableView.find('tbody tr[data-index="' + index + '"]').css('background-color', '#FF5722');
+                        tableView.find('tbody tr[data-index="' + index + '"]').css('color', '#F0F0F0');
+                    }
+                })
+            }
 
         })
 
@@ -99,14 +109,7 @@
 </script>
 <script type="text/html" id="toolbarDemo">
     <div class="layui-btn-container">
-        <button class="layui-btn layui-btn-sm" lay-event="add">添加</button>
-        <button class="layui-btn layui-btn-sm" lay-event="delete">删除</button>
-        <button type="button"  id="test1" class="layui-btn layui-btn-sm" lay-event="test1">
-            <i class="layui-icon">&#xe67c;</i>批量导入
-        </button>
-        <button type="button"   class="layui-btn layui-btn-sm" lay-event="text" id="text">
-            <i class="layui-icon">&#xe601;</i>下载
-        </button>
+        <button class="layui-btn layui-btn-sm" lay-event="add"><i class="layui-icon">&#xe624;</i>添加</button>
     </div>
 </script>
 <body>

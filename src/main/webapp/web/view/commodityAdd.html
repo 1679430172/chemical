@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -8,33 +8,54 @@
     <script src="/web/component/layui/layui.js" th:src="@{/web/component/layui/layui.js}" ></script>
 </head>
 <script>
-    layui.use(["form","table","layer","upload"], function() {
+    layui.use(["form","table","layer","upload","laydate"], function() {
         var table = layui.table;
         var form = layui.form;
         var layer = layui.layer;
         var upload = layui.upload;
+        var laydate = layui.laydate;
         $(function () {
             $.get("/supplier/users.do",function (d,s) {
-                var i=eval(d);
-                console.log(i[0].userName);
-                var option=$("<option>").text(i[0].userName);
-                option.attr("value",i[0].uid);
-                $("#userId").append(option);
-
-                form.render();
+                var e=eval(d);
+                //console.log(e[0].userName);
+                for(var i=0;i<e.length;i++){
+                    var option=$("<option>").text(e[i].userName);
+                    option.attr("value",e[i].uid);
+                    $("#userId").append(option);
+                    form.render();
+                }
+            })
+            $.get("/supplier/get.do",function (d,s) {
+                var e=eval(d);
+                console.log(e.data[0].name);
+                for(var i=0;i<e.data.length;i++){
+                    var option=$("<option>").text(e.data[i].name);
+                    option.attr("value",e.data[i].gid);
+                    $("#name").append(option);
+                    form.render();
+                }
             })
         })
+
+
+        //日期
+        laydate.render({
+            elem: '#date'
+            ,type: 'datetime'
+        });
+        laydate.render({
+            elem: '#date1'
+        });
+
         //监听表单
         form.on('submit(formDemo)', function(data){
-            /*console.log(data.elem) //被执行事件的元素DOM对象，一般为button对象
-            console.log(data.form) //被执行提交的form对象，一般在存在form标签时才会返回
-            console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}*/
-            //阻止表单跳转。如果需要表单跳转，去掉这段即可。
-            table.reload('demo', {
-                url: '/supplier/supplierAdd.do'
-                ,where: data.field//设定异步数据接口的额外参数
-                //,height: 300
-            });
+            $.post("/save.do",data.field,function (d) {
+                if (d === "1") {
+                    layer.msg('已添加成功!', {icon: 1, time: 3000});
+                } else {
+                    layer.msg('添加失败!', {icon: 2, time: 1000});
+                }
+            })
             return false;
         });
     });
@@ -45,7 +66,7 @@
     <div class="layui-form-item">
         <label class="layui-form-label">产品名称</label>
         <div class="layui-input-inline">
-            <input type="text" id="name" name="name" required   placeholder="请输入开始时间" autocomplete="off" class="layui-input">
+            <input type="text"  name="name" required   placeholder="请输入开始时间" autocomplete="off" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
@@ -62,9 +83,22 @@
     </div>
 
     <div class="layui-form-item">
+        <label class="layui-form-label">供应商名称</label>
+        <div class="layui-input-inline">
+            <select id ="name" name="supplierId" ></select>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
         <label class="layui-form-label">报价信息</label>
         <div class="layui-input-inline">
-            <input type="text " id="createTimess" name="createTimes" required   placeholder="请输入结果时间" autocomplete="off" class="layui-input">
+            <input type="text " id="priceInfo" name="priceInfo" required   placeholder="请输入" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">验证日期</label>
+        <div class="layui-input-inline">
+            <input type="text" name="createTime" id="date"  autocomplete="off" class="layui-input" placeholder="yyyy-MM-dd HH:mm:ss">
         </div>
     </div>
 

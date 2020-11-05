@@ -16,6 +16,15 @@ public class Commoditys {
     private String createTimes;//结果时间
     private String updateTime;
     private String userName;//业务员名称
+    private String amount;
+
+    public String getAmount() {
+        return amount;
+    }
+
+    public void setAmount(String amount) {
+        this.amount = amount;
+    }
 
     public String getCreateTimes() {
         return createTimes;

@@ -24,10 +24,15 @@ public class CommodityController {
     private CommodityService commodityService;
     @RequestMapping("/Commoditys.do")
     @ResponseBody
-    public ParseData  Commoditys(Integer page, Integer limit, String createTime,String createTimes){
-        IPage<Commoditys> iPage=  commodityService.CommditysList(page,limit,createTime,createTimes);
-        System.out.println(createTime+"--------"+createTimes);
+    public ParseData  Commoditys(Integer page, Integer limit, Commoditys commoditys){
+        IPage<Commoditys> iPage=  commodityService.CommditysList(page,limit,commoditys);
         return new ParseData(0,"",Integer.parseInt(Long.toString(iPage.getTotal())),iPage.getRecords());
+    }
+    @RequestMapping("/commodityById.do")
+    @ResponseBody
+    public Commodity  CommodityById(String sid){
+        System.out.println(sid);
+        return  commodityService.byid(sid);
     }
 
     @RequestMapping("/pictures.do")
@@ -43,9 +48,31 @@ public class CommodityController {
         return Util.succeed;
     }
 
-    @RequestMapping("/commoditiesList")
+
+    @RequestMapping("/save.do")
+    @ResponseBody
+    public String save(Commodity commodity){
+        commodity.setImgStatus("0");
+        commodity.setFileStatus("0");
+        boolean b= commodityService.save(commodity);
+        if(b == true){
+            return Util.succeed;
+        }else {
+            return Util.fail;
+        }
+    }
+
+    @RequestMapping("/commoditiesList.do")
     @ResponseBody
     public List<Commodity> commoditiesList(){
         return commodityService.list();
+    }
+
+    @RequestMapping("/equals.do")
+    @ResponseBody
+    public String  equals(Commodity commodity){
+        System.out.println(commodity.toString());
+       commodityService.equals(commodity);
+        return "";
     }
 }

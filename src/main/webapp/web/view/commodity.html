@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -31,46 +31,11 @@
                         , {field: 'updateTime', title: '更新日期', sort: true}
                         , {field: 'priceInfo', title: '报价信息', sort: true}
                         ,{field:'filePath',title:'图片预览',align: "center", templet: "#imgtmp" }
-                        ,{field:"",title:'操作',toolbar:'#barDemo', width: 550
-                       /* , templet: function(d) {//这里的参数d是templete的固定用法，可以取到该行的所有数据
-                            return '<button type="button"   class="layui-btn layui-btn-danger layui-btn-xs" lay-event="text" id="text">\n' +
-                                '        <i class="layui-icon">&#xe601;</i>下载图片\n' +
-                                '    </button>';
-                            /!*if (d.file_state == 0) {//未上传
-                                //class里的upload_btn是用来标志上传按钮的，没有定义实际的css样式
-
-                            } else { //已上传||被替换
-                                return '<button class="layui-btn layui-btn-xs replace_btn" value="">替换</button>' +
-                                    '<button class="layui-btn layui-btn-danger layui-btn-xs delete_btn" lay-event="delete" value="">删除</button>'; //删除按钮不需要渲染上传，只是一个动作按钮，可以通过lay-event进行行事件监听
-                            }*!/
-                        }*/
-                        }
+                        ,{field:"",title:'操作',toolbar:'#barDemo', width: 550}
                     ]
                 ]
-            })
+                ,done: function (response) {
 
-            //执行实例
-
-            //监听行工具
-            table.on('tool(test)',function (obj) {
-                var data = obj.data; //获得当前行数据
-                var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
-                if(layEvent === 'detail'){
-                    console.log(data);
-                    layer.open({
-                        type: 2,
-                        //offset: 'auto',、
-                        skin: 'layui-layer-rim',
-                        area: ['314px', '450px'],
-                        content: '/web/view/commoditySupplier.html?supplierId='+data.supplierId, //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
-                        end:function () {
-                            table.reload('demo', {
-                                url: '/layuiDate.do'
-                            });
-                        }
-                    });
-                }else if(layEvent == "test1"){
-                    //执行实例
                     upload.render({
                         elem: '#test1' //绑定元素
                         ,url: '/pictures.do' //上传接口
@@ -86,7 +51,68 @@
                             //上传完毕回调
                         }
                     });
+                    //定位当前table视图
+                    var tableView = this.elem.next();
+                    $.each(response.data, function (index, item) {
+                        console.log(item.amount);
+                        //逻辑判断
+                        if (item.amount > 0) {
+                            //改变TR标签内字体颜色
+                            tableView.find('tbody tr[data-index="' + index + '"]').css('background-color', '#33a1c9');
+                            tableView.find('tbody tr[data-index="' + index + '"]').css('color', '#F0F0F0');
+                        }else if(item.amount == 0){//
+                            //改变TR标签内字体颜色
+                            tableView.find('tbody tr[data-index="' + index + '"]').css('background-color', '#1E9FFF');
+                            tableView.find('tbody tr[data-index="' + index + '"]').css('color', '#F0F0F0');
+                        }else if(item.amount === null ){//00009C
+                            console.log(item.amount);
+                            tableView.find('tbody tr[data-index="' + index + '"]').addClass("layui-bg-cyan ");
+                            tableView.find('tbody tr[data-index="' + index + '"]').css('color', '#F0F0F0');
+                        }
+                    })
+                }
+            })
 
+            //执行实例
+
+
+            //监听行工具
+            table.on('tool(test)',function (obj) {
+                var data = obj.data; //获得当前行数据
+                var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+                if(layEvent === 'detail'){
+                    console.log(data);
+                    layer.open({
+                        type: 2,
+                        //offset: 'auto',、
+                        skin: 'layui-layer-rim',
+                        area: ['314px', '300px'],
+                        content: '/web/view/commoditySupplier.html?supplierId='+data.supplierId, //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
+                        end:function () {
+                            table.reload('demo', {
+                                url: '/Commoditys.do'
+                            });
+                        }
+                    });
+                }else if(layEvent == "test1"){
+                    //执行实例
+/*
+                    upload.render({
+                        elem: '#test1' //绑定元素
+                        ,url: '/pictures.do' //上传接口
+                        ,accept: 'images'
+                        ,done: function(res){
+                        layer.msg(res);
+                        if(res == "1"){
+                            layer.msg('导入成功!');
+                            /!*table.reload('demo', {
+                                url: '/Commoditys.do'
+                            });*!/
+                        }
+                        //上传完毕回调
+                    }
+                });
+*/
                 }else if(layEvent == "test2"){
                     upload.render({
                         elem: '#test2' //绑定元素
@@ -110,11 +136,11 @@
                         type: 2,
                         //offset: 'auto',、
                         skin: 'layui-layer-rim',
-                        area: ['314px', '450px'],
-                        content: '/web/view/commoditySupplier.html?supplierId='+data.supplierId, //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
+                        area: ['314px', '300px'],
+                        content: '/web/view/commodityEdit.html?sid='+data.sid, //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
                         end:function () {
                             table.reload('demo', {
-                                url: '/layuiDate.do'
+                                url: '/Commoditys.do'
                             });
                         }
                     });
@@ -131,10 +157,10 @@
                         //offset: 'auto',、
                         skin: 'layui-layer-rim',
                         area: ['314px', '450px'],
-                        content: '/web/wiew/commodityAdd.html', //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
+                        content: '/web/view/commodityAdd.html', //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
                         end:function () {
                             table.reload('demo', {
-                                url: '/layuiDate.do'
+                                url: '/Commoditys.do'
                             });
                         }
                     });
@@ -148,7 +174,6 @@
                     ,where: data.field//设定异步数据接口的额外参数
                     //,height: 300
                 });
-
                 return false;
             });
         })
@@ -157,17 +182,17 @@
 <script type="text/html" id="barDemo">
     <a class="layui-btn layui-btn-xs" lay-event="edit"><i class="layui-icon">&#xe615;</i>修改</a>
     <a class="layui-btn layui-btn-xs" lay-event="detail"><i class="layui-icon">&#xe615;</i>查看供应商</a>
-    <button type="button" class="layui-btn" id="test1" lay-event="test1">
+    <button type="button" class="layui-btn layui-btn-xs" id="test1" lay-event="test1">
         <i class="layui-icon">&#xe67c;</i>未上传图片
     </button>
-    <button type="button" class="layui-btn" id="test2" lay-event="test2">
+    <button type="button" class="layui-btn layui-btn-xs" id="test2" lay-event="test2">
         <i class="layui-icon">&#xe67c;</i>未上传文件
     </button>
 </script>
 
 <script type="text/html" id="toolbarDemo">
     <div class="layui-btn-container">
-        <button class="layui-btn layui-btn-sm" lay-event="add">添加</button>
+        <button class="layui-btn layui-btn-sm" lay-event="add"><i class="layui-icon">&#xe624;</i>添加</button>
     </div>
 </script>
 <body>
@@ -183,7 +208,7 @@
             <input type="text " id="createTimes" name="createTimes" required   placeholder="请输入结果时间" autocomplete="off" class="layui-input">
         </div>
     </div>
-
+    <input type="text" style="display:none" id="uid" name="uid">
     <div class="layui-inline">
         <div class="layui-input-block">
             <button class="layui-btn" lay-submit lay-filter="formDemo">我的商品</button>
