@@ -25,12 +25,12 @@
                     {field: 'did', title: '编号', sort: true}
                     ,{field: 'name', title: '商品名称', sort: true, totalRowText: '合计行'}
                     ,{field: 'amount', title: '数量', sort: true}
-                    ,{field: 'price', title: '单价', sort: true}
-                    ,{field: 'sumPrice', title: '总价', sort: true}
-                    ,{field: 'costPrice', title: '成本'}
-                    ,{field: 'otherCost', title: '其他成本'}
-                    ,{field: '', title: '总成本', templet:"<div>{{ d.costPrice*d.amount+d.otherCost }}</div>"}
-                    ,{field: 'royalties', title: '提成', hide:!([[${session.userType}]] == '0'),totalRow: true}
+                    ,{field: 'price', title: '单价', sort: true, templet:"#price", totalRow: true}
+                    ,{field: 'sumPrice', title: '总价', sort: true, templet:"#sumPrice", totalRow: true}
+                    ,{field: 'costPrice', title: '成本', templet:"#costPrice", totalRow: true}
+                    ,{field: 'otherCost', title: '其他成本', templet:"#otherCost", totalRow: true}
+                    ,{field: '', title: '总成本', templet:"#zcb"}
+                    ,{field: 'royalties', title: '提成', templet:"#royalties", totalRow: true}
                     ,{field: 'status', title: '是否出库', sort: true, templet:"#status"}
                     ,{fixed: 'right', align:'center', toolbar: '#barDemo'}
                 ]
@@ -62,74 +62,111 @@
                 var data = obj.data; //获得当前行数据
                 var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
 
+                var content="<table class='layui-table'>  " +
+                    "  <tr>" +
+                    "    <td>商品名称</td>" +
+                    "    <td>"+data.name+ "</td>" +
+                    "  </tr>" +
+                    "  <tr>" +
+                    "    <td>数量</td>" +
+                    "    <td>"+data.amount+"</td>" +
+                    "  </tr>" +
+                    "  <tr>" +
+                    "    <td>单价</td>" +
+                    "    <td>";
+                if(0 == [[${session.userType}]] || data.userId == [[${session.userId}]] || data.suid == [[${session.userId}]]){
+                    content+=data.price;
+                }else{
+                    content+="无权限";
+                }
+                    content+="</td>" +
+                    "  </tr>" +
+                    "  <tr>" +
+                    "    <td>总价</td>" +
+                    "    <td>";
+                if(0 == [[${session.userType}]] || data.userId == [[${session.userId}]] || data.suid == [[${session.userId}]]){
+                    content+=data.sumPrice;
+                }else{
+                    content+="无权限";
+                }
+                    content+="  </tr>" +
+                    "  <tr>" +
+                    "    <td>成本</td>" +
+                    "    <td>";
+                if(0 == [[${session.userType}]] || data.userId == [[${session.userId}]] || data.suid == [[${session.userId}]]){
+                    content+=data.costPrice;
+                }else{
+                    content+="无权限";
+                }
+                    content+="</td>" +
+                    "  </tr>" +
+                    "  <tr>" +
+                    "    <td>其他成本</td>" +
+                    "    <td>";
+                if(0 == [[${session.userType}]] || data.userId == [[${session.userId}]] || data.suid == [[${session.userId}]]){
+                    content+=data.otherCost;
+                }else{
+                    content+="无权限";
+                }
+                    content+= "</td>" +
+                    "  </tr>" +
+                    "  <tr>" +
+                    "    <td>总成本</td>" +
+                    "    <td>";
+                if(0 == [[${session.userType}]] || data.userId == [[${session.userId}]] || data.suid == [[${session.userId}]]){
+                    content+=data.zcb;
+                }else{
+                    content+="无权限";
+                }
+                    content+="</td>" +
+                    "  </tr>" +
+                    "  <tr>" +
+                    "    <td>提成</td>" +
+                    "    <td>";
+                if(0 == [[${session.userType}]] || data.userId == [[${session.userId}]] || data.suid == [[${session.userId}]]){
+                    content+=data.royalties;
+                }else{
+                    content+="无权限";
+                }
+                    content+="</td>" +
+                    "  </tr>" +
+                    "  <tr>" +
+                    "    <td>客户姓名</td>" +
+                    "    <td>"+data.userName+"</td>" +
+                    "  </tr>" +
+                    "  <tr>" +
+                    "    <td>地址</td>" +
+                    "    <td>"+data.address+"</td>" +
+                    "  </tr>" +
+                    "  <tr>" +
+                    "    <td>联系电话</td>" +
+                    "    <td>"+data.phone+"</td>" +
+                    "  </tr>" +
+                    "  <tr>" +
+                    "    <td>开票资料</td>" +
+                    "    <td>"+data.createTime+"</td>" +
+                    "  </tr>" +
+                    "  <tr>" +
+                    "    <td>库存编号</td>" +
+                    "    <td>"+data.invoiceId+"</td>" +
+                    "  </tr>" +
+                    "  <tr>" +
+                    "    <td>备注</td>" +
+                    "    <td>" +
+                    "       <div class='layui-input-inline'>" +
+                    "           <textarea  class='layui-textarea' disabled='disabled' style='width: 240px'>"+data.remarks+"</textarea>" +
+                    "       </div>" +
+                    "    </td>" +
+                    "  </tr>" +
+                    "</table>";
+
                 if(layEvent === 'detail'){ //查看
                     layer.open({
                         area: ['390px', '572px'],
                         title:"订单详情",
                         type: 1,
-                        content:
-                            "<table class='layui-table'>  " +
-                            "  <tr>" +
-                            "    <td>商品名称</td>" +
-                            "    <td>"+data.name+"</td>" +
-                            "  </tr>" +
-                            "  <tr>" +
-                            "    <td>数量</td>" +
-                            "    <td>"+data.amount+"</td>" +
-                            "  </tr>" +
-                            "  <tr>" +
-                            "    <td>单价</td>" +
-                            "    <td>"+data.price+"</td>" +
-                            "  </tr>" +
-                            "  <tr>" +
-                            "    <td>总价</td>" +
-                            "    <td>"+data.sumPrice+"</td>" +
-                            "  </tr>" +
-                            "  <tr>" +
-                            "    <td>成本</td>" +
-                            "    <td>"+data.costPrice+"</td>" +
-                            "  </tr>" +
-                            "  <tr>" +
-                            "    <td>其他成本</td>" +
-                            "    <td>"+data.otherCost+"</td>" +
-                            "  </tr>" +
-                            "  <tr>" +
-                            "    <td>总成本</td>" +
-                            "    <td>"+((data.costPrice*data.amount)+data.otherCost)+"</td>" +
-                            "  </tr>" +
-                            "  <tr>" +
-                            "    <td>提成</td>" +
-                            "    <td>"+data.royalties+"</td>" +
-                            "  </tr>" +
-                            "  <tr>" +
-                            "    <td>客户姓名</td>" +
-                            "    <td>"+data.userName+"</td>" +
-                            "  </tr>" +
-                            "  <tr>" +
-                            "    <td>地址</td>" +
-                            "    <td>"+data.address+"</td>" +
-                            "  </tr>" +
-                            "  <tr>" +
-                            "    <td>联系电话</td>" +
-                            "    <td>"+data.phone+"</td>" +
-                            "  </tr>" +
-                            "  <tr>" +
-                            "    <td>开票资料</td>" +
-                            "    <td>"+data.createTime+"</td>" +
-                            "  </tr>" +
-                            "  <tr>" +
-                            "    <td>库存编号</td>" +
-                            "    <td>"+data.invoiceId+"</td>" +
-                            "  </tr>" +
-                            "  <tr>" +
-                            "    <td>备注</td>" +
-                            "    <td>" +
-                            "       <div class='layui-input-inline'>" +
-                            "           <textarea  class='layui-textarea' disabled='disabled' style='width: 240px'>"+data.remarks+"</textarea>" +
-                            "       </div>" +
-                            "    </td>" +
-                            "  </tr>" +
-                            "</table>" //这里content是一个普通的String
+                        content:content
+                             //这里content是一个普通的String
                     });
                 } else { //编辑
 
@@ -166,6 +203,72 @@
         <input type="checkbox" name="status" value="{{d.status}}" title="出库" lay-filter="lockDemo" checked>
         {{#  } else if(d.status == 2){ }}
         <input type="checkbox" name="status" value="{{d.status}}" title="退货" disabled="disabled"  lay-filter="lockDemo" checked>
+        {{#  } }}
+    </script>
+    <script type="text/html" id="royalties">
+        {{#  if(0 == [[${session.userType}]]){ }}
+        {{d.royalties}}
+        {{#  } else if(d.userId == [[${session.userId}]]){ }}
+        {{d.royalties}}
+        {{#  } else if(d.suid == [[${session.userId}]]){ }}
+        {{d.royalties}}
+        {{#  } else { }}
+        无权限
+        {{#  } }}
+    </script>
+    <script type="text/html" id="price">
+        {{#  if(0 == [[${session.userType}]]){ }}
+        {{d.price}}
+        {{#  } else if(d.userId == [[${session.userId}]]){ }}
+        {{d.price}}
+        {{#  } else if(d.suid == [[${session.userId}]]){ }}
+        {{d.price}}
+        {{#  } else { }}
+        无权限
+        {{#  } }}
+    </script>
+    <script type="text/html" id="sumPrice">
+        {{#  if(0 == [[${session.userType}]]){ }}
+        {{d.sumPrice}}
+        {{#  } else if(d.userId == [[${session.userId}]]){ }}
+        {{d.sumPrice}}
+        {{#  } else if(d.suid == [[${session.userId}]]){ }}
+        {{d.sumPrice}}
+        {{#  } else { }}
+        无权限
+        {{#  } }}
+    </script>
+    <script type="text/html" id="costPrice">
+        {{#  if(0 == [[${session.userType}]]){ }}
+        {{d.costPrice}}
+        {{#  } else if(d.userId == [[${session.userId}]]){ }}
+        {{d.costPrice}}
+        {{#  } else if(d.suid == [[${session.userId}]]){ }}
+        {{d.costPrice}}
+        {{#  } else { }}
+        无权限
+        {{#  } }}
+    </script>
+    <script type="text/html" id="otherCost">
+        {{#  if(0 == [[${session.userType}]]){ }}
+        {{d.otherCost}}
+        {{#  } else if(d.userId == [[${session.userId}]]){ }}
+        {{d.otherCost}}
+        {{#  } else if(d.suid == [[${session.userId}]]){ }}
+        {{d.otherCost}}
+        {{#  } else { }}
+        无权限
+        {{#  } }}
+    </script>
+    <script type="text/html" id="zcb">
+        {{#  if(0 == [[${session.userType}]]){ }}
+        {{ d.zcb}}
+        {{#  } else if(d.userId == [[${session.userId}]]){ }}
+        {{ d.zcb}}
+        {{#  } else if(d.suid == [[${session.userId}]]){ }}
+        {{ d.zcb}}
+        {{#  } else { }}
+        无权限
         {{#  } }}
     </script>
 </head>

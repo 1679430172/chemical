@@ -9,10 +9,7 @@ import io.swagger.annotations.Api;
 import org.apache.poi.util.SystemOutLogger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.ModelAndView;
@@ -58,8 +55,15 @@ public class OrderController {
 
     @PostMapping("/selectByStatus")
     @ResponseBody
-    public ParseData selectByStatus(Integer page, Integer limit) throws Exception {
+    public ParseData selectByStatus(Integer page, Integer limit){
         Page page1=new Page(page,limit);
         return service.selectListByStatus(page1);
+    }
+
+    @PutMapping("/")
+    @ResponseBody
+    public Integer updStatus(Integer did){
+        //return service.update();
+        return 1;
     }
 }
