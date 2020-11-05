@@ -9,12 +9,18 @@ import com.hy.bean.Order;
 import com.hy.bean.SupplierUsers;
 import com.hy.util.CommoditySql;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectProvider;
+import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface CommodityMapper  extends BaseMapper<Commodity> {
 
     @SelectProvider(type = CommoditySql.class ,method = "CommoditySql" )
-    public IPage<Commoditys> CommditysList(Page page, @Param("createTime")String createTime,@Param("createTimes")String createTimes);
+    IPage<Commoditys> CommditysList(Page page, @Param("commoditys") Commoditys commoditys);
+
+    @Select("select * from commodity where  sid=#{sid}")
+    public Commodity byid(String sid);
+
+    @Select("update commodity set price_info=#{priceInfo} where  sid=#{sid}")
+    public String equals(@Param("sid")Integer sid,@Param("priceInfo") String priceInfo);
 }

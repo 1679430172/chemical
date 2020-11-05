@@ -55,15 +55,13 @@ public class Userserves extends ServiceImpl<UserMapper, User> {
     }
 
     /**
-     * 权限管理获取session(id是权限类型，uid是编号)
+     * 权限管理获取session
      * @param request
      * @return
      */
     public String getsession(HttpServletRequest request) {
         HttpSession session = request.getSession();
-        String id = (String) session.getAttribute("id");
-        String uid = (String) session.getAttribute("uid");
-        String username = (String) session.getAttribute("username");
+        String id = (String) session.getAttribute("userType");
         return id;
     }
 
@@ -122,12 +120,21 @@ public class Userserves extends ServiceImpl<UserMapper, User> {
      */
     public String detele(Integer id){
         try {
-            System.out.println("id============="+id);
             userMapper.deleteById(id);
         } catch (Exception e) {
             return Util.defact;
         }
         return Util.sueess;
+    }
+
+    /**
+     * 获取session中的UseId
+     * @return
+     */
+    public String getSessionUserId() {
+        HttpSession session = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession();
+        Integer id =  (Integer) session.getAttribute("userId");
+        return String.valueOf(id);
     }
 
 }

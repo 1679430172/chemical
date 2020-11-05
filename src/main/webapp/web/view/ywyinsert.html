@@ -28,7 +28,6 @@
                     success: function (data,textStatus) {
                         var obj =eval(data);
                         for(var b=0;b<obj.length;b++){
-                            alert(obj.length);
                             var i=$("<option>").val(obj[b].type);
                             var q=$("#p1").append(i);
                             if(i.val()==="1"){
@@ -57,7 +56,6 @@
                     data:data.field,
                     success: function (data1) {
                         if (data1==="1"){
-                            layer.msg("添加成功");
                             layer.msg('添加成功！！！', {
                                 icon: 1,
                                 time: 1000 //2秒关闭（如果不配置，默认是3秒）
@@ -68,7 +66,7 @@
                             });
                         }
                         if(data1==="2"){
-                            layer.msg("添加失败");
+                            layer.msg("名字重复，请重新添加");
                         }
                     }
                 });
