@@ -8,19 +8,34 @@ import com.hy.bean.Commoditys;
 import com.hy.bean.Order;
 import com.hy.bean.SupplierUsers;
 import com.hy.util.CommoditySql;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.SelectProvider;
-import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.*;
+
+import java.util.List;
+
 @Mapper
 public interface CommodityMapper  extends BaseMapper<Commodity> {
 
     @SelectProvider(type = CommoditySql.class ,method = "CommoditySql" )
-    IPage<Commoditys> CommditysList(Page page, @Param("commoditys") Commoditys commoditys);
+    IPage<Commoditys> CommditysList(Page page, @Param("commoditys") Commoditys commoditys,@Param("supplierId") String supplierId);
 
     @Select("select * from commodity where  sid=#{sid}")
     public Commodity byid(String sid);
 
-    @Select("update commodity set price_info=#{priceInfo} where  sid=#{sid}")
-    public String equals(@Param("sid")Integer sid,@Param("priceInfo") String priceInfo);
+    @Update("<script>" +
+            " update commodity" +
+            " <set>" +
+            " <if test='commodity.priceInfo != null'>" +
+            "  price_info = #{commodity.priceInfo}," +
+            " </if>" +
+            " <if test='commodity.imgPath != null'>" +
+            "  img_path=#{commodity.imgPath}," +
+            " </if>" +
+            " <if test='commodity.filePath != null'>" +
+            "  file_path=#{commodity.filePath}," +
+            " </if>" +
+            " </set>" +
+            " where sid = commodity.sid " +
+            " </script>")
+    public void equals(@Param("commodity") Commodity commodity);
+
 }

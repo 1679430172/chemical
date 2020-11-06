@@ -17,13 +17,14 @@
         //部门的下拉框
         $(function () {
             $.get("/supplier/users.do",function (d,s) {
-                var i=eval(d);
-                for(var is=0; is<i.length;is++){
-                    var option=$("<option>").text(i[is].username);
-                    option.attr("value",i[is].uid);
+                var e=eval(d);
+                //console.log(e[0].userName);
+                for(var i=0;i<e.length;i++){
+                    var option=$("<option>").text(e[i].userName);
+                    option.attr("value",e[i].uid);
                     $("#userId").append(option);
+                    form.render();
                 }
-                form.render();
             })
         })
 
@@ -84,7 +85,7 @@
         </div>
     </div>
 
-    <div class="layui-inline">
+    <div class="layui-form-item">
         <label class="layui-form-label">日期选择</label>
         <div class="layui-input-block">
             <input type="text" name="createTime" id="date1" autocomplete="off" class="layui-input">
@@ -94,11 +95,18 @@
     <div class="layui-form-item">
         <label class="layui-form-label">业务员</label>
         <div class="layui-input-inline">
-            <select id ="userId" name="userId" ></select>
+            <select id ="userId" name="userId" lay-filter="aihao"></select>
         </div>
     </div>
 
-    <div class="layui-inline">
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">备注</label>
+        <div class="layui-input-block">
+            <textarea placeholder="请输入内容" name="text" class="layui-textarea"></textarea>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
         <div class="layui-input-block">
             <button class="layui-btn" lay-submit lay-filter="formDemo" >立即提交</button>
             <button type="reset" id="reset" class="layui-btn layui-btn-primary">重置</button>

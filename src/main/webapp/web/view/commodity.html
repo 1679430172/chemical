@@ -15,15 +15,15 @@
 
             table.render({
                 elem: '#demo'
-                , url: '/Commoditys.do' //数据接口
+                , url: '/Commodity/Commoditys.do' //数据接口
                 ,page:true
                 ,limit:20
                 ,toolbar: '#toolbarDemo'
                 ,defaultToolbar:["filter"]
-                ,limits:[1,3,5]
+                ,limits:[20,30,50]
                 , cols: [
                     [ //表头
-                        {field: 'sid', title: '商品编号', width: 177}
+                        {field: 'sid', title: '商品编号'}
                         ,{field: 'userName', title: '业务员名称'}
                         , {field: 'name', title: '产品名称'}
                         , {field: 'cas', title: 'cas号', sort: true}
@@ -31,30 +31,13 @@
                         , {field: 'updateTime', title: '更新日期', sort: true}
                         , {field: 'priceInfo', title: '报价信息', sort: true}
                         ,{field:'filePath',title:'图片预览',align: "center", templet: "#imgtmp" }
-                        ,{field:"",title:'操作',toolbar:'#barDemo', width: 550}
+                        ,{field:"",title:'操作',toolbar:'#barDemo', width: 600}
                     ]
                 ]
                 ,done: function (response) {
-
-                    upload.render({
-                        elem: '#test1' //绑定元素
-                        ,url: '/pictures.do' //上传接口
-                        ,accept: 'images'
-                        ,done: function(res){
-                            layer.msg(res);
-                            if(res == "1"){
-                                layer.msg('导入成功!');
-                                /*table.reload('demo', {
-                                    url: '/Commoditys.do'
-                                });*/
-                            }
-                            //上传完毕回调
-                        }
-                    });
                     //定位当前table视图
                     var tableView = this.elem.next();
                     $.each(response.data, function (index, item) {
-                        console.log(item.amount);
                         //逻辑判断
                         if (item.amount > 0) {
                             //改变TR标签内字体颜色
@@ -65,16 +48,12 @@
                             tableView.find('tbody tr[data-index="' + index + '"]').css('background-color', '#1E9FFF');
                             tableView.find('tbody tr[data-index="' + index + '"]').css('color', '#F0F0F0');
                         }else if(item.amount === null ){//00009C
-                            console.log(item.amount);
                             tableView.find('tbody tr[data-index="' + index + '"]').addClass("layui-bg-cyan ");
                             tableView.find('tbody tr[data-index="' + index + '"]').css('color', '#F0F0F0');
                         }
                     })
                 }
             })
-
-            //执行实例
-
 
             //监听行工具
             table.on('tool(test)',function (obj) {
@@ -95,42 +74,25 @@
                         }
                     });
                 }else if(layEvent == "test1"){
-                    //执行实例
-/*
-                    upload.render({
-                        elem: '#test1' //绑定元素
-                        ,url: '/pictures.do' //上传接口
-                        ,accept: 'images'
-                        ,done: function(res){
-                        layer.msg(res);
-                        if(res == "1"){
-                            layer.msg('导入成功!');
-                            /!*table.reload('demo', {
-                                url: '/Commoditys.do'
-                            });*!/
-                        }
-                        //上传完毕回调
-                    }
-                });
-*/
-                }else if(layEvent == "test2"){
-                    upload.render({
-                        elem: '#test2' //绑定元素
-                        ,url: '/pictures.do' //上传接口
-                        ,accept: 'file'
-                        ,done: function(res){
-                            if(res == "1"){
-                                layer.msg('导入成功!');
-                                table.reload('demo', {
-                                    url: '/Commoditys.do?'
-                                });
+
+                    $(".test").each(function(){
+                        upload.render({
+                            elem: this //绑定元素
+                             ,url: '/Commodity/pictures.do' //上传接口
+                            ,data: {sid:obj.data.sid}
+                            ,accept: 'file'
+                            ,done: function(res){
+                                layer.msg(res);
+                                if(res == "1"){
+                                    layer.msg('导入成功!');
+                                }
                             }
-                            //上传完毕回调
-                        }
-                        ,error: function(){
-                            //请求异常回调
-                        }
-                    });
+                        });
+                    })
+
+                    //执行实例
+                   // console.log(obj.data.sid);
+
                 }else if (layEvent == "edit"){
                     layer.open({
                         type: 2,
@@ -140,7 +102,7 @@
                         content: '/web/view/commodityEdit.html?sid='+data.sid, //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
                         end:function () {
                             table.reload('demo', {
-                                url: '/Commoditys.do'
+                                url: '/Commodity/Commoditys.do'
                             });
                         }
                     });
@@ -160,7 +122,7 @@
                         content: '/web/view/commodityAdd.html', //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
                         end:function () {
                             table.reload('demo', {
-                                url: '/Commoditys.do'
+                                url: '/Commodity/Commoditys.do'
                             });
                         }
                     });
@@ -170,24 +132,25 @@
             //监听表单
             form.on('submit(formDemo)', function(data){
                 table.reload('demo', {
-                    url: '/Commoditys.do'
+                    url: '/Commodity/Commoditys.do'
                     ,where: data.field//设定异步数据接口的额外参数
                     //,height: 300
                 });
                 return false;
+            });
+
+            //监听锁定操作
+            form.on('button(test2)', function(obj){
+                layer.tips(this);
             });
         })
     </script>
 </head>
 <script type="text/html" id="barDemo">
     <a class="layui-btn layui-btn-xs" lay-event="edit"><i class="layui-icon">&#xe615;</i>修改</a>
+    <input type="file" id="test1" lay-event="test1"  class="test" name="file">
     <a class="layui-btn layui-btn-xs" lay-event="detail"><i class="layui-icon">&#xe615;</i>查看供应商</a>
-    <button type="button" class="layui-btn layui-btn-xs" id="test1" lay-event="test1">
-        <i class="layui-icon">&#xe67c;</i>未上传图片
-    </button>
-    <button type="button" class="layui-btn layui-btn-xs" id="test2" lay-event="test2">
-        <i class="layui-icon">&#xe67c;</i>未上传文件
-    </button>
+    <input type="file" id="test2" lay-event="test2" >
 </script>
 
 <script type="text/html" id="toolbarDemo">
@@ -215,7 +178,6 @@
         </div>
     </div>
 </form>
-<table id="demo" lay-filter="test"></table>
-
+<table id="demo" lay-filter="test" ></table>
 </body>
 </html>

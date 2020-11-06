@@ -1,11 +1,19 @@
 package com.hy.web;
 
+import com.hy.bean.Sales;
 import com.hy.service.SalesService;
 import com.hy.util.ParseData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
+import javax.servlet.http.HttpSession;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 @Controller
@@ -27,19 +35,6 @@ public class SlaesController {
         return salesServices.getSalesbyuserId(userId,page,limit);
     }
 
-    /**
-     * 通过业务员id查询所有已经出货的订单
-     * @param userId
-     * @param page
-     * @param limit
-     * @return
-     */
-    @RequestMapping("/SalesORder")
-    @ResponseBody
-    public ParseData selectorder(String userId,Integer page ,Integer limit){
-        return salesServices.selectorder(userId,page,limit);
-
-    }
 
     /**
      *
@@ -54,5 +49,24 @@ public class SlaesController {
         return salesServices.selectorderby(trackingNumber,page,limit);
 
     }
+
+    /**
+     * 退货添加
+     * @param sales
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("/insertSales")
+    @ResponseBody
+    public String insertSales(Sales sales) throws Exception {
+        HttpSession session = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession();
+        Integer  userId =  (Integer) session.getAttribute("userId");
+        sales.setUserId(userId);
+        boolean a=   salesServices.save(sales);
+        return salesServices.insertSales(a);
+
+    }
+
+
 
 }

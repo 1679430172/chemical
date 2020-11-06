@@ -5,9 +5,11 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hy.bean.Order;
 import com.hy.bean.Sales;
+import com.hy.bean.SalesOrdet;
 import com.hy.mapper.OrderMapper;
 import com.hy.mapper.SalesMapper;
 import com.hy.util.ParseData;
+import com.hy.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -16,7 +18,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.servlet.http.HttpSession;
 
 
-@Service
+@Service("SalesService")
 public class SalesService extends ServiceImpl<SalesMapper, Sales> {
     @Autowired
     private SalesMapper salesMapper;
@@ -34,12 +36,12 @@ public class SalesService extends ServiceImpl<SalesMapper, Sales> {
     public ParseData getSalesbyuserId(String userId,Integer page,Integer limit) {
         HttpSession session = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession();
         Integer  userId1 =  (Integer) session.getAttribute("userId");
-        IPage<Sales> iPage=null;
+        IPage<SalesOrdet> iPage=null;
         if(userId.equals("0") || userId.equals("2")){
-            Page<Sales> page1 = new Page<Sales>(page,limit);
+            Page<SalesOrdet> page1 = new Page<SalesOrdet>(page,limit);
             iPage= salesMapper.selectSalestwo(page1);
         }else if(userId.equals("1")){
-            Page<Sales> page1 = new Page<Sales>(page,limit);
+            Page<SalesOrdet> page1 = new Page<SalesOrdet>(page,limit);
              iPage=salesMapper.selectSales(page1,userId1);
         }
         return new ParseData(0,"",Integer.parseInt(Long.toString(iPage.getTotal())),iPage.getRecords());
@@ -79,6 +81,18 @@ public class SalesService extends ServiceImpl<SalesMapper, Sales> {
             iPage=salesMapper.bytrackingNumberselecttwo(page1,Integer.parseInt(trackingNumber),userId);
         }
         return new ParseData(0,"",Integer.parseInt(Long.toString(iPage.getTotal())),iPage.getRecords());
+    }
+
+    /**
+     * 添加退货订单
+     * @param a
+     * @return
+     */
+    public String insertSales(boolean a){
+        if(a==true){
+            return Util.sueess;
+        }
+        return  Util.defact;
     }
 
 

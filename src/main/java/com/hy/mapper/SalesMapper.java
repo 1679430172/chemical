@@ -4,9 +4,11 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hy.bean.Sales;
+import com.hy.bean.SalesOrdet;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.xmlbeans.impl.xb.xsdschema.Public;
 
 
 @Mapper
@@ -17,16 +19,16 @@ public interface SalesMapper extends BaseMapper<Sales> {
      * @param userId
      * @return
      */
-    @Select("select * from sales where  user_id=#{userId} ")
-    public IPage<Sales> selectSales(Page<Sales> page,@Param("userId")Integer userId);
+    @Select("select o.*,c.`status` from sales o inner join `order` c on o.order_id=c.did where o.user_id=#{userId}")
+    public IPage<SalesOrdet> selectSales(Page<SalesOrdet> page,@Param("userId")Integer userId);
 
     /**
      * 验证业务员权限查询退货订单(授权的业务员和管理员)
      * @param page
      * @return
      */
-    @Select("select * from sales ")
-    public IPage<Sales> selectSalestwo(Page<Sales> page);
+    @Select("select o.*,c.`status` from sales o inner join `order` c on o.order_id=c.did ")
+    public IPage<SalesOrdet> selectSalestwo(Page<SalesOrdet> page);
 
 
     /**

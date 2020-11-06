@@ -6,15 +6,17 @@ import org.apache.ibatis.annotations.Param;
 
 public class CommoditySql {
 
-    public String CommoditySql(@Param("commoditys")Commoditys commoditys){
-        StringBuffer sql=new StringBuffer("SELECT c.sid, c.`name`,i.cas ,u.user_name,price_info,c.create_time,c.update_time,c.supplier_id,i.amount \n" +
-                "FROM commodity c left join supplier s on c.supplier_id=s.gid left join inventory i on c.cas = i.cas LEFT JOIN users u on  c.user_id=u.uid\n" +
+    public String CommoditySql(@Param("commoditys")Commoditys commoditys, @Param("supplierId") String sid){
+        StringBuffer sql=new StringBuffer("SELECT c.sid, c.`name`,i.cas ,u.uid,u.user_name,price_info,c.create_time,c.update_time,c.supplier_id,i.amount,c.img_status,c.file_status " +
+                "FROM commodity c left join supplier s on c.supplier_id=s.gid left join inventory i on c.cas = i.cas LEFT JOIN users u on  c.user_id=u.uid " +
                 "where 1=1 ");
             if(commoditys.getCreateTime() !=null && commoditys.getCreateTimes() != null){
                 sql.append(" and c.create_time between '"+commoditys.getCreateTime()+"' and '"+commoditys.getCreateTimes()+" ' ");
             }
-            sql.append("order by i.amount desc ");
-            System.out.println(sql);
+            if(commoditys.getSupplierId() != null ){
+                sql.append(" and c.supplier ="+sid);
+            }
+            sql.append(" order by i.amount desc ");
         return sql.toString();
     }
 
@@ -22,4 +24,23 @@ public class CommoditySql {
         StringBuffer sql=new StringBuffer("update commodity set price_info=#{priceInfo} where  sid=#{id}");
         return sql.toString();
     }
+
+    public String supplier( @Param("uid")String uid){
+        String sql="select * from supplier s inner join users u on s.user_id = u.uid where 1=1 ";
+        if ( uid != null  ) {
+            sql+=" and uid="+uid;
+        }
+        return sql;
+    }
+
+   /* public String Update(@Param("commodity")Commodity commodity){
+        String sql="update commodity set  price_info=#{priceInfo}  ";
+        if(commodity.getPriceInfo() != null){
+            sql+=" price_info";
+        }
+
+        sql+="where  sid="+commodity.getSid();
+
+        return sql;
+    }*/
 }
