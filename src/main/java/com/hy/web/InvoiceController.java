@@ -36,7 +36,7 @@ public class InvoiceController  {
         return new ParseData(0,"",null,list);
     }
     @ResponseBody
-    @PostMapping ("/add.do" )
+    @RequestMapping ("/add.do" )
     public String add(Invoice invoice){
         System.out.println("createTime="+invoice.getCreateTime());
         try {
@@ -47,5 +47,15 @@ public class InvoiceController  {
         return Util.sueess;
     }
 
+    @ResponseBody
+    @RequestMapping ("/updateBySid.do" )
+    public Integer update(Invoice invoice){
+        return service.updateBySid(invoice);
+    }
 
+    @ResponseBody
+    @RequestMapping ("/autoUpdate.do" )
+    public Integer autoUpdate(Invoice invoice){
+        return service.autoUpdateBySid(invoice);
+    }
 }
