@@ -26,19 +26,19 @@ public class InvoiceController  {
     @ResponseBody
     public ParseData select() throws Exception {
         List<Invoice> list=service.list();
-        return new ParseData(0,"",3,list);
+        return new ParseData(0,"",null,list);
     }
 
     @RequestMapping("/queryByCas.do")
     @ResponseBody
     public ParseData queryByCas(String cas,Integer page,Integer limit){
         List<Invoice> list=service.queryByCas(cas);
-        return new ParseData(0,"",1,list);
-
+        return new ParseData(0,"",null,list);
     }
     @ResponseBody
     @PostMapping ("/add.do" )
     public String add(Invoice invoice){
+        System.out.println("createTime="+invoice.getCreateTime());
         try {
             service.save(invoice);
         } catch (Exception e) {

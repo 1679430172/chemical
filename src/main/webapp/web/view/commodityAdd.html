@@ -49,7 +49,7 @@
 
         //监听表单
         form.on('submit(formDemo)', function(data){
-            $.post("/save.do",data.field,function (d) {
+            $.post("/Commodity/save.do",data.field,function (d) {
                 if (d === "1") {
                     layer.msg('已添加成功!', {icon: 1, time: 3000});
                 } else {
@@ -101,7 +101,8 @@
             <input type="text" name="createTime" id="date"  autocomplete="off" class="layui-input" placeholder="yyyy-MM-dd HH:mm:ss">
         </div>
     </div>
-
+    <input type="text" style="display:none"  name="imgStatus" value="0">
+    <input type="text" style="display:none" name="fileStatus" value="0">
     <div class="layui-form-item">
         <div class="layui-input-block">
             <button class="layui-btn" lay-submit lay-filter="formDemo">提交商品</button>

@@ -12,7 +12,12 @@ import com.hy.mapper.SupplierMapper;
 import com.hy.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 
@@ -22,7 +27,22 @@ public class SupplierService extends ServiceImpl<SupplierMapper, Supplier> {
     private SupplierMapper supplierMapper;
 
     public IPage<SupplierUsers> iPage(Integer page, Integer limit){
-        IPage<SupplierUsers> iPage= supplierMapper.supplier(new Page(page,limit));
+        HttpSession session = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession();
+        String userType= (String) session.getAttribute("userType");
+        Integer userId= (Integer) session.getAttribute("userId");
+        IPage<SupplierUsers> iPage=null;
+        if(userType.equals("0") || userType.equals("2")){
+             iPage= supplierMapper.supplier(new Page(page,limit),null);
+        }else if(userType == "1"){
+            iPage=supplierMapper.supplier(new Page(page,limit),String.valueOf(userId));
+        }
+        List<SupplierUsers> list=iPage.getRecords();
+        for(SupplierUsers s:list){
+            String gid=""+s.getGid();
+            String id="AH00000";
+            id=id.substring(0,id.length()-gid.length())+gid;
+            s.setId(id);
+        }
         return iPage;
     }
 

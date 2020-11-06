@@ -16,6 +16,7 @@
                 for(var i=0;i<list.length;i++){
                     var option=$("<option>").val(list[i].sid);
                     option.text(list[i].name);
+                    option.attr("title",list[i].cas);
                     $("#sid").append(option);
                 }
                 form.render('select');
@@ -35,6 +36,27 @@
             }else {
                 $("#billInfo").hide();
             }
+
+            form.on('select(commodity)',function (data) {
+                //获取当前选中下拉项的索引
+                var indexGID = data.elem.selectedIndex;
+                //获取当前选中下拉项的自定义属性值 title
+                var cas = data.elem[indexGID].title;
+                $.get("/inventory/",{cas:cas},function (data) {
+                    var list=eval(data);
+                    $("#invoiceId").empty();
+                    var option=$("<option>");
+                    option.text("请选择一个编号");
+                    $("#invoiceId").append(option);
+                    for(var i=0;i<list.length;i++){
+                        var option=$("<option>").val(list[i].kid);
+                        option.text(list[i].name);
+                        $("#invoiceId").append(option);
+                    }
+                    form.render('select');
+                });
+            })
+
 
             //监听提交
             form.on('submit(formDemo)', function(data){
@@ -61,7 +83,7 @@
     <div class="layui-form-item layui-form-text">
         <label class="layui-form-label">商品名称</label>
         <div class="layui-input-inline">
-            <select name="commodityId" lay-verify="" id="sid">
+            <select name="commodityId" lay-verify="" id="sid" lay-filter="commodity">
                 <option value="0">请选择一个商品</option>
             </select>
         </div>
@@ -113,11 +135,8 @@
     <div class="layui-form-item layui-form-text">
         <label class="layui-form-label">库存编号</label>
         <div class="layui-input-inline">
-            <select name="invoiceId" lay-verify="">
+            <select name="invoiceId" id="invoiceId" lay-verify="">
                 <option value="">请选择一个编号</option>
-                <option value="010">北京</option>
-                <option value="021">上海</option>
-                <option value="0571">杭州</option>
             </select>
         </div>
     </div>

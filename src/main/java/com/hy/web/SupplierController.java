@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.hy.bean.Supplier;
 import com.hy.bean.SupplierUsers;
 import com.hy.bean.User;
+import com.hy.mapper.UserMapper;
 import com.hy.service.SupplierService;
 import com.hy.service.Userserves;
 import com.hy.util.ParseData;
@@ -15,8 +16,12 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Api
@@ -25,6 +30,9 @@ import java.util.List;
 public class SupplierController {
     @Autowired
     private SupplierService supplierService;
+
+    @Autowired
+    private Userserves userserves;
 
     @RequestMapping("/supplierInquire.do")
     @ResponseBody
@@ -82,4 +90,5 @@ public class SupplierController {
             return Util.fail;
         }
     }
+
 }
