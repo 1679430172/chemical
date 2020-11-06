@@ -42,9 +42,9 @@ public class CommodityController {
 
     @RequestMapping("/pictures.do")
     @ResponseBody
-    public String pictures(@RequestParam("file") MultipartFile pictureFile){
+    public String pictures(@RequestParam("file") MultipartFile pictureFile,String sid){
         try {
-            commodityService.pictures(pictureFile);
+            commodityService.pictures(pictureFile,sid);
         } catch (Exception e) {
             e.printStackTrace();
             return Util.fail;

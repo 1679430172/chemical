@@ -54,32 +54,32 @@ public class CommodityService extends ServiceImpl<CommodityMapper, Commodity> {
 
 
 
-    public void pictures(MultipartFile pictureFile) throws IOException {
-        String picName = UUID.randomUUID().toString();// 设置图片名称，不能重复，可以使用uuid
-        String oriName = pictureFile.getOriginalFilename();//获取文件名
-        String extName = oriName.substring(oriName.lastIndexOf("."));//// 获取图片后缀
-        File file=new File("/assets/" + picName + extName);
-        if (!file.exists()) {
-            file.mkdirs();
-        }
+    public void pictures(MultipartFile pictureFile,String sid) throws IOException {
 
-        FileUtils.copyInputStreamToFile(pictureFile.getInputStream(),file);
-        boolean isCreateSuccess = file.createNewFile(); // 是否创建文件成功
-        if(isCreateSuccess){      //将文件写入
-            //第一种
-            //file.transferTo(savedFile);
-            //第二种
-            System.out.println("---------------"+isCreateSuccess);
+        if(pictureFile != null){
+            String picName = UUID.randomUUID().toString();// 设置图片名称，不能重复，可以使用uuid
+            String oriName = pictureFile.getOriginalFilename();//获取文件名
+            String extName = oriName.substring(oriName.lastIndexOf("."));//// 获取图片后缀
+            Commodity commodity=new Commodity();
+            try {
+                File file=new File("/assets/" + picName + extName);
+                pictureFile.transferTo(file);
+                System.out.println(file.toString()+"-----------------");
+                commodity.setImgPath(file.toString());
+                commodity.setImgStatus("1");
+                commodity.setSid(Integer.parseInt(sid));
+                System.out.println(commodity.toString()+"+++++++++++++++++++");
+                commodityMapper.pictureEquals(commodity);
+            } catch (IllegalStateException e) {
+                e.printStackTrace();
+                //model.addAttribute("msg", "上传失败");
+               // return "/error.jsp";
+            } catch (IOException e) {
+                e.printStackTrace();
+                //model.addAttribute("msg", "上传失败");
+               // return "/error.jsp";
+            }
         }
-        Commodity commodity=new Commodity();
-        commodity.setImgPath(file.toString());
-        pictureFile.transferTo(file);
-        // 判断文件父目录是否存在
-        if (!file.getParentFile().exists()) {
-            file.getParentFile().mkdir();
-        }
-
-         commodityMapper.equals(commodity);
     }
 
 }

@@ -21,21 +21,13 @@ public interface CommodityMapper  extends BaseMapper<Commodity> {
     @Select("select * from commodity where  sid=#{sid}")
     public Commodity byid(String sid);
 
-    @Update("<script>" +
-            " update commodity" +
-            " <set>" +
-            " <if test='commodity.priceInfo != null'>" +
-            "  price_info = #{commodity.priceInfo}," +
-            " </if>" +
-            " <if test='commodity.imgPath != null'>" +
-            "  img_path=#{commodity.imgPath}," +
-            " </if>" +
-            " <if test='commodity.filePath != null'>" +
-            "  file_path=#{commodity.filePath}," +
-            " </if>" +
-            " </set>" +
-            " where sid = commodity.sid " +
-            " </script>")
+    @Update("update commodity set  price_info=#{commodity.priceInfo} where sid=#{commodity.sid}")
     public void equals(@Param("commodity") Commodity commodity);
+
+    @Update("update commodity set  img_path=#{commodity.imgPath},img_status =#{commodity.imgStatus} where sid=#{commodity.sid}")
+    public void pictureEquals(@Param("commodity") Commodity commodity);
+
+    @Update("update commodity set  file_status=#{commodity.fileStatus},file_path=#{commodity.filePath} where sid=#{commodity.sid}")
+    public void paper(@Param("commodity") Commodity commodity);
 
 }
