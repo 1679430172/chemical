@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.util.Date;
+import java.util.prefs.PreferencesFactory;
+
 @TableName(value = "supplier")
 public class Supplier {
     @TableId(type = IdType.AUTO)
@@ -15,6 +17,15 @@ public class Supplier {
     private String wechat;
     private String status;
     private String  createTime;
+    private String  remark;
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
 
     public Integer getGid() {
         return gid;
