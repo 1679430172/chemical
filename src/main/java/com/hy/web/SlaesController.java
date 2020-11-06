@@ -72,11 +72,11 @@ public class SlaesController {
         return salesServices.insertSales(a);
 
     }
+
     @RequestMapping("/updateOrder")
     @ResponseBody
     public String updateOrder(Order order){
-        service.updateById(order);
-        return "";
+      return   salesServices.updateOrder(order.getDid());
     }
 
 

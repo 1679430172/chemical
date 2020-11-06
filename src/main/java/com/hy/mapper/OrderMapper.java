@@ -40,4 +40,7 @@ public interface OrderMapper extends BaseMapper<Order> {
     @Select("select * from `order` o inner join commodity c on o.commodity_id=c.sid where status = 1 and did not in (select order_id from sales)")
     public IPage<Order> selectStatus(Integer userId);
 
+    @Update("update `order` set royalties=0 where did=#{did}")
+    public Integer updateOrder(@Param("did")Integer did);
+
 }

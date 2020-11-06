@@ -96,5 +96,14 @@ public class SalesService extends ServiceImpl<SalesMapper, Sales> {
     }
 
 
+    public String  updateOrder(Integer did){
+       Integer b= orderMapper.updateOrder(did);
+        if(b!=0){
+            return Util.sueess;
+        }
+        return  Util.defact;
+    }
+
+
 
 }

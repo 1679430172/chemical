@@ -94,13 +94,13 @@
                 var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
                 if(layEvent === 'edit'){ //查看
                     $.ajax({
-                        url: '/Sales/updateOrder?id='+data.orderId+"&status="+data.,
+                        url: '/Sales/updateOrder?did='+data.orderId,
                         type: 'get',
                         dataType:"json",
                         contentType:"application/json",
                         success: function (data1) {
                             if (data1==="1"){
-                                layer.msg('删除成功！！！', {
+                                layer.msg('退货成功！！！', {
                                     icon: 1,
                                     time: 1000 //2秒关闭（如果不配置，默认是3秒）
                                 }, function(){
@@ -110,7 +110,7 @@
                                 });
                             }
                             if(data1==="2"){
-                                layer.msg("删除失败");
+                                layer.msg("退货失败");
                             }
                         }
                     });
