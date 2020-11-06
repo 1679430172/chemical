@@ -8,6 +8,7 @@ import com.hy.bean.SalesOrdet;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import org.apache.xmlbeans.impl.xb.xsdschema.Public;
 
 
@@ -37,7 +38,7 @@ public interface SalesMapper extends BaseMapper<Sales> {
      * @return
      */
     @Select("select o.*,c.`status` from sales o inner join `order` c on o.order_id=c.did  where o.tracking_number=#{trackingNumber}")
-    public IPage<SalesOrdet> bytrackingNumberselect(Page<SalesOrdet> page,@Param("trackingNumber")Integer trackingNumber);
+    public IPage<SalesOrdet> bytrackingNumberselect(Page<SalesOrdet> page,@Param("trackingNumber")String trackingNumber);
 
 
     /**
@@ -46,6 +47,8 @@ public interface SalesMapper extends BaseMapper<Sales> {
      * @return
      */
     @Select("select o.*,c.`status` from sales o inner join `order` c on o.order_id=c.did where  o.tracking_number=#{trackingNumber} and o.user_id =#{userId}")
-    public IPage<SalesOrdet> bytrackingNumberselecttwo(Page<SalesOrdet> page,@Param("trackingNumber")Integer trackingNumber,@Param("userId")Integer userId);
+    public IPage<SalesOrdet> bytrackingNumberselecttwo(Page<SalesOrdet> page,@Param("trackingNumber")String trackingNumber,@Param("userId")Integer userId);
 
+    @Update("update sales set tracking_number=#{trackingNumber} where order_id=#{orderId}")
+    public Integer updatetrackingNumber(@Param("trackingNumber")String trackingNumber,@Param("orderId")Integer orderId);
 }

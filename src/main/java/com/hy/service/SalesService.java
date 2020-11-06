@@ -42,7 +42,7 @@ public class SalesService extends ServiceImpl<SalesMapper, Sales> {
             iPage= salesMapper.selectSalestwo(page1);
         }else if(userId.equals("1")){
             Page<SalesOrdet> page1 = new Page<SalesOrdet>(page,limit);
-             iPage=salesMapper.selectSales(page1,userId1);
+            iPage=salesMapper.selectSales(page1,userId1);
         }
         return new ParseData(0,"",Integer.parseInt(Long.toString(iPage.getTotal())),iPage.getRecords());
     }
@@ -75,10 +75,10 @@ public class SalesService extends ServiceImpl<SalesMapper, Sales> {
         IPage<SalesOrdet> iPage=null;
         if(userType.equals("0") || userType.equals("2")){
             Page<SalesOrdet> page1 = new Page<SalesOrdet>(page,limit);
-             iPage=salesMapper.bytrackingNumberselect(page1,Integer.parseInt(trackingNumber));
+            iPage=salesMapper.bytrackingNumberselect(page1,trackingNumber);
         }else if(userType.equals("1")){
             Page<SalesOrdet> page1 = new Page<SalesOrdet>(page,limit);
-            iPage=salesMapper.bytrackingNumberselecttwo(page1,Integer.parseInt(trackingNumber),userId);
+            iPage=salesMapper.bytrackingNumberselecttwo(page1,trackingNumber,userId);
         }
         return new ParseData(0,"",Integer.parseInt(Long.toString(iPage.getTotal())),iPage.getRecords());
     }
@@ -96,12 +96,18 @@ public class SalesService extends ServiceImpl<SalesMapper, Sales> {
     }
 
 
-    public String  updateOrder(Integer did){
-       Integer b= orderMapper.updateOrder(did);
-        if(b!=0){
-            return Util.sueess;
+    public String updateOrder(Integer did, String trackingNumber) {
+        Integer b = null;
+        if (trackingNumber.equals("") || trackingNumber == null) {
+            b = orderMapper.updateOrder(did);
+            if (b != 0) {
+                return Util.sueess;
+            }
+            return Util.defact;
         }
-        return  Util.defact;
+        b = orderMapper.updateOrder(did);
+        salesMapper.updatetrackingNumber(trackingNumber,did);
+        return Util.sueess;
     }
 
 
