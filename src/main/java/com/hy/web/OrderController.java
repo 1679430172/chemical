@@ -1,20 +1,14 @@
 package com.hy.web;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hy.bean.Order;
 import com.hy.service.OrderService;
 import com.hy.util.ParseData;
 import io.swagger.annotations.Api;
-import org.apache.poi.util.SystemOutLogger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.ModelAndView;
-
-import javax.servlet.http.HttpSession;
 
 @Api
 @Controller
@@ -33,8 +27,7 @@ public class OrderController {
     @PostMapping("/")
     @ResponseBody
     public Integer add(Order order) throws Exception {
-        System.out.println(order);
-        return 1;
+        return service.add(order);
     }
 
     @RequestMapping("/toAdd")
