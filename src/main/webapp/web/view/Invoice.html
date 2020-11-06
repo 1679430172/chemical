@@ -32,7 +32,6 @@
     </div>
 </script>
 
-
 <script type="text/javascript">
     layui.use(['layer','form','laydate','table'], function(){
         var table = layui.table;
@@ -52,23 +51,14 @@
             ,limit:20
             ,limits:[10,20,30]
             ,cols: [[ //表头
-                {type: 'checkbox', fixed: 'left'}
-                , {field: 'sid', title: 'ID'}
+                 {field: 'sid', title: 'ID'}
                 ,{field: 'name', title: '发票品名'}
                 ,{field: 'cas', title: 'Cas号'}
                 ,{field:'number',title:'数量'}
                 ,{field: 'price', title: '价格'}
                 ,{field: 'createTime', title: '创建日期'}
-                ,{field:'',title: '操作',toolbar: '#barDemo'}
+                ,{fixed: 'right', align:'center', toolbar: '#barDemo'}
             ]]
-        });
-
-        form.on('submit(formDemo)', function(data){
-            table.reload('demo', {
-                url: '/Invoice/queryByCas.do'
-                ,where: data.field//设定异步数据接口的额外参数
-            });
-            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
         });
 
         //监听工具条
@@ -77,11 +67,45 @@
             var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
 
             if(layEvent === 'detail'){ //查看
-                layer.alert(JSON.stringify(data), {
-                    title: '当前订单详情'
+                layer.open({
+                    area: ['450px', '400px'],
+                    title:"发票详情",
+                    type: 1,
+                    content:
+                        "<table class='layui-table'>  " +
+                        "  <tr>" +
+                        "    <td>发票品名</td>" +
+                        "    <td>"+data.name+"</td>" +
+                        "  </tr>" +
+                        "  <tr>" +
+                        "    <td>cas号</td>" +
+                        "    <td>"+data.cas+"</td>" +
+                        "  </tr>" +
+                        "  <tr>" +
+                        "    <td>数量</td>" +
+                        "    <td>"+data.number+"</td>" +
+                        "  </tr>" +
+                        "  <tr>" +
+                        "    <td>修改数量</td>" +
+                        "    <td><input type='text' value='"+data.number+"'>       " +
+                        "<button type=\"button\" class=\"layui-btn layui-btn-xs\">自动修改</button></td> " +
+                        "  </tr>" +
+                        "</table>"+
+                        "<button type=\"button\" class=\"layui-btn layui-btn-sm\" >保存</button>"
+
+                    //这里content是一个普通的String
                 });
             } else { //编辑
+
             }
+        });
+
+        form.on('submit(formDemo)', function(data){
+            table.reload('demo', {
+                url: '/Invoice/queryByCas.do'
+                ,where: data.field//设定异步数据接口的额外参数
+            });
+            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
         });
 
         //执行实例
@@ -99,12 +123,12 @@
                     },
                 });
             }
-
         });
     });
 </script>
 <script type="text/html" id="barDemo">
     <a class="layui-btn layui-btn-xs" lay-event="detail"><i class="layui-icon">&#xe615;</i>自动计算数量</a>
 </script>
+
 </body>
 </html>
