@@ -50,7 +50,7 @@
                 ,{field:'orderId', title: '订单编号'}
                 ,{field:'trackingNumber', title: '物流编号',edit:true}
                 ,{field:'trackingName',  title: '物流公司名称'}
-                ,{field: 'status', title: '状态'}
+                ,{field: 'status', title: '状态',hide:true}
                 ,{field:'createTime', title: '创建时间'}
                 ,{fixed:'right', title: '操作',align:'center', toolbar: '#barDemo'}
             ]],done: function (response) {
@@ -88,6 +88,34 @@
                 }
 
             });
+                    //监听工具条
+            table.on('tool(test)', function(obj){
+                var data = obj.data; //获得当前行数据
+                var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+                if(layEvent === 'edit'){ //查看
+                    $.ajax({
+                        url: '/Sales/updateOrder?id='+data.orderId+"&status="+data.,
+                        type: 'get',
+                        dataType:"json",
+                        contentType:"application/json",
+                        success: function (data1) {
+                            if (data1==="1"){
+                                layer.msg('删除成功！！！', {
+                                    icon: 1,
+                                    time: 1000 //2秒关闭（如果不配置，默认是3秒）
+                                }, function(){
+                                    //假设这是iframe页
+                                    var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                                    parent.layer.close(index); //再执行关闭
+                                });
+                            }
+                            if(data1==="2"){
+                                layer.msg("删除失败");
+                            }
+                        }
+                    });
+                }
+            });
 
             $('#p1').click(function () {
                 var inputVal = $('.layui-input').val();
@@ -111,14 +139,12 @@
                             //逻辑判断
                             console.log(response.status);
                             if(item.trackingNumber==0){
-                                console.log(1111111111111111111);
                                 //改变TR行颜色和标签内字体颜色
                                 tableView.find('tbody tr[data-index="'+ index +'"]').css('background-color','yellow');
                             }
                             if(item.status==0){
-                                console.log(111111111111111111122);
                                 tableView.find('tbody tr[data-index="'+ index +'"]').css('background-color','red').find('td').data('edit', false);
-
+                                tableView.find('tbody tr[data-index="'+ index +'"]').css('background-color','red').find('button').css('class','layui-btn-disabled');
                             }
                         })
                     }

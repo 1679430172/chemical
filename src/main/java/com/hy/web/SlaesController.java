@@ -1,6 +1,9 @@
 package com.hy.web;
 
+import com.hy.bean.Order;
 import com.hy.bean.Sales;
+import com.hy.mapper.OrderMapper;
+import com.hy.service.OrderService;
 import com.hy.service.SalesService;
 import com.hy.util.ParseData;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +24,9 @@ import java.util.Date;
 public class SlaesController {
     @Autowired
     private SalesService salesServices;
+
+    @Autowired
+    private OrderService service;
 
     /**
      * 验证业务员权限查询订单
@@ -65,6 +71,12 @@ public class SlaesController {
         boolean a=   salesServices.save(sales);
         return salesServices.insertSales(a);
 
+    }
+    @RequestMapping("/updateOrder")
+    @ResponseBody
+    public String updateOrder(Order order){
+        service.updateById(order);
+        return "";
     }
 
 

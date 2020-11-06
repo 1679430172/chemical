@@ -72,12 +72,12 @@ public class SalesService extends ServiceImpl<SalesMapper, Sales> {
         HttpSession session = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession();
         String  userType =  (String) session.getAttribute("userType");
         Integer  userId =  (Integer) session.getAttribute("userId");
-        IPage<Sales> iPage=null;
+        IPage<SalesOrdet> iPage=null;
         if(userType.equals("0") || userType.equals("2")){
-            Page<Sales> page1 = new Page<Sales>(page,limit);
+            Page<SalesOrdet> page1 = new Page<SalesOrdet>(page,limit);
              iPage=salesMapper.bytrackingNumberselect(page1,Integer.parseInt(trackingNumber));
         }else if(userType.equals("1")){
-            Page<Sales> page1 = new Page<Sales>(page,limit);
+            Page<SalesOrdet> page1 = new Page<SalesOrdet>(page,limit);
             iPage=salesMapper.bytrackingNumberselecttwo(page1,Integer.parseInt(trackingNumber),userId);
         }
         return new ParseData(0,"",Integer.parseInt(Long.toString(iPage.getTotal())),iPage.getRecords());
