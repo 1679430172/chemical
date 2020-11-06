@@ -56,7 +56,7 @@ public class OrderController {
         return modelAndView;
     }
 
-    @PostMapping("/selectByStatus")
+    @RequestMapping("/selectByStatus")
     @ResponseBody
     public ParseData selectByStatus(Integer page, Integer limit) throws Exception {
         Page page1=new Page(page,limit);
