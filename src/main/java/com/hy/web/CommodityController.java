@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.hy.bean.Commodity;
 import com.hy.bean.Commoditys;
 import com.hy.service.CommodityService;
+import com.hy.service.SupplierService;
 import com.hy.util.ParseData;
 import com.hy.util.Util;
 import io.swagger.annotations.Api;
@@ -22,6 +23,10 @@ import java.util.List;
 public class CommodityController {
     @Autowired
     private CommodityService commodityService;
+
+    @Autowired
+    private SupplierService supplierService;
+
     @RequestMapping("/Commoditys.do")
     @ResponseBody
     public ParseData  Commoditys(Integer page, Integer limit, Commoditys commoditys){
@@ -39,8 +44,7 @@ public class CommodityController {
     @ResponseBody
     public String pictures(@RequestParam("file") MultipartFile pictureFile){
         try {
-            Commodity commodity= commodityService.pictures(pictureFile);
-            commodityService.save(commodity);
+            commodityService.pictures(pictureFile);
         } catch (Exception e) {
             e.printStackTrace();
             return Util.fail;
@@ -48,12 +52,14 @@ public class CommodityController {
         return Util.succeed;
     }
 
+   /* public String paper(){
+    }*/
+
 
     @RequestMapping("/save.do")
     @ResponseBody
     public String save(Commodity commodity){
-        commodity.setImgStatus("0");
-        commodity.setFileStatus("0");
+         supplierService.getById(commodity.getSupplierId());
         boolean b= commodityService.save(commodity);
         if(b == true){
             return Util.succeed;
@@ -72,7 +78,7 @@ public class CommodityController {
     @ResponseBody
     public String  equals(Commodity commodity){
         System.out.println(commodity.toString());
-       commodityService.equals(commodity);
-        return "";
+        commodityService.equals(commodity);
+        return "1";
     }
 }

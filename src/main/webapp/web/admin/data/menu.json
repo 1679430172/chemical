@@ -230,36 +230,18 @@
 	},
 	{
 		"id": "error",
-		"title": "错误页面",
+		"title": "供应商",
 		"icon": "layui-icon layui-icon-face-cry",
 		"type": 0,
 		"href": "",
 		"children": [{
 				"id": 403,
-				"title": "403",
+				"title": "供应商管理",
 				"icon": "layui-icon layui-icon-face-smile",
 				"type": 1,
 				"openType": "_iframe",
-				"href": "view/error/403.html"
-			},
-			{
-				"id": 404,
-				"title": "404",
-				"icon": "layui-icon layui-icon-face-cry",
-				"type": 1,
-				"openType": "_iframe",
-				"href": "view/error/404.html"
-			},
-
-			{
-				"id": 500,
-				"title": "500",
-				"icon": "layui-icon layui-icon-face-cry",
-				"type": 1,
-				"openType": "_iframe",
-				"href": "view/error/500.html"
+				"href": "view/supplier.html"
 			}
-
 		]
 	},
 	{
