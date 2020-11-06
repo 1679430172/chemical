@@ -4,18 +4,17 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
-import java.sql.Date;
 @TableName(value = "inventory")
 public class Inventory {
     @TableId(value = "kid",type = IdType.AUTO)
     private Integer kid;
-    private String number;
-    private String name;
-    private String cas;
-    private String createTime;
-    private String updateTime;
-    private Integer amount;
-    private  String remark;
+    private String number; //编号
+    private String name;   //品名
+    private String cas;    //cas号
+    private String createTime; //创建时间
+    private String updateTime; //更新时间
+    private Integer amount; //库存数量
+    private  String remark; //备注
 
     public Integer getKid() {
         return kid;
