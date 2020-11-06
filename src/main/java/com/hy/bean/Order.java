@@ -1,6 +1,7 @@
 package com.hy.bean;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
@@ -13,7 +14,6 @@ public class Order {
     private Integer userId;
     private Integer amount;
     private Double price;
-    private Double sumPrice;
     private Double costPrice;
     private Double royalties;
     private Double otherCost;
@@ -27,7 +27,14 @@ public class Order {
     private String phone;
     private Date createTime;
     private String remarks;
+    @TableField(exist = false)
     private String name;//商品名称
+    @TableField(exist = false)
+    private String suid;//商品业务员id
+    @TableField(exist = false)
+    private Double zcb;//总成本
+    @TableField(exist = false)
+    private Double sumPrice;//总价
 
     public Integer getDid() {
         return did;
@@ -70,6 +77,7 @@ public class Order {
     }
 
     public Double getSumPrice() {
+        sumPrice=price*amount;
         return sumPrice;
     }
 
@@ -181,12 +189,28 @@ public class Order {
         this.remarks = remarks;
     }
 
+    public String getSuid() {
+        return suid;
+    }
+
+    public void setSuid(String suid) {
+        this.suid = suid;
+    }
+
+    public Double getZcb() {
+        zcb=costPrice*amount+otherCost;
+        return zcb;
+    }
+
+    public void setZcb(Double zcb) {
+        this.zcb = zcb;
+    }
+
     @Override
     public String toString() {
         return "Order{" +
                 "did=" + did +
                 ", userId=" + userId +
-                ", name='" + name + '\'' +
                 ", amount=" + amount +
                 ", price=" + price +
                 ", sumPrice=" + sumPrice +
@@ -203,6 +227,8 @@ public class Order {
                 ", phone='" + phone + '\'' +
                 ", createTime=" + createTime +
                 ", remarks='" + remarks + '\'' +
+                ", name='" + name + '\'' +
+                ", suid='" + suid + '\'' +
                 '}';
     }
 }

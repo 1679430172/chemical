@@ -82,4 +82,8 @@ public class CommodityService extends ServiceImpl<CommodityMapper, Commodity> {
         }
     }
 
+    public Integer userIdBySid(String sid){
+        //return commodityMapper.byid(sid);
+        return 1;
+    }
 }

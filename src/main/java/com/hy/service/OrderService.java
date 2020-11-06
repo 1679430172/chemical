@@ -33,6 +33,12 @@ public class OrderService extends ServiceImpl<OrderMapper, Order> {
     }
 
     public Integer add(Order order){
+        HttpSession session = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession();
+        order.setUserId((Integer) session.getAttribute("userId"));
+        order.setStatus("0");
+        if(null==order.getBill()){
+            order.setBill(0);
+        }
         return orderMapper.insert(order);
     }
 
@@ -48,4 +54,5 @@ public class OrderService extends ServiceImpl<OrderMapper, Order> {
         }
         return new ParseData(0,"",Integer.parseInt(Long.toString(iPage.getTotal())),iPage.getRecords());
     }
+
 }

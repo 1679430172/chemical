@@ -68,7 +68,7 @@ public class CommodityController {
         }
     }
 
-    @RequestMapping("/commoditiesList.do")
+    @RequestMapping("/commoditiesList")
     @ResponseBody
     public List<Commodity> commoditiesList(){
         return commodityService.list();

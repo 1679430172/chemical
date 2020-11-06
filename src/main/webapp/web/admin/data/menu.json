@@ -1,115 +1,50 @@
 [{
-		"id": 1,
-		"title": "工作空间",
-		"type": 0,
+		"id": "commodity",
+		"title": "商品管理",
+		"type": 1,
 		"icon": "layui-icon layui-icon-console",
-		"href": "",
-		"children": [{
-			"id": 10,
-			"title": "控制后台",
-			"icon": "layui-icon layui-icon-console",
-			"type": 1,
-			"openType": "_iframe",
-			"href": "view/console/console1.html"
-		}, {
-			"id": 13,
-			"title": "数据分析",
-			"icon": "layui-icon layui-icon-console",
-			"type": 1,
-			"openType": "_iframe",
-			"href": "view/console/console2.html"
-		}, {
-			"id": 14,
-			"title": "百度一下",
-			"icon": "layui-icon layui-icon-console",
-			"type": 1,
-			"openType": "_iframe",
-			"href": "http://www.baidu.com"
-		}]
+		"href": "/web/view/commodity.html",
+		"openType": "_iframe"
 	},
 	{
 		"id": "component",
 		"title": "发票管理",
 		"icon": "layui-icon layui-icon-component",
 		"type": 1,
-		"href": "view/Invoice.html"
+		"openType": "_iframe",
+		"href": "/web/view/Invoice.html"
 	},
 	{
 		"id": "result",
-		"title": "结果页面",
+		"title": "库存管理",
 		"icon": "layui-icon layui-icon-auz",
-		"type": 0,
-		"href": "",
-		"children": [{
-				"id": "success",
-				"title": "成功",
-				"icon": "layui-icon layui-icon-face-smile",
-				"type": 1,
-				"openType": "_iframe",
-				"href": "view/result/success.html"
-			},
-			{
-				"id": "failure",
-				"title": "失败",
-				"icon": "layui-icon layui-icon-face-cry",
-				"type": 1,
-				"openType": "_iframe",
-				"href": "view/result/error.html"
-			}
-		]
+		"type": 1,
+		"openType": "_iframe",
+		"href": "/web/view/inventory.html"
 	},
 	{
-		"id": "error",
-		"title": "供应商",
+		"id": "supplier",
+		"title": "供应商管理",
 		"icon": "layui-icon layui-icon-face-cry",
-		"type": 0,
-		"href": "",
-		"children": [{
-				"id": 403,
-				"title": "供应商管理",
-				"icon": "layui-icon layui-icon-face-smile",
-				"type": 1,
-				"openType": "_iframe",
-				"href": "view/supplier.html"
-			}
-		]
+		"type": 1,
+		"openType": "_iframe",
+		"href": "/web/view/supplier.html"
 	},
 	{
 		"id": "order",
 		"title": "订单管理",
 		"icon": "layui-icon layui-icon-set-fill",
-		"type": 0,
-		"href": "",
-		"children": [{
-			"id": 601,
-			"title": "订单管理",
-			"icon": "layui-icon layui-icon-face-smile",
-			"type": 1,
-			"openType": "_iframe",
-			"href": "/Order/toOrder"
-		}]
+		"type": 1,
+		"openType": "_iframe",
+		"href": "/Order/toOrder"
 	},
 	{
 		"id": "common",
-		"title": "常用页面",
+		"title": "采购管理",
 		"icon": "layui-icon layui-icon-template-1",
-		"type": 0,
-		"href": "",
-		"children": [{
-			"id": 701,
-			"title": "登录页面",
-			"icon": "layui-icon layui-icon-face-smile",
-			"type": 1,
-			"openType": "_iframe",
-			"href": "login.html"
-		},{
-			"id": 702,
-			"title": "空白页面",
-			"icon": "layui-icon layui-icon-face-smile",
-			"type": 1,
-			"openType": "_iframe",
-			"href": "view/system/space.html"
-		}]
+		"type": 1,
+		"openType": "_iframe",
+		"href": "/web/view/purchase.html"
 	},{
 		"id": "echarts",
 		"title": "业务员管理",
