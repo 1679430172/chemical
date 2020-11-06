@@ -1,31 +1,10 @@
 [{
 		"id": 1,
-		"title": "工作空间",
-		"type": 0,
+		"title": "商品管理",
+		"type": 1,
 		"icon": "layui-icon layui-icon-console",
-		"href": "",
-		"children": [{
-			"id": 10,
-			"title": "控制后台",
-			"icon": "layui-icon layui-icon-console",
-			"type": 1,
-			"openType": "_iframe",
-			"href": "view/console/console1.html"
-		}, {
-			"id": 13,
-			"title": "数据分析",
-			"icon": "layui-icon layui-icon-console",
-			"type": 1,
-			"openType": "_iframe",
-			"href": "view/console/console2.html"
-		}, {
-			"id": 14,
-			"title": "百度一下",
-			"icon": "layui-icon layui-icon-console",
-			"type": 1,
-			"openType": "_iframe",
-			"href": "http://www.baidu.com"
-		}]
+		"href": "web/view/commodity.html",
+		"openType": "_iframe"
 	},
 	{
 		"id": "component",
@@ -266,16 +245,9 @@
 		"id": "order",
 		"title": "订单管理",
 		"icon": "layui-icon layui-icon-set-fill",
-		"type": 0,
-		"href": "",
-		"children": [{
-			"id": 601,
-			"title": "订单管理",
-			"icon": "layui-icon layui-icon-face-smile",
-			"type": 1,
-			"openType": "_iframe",
-			"href": "/Order/toOrder"
-		}]
+		"type": 1,
+		"openType": "_iframe",
+		"href": "/Order/toOrder"
 	},
 	{
 		"id": "common",
