@@ -90,5 +90,5 @@ public class SupplierController {
             return Util.fail;
         }
     }
-    
+
 }
