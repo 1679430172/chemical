@@ -28,6 +28,8 @@ public class InventoryControlledr {
     public ParseData inventory(Integer page, Integer limit){
         IPage<Inventory> iPage= InventoService.iPage(page,limit);
         return new ParseData(0,"",Integer.parseInt(Long.toString(iPage.getTotal())),iPage.getRecords());
+
+
     }
 
     @PostMapping("/addinventory.do")

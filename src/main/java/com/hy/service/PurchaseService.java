@@ -18,4 +18,12 @@ public class PurchaseService extends ServiceImpl<PurchaseMapper, Purchase> {
         return iPage;
     }
 
+    public void updateAnn(String cid){
+        purchaseMapper.updateAnn(cid);
+    }
+
+    public  void  add(Purchase purchase){
+        purchaseMapper.addPurchase(purchase);
+    }
+
 }

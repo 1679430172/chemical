@@ -27,8 +27,9 @@
 
         table.render({
             elem: '#test'
-            ,url:'/purchase/purchase.do'//数据接口
+            ,url:'/purchase/purchase.do'       //数据接口
             ,page:true
+            ,height:'full-20'
             ,limit:20
             ,toolbar: '#toolbarDemo'
             ,defaultToolbar:["filter"]
@@ -49,6 +50,7 @@
                     ,{field:'supplierPhone', title: '供应商电话',  width: 120}
                     ,{field:'trackingNumber', title: '物流单号', width: 125}
                     ,{field:'createTime', title: '创建日期', sort: true , width: 170}
+                    ,{field:'ann', title: '发票',  width: 90 , templet: function(d){if(d.ann == 1){return '未收到'}else{return '已收到'}} }
                     ,{fixed: 'right', width: '8%', align:'center', toolbar: '#dd'}
                     ,{fixed: 'right', width: 50, align:'center', toolbar: '#barDemo'}
                 ]]
@@ -57,14 +59,17 @@
                 var tableView = this.elem.next();
                 $.each(response.data,function (index,item) {
                     //逻辑判断
-                    if(item.priceStatus == 0){
+                    if(item.priceStatus == 0 && item.ann == 1){
                         //改变TR行颜色和标签内字体颜色
                         tableView.find('tbody tr[data-index="'+ index +'"]').css('background-color','yellow');
                         tableView.find('tbody tr[data-index="'+ index +'"]').css('color','black');
                     }
                 })
-            }
+                }
         });
+
+
+
 
         //监听表头
         table.on('toolbar(test)',function (obj) {
@@ -77,8 +82,8 @@
                     area: ['600px', '500px'],
                     content: '/web/view/purchaseAdd.html', //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
                     end:function () {
-                        table.reload('demo', {
-                            url: '/inventory/inventory.do'
+                        table.reload('test', {
+                            url: '/purchase/purchase.do'
 
                         });
                     }
@@ -100,11 +105,34 @@
                 });
             } else if(layEvent === 'edit'){
                 layer.msg('编辑操作');
-            }else if (layEvent === 'intd'){
+            }else if (layEvent === 'getfp'){
+                layer.open({
+                    type: 1,
+                    area: ['250px', '150px'],
+                    btn:['确定', '点错了'],
+                    content:'  <div align="center">你确定收到了吗？</div>  ',
+
+                    btn1:function(index, layero) {
+                        $.ajax({
+                            type:"GET",
+                            url: "/purchase/update.do?cid="+data.cid,
+                            dataType:"json",
+                        });
+                        table.reload('test', {
+                            url: '/purchase/purchase.do'
+
+                        });
+                        layer.closeAll();
+                    },
+                    btn2:function(index, layero){
+                        layer.closeAll();
+                    },
+                });
 
             }
 
         });
+
 
 
     });
@@ -131,7 +159,7 @@
 </script>
 <script type="text/html" id="dd">
     {{#  if(d.priceStatus == 0){ }}
-    <button class="layui-btn  layui-btn-xs" class="layui-btn"  id="">已收到发票按钮</button>
+    <button class="layui-btn  layui-btn-xs" class="layui-btn"  lay-event="getfp" id="withExport" >已收到发票按钮</button>
     {{#  } else { }}
 
     {{#  } }}
