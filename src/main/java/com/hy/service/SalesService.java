@@ -98,13 +98,6 @@ public class SalesService extends ServiceImpl<SalesMapper, Sales> {
 
     public String updateOrder(Integer did, String trackingNumber) {
         Integer b = null;
-        if (trackingNumber.equals("") || trackingNumber == null) {
-            b = orderMapper.updateOrder(did);
-            if (b != 0) {
-                return Util.sueess;
-            }
-            return Util.defact;
-        }
         b = orderMapper.updateOrder(did);
         salesMapper.updatetrackingNumber(trackingNumber,did);
         return Util.sueess;

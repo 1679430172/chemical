@@ -31,16 +31,16 @@ public interface OrderMapper extends BaseMapper<Order> {
     @Results({
             @Result(column = "name",property = "name")
     })
-    @Select("select * from `order` o inner join commodity c on o.commodity_id=c.sid where status = 1 and did not in (select order_id from sales)")
+    @Select("select * from `order` o inner join commodity c on o.commodity_id=c.sid where `status` = '1' and did not in (select order_id from sales)")
     public IPage<Order> selectListByStatus(Page page);
 
     @Results({
             @Result(column = "name",property = "name")
     })
-    @Select("select * from `order` o inner join commodity c on o.commodity_id=c.sid where status = 1 and did not in (select order_id from sales)")
+    @Select("select * from `order` o inner join commodity c on o.commodity_id=c.sid where status = '1' and did not in (select order_id from sales)")
     public IPage<Order> selectStatus(Integer userId);
 
-    @Update("update `order` set royalties=0,status=2 where did=#{did}")
+    @Update("update `order` set `status`='2' where did=#{did}")
     public Integer updateOrder(@Param("did")Integer did);
 
 }
