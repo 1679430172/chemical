@@ -22,8 +22,5 @@ public class PurchaseService extends ServiceImpl<PurchaseMapper, Purchase> {
         purchaseMapper.updateAnn(cid);
     }
 
-    public  void  add(Purchase purchase){
-        purchaseMapper.addPurchase(purchase);
-    }
 
 }
