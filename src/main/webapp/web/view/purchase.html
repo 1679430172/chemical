@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
     <title>采购管理</title>
@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="stylesheet" href="/web/component/layui/css/layui.css" media="all">
+    <script type="text/javascript" src="/web/component/js/jquery-3.3.1.min.js" th:src="@{/web/component/js/jquery-3.3.1.min.js}"></script>
     <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
 </head>
 <body>
@@ -26,32 +27,49 @@
 
         table.render({
             elem: '#test'
-            ,url:'/purchase/purchase.do'//数据接口
+            ,url:'/purchase/purchase.do'       //数据接口
             ,page:true
+            ,height:'full-20'
             ,limit:20
             ,toolbar: '#toolbarDemo'
             ,defaultToolbar:["filter"]
             ,limits:[10,20,30]
             ,cols: [
                 [
-                    {field:'cid', title: '编号', sort: true , width: 80}
+                    {field:'cid', title: '编号', sort: true , width: 50}
                     ,{field:'userId', width:80, title: '业务员',  minWidth: 100}
-                    ,{field:'name', width:80, title: '产品名称', width: 140}
-                    ,{field:'cas', title: 'cas号', minWidth: 100}
-                    ,{field:'amount', title: '数量', sort: true , minWidth: 100,width: 80}
-                    ,{field:'price', title: '单价',sort: true ,width: 80} //minWidth：局部定义当前单元格的最小宽度
-                    ,{field:'priceStatus', title: '是否含税', minWidth: 80 ,align: "center", templet: function(d){if(d.priceStatus == 0){return '含税'}else{return '不含税'}}}
+                    ,{field:'name', width:120, title: '产品名称'}
+                    ,{field:'cas', title: 'cas号',width: 95}
+                    ,{field:'amount', title: '数量', sort: true ,width: 50}
+                    ,{field:'price', title: '单价',sort: true ,width:100} //minWidth：局部定义当前单元格的最小宽度
+                    ,{field:'priceStatus', title: '是否含税', width: 90,align: "center", templet: function(d){if(d.priceStatus == 0){return '含税'}else{return '不含税'}}}
                     ,{field:'sumPrice', title: '总价', sort: true ,  width: 80}
-                    ,{field:'status', title: '是否收货',  minWidth: 100 , templet: function(d){if(d.priceStatus == 0){return '收货'}else{return '未收货'}} }
-                    ,{field:'userName', title: '业务员名称',  minWidth: 100}
-                    ,{field:'supplierName', title: '供应商名称', minWidth: 100}
-                    ,{field:'supplierPhone', title: '供应商电话',  minWidth: 100}
-                    ,{field:'trackingNumber', title: '物流单号', minWidth: 100}
-                    ,{field:'createTime', title: '创建日期', sort: true , width: 200}
+                    ,{field:'status', title: '是否收货',  width: 90 , templet: function(d){if(d.status == 0){return '收货'}else{return '未收货'}} }
+                    ,{field:'userName', title: '业务员',  width: 80}
+                    ,{field:'supplierName', title: '供应商名称',width: 100}
+                    ,{field:'supplierPhone', title: '供应商电话',  width: 120}
+                    ,{field:'trackingNumber', title: '物流单号', width: 125}
+                    ,{field:'createTime', title: '创建日期', sort: true , width: 170}
+                    ,{field:'ann', title: '发票',  width: 90 , templet: function(d){if(d.ann == 1){return '未收到'}else{return '已收到'}} }
+                    ,{fixed: 'right', width: '8%', align:'center', toolbar: '#dd'}
                     ,{fixed: 'right', width: 50, align:'center', toolbar: '#barDemo'}
-                ]
-            ]
+                ]]
+            ,done: function (response) {
+                //定位当前table视图
+                var tableView = this.elem.next();
+                $.each(response.data,function (index,item) {
+                    //逻辑判断
+                    if(item.priceStatus == 0 && item.ann == 1){
+                        //改变TR行颜色和标签内字体颜色
+                        tableView.find('tbody tr[data-index="'+ index +'"]').css('background-color','yellow');
+                        tableView.find('tbody tr[data-index="'+ index +'"]').css('color','black');
+                    }
+                })
+                }
         });
+
+
+
 
         //监听表头
         table.on('toolbar(test)',function (obj) {
@@ -64,8 +82,8 @@
                     area: ['600px', '500px'],
                     content: '/web/view/purchaseAdd.html', //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
                     end:function () {
-                        table.reload('demo', {
-                            url: '/inventory/inventory.do'
+                        table.reload('test', {
+                            url: '/purchase/purchase.do'
 
                         });
                     }
@@ -87,8 +105,35 @@
                 });
             } else if(layEvent === 'edit'){
                 layer.msg('编辑操作');
+            }else if (layEvent === 'getfp'){
+                layer.open({
+                    type: 1,
+                    area: ['250px', '150px'],
+                    btn:['确定', '点错了'],
+                    content:'  <div align="center">你确定收到了吗？</div>  ',
+
+                    btn1:function(index, layero) {
+                        $.ajax({
+                            type:"GET",
+                            url: "/purchase/update.do?cid="+data.cid,
+                            dataType:"json",
+                        });
+                        table.reload('test', {
+                            url: '/purchase/purchase.do'
+
+                        });
+                        layer.closeAll();
+                    },
+                    btn2:function(index, layero){
+                        layer.closeAll();
+                    },
+                });
+
             }
+
         });
+
+
 
     });
 
@@ -99,7 +144,11 @@
     .layui-table-page {
         text-align: center;
     }
+
 </style>
+
+
+
 <script type="text/html" id="toolbarDemo">
     <div class="layui-btn-container">
         <button class="layui-btn layui-btn-sm" lay-event="add">添加</button>
@@ -108,7 +157,12 @@
 <script type="text/html" id="barDemo">
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
 </script>
+<script type="text/html" id="dd">
+    {{#  if(d.priceStatus == 0){ }}
+    <button class="layui-btn  layui-btn-xs" class="layui-btn"  lay-event="getfp" id="withExport" >已收到发票按钮</button>
+    {{#  } else { }}
 
-
+    {{#  } }}
+</script>
 </body>
 </html>
