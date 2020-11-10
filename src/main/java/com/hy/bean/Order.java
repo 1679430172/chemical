@@ -4,7 +4,11 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpSession;
+import java.text.DecimalFormat;
 import java.util.Date;
 
 @TableName(value = "`order`")
@@ -15,9 +19,8 @@ public class Order {
     private Integer amount;
     private Double price;
     private Double costPrice;
-    private Double royalties;
     private Double otherCost;
-    private Integer bill;
+    private String bill;
     private String billInfo;
     private Integer commodityId;
     private Integer invoiceId;
@@ -30,11 +33,13 @@ public class Order {
     @TableField(exist = false)
     private String name;//商品名称
     @TableField(exist = false)
-    private String suid;//商品业务员id
+    private Integer suid;//商品业务员id
     @TableField(exist = false)
     private Double zcb;//总成本
     @TableField(exist = false)
     private Double sumPrice;//总价
+    @TableField(exist = false)
+    private Double royalties;
 
     public Integer getDid() {
         return did;
@@ -93,8 +98,21 @@ public class Order {
         this.costPrice = costPrice;
     }
 
-    public Double getRoyalties() {
-        return royalties;
+    public String getRoyalties() {
+        HttpSession session = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession();
+        if(this.status.equals("2")){
+            royalties=0.0;
+        }else if(session.getAttribute("userType").equals(Authority.administrator)||session.getAttribute("userType").equals(Authority.authorizedSalesman)){
+            royalties=((this.price*this.amount)-(this.costPrice*this.amount)-otherCost)*0.87*0.4;
+        }else if(this.userId==this.suid){
+            royalties=((this.price*this.amount)-(this.costPrice*this.amount)-otherCost)*0.87*0.4;
+        }else if(session.getAttribute("userId").equals(this.userId)){
+            royalties=((this.price*this.amount)-(this.costPrice*this.amount)-otherCost)*0.87*0.3;
+        }else if(session.getAttribute("userId").equals(this.suid)){
+            royalties=((this.price*this.amount)-(this.costPrice*this.amount)-otherCost)*0.87*0.1;
+        }
+        DecimalFormat df = new DecimalFormat("0.00");
+        return df.format(royalties);
     }
 
     public void setRoyalties(Double royalties) {
@@ -109,14 +127,6 @@ public class Order {
         this.otherCost = otherCost;
     }
 
-    public Integer getBill() {
-        return bill;
-    }
-
-    public void setBill(Integer bill) {
-        this.bill = bill;
-    }
-
     public String getBillInfo() {
         return billInfo;
     }
@@ -127,6 +137,14 @@ public class Order {
 
     public Integer getCommodityId() {
         return commodityId;
+    }
+
+    public String getBill() {
+        return bill;
+    }
+
+    public void setBill(String bill) {
+        this.bill = bill;
     }
 
     public void setCommodityId(Integer commodityId) {
@@ -189,11 +207,11 @@ public class Order {
         this.remarks = remarks;
     }
 
-    public String getSuid() {
+    public Integer getSuid() {
         return suid;
     }
 
-    public void setSuid(String suid) {
+    public void setSuid(Integer suid) {
         this.suid = suid;
     }
 

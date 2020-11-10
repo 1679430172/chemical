@@ -19,6 +19,9 @@ public class OrderService extends ServiceImpl<OrderMapper, Order> {
     @Autowired
     private OrderMapper orderMapper;
 
+    @Autowired
+    private CommodityService commodityService;
+
     public ParseData selectList(Page page){
         HttpSession session = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession();
         IPage<Order> iPage=null;
@@ -37,7 +40,7 @@ public class OrderService extends ServiceImpl<OrderMapper, Order> {
         order.setUserId((Integer) session.getAttribute("userId"));
         order.setStatus("0");
         if(null==order.getBill()){
-            order.setBill(0);
+            order.setBill("0");
         }
         return orderMapper.insert(order);
     }
@@ -53,6 +56,10 @@ public class OrderService extends ServiceImpl<OrderMapper, Order> {
             iPage=orderMapper.selectListByStatus((Integer)session.getAttribute("userId"),page);
         }
         return new ParseData(0,"",Integer.parseInt(Long.toString(iPage.getTotal())),iPage.getRecords());
+    }
+
+    public Integer updStatus(Integer did){
+        return orderMapper.updateStatus(did);
     }
 
 }

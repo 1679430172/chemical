@@ -1,14 +1,11 @@
 package com.hy.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.hy.bean.Commodity;
-import com.hy.bean.Commoditys;
-import com.hy.bean.SupplierUsers;
-import com.hy.bean.User;
+import com.hy.bean.*;
 import com.hy.mapper.CommodityMapper;
-import com.hy.mapper.SupplierMapper;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,8 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -80,10 +75,5 @@ public class CommodityService extends ServiceImpl<CommodityMapper, Commodity> {
         }
 
          commodityMapper.equals(commodity);
-    }
-
-    public Integer userIdBySid(String sid){
-        //return commodityMapper.byid(sid);
-        return 1;
     }
 }
