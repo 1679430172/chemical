@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.List;
+
 @Api
 @Controller
 @RequestMapping("inventory")
@@ -34,9 +36,8 @@ public class InventoryControlledr {
 
     @PostMapping("/addinventory.do")
     @ResponseBody
-    public Integer add(Inventory inventory) throws Exception {
-        System.out.println(inventory);
-        return 1;
+    public String add(Inventory inventory) throws Exception {
+        return InventoService.add(inventory);
     }
 
     @RequestMapping("/queryinventory.do")
@@ -58,4 +59,6 @@ public class InventoryControlledr {
         return new ParseData(0, "", Integer.parseInt(Long.toString(iPage.getTotal())), iPage.getRecords());
 
     }
+
+
 }
