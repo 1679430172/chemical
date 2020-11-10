@@ -46,6 +46,7 @@
         table.render({
             elem: '#demo'
             ,toolbar: '#toolbarDemo'
+            ,height:'full-20'
             ,url: '/Invoice/select' //数据接口
             ,page: true //开启分页
             ,limit:20
@@ -54,7 +55,7 @@
                  {field: 'sid', title: 'ID'}
                 ,{field: 'name', title: '发票品名'}
                 ,{field: 'cas', title: 'Cas号'}
-                ,{field:'number',title:'数量'}
+                ,{field:'number',title:'数量',edit:'text'}
                 ,{field: 'price', title: '价格'}
                 ,{field: 'createTime', title: '创建日期'}
                 ,{fixed: 'right', align:'center', toolbar: '#barDemo'}
@@ -67,38 +68,60 @@
             var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
 
             if(layEvent === 'detail'){ //查看
-                layer.open({
-                    area: ['450px', '400px'],
-                    title:"发票详情",
-                    type: 1,
-                    content:
-                        "<table class='layui-table'>  " +
-                        "  <tr>" +
-                        "    <td>发票品名</td>" +
-                        "    <td>"+data.name+"</td>" +
-                        "  </tr>" +
-                        "  <tr>" +
-                        "    <td>cas号</td>" +
-                        "    <td>"+data.cas+"</td>" +
-                        "  </tr>" +
-                        "  <tr>" +
-                        "    <td>数量</td>" +
-                        "    <td>"+data.number+"</td>" +
-                        "  </tr>" +
-                        "  <tr>" +
-                        "    <td>修改数量</td>" +
-                        "    <td><input type='text' value='"+data.number+"'>       " +
-                        "<button type=\"button\" class=\"layui-btn layui-btn-xs\">自动修改</button></td> " +
-                        "  </tr>" +
-                        "</table>"+
-                        "<button type=\"button\" class=\"layui-btn layui-btn-sm\" >保存</button>"
+                layer.prompt({
+                    formType: 2,
+                    value: '',
+                    title: '请输入值',
+                    area: ['100px', '40px'] //自定义文本域宽高
+                }, function(value, index, elem){
+                    $.post("/Invoice/autoUpdate.do",{sid:data.sid,number:value},function (data) {
+                        if (data==1){
+                            table.reload('demo', {
+                                url: '/Invoice/select.do'
+                            });
+                        }else {
+                            layer.msg('修改失败');
+                            table.reload('demo', {
+                                url: '/Invoice/select.do'
+                            });
+                        }
 
-                    //这里content是一个普通的String
+                    });
+                    layer.close(index);
                 });
             } else { //编辑
-
             }
         });
+
+
+
+        table.on('edit(test)', function(obj){
+            var value = obj.value //得到修改后的值
+                ,data = obj.data //得到所在行所有键值
+                ,field = obj.field; //得到字段
+            var regPos = /^\d+(\.\d+)?$/; //非负浮点数
+            var regNeg = /^(-(([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)|([0-9]*[1-9][0-9]*)))$/; //负浮点数
+            if(regPos.test(value) || regNeg.test(value)) {
+                $.post("/Invoice/updateBySid.do",{sid:data.sid,number:data.number},function (data) {
+                    if (data==1){
+                        table.reload('demo', {
+                            url: '/Invoice/select.do'
+                        });
+                    }else {
+                        layer.msg('修改失败');
+                        table.reload('demo', {
+                            url: '/Invoice/select.do'
+                        });
+                    }
+                })
+            } else {
+                layer.msg('输入非法');
+                table.reload('demo', {
+                    url: '/Invoice/select.do'
+                });
+            }
+        });
+
 
         form.on('submit(formDemo)', function(data){
             table.reload('demo', {

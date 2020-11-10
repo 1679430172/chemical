@@ -4,6 +4,7 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 		<title>Pear Admin Layui</title>
+		<script type="text/javascript"  src="/web/component/js/jquery-3.3.1.min.js" ></script>
 		<!-- 依 赖 样 式 -->
 		<link rel="stylesheet" href="component/pear/css/pear.css" />
 		<!-- 加 载 样 式-->
@@ -36,8 +37,7 @@
 						</a>
 						<!-- 功 能 菜 单 -->
 						<dl class="layui-nav-child">
-							<dd><a user-menu-url="view/system/person.html" user-menu-id="5555" user-menu-title="基本资料">基本资料</a></dd>
-							<dd><a href="login.html">注销登录</a></dd>
+							<dd><a onclick="out()">注销登录</a></dd>
 						</dl>
 					</li>
 					<li class="layui-nav-item setting"><a href="#" class="layui-icon layui-icon-more-vertical"></a></li>
@@ -73,9 +73,23 @@
 		<script>
 			layui.use(['admin'], function() {
 				var admin = layui.admin;
-
+				var $ = layui.jquery;
 				admin.render();
+
 			})
+			function out(){
+				$.ajax({
+					url: '/login/zhuxiao',
+					type: 'post',
+					dataType:"json",
+					contentType:"application/json",
+					success: function(data) {
+						if(data=="1"){
+							window.location.reload();
+						}
+					}
+				});
+			}
 		</script>
 	</body>
 </html>
