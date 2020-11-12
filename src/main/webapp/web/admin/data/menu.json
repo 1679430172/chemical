@@ -49,30 +49,16 @@
 		"id": "echarts",
 		"title": "业务员管理",
 		"icon": "layui-icon layui-icon-chart",
-		"type": 0,
-		"href": "",
-		"children": [{
-			"id": 12121,
-			"title": "所有业务员信息",
-			"icon": "layui-icon layui-icon-face-smile",
-			"type": 1,
-			"openType": "_iframe",
-			"href": "view/yewuyuan.html"
-		}]
+		"type": 1,
+		"openType": "_iframe",
+		"href": "/web/view/yewuyuan.html"
 	},
 	{
 		"id": "code",
 		"title": "退货管理",
+		"openType": "_iframe",
 		"icon": "layui-icon layui-icon-util",
-		"type": 0,
-		"href": "",
-		"children": [{
-				"id": 801,
-				"title": "所有退货信息",
-				"icon": "layui-icon layui-icon-util",
-				"type": 1,
-				"openType": "_iframe",
-				"href": "view/Sales.html"
-		}]
+		"type": 1,
+		"href": "/web/view/Sales.html"
 	}
 ]

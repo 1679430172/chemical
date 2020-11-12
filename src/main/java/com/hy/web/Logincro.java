@@ -16,9 +16,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Enumeration;
 import java.util.List;
 
 
@@ -122,4 +126,14 @@ public class Logincro {
         return userserves.getSessionUserId();
     }
 
+    @RequestMapping("/zhuxiao")
+    @ResponseBody
+    public String zhuxiao(){
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        Enumeration em = request.getSession().getAttributeNames();
+        while(em.hasMoreElements()){
+            request.getSession().removeAttribute(em.nextElement().toString());
+        }
+        return Util.sueess;
+    }
 }

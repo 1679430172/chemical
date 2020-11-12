@@ -1,8 +1,10 @@
 package com.hy.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+
 import com.hy.bean.Commodity;
 import com.hy.bean.Commoditys;
 import com.hy.mapper.CommodityMapper;
@@ -11,12 +13,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
-
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
 import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.UUID;
 
 @Service
@@ -154,8 +158,10 @@ public class CommodityService extends ServiceImpl<CommodityMapper, Commodity> {
         return "";
     }
 
+
     public Integer suppliers(String supplierId){
         return commodityMapper.suppliers(supplierId).size();
     }
+
 
 }

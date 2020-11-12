@@ -61,7 +61,7 @@
             //监听提交
             form.on('submit(formDemo)', function(data){
                 $.post("/Order/",data.field,function (d,s) {
-                    if(d==="1"){
+                    if(d=="1"){
                         layer.msg('添加成功！！！', {
                             icon: 1,
                             time: 1000 //2秒关闭（如果不配置，默认是3秒）
@@ -70,6 +70,11 @@
                             var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
                             parent.layer.close(index); //再执行关闭
                         });
+                    }else{
+                        layer.msg('添加失败！！！', {
+                            icon: 1,
+                            time: 1000 //2秒关闭（如果不配置，默认是3秒）
+                        })
                     }
                 });
                 return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
