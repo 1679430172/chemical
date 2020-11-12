@@ -1,15 +1,14 @@
 package com.hy.web;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.hy.bean.Order;
 import com.hy.bean.Purchase;
 import com.hy.service.PurchaseService;
 import com.hy.util.ParseData;
 import io.swagger.annotations.Api;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 @Api
     @Controller
@@ -26,23 +25,28 @@ import org.springframework.web.bind.annotation.*;
 
         }
 
-        @PostMapping("/add.do")
-        @ResponseBody
-        public Integer add(Purchase purchase) throws Exception {
-            System.out.println(purchase);
-            return 1;
-        }
+
 
         @GetMapping ("/update.do")
         @ResponseBody
         public  void  updateAnn(String cid){
-            System.out.println(cid+"================================");
         purchaseService.updateAnn(cid);
 
         }
 
+        @RequestMapping("/toAdd")
+        @ResponseBody
+        public ModelAndView toAdd(){
+            ModelAndView modelAndView=new ModelAndView();
+            modelAndView.setViewName("purchaseAdd.html");
+            return modelAndView;
+        }
 
-
+    @PostMapping("/add.do")
+    @ResponseBody
+    public void addPurchase(Purchase purchase) throws Exception {
+        purchaseService.save(purchase);
+    }
 
 
     }

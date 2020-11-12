@@ -45,7 +45,7 @@ public class SupplierController {
     @ResponseBody
     public ParseData supplierInquire(){
         List<SupplierUsers> iPage= supplierService.iPage();
-        return new ParseData(0,"",null,null);
+        return new ParseData(0,"",null,iPage);
     }
 
     @RequestMapping("get.do")
@@ -89,6 +89,12 @@ public class SupplierController {
         }else {
             return Util.fail;
         }
+    }
+
+    @RequestMapping("/suppliers")
+    @ResponseBody
+    public List<Supplier> suppliers(){
+        return supplierService.list();
     }
 
 }

@@ -3,6 +3,7 @@ package com.hy.mapper;
         import com.baomidou.mybatisplus.core.mapper.BaseMapper;
         import com.baomidou.mybatisplus.core.metadata.IPage;
         import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+        import com.hy.bean.Inventory;
         import com.hy.bean.Purchase;
         import org.apache.ibatis.annotations.Insert;
         import org.apache.ibatis.annotations.Select;
@@ -20,5 +21,7 @@ public interface PurchaseMapper extends BaseMapper<Purchase> {
     @Update("update purchase set ann = 2 where cid=#{cid}")
     public void updateAnn(String cid);
 
+    @Insert("insert into purchase(cid,user_id,name,cas,amount,price,price_status,sum_price,status,user_name,supplier_name,supplier_phone,tracking_number,create_time,ann) values(#{cid},#{userId},#{name},#{cas},#{amount},#{price},#{priceStatus},#{sumPrice},#{status},#{userName},#{supplierName},#{supplierPhone},#{trackingNumber},now(),1)")
+    public int addPurchase(Purchase purchase);
 
 }
