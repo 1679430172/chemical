@@ -1,7 +1,11 @@
 package com.hy.bean;
 
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 
+import java.util.Date;
+
+@TableName(value = "commodity")
 public class Commodity {
     private Integer sid;
     private String name;
@@ -15,9 +19,17 @@ public class Commodity {
     private String filePath;
     private Integer supplierId;
     private String createTime;
-    private String updateTime;
+    private Date updateTime;
     @TableField(exist = false)
     private Integer supplier;
+
+    public Integer getSupplier() {
+        return supplier;
+    }
+
+    public void setSupplier(Integer supplier) {
+        this.supplier = supplier;
+    }
 
     public Integer getSid() {
         return sid;
@@ -115,11 +127,11 @@ public class Commodity {
         this.createTime = createTime;
     }
 
-    public String getUpdateTime() {
+    public Date getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(String updateTime) {
+    public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
     }
 

@@ -12,9 +12,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseBody;+
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http .HttpServletResponse;
+import java.util.Date;
 import java.util.List;
 
 @Api
@@ -42,9 +45,9 @@ public class CommodityController {
 
     @RequestMapping("/pictures.do")
     @ResponseBody
-    public String pictures(@RequestParam("file") MultipartFile pictureFile,String sid){
+    public String pictures(@RequestParam("fileUpload") MultipartFile pictureFile, String sid, HttpServletRequest req){
         try {
-            commodityService.pictures(pictureFile,sid);
+            commodityService.pictures(pictureFile,sid,req);
         } catch (Exception e) {
             e.printStackTrace();
             return Util.fail;
@@ -52,8 +55,17 @@ public class CommodityController {
         return Util.succeed;
     }
 
-   /* public String paper(){
-    }*/
+    @RequestMapping("/file.do")
+    @ResponseBody
+    public String file(@RequestParam("fileUpload") MultipartFile pictureFile, String sid, HttpServletRequest req){
+        try {
+            commodityService.file(pictureFile,sid,req);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Util.fail;
+        }
+        return Util.succeed;
+    }
 
 
     @RequestMapping("/save.do")
@@ -77,8 +89,21 @@ public class CommodityController {
     @RequestMapping("/equals.do")
     @ResponseBody
     public String  equals(Commodity commodity){
+        commodity.setUpdateTime(new Date());
         System.out.println(commodity.toString());
         commodityService.equals(commodity);
         return "1";
+    }
+
+    @RequestMapping("/supplierId.do")
+    @ResponseBody
+    public Integer Supplier(String  supplierId){
+        return commodityService.suppliers(supplierId);
+    }
+
+    @RequestMapping("/download.do")
+    @ResponseBody
+    public String download(HttpServletRequest req,HttpServletResponse response, String sid){
+        return commodityService.download(req,response,sid);
     }
 }
