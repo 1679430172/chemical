@@ -120,6 +120,11 @@
                                                 url:'/Sales/Saleslist'
                                             });
                                         });
+                                    }else{
+                                        layer.msg('订单编号重复,退货失败！！！', {
+                                            icon: 6,
+                                            time: 1000 //2秒关闭（如果不配置，默认是3秒）
+                                        })
                                     }
                                 }
                             });
@@ -134,6 +139,15 @@
                             success: function (data1) {
                                 if (data1=="1"){
                                     layer.msg('退货成功！！！', {
+                                        icon: 6,
+                                        time: 1000 //2秒关闭（如果不配置，默认是3秒）
+                                    }, function(){
+                                        table.reload('testReload', {
+                                            url:'/Sales/Saleslist'
+                                        });
+                                    });
+                                }else{
+                                    layer.msg('订单编号重复,退货失败！！！', {
                                         icon: 6,
                                         time: 1000 //2秒关闭（如果不配置，默认是3秒）
                                     }, function(){

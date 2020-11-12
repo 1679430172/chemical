@@ -74,6 +74,12 @@ public class SlaesController {
 
     }
 
+    /**
+     * 修改订单状态为退货
+     * @param did
+     * @param trackingNumber
+     * @return
+     */
     @RequestMapping("/updateOrder")
     @ResponseBody
     public String updateOrder(@Param("did") Integer did, @Param("trackingNumber") String trackingNumber){

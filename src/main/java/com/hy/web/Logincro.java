@@ -119,13 +119,20 @@ public class Logincro {
         return userserves.detele(id);
     }
 
-
+    /**
+     * 获取sesiion中的业务员id
+     * @return
+     */
     @RequestMapping("/getSessionUserId")
     @ResponseBody
     public String getSessionUserId(){
         return userserves.getSessionUserId();
     }
 
+    /**
+     * 注销登陆
+     * @return
+     */
     @RequestMapping("/zhuxiao")
     @ResponseBody
     public String zhuxiao(){
