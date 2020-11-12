@@ -34,13 +34,13 @@ public class CommodityService extends ServiceImpl<CommodityMapper, Commodity> {
         Integer userId= (Integer) session.getAttribute("userId");
         IPage<Commoditys> iPage=null;
 
-        /*if(userType.equals("0") || userType.equals("2")){
+        if(userType.equals("0") || userType.equals("2")){
             commodityMapper.CommditysList(new Page(page,limit),commoditys,null);
             return iPage;
         }else if(userType == "1"){
             commodityMapper.CommditysList(new Page(page,limit),commoditys,String.valueOf(userId));
             return iPage;
-        }*/
+        }
         return commodityMapper.CommditysList(new Page(page,limit),commoditys,String.valueOf(userId));
     }
 
