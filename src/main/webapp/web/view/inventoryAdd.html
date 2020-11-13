@@ -44,7 +44,7 @@
             //{name:data.field.name,phone:data.field.phone,wechat:data.field.wechat,status:data.field.status,createTime:data.field.createTime,userId:data.field.userId}
             $.post("/inventory/addinventory.do?",data.field, function (d) {
                 if (d === "1") {
-                    layer.msg('已添加成功!', {icon: 1, time: 3000},function () {
+                    layer.msg('已添加成功!', {icon: 1, time: 1000},function () {
                         //假设这是iframe页
                         var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
                         parent.layer.close(index); //再执行关闭

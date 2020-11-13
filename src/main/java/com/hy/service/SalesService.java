@@ -95,7 +95,12 @@ public class SalesService extends ServiceImpl<SalesMapper, Sales> {
         return  Util.defact;
     }
 
-
+    /**
+     * 修改订单状态为退货
+     * @param did
+     * @param trackingNumber
+     * @return
+     */
     public String updateOrder(Integer did, String trackingNumber) {
         Integer b = null;
         b = orderMapper.updateOrder(did);

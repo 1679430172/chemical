@@ -18,6 +18,7 @@
         table.render({
             elem: '#demo'
             , url: '/supplier/supplierInquire.do' //数据接口
+            ,height:'full-20'
             ,page:true
             ,limit:20
             ,toolbar: '#toolbarDemo'
@@ -25,13 +26,14 @@
             ,limits:[1,3,5]
             , cols: [
                 [ //表头
-                    {field:'id',title: '序号', sort: true}
+                    {field:'id',title: '序号'}
                     , {field: 'userName', title: '业务员'}
-                    , {field: 'name', title: '供应商名称', sort: true}
+                    , {field: 'name', title: '供应商名称'}
                     , {field: 'phone', title: '电话'}
                     , {field: 'wechat', title: '微信或qq', width: 177}
-                    , {field: 'status', title: '状态', sort: true}
-                    , {field: 'createTime', title: '创建时间', sort: true}
+                    , {field: 'status', title: '状态'}
+                    , {field: 'createTime', title: '创建时间'}
+                    ,{field:'remark',title:'备注'}
                 ]
             ]
             ,done: function (response) {
