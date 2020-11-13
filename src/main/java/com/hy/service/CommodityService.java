@@ -33,15 +33,13 @@ public class CommodityService extends ServiceImpl<CommodityMapper, Commodity> {
         String userType= (String) session.getAttribute("userType");
         Integer userId= (Integer) session.getAttribute("userId");
         IPage<Commoditys> iPage=null;
-
         if(userType.equals("0") || userType.equals("2")){
-            commodityMapper.CommditysList(new Page(page,limit),commoditys,null);
+            iPage =commodityMapper.CommditysList(new Page(page,limit),commoditys,null);
             return iPage;
-        }else if(userType == "1"){
-            commodityMapper.CommditysList(new Page(page,limit),commoditys,String.valueOf(userId));
+        }else{
+            iPage= commodityMapper.CommditysList(new Page(page,limit),commoditys,String.valueOf(userId));
             return iPage;
         }
-        return commodityMapper.CommditysList(new Page(page,limit),commoditys,String.valueOf(userId));
     }
 
     public Commodity byid(String sid){
@@ -60,14 +58,12 @@ public class CommodityService extends ServiceImpl<CommodityMapper, Commodity> {
             String extName = oriName.substring(oriName.lastIndexOf("."));//// 获取图片后缀
             try {
                 String webAppPath= req.getServletContext().getRealPath("/");
-                System.out.println("-------------"+webAppPath);
                 File uploadFile= new File(webAppPath,"assets\\");
                 if(!uploadFile.exists()){
                     uploadFile.mkdirs();
                 }
                 Commodity commodity=new Commodity();
                 File pic = new File(uploadFile+"\\"+ picName + extName);
-                System.out.println("++++++++++++++++"+pic);
                 pictureFile.transferTo(pic);
                 commodity.setImgPath("\\assets\\"+ picName + extName);
                 commodity.setImgStatus("1");
@@ -89,20 +85,17 @@ public class CommodityService extends ServiceImpl<CommodityMapper, Commodity> {
             String extName = oriName.substring(oriName.lastIndexOf("."));//// 获取图片后缀
             try {
                 String webAppPath= req.getServletContext().getRealPath("/");
-                System.out.println(webAppPath);
                 File webAppFile = new File(webAppPath);
                 File uploadFile= new File(webAppPath,"assets\\");
                 if(!uploadFile.exists()){
                     uploadFile.mkdirs();
                 }
-                System.out.println(uploadFile.toString());
                 Commodity commodity=new Commodity();
                 File pic = new File(uploadFile+"\\"+ picName + extName);
                 pictureFile.transferTo(pic);
                 commodity.setFilePath("\\assets\\"+ picName + extName);
                 commodity.setFileStatus("1");
                 commodity.setSid(Integer.parseInt(sid));
-                System.out.println(commodity.toString()+"+++++++++++++++++++");
                 commodityMapper.pictureEquals(commodity);
             } catch (IllegalStateException e) {
                 e.printStackTrace();
@@ -115,7 +108,6 @@ public class CommodityService extends ServiceImpl<CommodityMapper, Commodity> {
     public String download(HttpServletRequest req,HttpServletResponse response,String sid) {
         //设置浏览器显示的内容类型为Zip  (很重要,欺骗浏览器下载的是zip文件,就不会自己打开了)
         response.setContentType("application/zip");
-        System.out.println("------------"+sid);
         Commodity commodity=commodityMapper.byid(sid);
         //设置内容作为附件下载  fileName有后缀,比如1.jpg
         String file=commodity.getImgPath();
@@ -127,7 +119,6 @@ public class CommodityService extends ServiceImpl<CommodityMapper, Commodity> {
             String webAppPath= req.getServletContext().getRealPath("/");
             file=file.substring(1);
             webAppPath+=file;
-            System.out.println(webAppPath);
             InputStream inputStream = new FileInputStream(webAppPath);//此处是为了获得输出流
             // 3.通过response获取ServletOutputStream对象(out)
             out = response.getOutputStream();

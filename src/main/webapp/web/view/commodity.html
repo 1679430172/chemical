@@ -7,10 +7,11 @@
     <script type="text/javascript" src="/web/component/js/jquery-3.3.1.min.js" th:src="@{/web/component/js/jquery-3.3.1.min.js}"></script>
     <script src="/web/component/layui/layui.js" th:src="@{/web/component/layui/layui.js}" ></script>
     <script type="text/javascript" >
-        layui.use(["form","table","layer","upload"], function() {
+        layui.use(["form","table","layer","laydate","upload"], function() {
             var table = layui.table;
             var form = layui.form;
             var layer = layui.layer;
+            var laydate = layui.laydate;
             var upload = layui.upload;
 
             upload.render({
@@ -46,7 +47,7 @@
                         , {field: 'cas', title: 'cas号', width:90}
                         , {field: 'createTime', title: '日期', width:180}
                         , {field: 'updateTime', title: '更新日期', width:180}
-                        , {field: 'priceInfo', title: '报价信息',width:150}
+                        , {field: 'priceInfo', title: '报价信息', width:150}
                         ,{field:'imgPath',title:'图片预览',templet:"#img"}
                         ,{field:"",title:'操作',toolbar:'#barDemo', width: 400}
                     ]
@@ -119,6 +120,7 @@
                     //执行实例
                    // console.log(obj.data.sid);
 
+
                 }else if (layEvent == "edit"){
                     layer.open({
                         type: 2,
@@ -152,19 +154,19 @@
                             });
                         }
                     });
+                }else if(layEvent ==='form'){
+                    //监听表单
+                    form.on('submit(formDemo)', function(data){
+                        table.reload('demo', {
+                            url: '/Commodity/Commoditys.do'
+
+                            ,where: data.field//设定异步数据接口的额外参数
+                            //,height: 300
+                        });
+                        return false;
+                    });
                 }
             })
-
-            //监听表单
-            form.on('submit(formDemo)', function(data){
-                table.reload('demo', {
-                    url: '/Commodity/Commoditys.do'
-
-                    ,where: data.field//设定异步数据接口的额外参数
-                    //,height: 300
-                });
-                return false;
-            });
 
             $(document).on("click",".li",function () {
                 $.get("/Commodity/commodityById.do?sid="+this.value,function (d) {
@@ -192,7 +194,12 @@
                     });
                 })
             })
-
+            laydate.render({
+                elem: '#date'
+            });
+            laydate.render({
+                elem: '#date1'
+            });
         })
     </script>
     <style>
@@ -239,16 +246,14 @@
 <script type="text/html" id="toolbarDemo">
     <button class="layui-btn layui-btn-sm" lay-event="add"><i class="layui-icon">&#xe624;</i>添加</button>
     <div style="display: inline-block;">
-        <form class="layui-form" action=""style="display: inline-block;" >
-            <div class="layui-inline">
-                <div class="layui-input-block">
-                    <input type="text" id="createTime" name="createTime" required   placeholder="请输入开始时间" autocomplete="off" class="layui-input">
-                </div>
+        <form class="layui-form" action=""style="display: inline-block;" lay-event="form">
+            <div class="layui-input-inline">
+                <input type="text" name="createTime"  id="date1" placeholder="yyyy-MM-dd"  autocomplete="off" class="layui-input">
             </div>
             <div class="layui-inline">
                 <label class="layui-form-label">至</label>
-                <div class="layui-input-block">
-                    <input type="text " id="createTimes" name="createTimes" required   placeholder="请输入结果时间" autocomplete="off" class="layui-input">
+                <div class="layui-inline">
+                        <input type="text" lay-verify="date" name="createTimes" id="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
                 </div>
             </div>
             <input type="text" style="display:none" id="uid" name="uid">
