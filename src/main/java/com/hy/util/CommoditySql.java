@@ -11,7 +11,7 @@ public class CommoditySql {
                 "FROM commodity c left join supplier s on c.supplier_id=s.gid left join inventory i on c.cas = i.cas LEFT JOIN users u on  c.user_id=u.uid " +
                 "where 1=1 ");
             if(commoditys.getCreateTime() !=null && commoditys.getCreateTimes() != null){
-                sql.append(" and c.create_time between '"+commoditys.getCreateTime()+"' and '"+commoditys.getCreateTimes()+" ' ");
+                sql.append(" and c.create_time between ' "+commoditys.getCreateTime()+" ' and '"+commoditys.getCreateTimes()+" ' ");
             }
             if(commoditys.getSupplierId() != null ){
                 sql.append(" and c.supplier ="+sid);
