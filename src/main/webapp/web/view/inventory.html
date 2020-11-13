@@ -110,7 +110,7 @@
                     //offset: 'auto',、
                     skin: 'layui-layer-rim',
                     area: ['600px', '500px'],
-                    content: '/web/view/inventoryAdd.html', //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
+                    content: '/web/view/inventoryAdd.html?', //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
                     end:function () {
                         table.reload('test', {
                             url: '/inventory/inventory.do'
@@ -151,7 +151,18 @@
                 });
             });
         } else if(layEvent === 'edit'){
-            layer.msg('编辑操作');
+            layer.open({
+                type: 2,
+                //offset: 'auto',、
+                skin: 'layui-layer-rim',
+                area: ['300', '200'],
+                content: '/web/view/inventoryupdate.html?', //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
+                end:function () {
+                    table.reload('test', {
+                        url: '/inventory/inventory.do'
+                    });
+                }
+            });
         }
     });
 
@@ -170,7 +181,7 @@
 </script>
 <script type="text/html" id="barDemo">
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="update">修改</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="edit">修改</a>
 </script>
 
 </body>

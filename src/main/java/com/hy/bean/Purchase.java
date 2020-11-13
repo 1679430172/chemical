@@ -21,10 +21,7 @@ public class Purchase {
      private String createTime;    //创建日期
      private  Integer ann; //是否收到发票
 
-    public Integer getCid() {
-        return cid;
-    }
-
+    public  Integer getCid(){return cid;}
     public void setCid(Integer cid) {
         this.cid = cid;
     }

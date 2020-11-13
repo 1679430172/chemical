@@ -51,7 +51,8 @@
                 var e=eval(d);
                 for(var i=0;i<e.data.length;i++){
                     var option=$("<option>").text(e.data[i].name);
-                    option.attr("value",e.data[i].phone);
+                    option.attr("value",e.data[i].name);
+                    option.attr("id",e.data[i].phone);
                     $("#supplierName").append(option);
                     form.render();
                 }
@@ -59,7 +60,8 @@
             })
 
             form.on("select(aihao)",function (d) {
-                $("#phone").val(d.value);
+                var s=$("#supplierName option:selected").attr("id");
+                $("#phone").val(s);
             })
 
             //监听提交
@@ -85,13 +87,6 @@
 <body>
 <form class="layui-form" action="">
     <div class="layui-form-item">
-        <label class="layui-form-label">编号</label>
-        <div class="layui-input-inline">
-            <input type="text" name="cid" lay-verify="did" autocomplete="off" placeholder="" class="layui-input">
-        </div>
-    </div>
-
-    <div class="layui-form-item">
         <label class="layui-form-label">名称</label>
         <div class="layui-input-inline">
             <input type="text" name="name" lay-verify="did" autocomplete="off" placeholder="" class="layui-input">
@@ -109,6 +104,7 @@
             <input type="text" name="amount" lay-verify="did" autocomplete="off" placeholder="" class="layui-input">
         </div>
     </div>
+
     <div class="layui-form-item">
         <label class="layui-form-label">单价</label>
         <div class="layui-input-inline">
@@ -157,6 +153,7 @@
             <input type="text" id="phone" name="supplierPhone" lay-verify="" adisabled="disabled" class="layui-input">
         </div>
     </div>
+
     <div class="layui-form-item">
         <div class="layui-input-inline">
             <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>

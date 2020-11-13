@@ -1,5 +1,6 @@
 package com.hy.web;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.hy.bean.Purchase;
 import com.hy.service.PurchaseService;
@@ -26,13 +27,19 @@ import org.springframework.web.servlet.ModelAndView;
         }
 
 
-
         @GetMapping ("/update.do")
         @ResponseBody
         public  void  updateAnn(String cid){
         purchaseService.updateAnn(cid);
 
         }
+
+    @GetMapping ("/updateTn.do")
+    @ResponseBody
+    public  void  updateTrackingNumber(String cid){
+        purchaseService.updateTN(cid);
+
+    }
 
         @RequestMapping("/toAdd")
         @ResponseBody
@@ -46,6 +53,27 @@ import org.springframework.web.servlet.ModelAndView;
     @ResponseBody
     public void addPurchase(Purchase purchase) throws Exception {
         purchaseService.save(purchase);
+    }
+
+
+    @RequestMapping("/queryPurchase.do")
+    @ResponseBody
+    public ParseData queryPurchase(Integer page, Integer limit, Purchase purchase) {
+        System.out.println("purchase:" + purchase);
+        QueryWrapper<Purchase> queryWrapper=new QueryWrapper<>();
+        if(purchase.getName() != null&&!"".equals(purchase.getName())){
+            queryWrapper.like("name",purchase.getName());
+        }
+        if (purchase.getCas() != null&&!"".equals(purchase.getCas())){
+            queryWrapper.eq("cas",purchase.getCas());
+        }
+        if (purchase.getSupplierName() != null&&!"".equals(purchase.getSupplierName())){
+            queryWrapper.eq("number",purchase.getSupplierName());
+        }
+        IPage<Purchase> iPage=purchaseService.page(purchaseService.iPage(page,limit),queryWrapper);
+
+        return new ParseData(0, "", Integer.parseInt(Long.toString(iPage.getTotal())), iPage.getRecords());
+
     }
 
 
