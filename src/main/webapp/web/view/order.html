@@ -7,8 +7,8 @@
     <script src="/web/component/layui/layui.js"></script>
     <script type="text/javascript" src="/web/component/js/jquery-3.3.1.min.js"></script>
     <script>
-        layui.use(['table','layer'], function(){
-            var table = layui.table,form = layui.form;
+        layui.use(['table','layer','form','laydate'], function(){
+            var table = layui.table,form = layui.form,laydate = layui.laydate;;
 
             $(document).on("click",".notOutbound",function(){
                 $.post("/Order/",{did:this.value,_method:"PUT"},function (data) {
@@ -208,14 +208,48 @@
                 }
             });
 
+
+
             //执行实例
             $("#test1").click(function () {
                 layer.open({
                     area: ['450px', '500px'],
                     type: 2,
                     content: '/Order/toAdd' //这里content是一个普通的String
+                    ,end:function () {
+                        table.reload('demo', {
+                            url: '/Order/'
+                        });
+                    }
                 });
             })
+
+            //日期
+            laydate.render({
+                elem: '#stadate'
+            });
+            laydate.render({
+                elem: '#enddate'
+            });
+
+            //监听提交
+            form.on('submit(demo1)', function(data){
+                layer.alert(JSON.stringify(data.field), {
+                    title: '最终的提交信息'
+                })
+                table.reload('demo', {
+                    url: '/Order/time'
+                    ,where: data.field //设定异步数据接口的额外参数
+                });
+                //日期
+                laydate.render({
+                    elem: '#stadate'
+                });
+                laydate.render({
+                    elem: '#enddate'
+                });
+                return false;
+            });
         });
     </script>
     <script type="text/html" id="barDemo">
@@ -223,9 +257,19 @@
         <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon">&#xe640;</i>删除</a>
     </script>
     <script type="text/html" id="toolbarDemo">
-        <div class="layui-btn-container">
-            <button type="button" class="layui-btn layui-btn-sm" lay-event="import" id="test1"><i class="layui-icon">&#xe654;</i>添加订单</button>
-        </div>
+            <button type="button" class="layui-btn layui-btn-sm" lay-event="import" id="test1"><i class="layui-icon">&#xe654;</i>添加订单</button>&nbsp;&nbsp;
+            <form class="layui-form" action="" style="display: inline-block;">
+                <div class="layui-input-inline">
+                    <input type="text" name="stadate" id="stadate" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
+                </div>
+                &nbsp; - &nbsp;
+                <div class="layui-input-inline">
+                    <input type="text" name="enddate" id="enddate" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
+                </div>&nbsp;&nbsp;
+                <div class="layui-input-inline">
+                    <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+                </div>
+            </form>
     </script>
     <style>
         .layui-table-page {

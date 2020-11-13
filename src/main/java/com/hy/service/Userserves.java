@@ -14,9 +14,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.imageio.ImageIO;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.List;
+import java.util.Random;
 
 @Service
 public class Userserves extends ServiceImpl<UserMapper, User> {
@@ -142,5 +149,7 @@ public class Userserves extends ServiceImpl<UserMapper, User> {
         Integer id =  (Integer) session.getAttribute("userId");
         return String.valueOf(id);
     }
+
+    protected void checkCode() {}
 
 }
