@@ -10,6 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Date;
+
 @Api
 @Controller
 @RequestMapping("Order")
@@ -56,7 +58,24 @@ public class OrderController {
     @PutMapping("/")
     @ResponseBody
     public Integer updStatus(Integer did){
-        //return service.update();
-        return 1;
+        return service.updStatus(did);
+    }
+
+    @DeleteMapping("/")
+    @ResponseBody
+    public Integer del(Integer did){
+        boolean f;
+        f = service.removeById(did);
+        if(f){
+            return 1;
+        }
+        return 0;
+    }
+
+    @GetMapping("/time")
+    @ResponseBody
+    public ParseData select(String stadate,String enddate,Integer page, Integer limit) throws Exception {
+        Page page1=new Page(page,limit);
+        return service.selectListTime(stadate,enddate,page1);
     }
 }

@@ -3,11 +3,13 @@ package com.hy.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.hy.bean.Order;
 import com.hy.bean.Sales;
 import com.hy.bean.SalesOrdet;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import org.apache.xmlbeans.impl.xb.xsdschema.Public;
 
 
@@ -36,8 +38,8 @@ public interface SalesMapper extends BaseMapper<Sales> {
      * @param page
      * @return
      */
-    @Select("select * from sales  where tracking_number=#{trackingNumber}")
-    public IPage<Sales> bytrackingNumberselect(Page<Sales> page,@Param("trackingNumber")Integer trackingNumber);
+    @Select("select o.*,c.`status` from sales o inner join `order` c on o.order_id=c.did  where o.tracking_number=#{trackingNumber}")
+    public IPage<SalesOrdet> bytrackingNumberselect(Page<SalesOrdet> page,@Param("trackingNumber")String trackingNumber);
 
 
     /**
@@ -45,7 +47,17 @@ public interface SalesMapper extends BaseMapper<Sales> {
      * @param trackingNumber
      * @return
      */
-    @Select("select * from sales where  tracking_number=#{trackingNumber} and user_id =#{userId}")
-    public IPage<Sales> bytrackingNumberselecttwo(Page<Sales> page,@Param("trackingNumber")Integer trackingNumber,@Param("userId")Integer userId);
+    @Select("select o.*,c.`status` from sales o inner join `order` c on o.order_id=c.did where  o.tracking_number=#{trackingNumber} and o.user_id =#{userId}")
+    public IPage<SalesOrdet> bytrackingNumberselecttwo(Page<SalesOrdet> page,@Param("trackingNumber")String trackingNumber,@Param("userId")Integer userId);
+
+    /**
+     * 通过订单id修改退货单号
+     * @param trackingNumber
+     * @param orderId
+     * @return
+     */
+    @Update("update sales set tracking_number=#{trackingNumber} where order_id=#{orderId}")
+    public Integer updatetrackingNumber(@Param("trackingNumber")String trackingNumber,@Param("orderId")Integer orderId);
+
 
 }

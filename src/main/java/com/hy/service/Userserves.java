@@ -88,6 +88,12 @@ public class Userserves extends ServiceImpl<UserMapper, User> {
      */
     public String update(User user){
         try {
+            List<User> userList= userMapper.list();
+            for (User user1:userList){
+                if(user1.getUsername().equals(user.getUsername())){
+                    return Util.defact;
+                }
+            }
             userMapper.update(user);
         } catch (Exception e) {
             return Util.defact;

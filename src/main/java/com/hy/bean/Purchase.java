@@ -19,11 +19,9 @@ public class Purchase {
      private String supplierPhone; //供应商电话
      private String trackingNumber;//物流单号
      private String createTime;    //创建日期
+     private  Integer ann; //是否收到发票
 
-    public Integer getCid() {
-        return cid;
-    }
-
+    public  Integer getCid(){return cid;}
     public void setCid(Integer cid) {
         this.cid = cid;
     }
@@ -124,7 +122,13 @@ public class Purchase {
         this.supplierPhone = supplierPhone;
     }
 
+    public Integer getAnn() {
+        return ann;
+    }
 
+    public void setAnn(Integer ann) {
+        this.ann = ann;
+    }
 
     public String getCreateTime() {
         return createTime;
@@ -144,13 +148,14 @@ public class Purchase {
                 ", amount=" + amount +
                 ", price=" + price +
                 ", priceStatus='" + priceStatus + '\'' +
-                ", sum_price=" + sumPrice +
+                ", sumPrice=" + sumPrice +
                 ", status=" + status +
                 ", userName='" + userName + '\'' +
                 ", supplierName='" + supplierName + '\'' +
                 ", supplierPhone='" + supplierPhone + '\'' +
                 ", trackingNumber='" + trackingNumber + '\'' +
                 ", createTime='" + createTime + '\'' +
+                ", ann=" + ann +
                 '}';
     }
 }

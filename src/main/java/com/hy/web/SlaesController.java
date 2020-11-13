@@ -1,8 +1,12 @@
 package com.hy.web;
 
+import com.hy.bean.Order;
 import com.hy.bean.Sales;
+import com.hy.mapper.OrderMapper;
+import com.hy.service.OrderService;
 import com.hy.service.SalesService;
 import com.hy.util.ParseData;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +25,9 @@ import java.util.Date;
 public class SlaesController {
     @Autowired
     private SalesService salesServices;
+
+    @Autowired
+    private OrderService service;
 
     /**
      * 验证业务员权限查询订单
@@ -65,6 +72,18 @@ public class SlaesController {
         boolean a=   salesServices.save(sales);
         return salesServices.insertSales(a);
 
+    }
+
+    /**
+     * 修改订单状态为退货
+     * @param did
+     * @param trackingNumber
+     * @return
+     */
+    @RequestMapping("/updateOrder")
+    @ResponseBody
+    public String updateOrder(@Param("did") Integer did, @Param("trackingNumber") String trackingNumber){
+        return   salesServices.updateOrder(did,trackingNumber);
     }
 
 

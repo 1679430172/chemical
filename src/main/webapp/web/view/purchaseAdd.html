@@ -1,77 +1,165 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
 <head>
-    <meta charset="utf-8">
-    <title>库存添加</title>
-    <meta name="renderer" content="webkit">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link rel="stylesheet" href="/web/component/layui/css/layui.css"  media="all">
-    <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
+    <meta charset="UTF-8">
+    <title>采购添加</title>
+    <link rel="stylesheet" href="/web/component/layui/css/layui.css" media="all">
+    <script src="/web/component/layui/layui.js"></script>
+    <script type="text/javascript" src="/web/component/js/jquery-3.3.1.min.js" th:src="@{/web/component/js/jquery-3.3.1.min.js}"></script>
+    <script>
+        //Demo
+        layui.use('form', function(){
+            var form = layui.form;
+
+            $.get("/Commodity/commoditiesList",{},function (data) {
+                var list=eval(data);
+                for(var i=0;i<list.length;i++){
+                    var option=$("<option>").val(list[i].sid);
+                    option.text(list[i].name);
+                    $("#sid").append(option);
+                }
+                form.render('select');
+            });
+
+            $("#bills").click(function() {
+                if($("#bill").prop('checked')){
+                    $("#billInfo").show();
+                }else {
+                    $("#billInfo").hide();
+                }
+            });
+
+            var aaa = $("#bill").prop("checked");
+            if(aaa) {
+                $("#billInfo").show();
+            }else {
+                $("#billInfo").hide();
+            }
+
+            $.get("/supplier/users.do",function (d,s) {
+                var e=eval(d);
+                //console.log(e[0].userName);
+                for(var i=0;i<e.length;i++){
+                    var option=$("<option>").text(e[i].userName);
+                    option.attr("value",e[i].uid);
+                    $("#userId").append(option);
+                    form.render();
+                }
+            })
+
+            $.get("/supplier/supplierInquires.do",function (d,s) {
+                var e=eval(d);
+                for(var i=0;i<e.data.length;i++){
+                    var option=$("<option>").text(e.data[i].name);
+                    option.attr("value",e.data[i].name);
+                    option.attr("id",e.data[i].phone);
+                    $("#supplierName").append(option);
+                    form.render();
+                }
+
+            })
+
+            form.on("select(aihao)",function (d) {
+                var s=$("#supplierName option:selected").attr("id");
+                $("#phone").val(s);
+            })
+
+            //监听提交
+            form.on('submit(formDemo)', function(data){
+                $.post("/purchase/add.do",data.field,function (d,s) {
+                    if(d==="1"){
+                        layer.msg('添加成功！！！', {
+                            icon: 1,
+                            time: 1000 //2秒关闭（如果不配置，默认是3秒）
+                        }, function(){
+                            //假设这是iframe页
+                            var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                            parent.layer.close(index); //再执行关闭
+                        });
+                    }
+                });
+                return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+            });
+
+        });
+    </script>
 </head>
 <body>
 <form class="layui-form" action="">
     <div class="layui-form-item">
-        <label class="layui-form-label">库存编号</label>
-        <div class="layui-input-block">
-            <input type="text" name="title" lay-verify="title"  placeholder="请输入编号" class="layui-input">
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">品名</label>
-        <div class="layui-input-block">
-            <input type="text" name="username" lay-verify="required" lay-reqtext="产品名称是必填项，岂能为空？" placeholder="请输入名称"  class="layui-input">
+        <label class="layui-form-label">名称</label>
+        <div class="layui-input-inline">
+            <input type="text" name="name" lay-verify="did" autocomplete="off" placeholder="" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">cas号</label>
-        <div class="layui-input-block">
-            <input type="text" name="username" lay-verify="required" lay-reqtext="cas号，岂能为空？" placeholder="请输入cas号"  class="layui-input">
+        <div class="layui-input-inline">
+            <input type="text" name="cas" lay-verify="did" autocomplete="off" placeholder="" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
-        <label class="layui-form-label">库存数量</label>
-        <div class="layui-input-block">
-            <input type="text" name="username" lay-verify="required" lay-reqtext="库存数量不能空？" placeholder="请输入数量" class="layui-input">
+        <label class="layui-form-label">数量</label>
+        <div class="layui-input-inline">
+            <input type="text" name="amount" lay-verify="did" autocomplete="off" placeholder="" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">单价</label>
+        <div class="layui-input-inline">
+            <input type="text" name="price" lay-verify="did" autocomplete="off" placeholder="" class="layui-input">
+        </div>
+            <div class="layui-input-inline">
+                <select name="priceStatus">
+                    <option>请选择</option>
+                    <option value="0">含税</option>
+                    <option value="1">不含税</option>
+                </select>
+            </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">总价</label>
+        <div class="layui-input-inline">
+            <input type="text" name="sumPrice" lay-verify="did" autocomplete="off" placeholder="" class="layui-input">
+        </div>
+    </div>
+<!--    <div class="layui-form-item">-->
+<!--        <label class="layui-form-label">是否收货</label>-->
+<!--        <div class="layui-input-inline">-->
+<!--            <select name="priceStatus">-->
+<!--                <option value="0">含税</option>-->
+<!--                <option value="1">不含税</option>-->
+<!--            </select>-->
+<!--        </div>-->
+<!--    </div>-->
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">业务员</label>
+        <div class="layui-input-inline">
+            <select id="userId" name="userName" lay-verify=""></select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">供应商名称</label>
+        <div class="layui-input-inline">
+            <select id ="supplierName" name="supplierName"  lay-filter="aihao"  onabort="is()" >
+                <option>请选择</option>
+            </select>
         </div>
     </div>
     <div class="layui-form-item layui-form-text">
-        <label class="layui-form-label">备注</label>
-        <div class="layui-input-block">
-            <textarea placeholder="请输入内容" class="layui-textarea"></textarea>
+        <label class="layui-form-label">供应商联系电话</label>
+        <div class="layui-input-inline">
+            <input type="text" id="phone" name="supplierPhone" lay-verify="" adisabled="disabled" class="layui-input">
         </div>
     </div>
 
-        </div>
-
-        <div class="layui-form-item">
-        <div class="layui-input-block">
-            <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+    <div class="layui-form-item">
+        <div class="layui-input-inline">
+            <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
             <button type="reset" class="layui-btn layui-btn-primary">重置</button>
         </div>
     </div>
 </form>
-
-<script src="//res.layui.com/layui/dist/layui.js" charset="utf-8"></script>
-<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
-<script>
-    //监听提交
-    form.on('submit(demo1)', function(data){
-        layer.alert(JSON.stringify(data.field), {
-            title: '最终的提交信息'
-        })
-        return false;
-    });
-
-    //表单取值
-    layui.$('#LAY-component-form-getval').on('click', function(){
-        var data = form.val('example');
-        alert(JSON.stringify(data));
-
-
-    });
-</script>
-
-
 </body>
 </html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/web/component/layui/css/layui.css" th:src="@{/web/component/layui/css/layui.css}"  media="all">
+    <script type="text/javascript" src="/web/component/js/jquery-3.3.1.min.js" th:src="@{/web/component/js/jquery-3.3.1.min.js}"></script>
+    <script src="/web/component/layui/layui.js" th:src="@{/web/component/layui/layui.js}" ></script>
+</head>
+<script type="text/javascript" >
+    layui.use(["form","table","layer","upload"], function() {
+        var table = layui.table;
+        var form = layui.form;
+        var layer = layui.layer;
+        var upload = layui.upload;
+
+        var id=location.search;
+        id=id.split("=");
+
+        $(function () {
+            $.get("/Commodity/commodityById.do?sid="+id[1],function (d) {
+                var e=eval(d);
+                console.log(e);
+                $("#priceInfo").val(e.priceInfo);
+                $("#sid").val(e.sid);
+            })
+        })
+
+        //监听表单
+        form.on('submit(formDemo)', function(data){
+            console.log(data.field);
+            $.post("/Commodity/equals.do",data.field,function (d) {
+                if (d === "1") {
+                    var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                    parent.layer.close(index);
+                } else {
+                    layer.msg('修改失败!', {icon: 2, time: 1000});
+                }
+            })
+            return false;
+        });
+    })
+</script>
+<body>
+    <form class="layui-form" action="">
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">报价信息</label>
+            <div class="layui-input-block">
+                <textarea name="priceInfo" id="priceInfo" placeholder="请输入内容" class="layui-textarea" ></textarea>
+            </div>
+        </div>
+        <input type="text" style="display:none" id="sid" name="sid">
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="formDemo">修改</button>
+            </div>
+        </div>
+    </form>
+</body>
+</html>

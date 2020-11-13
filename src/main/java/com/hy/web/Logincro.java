@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
@@ -24,6 +27,7 @@ import javax.servlet.http.HttpSession;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Random;
 
@@ -120,7 +124,10 @@ public class Logincro {
         return userserves.detele(id);
     }
 
-
+    /**
+     * 获取sesiion中的业务员id
+     * @return
+     */
     @RequestMapping("/getSessionUserId")
     @ResponseBody
     public String getSessionUserId(){
@@ -188,4 +195,18 @@ public class Logincro {
         return new Color(r,g,b);
     }
 
+    /**
+     * 注销登陆
+     * @return
+     */
+    @RequestMapping("/zhuxiao")
+    @ResponseBody
+    public String zhuxiao(){
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        Enumeration em = request.getSession().getAttributeNames();
+        while(em.hasMoreElements()){
+            request.getSession().removeAttribute(em.nextElement().toString());
+        }
+        return Util.sueess;
+    }
 }

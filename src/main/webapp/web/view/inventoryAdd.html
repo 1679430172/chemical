@@ -42,11 +42,19 @@
             console.log(data.field)//当前容器的全部表单字段，名值对形式：{name: value}
             //阻止表单跳转。如果需要表单跳转，去掉这段即可。
             //{name:data.field.name,phone:data.field.phone,wechat:data.field.wechat,status:data.field.status,createTime:data.field.createTime,userId:data.field.userId}
-            $.post("/supplier/save.do?",data.field, function (d) {
+            $.post("/inventory/addinventory.do?",data.field, function (d) {
                 if (d === "1") {
-                    layer.msg('已添加成功!', {icon: 1, time: 3000});
+                    layer.msg('已添加成功!', {icon: 1, time: 1000},function () {
+                        //假设这是iframe页
+                        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                        parent.layer.close(index); //再执行关闭
+                    });
                 } else {
-                    layer.msg('添加失败!', {icon: 2, time: 1000});
+                    layer.msg('添加失败,库存编号已存在或者cas号已存在!', {icon: 2, time: 1000},function () {
+                        //假设这是iframe页
+                        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                        parent.layer.close(index); //再执行关闭
+                    });
                 }
             })
             return false;
@@ -59,34 +67,34 @@
     <div class="layui-form-item">
         <label class="layui-form-label">库存编号</label>
         <div class="layui-input-block">
-            <input type="text" lay-verify="required"  style="width: 200px" name="name" required   placeholder="请输入库存编号" autocomplete="off" class="layui-input">
+            <input type="text" lay-verify="required"  style="width: 200px" name="number" required   placeholder="请输入库存编号" autocomplete="off" class="layui-input">
         </div>
     </div>
 
     <div class="layui-form-item">
         <label class="layui-form-label">品名</label>
         <div class="layui-input-block">
-            <input type="text" lay-verify="required" name="phone" style="width: 200px" required   placeholder="请输入产品名称" autocomplete="off" class="layui-input">
+            <input type="text" lay-verify="required" name="name" style="width: 200px" required   placeholder="请输入产品名称" autocomplete="off" class="layui-input">
         </div>
     </div>
 
     <div class="layui-form-item">
         <label class="layui-form-label">cas号</label>
         <div class="layui-input-inline">
-            <input type="text"  name="wechat"  placeholder="请输入cas号"  autocomplete="off" class="layui-input">
+            <input type="text"  name="cas"  placeholder="请输入cas号"  autocomplete="off" class="layui-input">
         </div>
     </div>
 
     <div class="layui-form-item">
     <label class="layui-form-label">数量</label>
     <div class="layui-input-block">
-        <input type="text" lay-verify="required" name="phone" style="width: 200px" required   placeholder="请输入添加数量" autocomplete="off" class="layui-input">
+        <input type="text" lay-verify="required" name="amount" style="width: 200px" required   placeholder="请输入添加数量" autocomplete="off" class="layui-input">
     </div>
     </div>
     <div class="layui-form-item">
     <label class="layui-form-label">备注</label>
     <div class="layui-input-block">
-        <input type="text" lay-verify="required" name="phone" style="width: 200px" required   placeholder="建议" autocomplete="off" class="layui-input">
+        <input type="text" lay-verify="required" name="remark" style="width: 200px" required   placeholder="建议" autocomplete="off" class="layui-input">
     </div>
     </div>
 

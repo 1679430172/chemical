@@ -14,17 +14,17 @@
             type: 'post',
             contentType:"application/json",
             success: function (data) {
-                    if (data==="0"){
-                        //表头
-                        sjtable(data);
-                    }
+                if (data==="0"){
+                    //表头
+                    sjtable(data);
+                }
 
-                    if (data==="1"){
-                        sjtable(data);
-                    }
-                    if (data==="2"){
-                        sjtable(data);
-                    }
+                if (data==="1"){
+                    sjtable(data);
+                }
+                if (data==="2"){
+                    sjtable(data);
+                }
             }
         });
     });
@@ -35,25 +35,25 @@
             var table = layui.table;
             var layer =layui.layer;
             table.render({
-            elem: '#demo'       //赋值到那个table
-            ,height:500
-            ,url:'/Sales/Saleslist'
-            ,where:{userId: shuju}
-            ,page:true //开启分页
-            ,limit:10
-             , id: 'testReload'
-            ,toolbar: '#toolbarDemo'
-            ,defaultToolbar: ['filter', 'print', 'exports']
-            ,cols: [[   //表头
-                {field:'did', title: 'ID', sort: true}
-                ,{field:'userId',title: '业务员id'}
-                ,{field:'orderId', title: '订单编号'}
-                ,{field:'trackingNumber', title: '物流编号',edit:true}
-                ,{field:'trackingName',  title: '物流公司名称'}
-                ,{field: 'status', title: '状态'}
-                ,{field:'createTime', title: '创建时间'}
-                ,{fixed:'right', title: '操作',align:'center', toolbar: '#barDemo'}
-            ]],done: function (response) {
+                elem: '#demo'       //赋值到那个table
+                ,height:500
+                ,url:'/Sales/Saleslist'
+                ,where:{userId: shuju}
+                ,page:true //开启分页
+                ,limit:10
+                , id: 'testReload'
+                ,toolbar: '#toolbarDemo'
+                ,defaultToolbar: ['filter', 'print', 'exports']
+                ,cols: [[   //表头
+                    {field:'did', title: 'ID', sort: true}
+                    ,{field:'userId',title: '业务员id'}
+                    ,{field:'orderId', title: '订单编号'}
+                    ,{field:'trackingNumber', title: '物流编号'}
+                    ,{field:'trackingName',  title: '物流公司名称'}
+                    ,{field: 'status', title: '状态',hide:true}
+                    ,{field:'createTime', title: '创建时间'}
+                    ,{fixed:'right', title: '操作',align:'center', toolbar: '#barDemo'}
+                ]],done: function (response) {
                     //定位当前table视图
                     var tableView = this.elem.next();
                     $.each(response.data,function (index,item) {
@@ -61,14 +61,14 @@
                         if(item.trackingNumber==0){
                             //改变TR行颜色和标签内字体颜色
                             tableView.find('tbody tr[data-index="'+ index +'"]').css('background-color','yellow');
+                            tableView.find('tbody tr[data-index="'+ index +'"]').find('td').data('edit', true);
                         }
-                        if(item.status==0){
-                            tableView.find('tbody tr[data-index="'+ index +'"]').css('background-color','red').find('td').data('edit', false);
-
+                        if(item.status==2){
+                            tableView.find('tbody tr[data-index="'+ index +'"]').css('background-color','red');
                         }
                     })
                 }
-        });
+            });
             //头工具栏监听
             table.on('toolbar(test)', function(obj){
                 var data = obj.data; //获得当前行数据
@@ -87,6 +87,79 @@
                     });
                 }
 
+            });
+            //监听工具条
+            table.on('tool(test)', function(obj){
+                var data = obj.data; //获得当前行数据
+                var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+                if(layEvent === 'edit'){ //确认退货
+                    if(data.trackingNumber==0){
+                        layer.prompt({
+
+                            formType:0,//输入框类型，支持0（文本）默认1（密码）2（多行文本）
+
+                            title:'请填写单号（注：必填项）',
+
+                            area:['500px','150px'],
+
+                            btnAlign:'c'
+
+                        },function(value,index,elem){
+                            $.ajax({
+                                url: '/Sales/updateOrder?did='+data.orderId+"&trackingNumber="+value,
+                                type: 'get',
+                                dataType:"json",
+                                contentType:"application/json",
+                                success: function (data1) {
+                                    if (data1=="1"){
+                                        layer.msg('退货成功！！！', {
+                                            icon: 6,
+                                            time: 1000 //2秒关闭（如果不配置，默认是3秒）
+                                        }, function(){
+                                            table.reload('testReload', {
+                                                url:'/Sales/Saleslist'
+                                            });
+                                        });
+                                    }else{
+                                        layer.msg('订单编号重复,退货失败！！！', {
+                                            icon: 6,
+                                            time: 1000 //2秒关闭（如果不配置，默认是3秒）
+                                        })
+                                    }
+                                }
+                            });
+                            layer.close(index);
+                        });
+                    }else{
+                        $.ajax({
+                            url: '/Sales/updateOrder?did='+data.orderId+"&trackingNumber="+data.trackingNumber,
+                            type: 'get',
+                            dataType:"json",
+                            contentType:"application/json",
+                            success: function (data1) {
+                                if (data1=="1"){
+                                    layer.msg('退货成功！！！', {
+                                        icon: 6,
+                                        time: 1000 //2秒关闭（如果不配置，默认是3秒）
+                                    }, function(){
+                                        table.reload('testReload', {
+                                            url:'/Sales/Saleslist'
+                                        });
+                                    });
+                                }else{
+                                    layer.msg('订单编号重复,退货失败！！！', {
+                                        icon: 6,
+                                        time: 1000 //2秒关闭（如果不配置，默认是3秒）
+                                    }, function(){
+                                        table.reload('testReload', {
+                                            url:'/Sales/Saleslist'
+                                        });
+                                    });
+                                }
+                            }
+                        });
+                    }
+                }
             });
 
             $('#p1').click(function () {
@@ -109,16 +182,12 @@
 
                         $.each(response.data,function (index,item) {
                             //逻辑判断
-                            console.log(response.status);
                             if(item.trackingNumber==0){
-                                console.log(1111111111111111111);
                                 //改变TR行颜色和标签内字体颜色
                                 tableView.find('tbody tr[data-index="'+ index +'"]').css('background-color','yellow');
                             }
-                            if(item.status==0){
-                                console.log(111111111111111111122);
-                                tableView.find('tbody tr[data-index="'+ index +'"]').css('background-color','red').find('td').data('edit', false);
-
+                            if(item.status==2){
+                                tableView.find('tbody tr[data-index="'+ index +'"]').css('background-color','red');
                             }
                         })
                     }
@@ -128,11 +197,16 @@
         });
     }
 
+
 </script>
 
 <!-- //工具栏-->
 <script type="text/html" id="barDemo">
-    <a class="layui-btn layui-btn-xs" lay-event="edit">确认退款</a>
+    {{# if(d.status == 2) { }}
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="forbidden">已退货</a>
+    {{# } else{ }}
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="edit">确认退货</a>
+    {{# }}}
 </script>
 
 <!--工具栏头模板-->
@@ -142,7 +216,7 @@
     </div>
 </script>
 <body>
-<div class="demoTable">
+<div class="demoTable" align="center">
     搜索订单：
     <div class="layui-inline">
         <input class="layui-input" name="id" id="demoReload" autocomplete="off">
