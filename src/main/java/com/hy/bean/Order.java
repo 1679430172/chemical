@@ -1,9 +1,6 @@
 package com.hy.bean;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -14,22 +11,22 @@ import java.util.Date;
 @TableName(value = "`order`")
 public class Order {
     @TableId(type = IdType.AUTO)
-    private Integer did;
-    private Integer userId;
-    private Integer amount;
-    private Double price;
-    private Double costPrice;
-    private Double otherCost;
-    private String bill;
-    private String billInfo;
-    private Integer commodityId;
-    private Integer invoiceId;
-    private String status;
-    private String userName;
-    private String address;
-    private String phone;
-    private Date createTime;
-    private String remarks;
+    private Integer did;//订单id
+    private Integer userId;//业务员id
+    private Integer amount;//数量
+    private Double price;//单价
+    private Double costPrice;//成本
+    private Double otherCost;//其他成本
+    private String bill;//发票状态
+    private String billInfo;//发票内容
+    private Integer commodityId;//商品id
+    private Integer invoiceId;//库存标号
+    private String status;//是否出库
+    private String userName;//客户名
+    private String address;//客户地址
+    private String phone;//客户电话
+    private Date createTime;//创建时间
+    private String remarks;//备注
     @TableField(exist = false)
     private String name;//商品名称
     @TableField(exist = false)
