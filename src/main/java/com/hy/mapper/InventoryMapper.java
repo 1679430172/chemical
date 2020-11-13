@@ -38,4 +38,6 @@ public interface InventoryMapper extends BaseMapper<Inventory> {
     @Delete("delete from inventory where number=#{number}")
      public Inventory detelep(@Param("number")String number);
 
+    @Update("update inventory  set amount=#{amout} where cid=#{cid}")
+    public  Inventory updateIn(Integer kid);
 }

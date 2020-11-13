@@ -30,4 +30,5 @@ public interface PurchaseMapper extends BaseMapper<Purchase> {
     @SelectProvider(type = PurchaseSql.class,method = "query")
     public List<Purchase> queryBy(Page page, @Param("em")Purchase purchase);
 
+
 }

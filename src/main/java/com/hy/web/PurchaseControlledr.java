@@ -52,6 +52,7 @@ import org.springframework.web.servlet.ModelAndView;
     @PostMapping("/add.do")
     @ResponseBody
     public void addPurchase(Purchase purchase) throws Exception {
+            System.out.println("名称："+purchase.getName() +"uid:"+purchase.getUserId());
         purchaseService.save(purchase);
     }
 

@@ -14,6 +14,22 @@
         var layer = layui.layer;
         var laydate = layui.laydate;
 
+        form.on('submit(formDemo)', function(data){
+            var s="1";
+            if( s=== "1"){
+                $.post("/purchase/updentTn.do",data.field,function (d) {
+                    if (d === "1") {
+                        layer.msg('已添加成功!', {icon: 1, time: 3000});
+                    } else {
+                        layer.msg('添加失败!', {icon: 2, time: 1000});
+                    }
+                })
+            }
+            return false;
+        });
+
+    })
+
 </script>
 <body>
 <form class="layui-form" action="">
@@ -21,7 +37,7 @@
     <div class="layui-form-item">
         <label class="layui-form-label">数量</label>
         <div class="layui-input-inline">
-            <input type="text"  name="cas"  placeholder="请输入需要添加的数量"  autocomplete="off" class="layui-input">
+            <input type="text"  name="amount"  placeholder="请输入需要添加的数量"  autocomplete="off" class="layui-input">
         </div>
     </div>
     <div class="layui-inline">

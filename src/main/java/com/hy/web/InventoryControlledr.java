@@ -72,6 +72,10 @@ public class InventoryControlledr {
         return InventoService.detelep(number);
     }
 
-
+    @RequestMapping("updateIn")
+    @ResponseBody
+    public Integer updateIn(Integer cid){
+        return  InventoService.updateIn(cid);
+    }
 
 }

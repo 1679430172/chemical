@@ -25,12 +25,13 @@ public class PurchaseService extends ServiceImpl<PurchaseMapper, Purchase> {
     }
 
     public void updateAnn(String cid){
-        purchaseMapper.updateAnn(cid);
+       purchaseMapper.updateAnn(cid);
     }
 
     public void updateTN(String cid){purchaseMapper.updateTN(cid);}
 
     public boolean save(Purchase purchase){
+        System.out.println("~~~~"+purchase.getName());
         purchaseMapper.addPurchase(purchase);
         return true;
     }
@@ -38,4 +39,6 @@ public class PurchaseService extends ServiceImpl<PurchaseMapper, Purchase> {
         IPage<Purchase> iPage= purchaseMapper.Purchase(new Page(page,limit));
         return iPage;
     }
+
+
 }

@@ -9,13 +9,11 @@ import com.hy.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-
 @Service
 public class InventoService extends ServiceImpl<InventoryMapper, Inventory> {
     @Autowired
     private InventoryMapper inventoryMapper;
-
+//查询所有
     public IPage<Inventory> iPage(Integer page, Integer limit){
         IPage<Inventory> iPage= inventoryMapper.Inventory(new Page(page,limit));
         return iPage;
@@ -24,7 +22,12 @@ public class InventoService extends ServiceImpl<InventoryMapper, Inventory> {
     public IPage<Inventory> querylist(Integer page, Integer limit, Inventory inventory){
         return (IPage<Inventory>) inventoryMapper.queryBy(new Page<Inventory>(page,limit),inventory);
     }
+    //修改数量
+    public Integer updateIn(Integer cid){inventoryMapper.updateIn(cid);
+        return cid;
+    }
 
+    //库存添加
     public  String add(Inventory inventory)throws Exception{
         Inventory b=inventoryMapper.select(inventory.getNumber(),inventory.getCas());
         if(b!=null){
@@ -44,7 +47,7 @@ public class InventoService extends ServiceImpl<InventoryMapper, Inventory> {
 
     }
 
-
+   //删除
     public String detelep(String number){
         try {
             inventoryMapper.detelep(number);
