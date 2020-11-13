@@ -3,6 +3,7 @@ package com.hy.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.hy.bean.Order;
 import com.hy.bean.Sales;
 import com.hy.bean.SalesOrdet;
 import org.apache.ibatis.annotations.Mapper;
@@ -58,11 +59,5 @@ public interface SalesMapper extends BaseMapper<Sales> {
     @Update("update sales set tracking_number=#{trackingNumber} where order_id=#{orderId}")
     public Integer updatetrackingNumber(@Param("trackingNumber")String trackingNumber,@Param("orderId")Integer orderId);
 
-    /**
-     * 查询退货的单号（防止订单号重复）
-     * @param trackingNumber
-     * @return
-     */
-    @Select("select did  from sales where tracking_number=#{trackingNumber}")
-    public  Sales selecttrackingnumber(@Param("trackingNumber")String trackingNumber);
+
 }
