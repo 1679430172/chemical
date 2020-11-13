@@ -6,11 +6,10 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hy.bean.Inventory;
 import com.hy.mapper.InventoryMapper;
 import com.hy.util.Util;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Date;
 
 @Service
 public class InventoService extends ServiceImpl<InventoryMapper, Inventory> {
@@ -45,5 +44,14 @@ public class InventoService extends ServiceImpl<InventoryMapper, Inventory> {
 
     }
 
+
+    public String detelep(String number){
+        try {
+            inventoryMapper.detelep(number);
+        } catch (Exception e) {
+            return Util.defact;
+        }
+        return Util.sueess;
+    }
 
 }

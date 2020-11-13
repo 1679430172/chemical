@@ -17,7 +17,7 @@ public interface InventoryMapper extends BaseMapper<Inventory> {
     @SelectProvider(type = InventorySql.class,method = "query")
     public List<Inventory> queryBy(Page page, @Param("em")Inventory inventory);
 
-    @Insert("insert into inventory(number,name,cas,amount,remark) values(#{number},#{name},#{cas},#{amount},#{remark})")
+    @Insert("insert into inventory(number,name,cas,create_time,update_time,amount,remark) values(#{number},#{name},#{cas},now(),now(),#{amount},#{remark})")
     public int insertinventory(Inventory inventory);
 
     @Select("select * from inventory where number=#{number}")
@@ -34,5 +34,8 @@ public interface InventoryMapper extends BaseMapper<Inventory> {
 
     @Update("update inventory set amount=#{amount} where number=#{number}")
     public int updateinventory(@Param("amount") Integer amount,@Param("number")String number);
+
+    @Delete("delete from inventory where number=#{number}")
+     public Inventory detelep(@Param("number")String number);
 
 }
