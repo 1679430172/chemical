@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hy.bean.Inventory;
+import com.hy.bean.Invoice;
 import com.hy.mapper.InventoryMapper;
 import com.hy.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +23,14 @@ public class InventoService extends ServiceImpl<InventoryMapper, Inventory> {
     public IPage<Inventory> querylist(Integer page, Integer limit, Inventory inventory){
         return (IPage<Inventory>) inventoryMapper.queryBy(new Page<Inventory>(page,limit),inventory);
     }
+
     //修改数量
-    public Integer updateIn(Integer cid){inventoryMapper.updateIn(cid);
-        return cid;
+    public Integer autoUpdateBySid(Inventory inventory){
+        boolean bl=inventoryMapper.autoUpdate(inventory.getAmount(),inventory.getKid());
+        if(!bl){
+            return 0;
+        }
+        return 1;
     }
 
     //库存添加

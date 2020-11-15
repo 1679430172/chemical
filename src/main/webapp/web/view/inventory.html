@@ -44,7 +44,7 @@
                 ,{field:'createTime', title: '创建时间', width: '15%', sort: true , minWidth: 100}
                 ,{field:'updateTime', title: '更新时间', width: '15%', sort: true , minWidth: 100}
                 ,{field:'amount', title: '库存数量',sort: true , width: '10%', minWidth: 100} //minWidth：局部定义当前单元格的最小宽度
-                ,{field:'remark', title: '备注', width: '10%',  minWidth: 100}
+                ,{field:'remark', title: '备注', width: '10%',  minWidth: 100, edit:'text'}
                 ,{fixed: 'right', width: 165, align:'center', toolbar: '#barDemo'}
                 ]
             ]
@@ -93,6 +93,9 @@
             }
         });
 
+
+
+
     //监听行
     table.on('tool(test)', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
         var data = obj.data //获得当前行数据
@@ -123,23 +126,59 @@
                     }
                 });
             });
-        } else if(layEvent === 'edit'){
-            layer.open({
-                type: 2,
-                //offset: 'auto',、
-                skin: 'layui-layer-rim',
-                area: ['300', '200'],
-                content: '/web/view/inventoryupdate.html?', //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
-                end:function () {
-                    table.reload('test', {
-                        url: '/inventory/inventory.do'
-                    });
-                }
+        } else if(layEvent === 'detail'){ //查看
+            layer.prompt({
+                formType: 2,
+                value: '',
+                title: '请输入需要添加或减少的数量（注：减库存请带“ - ”）',
+                area: ['100px', '40px'] //自定义文本域宽高
+            }, function(value, index, elem){
+                $.post("/inventory/autoUpdate.do",{kid:data.kid,amount:value},function (data) {
+                    if (data==1){
+                        layer.msg('修改成功');
+                        table.reload('test', {
+                            url: '/inventory/inventory.do'
+                        });
+                    }else {
+                        layer.msg('修改失败');
+                        table.reload('test', {
+                            url: '/inventory/inventory.do'
+                        });
+                    }
+
+                });
+                layer.close(index);
             });
         }
-    });
+
+        table.on('edit(test)', function(obj){
+            var value = obj.value //得到修改后的值
+                ,data = obj.data //得到所在行所有键值
+                ,field = obj.field; //得到字段
+            if(regPos.test(value) || regNeg.test(value)) {
+                $.post("/inventory/autoUpdate.do",{kid:data.kid,remark:value},function (data) {
+                    if (data==1){
+                        table.reload('demo', {
+                            url: '/inventory/inventory.do'
+                        });
+                    }else {
+                        layer.msg('修改失败');
+                        table.reload('demo', {
+                            url: '/inventory/inventory.do'
+                        });
+                    }
+                })
+            } else {
+                layer.msg('输入非法');
+                table.reload('demo', {
+                    url: '/inventory/inventory.do'
+                });
+            }
+        });
 
     });
+    });
+
 
 </script>
 <style>
@@ -148,9 +187,15 @@
     }
 </style>
 <script type="text/html" id="toolbarDemo">
-    <div class="layui-btn-container">
+      {{#  if(0 == [[${session.userType}]]){ }}
+        <div class="layui-btn-container">
         <button class="layui-btn layui-btn-sm" lay-event="add">添加</button>
-    </div>
+        </div>
+        {{#  } else { }}
+        暂无添加权限
+        {{#  } }}
+
+
     <form class="layui-form" action=""  style="display:inline-block;">
         <div class="layui-form-item">
             <div class="layui-inline">
@@ -181,7 +226,7 @@
 </script>
 <script type="text/html" id="barDemo">
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="edit">修改</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="detail">修改</a>
 </script>
 
 </body>
