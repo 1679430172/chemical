@@ -46,6 +46,11 @@ public interface InventoryMapper extends BaseMapper<Inventory> {
     @Update("update inventory set amount=amount-#{amount}  where kid=#{kid}")
     public boolean jUpdate(@Param("amount") Integer amount, @Param("kid")Integer kid);
 
+    @Update("update inventory set amount=amount-#{amount}  where number=#{number}")
+    public boolean aUpdate(@Param("amount") Integer amount, @Param("number")String number);
+
+
+
     @Update("update inventory set remark=#{remark}  where kid=#{kid}")
     public boolean UpdateRe(@Param("remark") String remark, @Param("kid")Integer kid);
 

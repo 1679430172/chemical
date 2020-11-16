@@ -2,7 +2,6 @@ package com.hy.web;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.hy.bean.Commodity;
 import com.hy.bean.Purchase;
 import com.hy.service.PurchaseService;
 import com.hy.util.ParseData;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Date;
 
 @Api
     @Controller

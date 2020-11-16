@@ -21,7 +21,13 @@ public class PurchaseService extends ServiceImpl<PurchaseMapper, Purchase> {
     public IPage<Purchase> iPage(Integer page, Integer limit){
 
         IPage<Purchase> iPage=purchaseMapper.Purchase(new Page(page,limit));
-
+        List<Purchase> list=iPage.getRecords();
+        for(Purchase s:list){
+            String cid=""+s.getCid();
+            String id="CG00000";
+            id=id.substring(0,id.length()-cid.length())+cid;
+            s.setGid(id);
+        }
         return iPage;
     }
 

@@ -43,6 +43,15 @@ public class InventoService extends ServiceImpl<InventoryMapper, Inventory> {
         return 1;
     }
 
+    //减数量
+    public Integer aUpdate(Inventory inventory){
+        boolean bl=inventoryMapper.aUpdate(inventory.getAmount(),inventory.getNumber());
+        if(!bl){
+            return 0;
+        }
+        return 1;
+    }
+
     public Integer UpdateRe(Inventory inventory){
         boolean bl=inventoryMapper.UpdateRe(inventory.getRemark(),inventory.getKid());
         if(!bl){
