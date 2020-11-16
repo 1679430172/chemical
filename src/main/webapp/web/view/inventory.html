@@ -156,7 +156,7 @@
                 ,data = obj.data //得到所在行所有键值
                 ,field = obj.field; //得到字段
             if(regPos.test(value) || regNeg.test(value)) {
-                $.post("/inventory/autoUpdate.do",{kid:data.kid,remark:value},function (data) {
+                $.post("/inventory/UpdateRe.do",{kid:data.kid,remark:value},function (data) {
                     if (data==1){
                         table.reload('demo', {
                             url: '/inventory/inventory.do'

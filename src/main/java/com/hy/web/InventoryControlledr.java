@@ -90,4 +90,17 @@ public class InventoryControlledr {
         return InventoService.autoUpdateBySid(inventory);
     }
 
+
+    @ResponseBody
+    @RequestMapping ("/UpdateRe.do" )
+    public Integer UpdateRe(Inventory inventory){
+        return InventoService.UpdateRe(inventory);
+    }
+
+    @ResponseBody
+    @RequestMapping ("/jUpdate.do" )
+    public Integer jUpdate(Inventory inventory){
+        return InventoService.autoUpdateBykid(inventory);
+    }
+
 }

@@ -24,9 +24,27 @@ public class InventoService extends ServiceImpl<InventoryMapper, Inventory> {
         return (IPage<Inventory>) inventoryMapper.queryBy(new Page<Inventory>(page,limit),inventory);
     }
 
-    //修改数量
+    //修改数量(添加)
     public Integer autoUpdateBySid(Inventory inventory){
         boolean bl=inventoryMapper.autoUpdate(inventory.getAmount(),inventory.getKid());
+        if(!bl){
+            return 0;
+        }
+        return 1;
+    }
+
+
+    //减数量
+    public Integer autoUpdateBykid(Inventory inventory){
+        boolean bl=inventoryMapper.jUpdate(inventory.getAmount(),inventory.getKid());
+        if(!bl){
+            return 0;
+        }
+        return 1;
+    }
+
+    public Integer UpdateRe(Inventory inventory){
+        boolean bl=inventoryMapper.UpdateRe(inventory.getRemark(),inventory.getKid());
         if(!bl){
             return 0;
         }

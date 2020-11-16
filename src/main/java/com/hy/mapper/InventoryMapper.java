@@ -39,11 +39,14 @@ public interface InventoryMapper extends BaseMapper<Inventory> {
     @Delete("delete from inventory where number=#{number}")
      public Inventory detelep(@Param("number")String number);
 
-    @Update("update inventory set amount=amount-#{amount} where kid=#{kid}")
-    public  Inventory updateAm(@Param("amount") Integer amount,@Param("kid")Integer kid);
 
     @Update("update inventory set amount=amount+#{amount}  where kid=#{kid}")
     public boolean autoUpdate(@Param("amount") Integer amount, @Param("kid")Integer kid);
 
+    @Update("update inventory set amount=amount-#{amount}  where kid=#{kid}")
+    public boolean jUpdate(@Param("amount") Integer amount, @Param("kid")Integer kid);
+
+    @Update("update inventory set remark=#{remark}  where kid=#{kid}")
+    public boolean UpdateRe(@Param("remark") String remark, @Param("kid")Integer kid);
 
 }
