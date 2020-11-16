@@ -44,8 +44,8 @@ public class InventoService extends ServiceImpl<InventoryMapper, Inventory> {
     }
 
     //减数量
-    public Integer aUpdate(Inventory inventory){
-        boolean bl=inventoryMapper.aUpdate(inventory.getAmount(),inventory.getNumber());
+    public Integer aUpdate(Integer amount,Integer kid){
+        boolean bl=inventoryMapper.jUpdate(amount,kid);
         if(!bl){
             return 0;
         }

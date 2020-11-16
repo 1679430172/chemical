@@ -37,6 +37,16 @@ public class Order {
     private Double sumPrice;//总价
     @TableField(exist = false)
     private Double royalties;
+    @TableField(exist = false)
+    private String id;//订单id
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public Integer getDid() {
         return did;
