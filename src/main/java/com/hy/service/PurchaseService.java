@@ -3,26 +3,32 @@ package com.hy.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.hy.bean.Commodity;
-import com.hy.bean.Inventory;
-import com.hy.bean.Purchase;
-import com.hy.bean.SupplierUsers;
+import com.hy.bean.*;
 import com.hy.mapper.PurchaseMapper;
+import com.hy.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Service
 public class PurchaseService extends ServiceImpl<PurchaseMapper, Purchase> {
     @Autowired
     private PurchaseMapper purchaseMapper;
+    @Autowired
+    private UserMapper userMapper;
 
     public IPage<Purchase> iPage(Integer page, Integer limit){
 
         IPage<Purchase> iPage=purchaseMapper.Purchase(new Page(page,limit));
         List<Purchase> list=iPage.getRecords();
         for(Purchase s:list){
+            Integer userif=s.getUserId();
+            User user=userMapper.selectbyid(userif);
+            s.setUserName(user.getUsername());
             String cid=""+s.getCid();
             String id="CG00000";
             id=id.substring(0,id.length()-cid.length())+cid;
@@ -53,5 +59,9 @@ public class PurchaseService extends ServiceImpl<PurchaseMapper, Purchase> {
         return iPage;
     }
 
-
+    public Integer wwww(){
+        HttpSession session = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession();
+        Integer userId= (Integer) session.getAttribute("userId");
+        return userId;
+    }
 }

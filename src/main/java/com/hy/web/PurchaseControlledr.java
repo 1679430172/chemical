@@ -60,6 +60,7 @@ import org.springframework.web.servlet.ModelAndView;
     @PostMapping("/add.do")
     @ResponseBody
     public  String addPurchase(Purchase purchase) throws Exception {
+        purchase.setUserId(purchaseService.wwww());
         try {
             purchaseService.save(purchase);
         } catch (Exception e) {

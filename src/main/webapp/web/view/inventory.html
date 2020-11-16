@@ -174,32 +174,30 @@
             });
         }
 
+
+    });
+
         table.on('edit(test)', function(obj){
             var value = obj.value //得到修改后的值
                 ,data = obj.data //得到所在行所有键值
                 ,field = obj.field; //得到字段
-            if(regPos.test(value) || regNeg.test(value)) {
-                $.post("/inventory/UpdateRe.do",{kid:data.kid,remark:value},function (data) {
-                    if (data==1){
-                        table.reload('demo', {
-                            url: '/inventory/inventory.do'
-                        });
-                    }else {
-                        layer.msg('修改失败');
-                        table.reload('demo', {
-                            url: '/inventory/inventory.do'
-                        });
-                    }
-                })
-            } else {
-                layer.msg('输入非法');
-                table.reload('demo', {
-                    url: '/inventory/inventory.do'
-                });
-            }
+            console.log(value);
+            $.post("/inventory/UpdateRe.do",{kid:data.kid,remark:value},function (data) {
+                if (data==1){
+                    table.reload('demo', {
+                        url: '/inventory/inventory.do'
+                    });
+                }else {
+                    layer.msg('修改失败');
+                    table.reload('demo', {
+                        url: '/inventory/inventory.do'
+                    });
+                }
+            })
+
+
         });
 
-    });
     });
 
 
@@ -211,41 +209,41 @@
 </style>
 <script type="text/html" id="toolbarDemo">
       {{#  if(0 == [[${session.userType}]]){ }}
-        <div class="layui-btn-container">
         <button class="layui-btn layui-btn-sm" lay-event="add">添加</button>
-        </div>
         {{#  } else { }}
         暂无添加权限
         {{#  } }}
-
-
+       &numsp; &numsp;
+      &numsp; &numsp; &numsp; &numsp; &numsp; &numsp; &numsp; &numsp; &numsp; &numsp; &numsp; &numsp;
+      <div  style="display:inline-block;">
     <form class="layui-form" action=""  style="display:inline-block;">
-        <div class="layui-form-item">
             <div class="layui-inline">
-                <label class="layui-form-label">品名</label>
-                <div class="layui-input-block">
+            <div class="layui-inline">
+                <label class="layui-inline">品名</label>
+                <div class="layui-inline">
                     <input type="text" name="name" lay-verify="title" autocomplete="off" placeholder="请输入" class="layui-input">
                 </div>
             </div>
             <div class="layui-inline">
-                <label class="layui-form-label">Cas号</label>
-                <div class="layui-input-block">
+                <label class="layui-inline">Cas号</label>
+                <div class="layui-inline">
                     <input type="text" name="cas" lay-verify="title" autocomplete="off" placeholder="请输入" class="layui-input">
                 </div>
             </div>
             <div class="layui-inline">
-                <label class="layui-form-label">编号</label>
-                <div class="layui-input-block">
+                <label class="layui-inline">编号</label>
+                <div class="layui-inline">
                     <input type="text" name="number" lay-verify="title" autocomplete="off" placeholder="请输入" class="layui-input">
                 </div>
             </div>
             <div class="layui-inline">
-                <div class="layui-input-block">
+                <div class="layui-inline">
                     <button type="submit" class="layui-btn" lay-submit="" lay-filter="formDemo">查询</button>
                 </div>
             </div>
-        </div>
+      </div>
     </form>
+     </div>
 </script>
 <script type="text/html" id="barDemo">
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
