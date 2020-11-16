@@ -60,6 +60,8 @@ import org.springframework.web.servlet.ModelAndView;
     @PostMapping("/add.do")
     @ResponseBody
     public  String addPurchase(Purchase purchase) throws Exception {
+        purchase.setSumPrice(purchase.getAmount()*purchase.getPrice());
+        System.out.println(purchase.getSumPrice());
         purchase.setUserId(purchaseService.wwww());
         try {
             purchaseService.save(purchase);
