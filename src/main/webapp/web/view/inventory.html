@@ -130,7 +130,7 @@
             layer.prompt({
                 formType: 2,
                 value: '',
-                title: '请输入需要添加或减少的数量',
+                title: '请输入需要添加的数量',
                 area: ['100px', '40px'] //自定义文本域宽高
             }, function(value, index, elem){
                 $.post("/inventory/autoUpdate.do",{kid:data.kid,amount:value},function (data) {
@@ -153,7 +153,7 @@
             layer.prompt({
                 formType: 2,
                 value: '',
-                title: '请输入需要添加或减少的数量（注：减库存请带“ - ”）',
+                title: '请输入需要减少的数量',
                 area: ['100px', '40px'] //自定义文本域宽高
             }, function(value, index, elem){
                 $.post("/inventory/jUpdate.do",{kid:data.kid,amount:value},function (data) {
