@@ -67,7 +67,7 @@ public class OrderService extends ServiceImpl<OrderMapper, Order> {
         }else if(session.getAttribute("userType").equals(Authority.authorizedSalesman)){
             iPage=orderMapper.selectListByStatus(page);
         }else if(session.getAttribute("userType").equals(Authority.salesman)){
-            iPage=orderMapper.selectListByStatus((Integer)session.getAttribute("userId"),page);
+            iPage=orderMapper.selectListByStatust((Integer)session.getAttribute("userId"),page);
         }
         List<Order> list=iPage.getRecords();
         for(Order s:list){
