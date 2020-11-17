@@ -106,7 +106,7 @@
                         "  <tr>" +
                         "    <td>单价</td>" +
                         "    <td>";
-                    if(0 == [[${session.userType}]] || data.userId == [[${session.userId}]] || data.suid == [[${session.userId}]]){
+                    if(0 == data.type || data.userId == data.uid || data.suid == data.uid){
                         content+=data.price;
                     }else{
                         content+="无权限";
@@ -116,7 +116,7 @@
                         "  <tr>" +
                         "    <td>总价</td>" +
                         "    <td>";
-                    if(0 == [[${session.userType}]] || data.userId == [[${session.userId}]] || data.suid == [[${session.userId}]]){
+                    if(0 == data.type || data.userId == data.uid || data.suid == data.uid){
                         content+=data.sumPrice;
                     }else{
                         content+="无权限";
@@ -125,7 +125,7 @@
                         "  <tr>" +
                         "    <td>成本</td>" +
                         "    <td>";
-                    if(0 == [[${session.userType}]] || data.userId == [[${session.userId}]] || data.suid == [[${session.userId}]]){
+                    if(0 == data.type || data.userId == data.uid || data.suid == data.uid){
                         content+=data.costPrice;
                     }else{
                         content+="无权限";
@@ -135,7 +135,7 @@
                         "  <tr>" +
                         "    <td>其他成本</td>" +
                         "    <td>";
-                    if(0 == [[${session.userType}]] || data.userId == [[${session.userId}]] || data.suid == [[${session.userId}]]){
+                    if(0 == data.type || data.userId == data.uid || data.suid == data.uid){
                         content+=data.otherCost;
                     }else{
                         content+="无权限";
@@ -145,7 +145,7 @@
                         "  <tr>" +
                         "    <td>总成本</td>" +
                         "    <td>";
-                    if(0 == [[${session.userType}]] || data.userId == [[${session.userId}]] || data.suid == [[${session.userId}]]){
+                    if(0 == data.type || data.userId == data.uid || data.suid == data.uid){
                         content+=data.zcb;
                     }else{
                         content+="无权限";
@@ -155,7 +155,7 @@
                         "  <tr>" +
                         "    <td>提成</td>" +
                         "    <td>";
-                    if(0 == [[${session.userType}]] || data.userId == [[${session.userId}]] || data.suid == [[${session.userId}]]){
+                    if(0 == data.type || data.userId == data.uid || data.suid == data.uid){
                         content+=data.royalties;
                     }else{
                         content+="无权限";
@@ -316,66 +316,67 @@
         {{#  } }}
     </script>
     <script type="text/html" id="royalties">
-        {{#  if(0 == [[${session.userType}]]){ }}
+        {{#  if(0 == d.type){ }}
+        {{d.type}}
         {{d.royalties}}
-        {{#  } else if(d.userId == [[${session.userId}]]){ }}
+        {{#  } else if(d.userId == d.uid){ }}
         {{d.royalties}}
-        {{#  } else if(d.suid == [[${session.userId}]]){ }}
+        {{#  } else if(d.suid == d.uid){ }}
         {{d.royalties}}
         {{#  } else { }}
         无权限
         {{#  } }}
     </script>
     <script type="text/html" id="price">
-        {{#  if(0 == [[${session.userType}]]){ }}
+        {{#  if(0 == d.type){ }}
         {{d.price}}
-        {{#  } else if(d.userId == [[${session.userId}]]){ }}
+        {{#  } else if(d.userId == d.uid){ }}
         {{d.price}}
-        {{#  } else if(d.suid == [[${session.userId}]]){ }}
+        {{#  } else if(d.suid == d.uid){ }}
         {{d.price}}
         {{#  } else { }}
         无权限
         {{#  } }}
     </script>
     <script type="text/html" id="sumPrice">
-        {{#  if(0 == [[${session.userType}]]){ }}
+        {{#  if(0 == d.type){ }}
         {{d.sumPrice}}
-        {{#  } else if(d.userId == [[${session.userId}]]){ }}
+        {{#  } else if(d.userId == d.uid){ }}
         {{d.sumPrice}}
-        {{#  } else if(d.suid == [[${session.userId}]]){ }}
+        {{#  } else if(d.suid == d.uid){ }}
         {{d.sumPrice}}
         {{#  } else { }}
         无权限
         {{#  } }}
     </script>
     <script type="text/html" id="costPrice">
-        {{#  if(0 == [[${session.userType}]]){ }}
+        {{#  if(0 == d.type){ }}
         {{d.costPrice}}
-        {{#  } else if(d.userId == [[${session.userId}]]){ }}
+        {{#  } else if(d.userId == d.uid){ }}
         {{d.costPrice}}
-        {{#  } else if(d.suid == [[${session.userId}]]){ }}
+        {{#  } else if(d.suid == d.uid){ }}
         {{d.costPrice}}
         {{#  } else { }}
         无权限
         {{#  } }}
     </script>
     <script type="text/html" id="otherCost">
-        {{#  if(0 == [[${session.userType}]]){ }}
+        {{#  if(0 == d.type){ }}
         {{d.otherCost}}
-        {{#  } else if(d.userId == [[${session.userId}]]){ }}
+        {{#  } else if(d.userId == d.uid){ }}
         {{d.otherCost}}
-        {{#  } else if(d.suid == [[${session.userId}]]){ }}
+        {{#  } else if(d.suid == d.uid){ }}
         {{d.otherCost}}
         {{#  } else { }}
         无权限
         {{#  } }}
     </script>
     <script type="text/html" id="zcb">
-        {{#  if(0 == [[${session.userType}]]){ }}
+        {{#  if(0 == d.type){ }}
         {{ d.zcb}}
-        {{#  } else if(d.userId == [[${session.userId}]]){ }}
+        {{#  } else if(d.userId == d.uid){ }}
         {{ d.zcb}}
-        {{#  } else if(d.suid == [[${session.userId}]]){ }}
+        {{#  } else if(d.suid == d.uid){ }}
         {{ d.zcb}}
         {{#  } else { }}
         无权限

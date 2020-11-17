@@ -39,6 +39,26 @@ public class Order {
     private Double royalties;
     @TableField(exist = false)
     private String id;//订单id
+    @TableField(exist = false)
+    private String type;//当前登录权限
+    @TableField(exist = false)
+    private Integer uid;//当前登录id
+
+    public Integer getUid() {
+        return uid;
+    }
+
+    public void setUid(Integer uid) {
+        this.uid = uid;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 
     public String getId() {
         return id;
