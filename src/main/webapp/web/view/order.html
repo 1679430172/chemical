@@ -8,35 +8,7 @@
     <script type="text/javascript" src="/web/component/js/jquery-3.3.1.min.js"></script>
     <script>
         layui.use(['table','layer','form','laydate'], function(){
-            var table = layui.table,form = layui.form,laydate = layui.laydate;;
-
-            $(document).on("click",".notOutbound",function(){
-                $.post("/Order/",{did:this.value,_method:"PUT"},function (data) {
-                    if(data==1){
-                        layer.msg('已出库！！！', {
-                            icon: 1,
-                            time: 2000 //1秒关闭（如果不配置，默认是3秒）
-                        })
-                        table.reload('demo', {
-                            url: '/Order/'
-                        });
-                    }else{
-                        layer.msg('状态修改失败', {
-                            time: 2000 //1秒关闭（如果不配置，默认是3秒）
-                        })
-                    }
-                });
-            });
-            $(document).on("click",".outbound",function(){
-                layer.msg('已在出库状态！！！', {
-                    time: 1000 //1秒关闭（如果不配置，默认是3秒）
-                })
-            });
-            $(document).on("click",".salesReturn",function(){
-                layer.msg('退货中禁止修改状态！！！', {
-                    time: 1000 //1秒关闭（如果不配置，默认是3秒）
-                })
-            });
+            var table = layui.table,form = layui.form,laydate = layui.laydate;
 
             //第一个实例
             table.render({
@@ -75,6 +47,43 @@
                     })
                 }
             });
+
+            $(document).on("click",".notOutbound",function(){
+                $.post("/Order/",{did:this.value,_method:"PUT"},function (data) {
+                    if(data==1){
+                        layer.msg('已出库！！！', {
+                            icon: 1,
+                            time: 2000 //1秒关闭（如果不配置，默认是3秒）
+                        })
+                        table.reload('demo', {
+                            url: '/Order/'
+                            ,done:function () {
+                                lay('.time').each(function(){
+                                    laydate.render({
+                                        elem: this
+                                        ,trigger: 'click'
+                                    });
+                                });
+                            }
+                        });
+                    }else{
+                        layer.msg('状态修改失败', {
+                            time: 2000 //1秒关闭（如果不配置，默认是3秒）
+                        })
+                    }
+                });
+            });
+            $(document).on("click",".outbound",function(){
+                layer.msg('已在出库状态！！！', {
+                    time: 1000 //1秒关闭（如果不配置，默认是3秒）
+                })
+            });
+            $(document).on("click",".salesReturn",function(){
+                layer.msg('退货中禁止修改状态！！！', {
+                    time: 1000 //1秒关闭（如果不配置，默认是3秒）
+                })
+            });
+
 
             //监听工具条
             table.on('tool(test)', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
@@ -195,7 +204,15 @@
                                     time: 2000 //1秒关闭（如果不配置，默认是3秒）
                                 })
                                 table.reload('demo', {
-                                    url: '/Order/'
+                                    url: '/Order/',
+                                    done:function () {
+                                        lay('.time').each(function(){
+                                            laydate.render({
+                                                elem: this
+                                                ,trigger: 'click'
+                                            });
+                                        });
+                                    }
                                 });
                             }else{
                                 layer.msg('删除失败！！！', {
@@ -208,28 +225,37 @@
                 }
             });
 
-
-
-            //执行实例
-            $("#test1").click(function () {
-                layer.open({
-                    area: ['450px', '500px'],
-                    type: 2,
-                    content: '/Order/toAdd' //这里content是一个普通的String
-                    ,end:function () {
-                        table.reload('demo', {
-                            url: '/Order/'
-                        });
-                    }
-                });
+            //监听表头
+            table.on('toolbar(test)',function (obj) {
+                var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+                if(layEvent === 'import'){
+                    layer.open({
+                        area: ['450px', '500px'],
+                        type: 2,
+                        title:'添加订单',
+                        content: '/Order/toAdd' //这里content是一个普通的String
+                        ,end:function () {
+                            table.reload('demo', {
+                                url: '/Order/'
+                                ,done:function () {
+                                    lay('.time').each(function(){
+                                        laydate.render({
+                                            elem: this
+                                            ,trigger: 'click'
+                                        });
+                                    });
+                                }
+                            });
+                        }
+                    });
+                }
             })
 
-            //日期
-            laydate.render({
-                elem: '#stadate'
-            });
-            laydate.render({
-                elem: '#enddate'
+            lay('.time').each(function(){
+                laydate.render({
+                    elem: this
+                    ,trigger: 'click'
+                });
             });
 
             //监听提交
@@ -240,13 +266,14 @@
                 table.reload('demo', {
                     url: '/Order/time'
                     ,where: data.field //设定异步数据接口的额外参数
-                });
-                //日期
-                laydate.render({
-                    elem: '#stadate'
-                });
-                laydate.render({
-                    elem: '#enddate'
+                    ,done:function () {
+                        lay('.time').each(function(){
+                            laydate.render({
+                                elem: this
+                                ,trigger: 'click'
+                            });
+                        });
+                    }
                 });
                 return false;
             });
@@ -260,11 +287,11 @@
             <button type="button" class="layui-btn layui-btn-sm" lay-event="import" id="test1"><i class="layui-icon">&#xe654;</i>添加订单</button>&nbsp;&nbsp;
             <form class="layui-form" action="" style="display: inline-block;">
                 <div class="layui-input-inline">
-                    <input type="text" name="stadate" id="stadate" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
+                    <input type="text" name="stadate" id="stadate" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input time">
                 </div>
                 &nbsp; - &nbsp;
                 <div class="layui-input-inline">
-                    <input type="text" name="enddate" id="enddate" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
+                    <input type="text" name="enddate" id="enddate" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input time">
                 </div>&nbsp;&nbsp;
                 <div class="layui-input-inline">
                     <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
