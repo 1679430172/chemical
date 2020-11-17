@@ -37,7 +37,7 @@ public interface OrderMapper extends BaseMapper<Order> {
      * @return
      */
     @Results({
-            @Result(column = "name",property = "name"),
+            @Result(column = "c.name",property = "name"),
             @Result(column = "c.user_id",property = "suid")
     })
     @Select("select * from `order` o inner join commodity c on o.commodity_id=c.sid where o.user_id=#{userId} and `status` = '1' and did not in (select order_id from sales)")
@@ -48,7 +48,7 @@ public interface OrderMapper extends BaseMapper<Order> {
      * @return
      */
     @Results({
-            @Result(column = "name",property = "name"),
+            @Result(column = "c.name",property = "name"),
             @Result(column = "c.user_id",property = "suid")
     })
     @Select("select * from `order` o inner join commodity c on o.commodity_id=c.sid where `status` = '1' and o.did not in (select order_id from sales)")
