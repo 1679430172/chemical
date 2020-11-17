@@ -61,6 +61,8 @@
                 $.post("/Commodity/save.do",data.field,function (d) {
                     if (d === "1") {
                         layer.msg('已添加成功!', {icon: 1, time: 3000});
+                        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                        parent.layer.close(index);
                     } else {
                         layer.msg('添加失败!', {icon: 2, time: 1000});
                     }

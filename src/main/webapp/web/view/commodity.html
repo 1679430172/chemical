@@ -14,8 +14,8 @@
             var laydate = layui.laydate;
             var upload = layui.upload;
 
-            upload.render({
-                elem: ".files"//绑定元素
+            /*upload.render({
+                elem: ".fileUpload"//绑定元素
                 ,url: '/Commodity/pictures.do' //上传接口
                 //,accept: 'images'
                 ,done: function(res){
@@ -28,7 +28,7 @@
                     //请求异常回调yhis
                     layer.msg('导入失败!请重新导入');
                 }
-            });
+            });*/
 
             table.render({
                 elem: '#demo'
@@ -48,8 +48,9 @@
                         , {field: 'createTime', title: '日期', width:180}
                         , {field: 'updateTime', title: '更新日期', width:180}
                         , {field: 'priceInfo', title: '报价信息', width:150}
-                        ,{field:'imgPath',title:'图片预览',templet:"#img"}
-                        ,{field:"",title:'操作',toolbar:'#barDemo', width: 400}
+                        ,{field:'imgPath',title:'图片预览',templet:"#img ",width:150}
+                        ,{field:'filePath',title:'文件下载',templet: '#file',width:150}
+                        ,{field:"right",title:'操作',toolbar:'#barDemo',width:'400', fixed: 'right'}
                     ]
                 ]
                 ,done: function (response) {
@@ -89,17 +90,22 @@
                         end:function () {
                             table.reload('demo', {
                                 url: '/Commodity/Commoditys.do'
+                                ,done:function () {
+                                    lay('.time').each(function () {
+                                        laydate.render({
+                                            elem: this
+                                            , trigger: 'click'
+                                        });
+                                    });
+                                }
                             });
                         }
                     });
                 }else if(layEvent == "test"){
                     upload.render({
-                        elem: ".demoMore"//绑定元素
+                        elem: ".file"//绑定元素
                         ,url: '/Commodity/pictures.do' //上传接口
                         ,data: {sid:obj.data.sid}
-                        ,accept: 'images'
-                        ,auto: true
-                        ,method:"get"
                         ,before:function(obj){
                             //预读本地文件示例，不支持ie8
                             obj.preview(function(index, file, result){
@@ -118,9 +124,7 @@
                          }
                     });
                     //执行实例
-                   // console.log(obj.data.sid);
-
-
+                   // console.log(obj.data.sid)
                 }else if (layEvent == "edit"){
                     layer.open({
                         type: 2,
@@ -131,7 +135,33 @@
                         end:function () {
                             table.reload('demo', {
                                 url: '/Commodity/Commoditys.do'
+                                ,done:function () {
+                                    lay('.time').each(function () {
+                                        laydate.render({
+                                            elem: this
+                                            , trigger: 'click'
+                                        });
+                                    });
+                                }
                             });
+                        }
+                    });
+                }else if(layEvent == "file"){
+                    upload.render({
+                        elem: ".files"//绑定元素
+                        ,url: '/Commodity/file.do' //上传接口
+                        //,field: "fileUpload"//设置字段名
+                        ,accept: 'file'
+                        ,data: {sid:obj.data.sid}
+                        ,done: function(res){
+                            layer.msg(res);
+                            layer.msg('导入成功!');
+                            if(res == "1"){
+                            }
+                        }
+                        , error: function (res) {
+                            //请求异常回调yhis
+                            layer.msg('导入失败!请重新导入');
                         }
                     });
                 }
@@ -151,6 +181,14 @@
                         end:function () {
                             table.reload('demo', {
                                 url: '/Commodity/Commoditys.do'
+                                ,done:function () {
+                                    lay('.time').each(function () {
+                                        laydate.render({
+                                            elem: this
+                                            , trigger: 'click'
+                                        });
+                                    });
+                                }
                             });
                         }
                     });
@@ -159,7 +197,6 @@
                     form.on('submit(formDemo)', function(data){
                         table.reload('demo', {
                             url: '/Commodity/Commoditys.do'
-
                             ,where: data.field//设定异步数据接口的额外参数
                             //,height: 300
                         });
@@ -194,51 +231,61 @@
                     });
                 })
             })
-            laydate.render({
-                elem: '#date'
-            });
-            laydate.render({
-                elem: '#date1'
+
+            $(document).on("click",".file",function () {
+                $.get("/Commodity/commodityById.do?sid="+this.value,function (d) {
+                    var e=eval(d);
+                    var sid=e.sid;
+                    var img=d.imgPath;
+                    layer.open({//示范一个公告层
+                        type: 1
+                        ,title: false //不显示标题栏
+                        ,closeBtn: false
+                        ,area: '390px;'
+                        ,shade: 0.8
+                        ,id: 'LAY_layuipro' //设定一个id，防止重复弹出
+                        ,btn: ['下载', "关闭"]
+                        ,btnAlign: 'c'
+                        ,moveType: 1 //拖拽模式，0或者1
+                        ,content: '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;"><i class="layui-icon">&#xe621;</i>'
+                        ,success: function(layero){
+                            var btn = layero.find('.layui-layer-btn');
+                            btn.find('.layui-layer-btn0').attr({
+                                href: '/Commodity/downloads.do?sid='+sid
+                                ,target: '_blank'
+                            });
+                        }
+                    });
+                })
+            })
+            lay('.time').each(function(){
+                laydate.render({
+                    elem: this
+                    ,trigger: 'click'
+                });
             });
         })
     </script>
-    <style>
-        /*#lab-file {
-            font-size: 12px;
-            padding: 5px 30px;
-            background: #009688;
-            color: #FFF;
-            border: none;
-            align:center;
-        }*/
-        /*#uploadImg {
-             display: none;
-         }*/
-        #uploadFile {
-            display: none;
-        }
-    </style>
 </head>
 <script type="text/html" id="barDemo">
     <a class="layui-btn layui-btn-xs" lay-event="edit"><i class="layui-icon">&#xe615;</i>修改</a>
-    <input type="file" class="layui-btn demoMore" lay-event="test" style="width: 80px" >
+    <input type="file" class="layui-btn file" lay-event="test" name="fileUpload" style="width: 80px" >
     <a class="layui-btn layui-btn-xs" lay-event="detail"><i class="layui-icon">&#xe615;</i>查看供应商</a>
-    <input type="file" class="layui-btn file"  lay-event="test1" style="width: 80px" >
-    <!--//<input type="file" id="test2" lay-event="test2" >-->
-    <!--<button type="file" class="layui-btn" lay-event="text"  class="text" >上传图片</button>  lay-event="test"-->
-  <!--  <label for="uploadFile" class="layui-btn layui-btn-sm" lay-event="test"  id="lab-img"><i class="layui-icon">&#xe67c;</i>上传图片</label>-->
-
-  <!--  <label for="uploadFile" class="layui-btn layui-btn-sm "  id="lab-file"><i class="layui-icon">&#xe67c;</i>上传文件</label>
-    <input type="file"  lay-event="test2" id="uploadFile"   name="fileUpload">-->
+    <input type="file" class="layui-btn files"  lay-event="file" name="fileUpload" style="width: 80px" >
 </script>
 
 <script type="text/html" id="img">
     {{#  if(d.imgStatus == 0){}}
-    <!--<label for="uploadFile" class="layui-btn layui-btn-sm "  id="lab-file"><i class="layui-icon">&#xe67c;</i>上传文件</label>-->
-    <!--<input type="file"  class="layui-btn filess"  value="{{d.sid}}">-->
     <button type="button" class="layui-btn files" value="{{d.sid}}" >未上传图片</button>
     {{#  } else if(d.imgStatus == 1){ }}
     <button type="button" class="layui-btn li" value="{{d.sid}}">已上传</button>
+    {{#  } }}
+</script>
+<script type="text/html" id="file">
+    {{#  if(d.fileStatus == 0){}}
+    <button type="button" class="layui-btn files" value="{{d.sid}}" >未上传文件</button>
+    {{#  } else if(d.fileStatus == 1){ }}
+    <button type="button" class="layui-btn file" value="{{d.sid}}">已上传</button>
     {{#  } }}
 </script>
 
@@ -252,13 +299,12 @@
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <div class="layui-inline">
-                    <input type="text" name="createTime"  id="date1" placeholder="yyyy-MM-dd"  autocomplete="off" class="layui-input">
+                    <input type="text" name="createTime"  id="date1" placeholder="yyyy-MM-dd"  autocomplete="off" class="layui-input time">
                 </div>
                 <div class="layui-inline"><label class="layui-form-label">至</label></div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <div class="layui-inline">
-                    <input type="text" lay-verify="date" name="createTimes" id="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
+                    <input type="text" lay-verify="date" name="createTimes" id="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input time">
                 </div>
                 <input type="text" style="display:none" id="uid" name="uid">
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

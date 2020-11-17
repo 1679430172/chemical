@@ -96,7 +96,7 @@ public class CommodityService extends ServiceImpl<CommodityMapper, Commodity> {
                 commodity.setFilePath("\\assets\\"+ picName + extName);
                 commodity.setFileStatus("1");
                 commodity.setSid(Integer.parseInt(sid));
-                commodityMapper.pictureEquals(commodity);
+                commodityMapper.paper(commodity);
             } catch (IllegalStateException e) {
                 e.printStackTrace();
             } catch (IOException e) {
@@ -105,7 +105,7 @@ public class CommodityService extends ServiceImpl<CommodityMapper, Commodity> {
         }
     }
 
-    public String download(HttpServletRequest req,HttpServletResponse response,String sid) {
+    public void download(HttpServletRequest req,HttpServletResponse response,String sid) {
         //设置浏览器显示的内容类型为Zip  (很重要,欺骗浏览器下载的是zip文件,就不会自己打开了)
         response.setContentType("application/zip");
         Commodity commodity=commodityMapper.byid(sid);
@@ -146,9 +146,50 @@ public class CommodityService extends ServiceImpl<CommodityMapper, Commodity> {
                 e.printStackTrace();
             }
         }
-        return "";
     }
 
+    public void downloads(HttpServletRequest req,HttpServletResponse response,String sid) {
+        //设置浏览器显示的内容类型为Zip  (很重要,欺骗浏览器下载的是zip文件,就不会自己打开了)
+        response.setContentType("application/zip");
+        Commodity commodity=commodityMapper.byid(sid);
+        //设置内容作为附件下载  fileName有后缀,比如1.jpg
+        String file=commodity.getFilePath();
+        String l=file.substring(file.length()-3);
+        response.setHeader("Content-Disposition", "attachment; filename="+l);
+        ServletOutputStream out = null;
+        try {
+            // 通过文件路径获得File对象(假如此路径中有一个download.pdf文件)
+            String webAppPath= req.getServletContext().getRealPath("/");
+            file=file.substring(1);
+            webAppPath+=file;
+            InputStream inputStream = new FileInputStream(webAppPath);//此处是为了获得输出流
+            // 3.通过response获取ServletOutputStream对象(out)
+            out = response.getOutputStream();
+            int b = 0;
+            byte[] buffer = new byte[1024];
+            while (b != -1) {
+                b = inputStream.read(buffer);
+                // 4.写到输出流(out)中
+                out.write(buffer, 0, b);
+            }
+            inputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (out != null)
+                    out.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            try {
+                if (out != null)
+                    out.flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     public Integer suppliers(String supplierId){
         return commodityMapper.suppliers(supplierId).size();

@@ -12,7 +12,6 @@
         var form = layui.form;
         var layer = layui.layer;
         var laydate = layui.laydate;
-
         //部门的下拉框
         $(function () {
             $.get("/supplier/users.do",function (d,s) {
@@ -45,6 +44,8 @@
             $.post("/supplier/save.do?",data.field, function (d) {
                 if (d === "1") {
                     layer.msg('已添加成功!', {icon: 1, time: 3000});
+                    var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                    parent.layer.close(index);
                 } else {
                     layer.msg('添加失败!', {icon: 2, time: 1000});
                 }
@@ -72,8 +73,8 @@
 
     <div class="layui-form-item">
         <label class="layui-form-label">微信或qq</label>
-        <div class="layui-input-inline">
-            <input type="text"  name="wechat"  placeholder="请输入微信或qq"  autocomplete="off" class="layui-input">
+        <div class="layui-input-block">
+            <input type="text" lay-verify="required"  name="wechat" required  placeholder="请输入微信或qq"  autocomplete="off" class="layui-input" style="width: 200px">
         </div>
     </div>
 
@@ -86,22 +87,22 @@
 
     <div class="layui-form-item">
         <label class="layui-form-label">日期选择</label>
-        <div class="layui-input-block">
-            <input type="text" name="createTime" id="date1" autocomplete="off" class="layui-input">
+        <div class="layui-input-inline">
+            <input type="text" name="createTime" id="date1" autocomplete="off" class="layui-input time" style="width: 200px">
         </div>
     </div>
 
     <div class="layui-form-item">
         <label class="layui-form-label">业务员</label>
-        <div class="layui-input-inline">
-            <select id ="userId" name="userId" lay-filter="aihao"></select>
+        <div class="layui-input-block">
+            <select id ="userId" name="userId" width="50px"></select>
         </div>
     </div>
 
     <div class="layui-form-item layui-form-text">
         <label class="layui-form-label">备注</label>
         <div class="layui-input-block">
-            <textarea placeholder="请输入内容" name="text" class="layui-textarea"></textarea>
+            <textarea placeholder="请输入内容" name="text"class="layui-input" style="height: 100px;width: 200px"></textarea>
         </div>
     </div>
 
