@@ -11,33 +11,6 @@
     <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
 </head>
 <body>
-<form class="layui-form" action="" lay-filter="example">
-    <div class="layui-form-item">
-        <div class="layui-inline">
-            <label class="layui-form-label">品名</label>
-            <div class="layui-input-block">
-                <input type="text" name="name" lay-verify="title" autocomplete="off" placeholder="请输入" class="layui-input">
-            </div>
-        </div>
-        <div class="layui-inline">
-            <label class="layui-form-label">Cas号</label>
-            <div class="layui-input-block">
-                <input type="text" name="cas" lay-verify="title" autocomplete="off" placeholder="请输入" class="layui-input">
-            </div>
-        </div>
-        <div class="layui-inline">
-            <label class="layui-form-label">供应商名称</label>
-            <div class="layui-input-block">
-                <input type="text" name="supplierName" lay-verify="title" autocomplete="off" placeholder="请输入" class="layui-input">
-            </div>
-        </div>
-        <div class="layui-inline">
-            <div class="layui-input-block">
-                <button type="submit" class="layui-btn" lay-submit="" lay-filter="formDemo">查询</button>
-            </div>
-        </div>
-    </div>
-</form>
 
 
 
@@ -65,8 +38,8 @@
             ,limits:[10,20,30]
             ,cols: [
                 [
-                    {field:'cid', title: '编号',width: 100}
-                    ,{field:'userId', width:80, title: '业务员',  minWidth: 100}
+                    {field:'gid', title: '编号',width: 100}
+                    ,{field:'userName', width:80, title: '业务员',  minWidth: 100}
                     ,{field:'name', width:120, title: '产品名称'}
                     ,{field:'cas', title: 'cas号',width: 95}
                     ,{field:'amount', title: '数量', width: 60}
@@ -75,12 +48,13 @@
                     ,{field:'sumPrice', title: '总价',   width: 80}
                     // ,{field:'status', title: '是否收货',  width: 90 , templet: function(d){if(d.status == 0){return '收货'}else{return '未收货'}} }
                     ,{field:'userName', title: '业务员',  width: 80}
-                    ,{field:'supplierName', title: '供应商名称',width: 100}
-                    ,{field:'supplierPhone', title: '供应商电话',  width: 120}
+                    ,{field:'', title: '供应商名称',width: 100,templet:"#suppliername" }
+                    ,{field:'', title: '供应商电话',  width: 120 ,templet:"#supplierphone"}
                     ,{field:'trackingNumber', title: '物流单号', width: 125}
                     ,{field:'createTime', title: '创建日期',  width: 170}
                     ,{field:'ann', title: '发票',  width: 90 , templet: function(d){if(d.ann == 1){return '未收到'}else{return '已收到'}} }
                     ,{fixed: 'right', width: '8%', align:'center', toolbar: '#dd'}
+                    ,{fixed: 'right', width: '8%', align:'center', toolbar: '#cc'}
                 ]]
             ,done: function (response) {
                 //定位当前table视图
@@ -154,17 +128,33 @@
                 });
 
             }else if (layEvent ==='up'){
-                layer.open({
-                    type: 1,
-                    area: ['250px', '150px'],
-                    btn:['确定', '取消'],
-                    content:'  <div align="center">编辑</div>  ',
-                    btn2:function(index, layero){
-                        layer.closeAll();
-                    },
-                });
+                layer.prompt({
+                    formType: 2,
+                    value: '',
+                    title: '请输入物流单号',
+                    area: ['100px', '40px'] //自定义文本域宽高
+                }, function(value, index, elem){
+                    $.post("/purchase/updateTn.do",{cid:data.cid,trackingNumber:value},function (data) {
+                        if (data==1){
+                            layer.msg('添加成功');
+                            table.reload('test', {
+                                url: '/purchase/purchase.do'
 
-            }
+                            });
+                        }else {
+                            layer.msg('修改失败');
+                            table.reload('test', {
+                                url: '/purchase/purchase.do'
+
+                            });
+                        }
+
+                    });
+                    layer.close(index);
+                });
+                }
+
+
 
         });
 
@@ -184,38 +174,64 @@
 
 </style>
 
-
-
 <script type="text/html" id="toolbarDemo">
-    <div class="layui-btn-container">
-        <button class="layui-btn layui-btn-sm" lay-event="add">添加</button>
+    <button class="layui-btn layui-btn-sm"  lay-event="add"><i class="layui-icon"></i>添加</button>
+    &numsp; &numsp; &numsp;
+    &numsp; &numsp; &numsp;
+    &numsp; &numsp; &numsp;
+    &numsp; &numsp; &numsp;
+    <div style="display: inline-block;">
+    <form class="layui-form" action=""  style="display: inline-block;">
+        <div class="layui-inline">
+            <div class="layui-inline">
+                <label class="layui-form-label">品名</label>
+                <div class="layui-inline">
+                    <input type="text" name="name" lay-verify="title" autocomplete="off" placeholder="请输入" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-inline">Cas号</label>
+                <div class="layui-inline">
+                    <input type="text" name="cas" lay-verify="title" autocomplete="off" placeholder="请输入" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-inline">供应商名称</label>
+                <div class="layui-inline">
+                    <input type="text" name="supplierName" lay-verify="title" autocomplete="off" placeholder="请输入" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <div class="layui-inline">
+                    <button type="submit" class="layui-btn" lay-submit="" lay-filter="formDemo">查询</button>
+                </div>
+            </div>
+        </div>
+    </form>
     </div>
 </script>
 <script type="text/html" id="dd">
-    {{#  if(d.priceStatus == 0){ }}
-    <button class="layui-btn  layui-btn-xs" class="layui-btn"  lay-event="getfp" id="withExport" >已收到发票</button>
-    {{#  } else { }}
+    {{#  if(d.trackingNumber == null){ }}
+    <button class="layui-btn  layui-btn-xs layui-btn" lay-event="up" >添加物流编号</button>
+    {{#  } else if(d.trackingNumber == 1){ }}
+    {{#  } }}
+</script>
+<script type="text/html" id="cc">
+    {{#  if(d.ann === 1 && d.priceStatus == 0){ }}
+    <button class="layui-btn  layui-btn-xs layui-btn" lay-event="getfp">已收到发票</button>
+    {{#  } else if(d.ann == 1){ }}
 
     {{#  } }}
-    <button class="layui-btn  layui-btn-xs" class="layui-btn"  lay-event="up" >添加物流编号</button>
 </script>
-<script type="text/html" id="supplierName">
+<script type="text/html" id="suppliername">
     {{#  if(0 == [[${session.userType}]]){ }}
-    {{d.supplierName}}
-    {{#  } else if(d.userId == [[${session.userId}]]){ }}
-    {{d.supplierName}}
-    {{#  } else if(d.suid == [[${session.userId}]]){ }}
     {{d.supplierName}}
     {{#  } else { }}
     无权限
     {{#  } }}
 </script>
-<script type="text/html" id="supplierPhone">
+<script type="text/html" id="supplierphone">
     {{#  if(0 == [[${session.userType}]]){ }}
-    {{d.supplierPhone}}
-    {{#  } else if(d.userId == [[${session.userId}]]){ }}
-    {{d.supplierPhone}}
-    {{#  } else if(d.suid == [[${session.userId}]]){ }}
     {{d.supplierPhone}}
     {{#  } else { }}
     无权限

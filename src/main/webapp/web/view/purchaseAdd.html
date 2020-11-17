@@ -29,6 +29,7 @@
                 }
             });
 
+
             var aaa = $("#bill").prop("checked");
             if(aaa) {
                 $("#billInfo").show();
@@ -101,14 +102,14 @@
     <div class="layui-form-item">
         <label class="layui-form-label">数量</label>
         <div class="layui-input-inline">
-            <input type="text" name="amount" lay-verify="did" autocomplete="off" placeholder="" class="layui-input">
+            <input type="text" name="amount" id="num" lay-verify="did" autocomplete="off" placeholder="" class="layui-input">
         </div>
     </div>
 
     <div class="layui-form-item">
         <label class="layui-form-label">单价</label>
         <div class="layui-input-inline">
-            <input type="text" name="price" lay-verify="did" autocomplete="off" placeholder="" class="layui-input">
+            <input type="text" name="price" lay-verify="did" id="pri" autocomplete="off" placeholder="" class="layui-input">
         </div>
             <div class="layui-input-inline">
                 <select name="priceStatus">
@@ -118,12 +119,12 @@
                 </select>
             </div>
     </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">总价</label>
-        <div class="layui-input-inline">
-            <input type="text" name="sumPrice" lay-verify="did" autocomplete="off" placeholder="" class="layui-input">
-        </div>
-    </div>
+<!--    <div class="layui-form-item">-->
+<!--        <label class="layui-form-label">总价</label>-->
+<!--        <div class="layui-input-inline">-->
+<!--            <input type="text" name="sumPrice" id="sum" lay-verify="did" autocomplete="off" placeholder="" class="layui-input">-->
+<!--        </div>-->
+<!--    </div>-->
 <!--    <div class="layui-form-item">-->
 <!--        <label class="layui-form-label">是否收货</label>-->
 <!--        <div class="layui-input-inline">-->

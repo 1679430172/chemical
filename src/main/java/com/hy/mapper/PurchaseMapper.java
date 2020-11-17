@@ -3,6 +3,7 @@ package com.hy.mapper;
         import com.baomidou.mybatisplus.core.mapper.BaseMapper;
         import com.baomidou.mybatisplus.core.metadata.IPage;
         import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+        import com.hy.bean.Commodity;
         import com.hy.bean.Inventory;
         import com.hy.bean.Purchase;
         import com.hy.util.InventorySql;
@@ -24,10 +25,14 @@ public interface PurchaseMapper extends BaseMapper<Purchase> {
     @Update("update purchase set tracking_number = #{trackingNumber} where cid=#{cid}")
     public void  updateTN(String trackingNumber);
 
+    @Update("update purchase set  tracking_number=#{purchase.trackingNumber}where cid=#{purchase.cid}")
+    public void equals(@Param("purchase") Purchase purchase);
+
     @Insert("insert into purchase(cid,user_id,name,cas,amount,price,price_status,sum_price,status,user_name,supplier_name,supplier_phone,tracking_number,create_time,ann) values(#{cid},#{userId},#{name},#{cas},#{amount},#{price},#{priceStatus},#{sumPrice},#{status},#{userName},#{supplierName},#{supplierPhone},#{trackingNumber},now(),1)")
     public int addPurchase(Purchase purchase);
 
     @SelectProvider(type = PurchaseSql.class,method = "query")
     public List<Purchase> queryBy(Page page, @Param("em")Purchase purchase);
+
 
 }
