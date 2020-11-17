@@ -104,6 +104,24 @@ public class CommodityController {
     @RequestMapping("/download.do")
     @ResponseBody
     public String download(HttpServletRequest req,HttpServletResponse response, String sid){
-        return commodityService.download(req,response,sid);
+        try {
+            commodityService.download(req,response,sid);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Util.fail;
+        }
+        return Util.succeed;
+    }
+
+    @RequestMapping("/downloads.do")
+    @ResponseBody
+    public String downloads(HttpServletRequest req,HttpServletResponse response, String sid){
+        try {
+            commodityService.downloads(req,response,sid);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Util.fail;
+        }
+        return Util.succeed;
     }
 }
