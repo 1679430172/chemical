@@ -37,12 +37,11 @@
 
 
         //日期
-        laydate.render({
-            elem: '#date'
-            ,type: 'datetime'
-        });
-        laydate.render({
-            elem: '#date1'
+        lay('.date').each(function(){
+            laydate.render({
+                elem: this
+                ,trigger: 'click'
+            });
         });
 
         //监听表单
@@ -78,13 +77,13 @@
     <div class="layui-form-item">
         <label class="layui-form-label">产品名称</label>
         <div class="layui-input-inline">
-            <input type="text"  name="name" required   placeholder="请输入" autocomplete="off" class="layui-input">
+            <input type="text"  name="name" required   placeholder="请输入产品名" autocomplete="off" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">cas号</label>
         <div class="layui-input-inline">
-            <input type="text " id="cas" name="cas" required   placeholder="请输入" autocomplete="off" class="layui-input">
+            <input type="text " id="cas" name="cas" required   placeholder="请输入cas号" autocomplete="off" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
@@ -104,13 +103,13 @@
     <div class="layui-form-item">
         <label class="layui-form-label">报价信息</label>
         <div class="layui-input-inline">
-            <input type="text " id="priceInfo" name="priceInfo" required   placeholder="请输入" autocomplete="off" class="layui-input">
+            <input type="text " id="priceInfo" name="priceInfo" required   placeholder="请输入信息" autocomplete="off" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">验证日期</label>
         <div class="layui-input-inline">
-            <input type="text" name="createTime" id="date"  autocomplete="off" class="layui-input" placeholder="yyyy-MM-dd HH:mm:ss">
+            <input type="text" name="createTime" id="date"  autocomplete="off" class="layui-input date" placeholder="yyyy-MM-dd HH:mm:ss">
         </div>
     </div>
     <input type="text" style="display:none"  name="imgStatus" value="0">

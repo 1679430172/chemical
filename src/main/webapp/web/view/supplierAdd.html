@@ -27,11 +27,11 @@
         })
 
         //日期
-        laydate.render({
-            elem: '#date'
-        }); 
-        laydate.render({
-            elem: '#date1'
+        lay('.time').each(function(){
+            laydate.render({
+                elem: this
+                ,trigger: 'click'
+            });
         });
 
         //监听表单
@@ -74,7 +74,7 @@
     <div class="layui-form-item">
         <label class="layui-form-label">微信或qq</label>
         <div class="layui-input-block">
-            <input type="text" lay-verify="required"  name="wechat" required  placeholder="请输入微信或qq"  autocomplete="off" class="layui-input" style="width: 200px">
+            <input type="text"  name="wechat"  placeholder="请输入微信或qq"  autocomplete="off" class="layui-input" style="width: 200px">
         </div>
     </div>
 
