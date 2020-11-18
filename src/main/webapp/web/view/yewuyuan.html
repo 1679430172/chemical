@@ -30,19 +30,18 @@
                             table.render({
                                 elem: '#demo'       //赋值到那个table
                                 ,height:600
-                                ,width:1300
+                                ,width:800
                                 ,url:'/login/yewuyuan' // 数据接口
                                 ,page:true //开启分页
                                 ,limit:10
                                 ,toolbar: '#toolbarDemo'
                                 ,defaultToolbar: ['filter', 'print', 'exports']
                                 ,cols: [[   //表头
-                                    {type: 'checkbox', fixed: 'left'}
-                                    ,{field:'id', width:150, title: 'ID', sort: true}
-                                    ,{field:'username', width:300, title: '用户名'}
-                                    ,{field:'password', width:300, title: '密码', sort: true}
-                                    ,{field:'type', width:350, title: '权限级别',templet:'#tranSort'}
-                                    ,{fixed: 'right', width:200, title: '操作',align:'center', toolbar: '#barDemo'}
+                                    {field:'id', width:100, title: 'ID', sort: true}
+                                    ,{field:'username', width:150, title: '用户名'}
+                                    ,{field:'password', width:150, title: '密码', sort: true}
+                                    ,{field:'type', width:150, title: '权限级别',templet:'#tranSort'}
+                                    ,{fixed: 'right', width:250, title: '操作',align:'center', toolbar: '#barDemo'}
                                 ]]
                             });
 

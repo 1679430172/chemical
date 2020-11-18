@@ -57,6 +57,18 @@
                     });
                 }
             })
+            layui.use('form', function () {
+                var $ = layui.$
+                    , layer = layui.layer
+                    , form = layui.form
+
+                form.verify({
+                    integer: [
+                        /^[1-9]\d*$/
+                        , '只能输入正整数'
+                    ]
+                });
+            });
             return false;
         });
     })
@@ -67,34 +79,34 @@
     <div class="layui-form-item">
         <label class="layui-form-label">库存编号</label>
         <div class="layui-input-block">
-            <input type="text" lay-verify="required"  style="width: 200px" name="number" required   placeholder="请输入库存编号" autocomplete="off" class="layui-input">
+            <input type="text" lay-verify="required" lay-reqtext="编号不能为空" style="width: 200px" name="number" required   placeholder="请输入库存编号" autocomplete="off" class="layui-input">
         </div>
     </div>
 
     <div class="layui-form-item">
         <label class="layui-form-label">品名</label>
         <div class="layui-input-block">
-            <input type="text" lay-verify="required" name="name" style="width: 200px" required   placeholder="请输入产品名称" autocomplete="off" class="layui-input">
+            <input type="text" lay-verify="required" lay-reqtext="品名不能为空" name="name" style="width: 200px" required   placeholder="请输入产品名称" autocomplete="off" class="layui-input">
         </div>
     </div>
 
     <div class="layui-form-item">
         <label class="layui-form-label">cas号</label>
         <div class="layui-input-inline">
-            <input type="text"  name="cas"  placeholder="请输入cas号"  autocomplete="off" class="layui-input">
+            <input type="text"  name="cas" lay-reqtext="cas号不能为空" placeholder="请输入cas号"  autocomplete="off" class="layui-input">
         </div>
     </div>
 
     <div class="layui-form-item">
     <label class="layui-form-label">数量</label>
     <div class="layui-input-block">
-        <input type="text" lay-verify="required" name="amount" style="width: 200px" required   placeholder="请输入添加数量" autocomplete="off" class="layui-input">
+        <input type="text" lay-verify="required"lay-reqtext="数量不能为空" name="amount" style="width: 200px" required  value="" placeholder="请输入添加数量" autocomplete="off" class="layui-input">
     </div>
     </div>
     <div class="layui-form-item">
     <label class="layui-form-label">备注</label>
     <div class="layui-input-block">
-        <input type="text" lay-verify="required" name="remark" style="width: 200px" required   placeholder="建议" autocomplete="off" class="layui-input">
+        <input type="text" lay-verify="required" lay-reqtext="备注不能为空" name="remark" style="width: 200px" required   placeholder="建议" autocomplete="off" class="layui-input">
     </div>
     </div>
 

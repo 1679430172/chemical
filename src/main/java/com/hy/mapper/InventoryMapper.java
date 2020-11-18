@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hy.bean.Inventory;
+import com.hy.bean.Purchase;
 import com.hy.util.InventorySql;
 import org.apache.ibatis.annotations.*;
 
@@ -37,5 +38,20 @@ public interface InventoryMapper extends BaseMapper<Inventory> {
 
     @Delete("delete from inventory where number=#{number}")
      public Inventory detelep(@Param("number")String number);
+
+
+    @Update("update inventory set amount=amount+#{amount}  where kid=#{kid}")
+    public boolean autoUpdate(@Param("amount") Integer amount, @Param("kid")Integer kid);
+
+    @Update("update inventory set amount=amount-#{amount}  where kid=#{kid}")
+    public boolean jUpdate(@Param("amount") Integer amount, @Param("kid")Integer kid);
+
+    @Update("update inventory set amount=amount-#{amount}  where number=#{number}")
+    public boolean aUpdate(@Param("amount") Integer amount, @Param("number")String number);
+
+
+
+    @Update("update inventory set remark=#{remark}  where kid=#{kid}")
+    public boolean UpdateRe(@Param("remark") String remark, @Param("kid")Integer kid);
 
 }

@@ -40,14 +40,6 @@ public class OrderController {
         return modelAndView;
     }
 
-    @RequestMapping("/toOrder")
-    @ResponseBody
-    public ModelAndView toOrder(){
-        ModelAndView modelAndView=new ModelAndView();
-        modelAndView.setViewName("order.html");
-        return modelAndView;
-    }
-
     @RequestMapping("/selectByStatus")
     @ResponseBody
     public ParseData selectByStatus(Integer page, Integer limit){

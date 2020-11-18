@@ -5,11 +5,14 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.hy.bean.Purchase;
 import com.hy.service.PurchaseService;
 import com.hy.util.ParseData;
+import com.hy.util.Util;
 import io.swagger.annotations.Api;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
 
 @Api
     @Controller
@@ -20,26 +23,38 @@ import org.springframework.web.servlet.ModelAndView;
 
         @RequestMapping("/purchase.do")
         @ResponseBody
-        public ParseData inventory(Integer page, Integer limit) {
-            IPage<Purchase> iPage = purchaseService.iPage(page, limit);
+        public ParseData purchase(Integer page, Integer limit,Purchase purchase) {
+            IPage<Purchase> iPage = purchaseService.iPage(page, limit,purchase);
             return new ParseData(0, "", Integer.parseInt(Long.toString(iPage.getTotal())), iPage.getRecords());
-
         }
 
+/*        @RequestMapping("/queryPurchase.do")
+        @ResponseBody
+        public ParseData queryPurchase(Integer page, Integer limit, Purchase purchase) {
+            IPage<Purchase> iPage=purchaseService.page(purchaseService.iPage(page,limit),purchase);
+
+            return new ParseData(0, "", Integer.parseInt(Long.toString(iPage.getTotal())), iPage.getRecords());
+
+        }*/
 
         @GetMapping ("/update.do")
         @ResponseBody
         public  void  updateAnn(String cid){
         purchaseService.updateAnn(cid);
 
-        }
-
-    @GetMapping ("/updateTn.do")
-    @ResponseBody
-    public  void  updateTrackingNumber(String cid){
-        purchaseService.updateTN(cid);
 
     }
+    @RequestMapping("/updateTn.do")
+    @ResponseBody
+    public String  updateTn(@Param("cid") Integer cid,@Param("trackingNumber") String trackingNumber){
+        Purchase purchase = new Purchase();
+        purchase.setCid(cid);
+        purchase.setTrackingNumber(trackingNumber);
+        System.out.println(purchase.toString());
+        purchaseService.equals(purchase);
+        return "1";
+    }
+
 
         @RequestMapping("/toAdd")
         @ResponseBody
@@ -49,31 +64,29 @@ import org.springframework.web.servlet.ModelAndView;
             return modelAndView;
         }
 
-    @PostMapping("/add.do")
+    @RequestMapping("/add.do")
     @ResponseBody
-    public void addPurchase(Purchase purchase) throws Exception {
-        purchaseService.save(purchase);
+    public  String addPurchase(Purchase purchase) throws Exception {
+        purchase.setSumPrice(purchase.getAmount()*purchase.getPrice());
+        System.out.println(purchase.getSumPrice());
+        purchase.setUserId(purchaseService.wwww());
+        try {
+            purchaseService.save(purchase);
+        } catch (Exception e) {
+            return Util.fail;
+        }
+        return Util.succeed;
     }
 
 
-    @RequestMapping("/queryPurchase.do")
+
+
+    @RequestMapping("/toPurchase")
     @ResponseBody
-    public ParseData queryPurchase(Integer page, Integer limit, Purchase purchase) {
-        System.out.println("purchase:" + purchase);
-        QueryWrapper<Purchase> queryWrapper=new QueryWrapper<>();
-        if(purchase.getName() != null&&!"".equals(purchase.getName())){
-            queryWrapper.like("name",purchase.getName());
-        }
-        if (purchase.getCas() != null&&!"".equals(purchase.getCas())){
-            queryWrapper.eq("cas",purchase.getCas());
-        }
-        if (purchase.getSupplierName() != null&&!"".equals(purchase.getSupplierName())){
-            queryWrapper.eq("number",purchase.getSupplierName());
-        }
-        IPage<Purchase> iPage=purchaseService.page(purchaseService.iPage(page,limit),queryWrapper);
-
-        return new ParseData(0, "", Integer.parseInt(Long.toString(iPage.getTotal())), iPage.getRecords());
-
+    public ModelAndView toPurchase(){
+        ModelAndView modelAndView=new ModelAndView();
+        modelAndView.setViewName("purchase.html");
+        return modelAndView;
     }
 
 

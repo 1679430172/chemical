@@ -14,42 +14,28 @@ public interface OrderMapper extends BaseMapper<Order> {
      * 根据业务员id查询所有订单
      * @return
      */
-    @Results({
-            @Result(column = "name",property = "name"),
-            @Result(column = "c.user_id",property = "suid")
-    })
-    @Select("select * from `order` o inner join commodity c on o.commodity_id=c.sid where c.user_id=#{userId} or o.user_id=#{userId}")
+    @Select("select o.*,c.user_id suid,c.name name from `order` o inner join commodity c on o.commodity_id=c.sid where c.user_id=#{userId} or o.user_id=#{userId}")
     public IPage<Order> selectListByUserId(@Param("userId") Integer userId,Page page);
 
     /**
      * 查询所有订单
      * @return
      */
-    @Results({
-            @Result(column = "name",property = "name"),
-            @Result(column = "c.user_id",property = "suid")
-    })
-    @Select("select * from `order` o inner join commodity c on o.commodity_id=c.sid")
+    @Select("select o.*,c.user_id suid,c.name name from `order` o inner join commodity c on o.commodity_id=c.sid")
     public IPage<Order> selectList(Page page);
 
     /**
      * 根据业务员id查询是否出库
      * @return
      */
-    @Results({
-            @Result(column = "name",property = "name")
-    })
-    @Select("select * from `order` o inner join commodity c on o.commodity_id=c.sid where o.user_id=#{userId} and status = 1 and did not in (select order_id from sales)")
-    public IPage<Order> selectListByStatus(@Param("userId") Integer userId,Page page);
+    @Select("select o.*,c.user_id suid,c.name name from `order` o inner join commodity c on o.commodity_id=c.sid where o.user_id=#{userId} and `status` = '1' and did not in (select order_id from sales)")
+    public IPage<Order> selectListByStatust(@Param("userId") Integer userId,Page page);
 
     /**
      * 查询所有出库状态
      * @return
      */
-    @Results({
-            @Result(column = "name",property = "name")
-    })
-    @Select("select * from `order` o inner join commodity c on o.commodity_id=c.sid where status = '1' and did not in (select order_id from sales)")
+    @Select("select o.*,c.user_id suid,c.name name from `order` o inner join commodity c on o.commodity_id=c.sid where `status` = '1' and did not in (select order_id from sales)")
     public IPage<Order> selectListByStatus(Page page);
 
     /**
@@ -70,21 +56,13 @@ public interface OrderMapper extends BaseMapper<Order> {
      * 根据业务员id查询某时间所有订单
      * @return
      */
-    @Results({
-            @Result(column = "name",property = "name"),
-            @Result(column = "c.user_id",property = "suid")
-    })
-    @Select("select * from `order` o inner join commodity c on o.commodity_id=c.sid where c.user_id=#{userId} or o.user_id=#{userId} and o.create_time between #{stadate} and #{enddate}")
+    @Select("select o.*,c.user_id suid,c.name name from `order` o inner join commodity c on o.commodity_id=c.sid where c.user_id=#{userId} or o.user_id=#{userId} and o.create_time between #{stadate} and #{enddate}")
     public IPage<Order> selectListByUserIdTime(@Param("stadate") String stadate,@Param("enddate") String enddate,@Param("userId") Integer userId,Page page);
 
     /**
      * 查询某时间所有订单
      * @return
      */
-    @Results({
-            @Result(column = "name",property = "name"),
-            @Result(column = "c.user_id",property = "suid")
-    })
-    @Select("select * from `order` o inner join commodity c on o.commodity_id=c.sid where o.create_time between #{stadate} and #{enddate}")
+    @Select("select o.*,c.user_id suid,c.name name from `order` o inner join commodity c on o.commodity_id=c.sid where o.create_time between #{stadate} and #{enddate}")
     public IPage<Order> selectListTime(@Param("stadate") String stadate,@Param("enddate") String enddate, Page page);
 }

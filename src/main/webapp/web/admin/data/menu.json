@@ -20,7 +20,7 @@
 		"icon": "layui-icon layui-icon-auz",
 		"type": 1,
 		"openType": "_iframe",
-		"href": "/web/view/inventory.html"
+		"href": "/inventory/toInventory"
 	},
 	{
 		"id": "supplier",
@@ -36,7 +36,7 @@
 		"icon": "layui-icon layui-icon-set-fill",
 		"type": 1,
 		"openType": "_iframe",
-		"href": "/Order/toOrder"
+		"href": "/web/view/order.html"
 	},
 	{
 		"id": "common",
@@ -44,7 +44,7 @@
 		"icon": "layui-icon layui-icon-template-1",
 		"type": 1,
 		"openType": "_iframe",
-		"href": "/web/view/purchase.html"
+		"href": "/purchase/toPurchase"
 	},{
 		"id": "echarts",
 		"title": "业务员管理",

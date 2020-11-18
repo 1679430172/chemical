@@ -214,15 +214,17 @@
     <div class="layui-btn-container">
         <button class="layui-btn layui-btn-sm" lay-event="add">添加退货订单</button>
     </div>
+    <div class="demoTable" align="center">
+        搜索订单：
+        <div class="layui-inline">
+            <input class="layui-input" name="id" id="demoReload" autocomplete="off">
+        </div>
+        <button class="layui-btn" data-type="reload" id="p1">搜索</button>
+    </div>
+
 </script>
 <body>
-<div class="demoTable" align="center">
-    搜索订单：
-    <div class="layui-inline">
-        <input class="layui-input" name="id" id="demoReload" autocomplete="off">
-    </div>
-    <button class="layui-btn" data-type="reload" id="p1">搜索</button>
-</div>
+
 <table class="layui-hide" id="demo" lay-filter="test"></table>
 </body>
 </html>

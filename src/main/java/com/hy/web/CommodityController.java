@@ -30,9 +30,9 @@ public class CommodityController {
     @Autowired
     private SupplierService supplierService;
 
-    @RequestMapping("/Commoditys.do")
+    @RequestMapping("/Commodious.do")
     @ResponseBody
-    public ParseData  Commoditys(Integer page, Integer limit, Commoditys commoditys){
+    public ParseData  Commodious(Integer page, Integer limit, Commoditys commoditys){
         IPage<Commoditys> iPage=  commodityService.CommditysList(page,limit,commoditys);
         return new ParseData(0,"",Integer.parseInt(Long.toString(iPage.getTotal())),iPage.getRecords());
     }
@@ -104,6 +104,24 @@ public class CommodityController {
     @RequestMapping("/download.do")
     @ResponseBody
     public String download(HttpServletRequest req,HttpServletResponse response, String sid){
-        return commodityService.download(req,response,sid);
+        try {
+            commodityService.download(req,response,sid);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Util.fail;
+        }
+        return Util.succeed;
+    }
+
+    @RequestMapping("/downloads.do")
+    @ResponseBody
+    public String downloads(HttpServletRequest req,HttpServletResponse response, String sid){
+        try {
+            commodityService.downloads(req,response,sid);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Util.fail;
+        }
+        return Util.succeed;
     }
 }
