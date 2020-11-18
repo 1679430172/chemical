@@ -35,7 +35,7 @@
                     ,{field: '', title: '总成本', templet:"#zcb", width:80}
                     ,{field: 'royalties', title: '提成', templet:"#royalties", totalRow: true, width:80}
                     ,{field: 'status', title: '是否出库', sort: true, templet:"#status", width:110}
-                    ,{fixed: 'right', align:'center', toolbar: '#barDemo'}
+                    ,{fixed: 'right', align:'center', toolbar: '#barDemo',width:195}
                 ]
                 ],done: function (response) {
                     //定位当前table视图
@@ -284,7 +284,11 @@
     </script>
     <script type="text/html" id="barDemo">
         <a class="layui-btn layui-btn-xs" lay-event="detail"><i class="layui-icon">&#xe615;</i>查看订单详情</a>
+        {{#  if(0 == d.type){ }}
         <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon">&#xe640;</i>删除</a>
+        {{#  } else { }}
+
+        {{#  } }}
     </script>
     <script type="text/html" id="toolbarDemo">
             <button type="button" class="layui-btn layui-btn-sm" lay-event="import" id="test1"><i class="layui-icon">&#xe654;</i>添加订单</button>&nbsp;&nbsp;
@@ -317,7 +321,6 @@
     </script>
     <script type="text/html" id="royalties">
         {{#  if(0 == d.type){ }}
-        {{d.type}}
         {{d.royalties}}
         {{#  } else if(d.userId == d.uid){ }}
         {{d.royalties}}
