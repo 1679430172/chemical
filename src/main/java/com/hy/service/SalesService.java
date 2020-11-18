@@ -37,10 +37,10 @@ public class SalesService extends ServiceImpl<SalesMapper, Sales> {
         HttpSession session = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession();
         Integer  userId1 =  (Integer) session.getAttribute("userId");
         IPage<SalesOrdet> iPage=null;
-        if(userId.equals("0") || userId.equals("2")){
+        if(userId.equals("0")){
             Page<SalesOrdet> page1 = new Page<SalesOrdet>(page,limit);
             iPage= salesMapper.selectSalestwo(page1);
-        }else if(userId.equals("1")){
+        }else if(userId.equals("1") || userId.equals("2")){
             Page<SalesOrdet> page1 = new Page<SalesOrdet>(page,limit);
             iPage=salesMapper.selectSales(page1,userId1);
         }
