@@ -23,12 +23,19 @@ import org.springframework.web.servlet.ModelAndView;
 
         @RequestMapping("/purchase.do")
         @ResponseBody
-        public ParseData inventory(Integer page, Integer limit) {
-            IPage<Purchase> iPage = purchaseService.iPage(page, limit);
+        public ParseData purchase(Integer page, Integer limit,Purchase purchase) {
+            IPage<Purchase> iPage = purchaseService.iPage(page, limit,purchase);
             return new ParseData(0, "", Integer.parseInt(Long.toString(iPage.getTotal())), iPage.getRecords());
-
         }
 
+/*        @RequestMapping("/queryPurchase.do")
+        @ResponseBody
+        public ParseData queryPurchase(Integer page, Integer limit, Purchase purchase) {
+            IPage<Purchase> iPage=purchaseService.page(purchaseService.iPage(page,limit),purchase);
+
+            return new ParseData(0, "", Integer.parseInt(Long.toString(iPage.getTotal())), iPage.getRecords());
+
+        }*/
 
         @GetMapping ("/update.do")
         @ResponseBody
@@ -57,7 +64,7 @@ import org.springframework.web.servlet.ModelAndView;
             return modelAndView;
         }
 
-    @PostMapping("/add.do")
+    @RequestMapping("/add.do")
     @ResponseBody
     public  String addPurchase(Purchase purchase) throws Exception {
         purchase.setSumPrice(purchase.getAmount()*purchase.getPrice());
@@ -72,25 +79,7 @@ import org.springframework.web.servlet.ModelAndView;
     }
 
 
-    @RequestMapping("/queryPurchase.do")
-    @ResponseBody
-    public ParseData queryPurchase(Integer page, Integer limit, Purchase purchase) {
-        System.out.println("purchase:" + purchase);
-        QueryWrapper<Purchase> queryWrapper=new QueryWrapper<>();
-        if(purchase.getName() != null&&!"".equals(purchase.getName())){
-            queryWrapper.like("name",purchase.getName());
-        }
-        if (purchase.getCas() != null&&!"".equals(purchase.getCas())){
-            queryWrapper.eq("cas",purchase.getCas());
-        }
-        if (purchase.getSupplierName() != null&&!"".equals(purchase.getSupplierName())){
-            queryWrapper.eq("number",purchase.getSupplierName());
-        }
-        IPage<Purchase> iPage=purchaseService.page(purchaseService.iPage(page,limit),queryWrapper);
 
-        return new ParseData(0, "", Integer.parseInt(Long.toString(iPage.getTotal())), iPage.getRecords());
-
-    }
 
     @RequestMapping("/toPurchase")
     @ResponseBody

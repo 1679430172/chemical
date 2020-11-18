@@ -44,6 +44,8 @@ public class OrderService extends ServiceImpl<OrderMapper, Order> {
             String id="YD00000";
             id=id.substring(0,id.length()-did.length())+did;
             s.setId(id);
+            s.setType((String) session.getAttribute("userType"));
+            s.setUid((Integer) session.getAttribute("userId"));
         }
         return new ParseData(0,"",Integer.parseInt(Long.toString(iPage.getTotal())),iPage.getRecords());
     }
@@ -101,6 +103,8 @@ public class OrderService extends ServiceImpl<OrderMapper, Order> {
             String id="YD00000";
             id=id.substring(0,id.length()-did.length())+did;
             s.setId(id);
+            s.setType((String) session.getAttribute("userType"));
+            s.setUid((Integer) session.getAttribute("userId"));
         }
         return new ParseData(0,"",Integer.parseInt(Long.toString(iPage.getTotal())),iPage.getRecords());
     }
