@@ -110,19 +110,26 @@
         </div>
     </div>
 
-    <div class="layui-form-item">
-        <label class="layui-form-label">单价</label>
-        <div class="layui-form-label">
-            <input type="text" lay-verify="required" lay-reqtext="请输入商品单价" style="width: 200px" name="price" required  placeholder="请输入单价" autocomplete="off" class="layui-input">
-        </div>
-            <div class="layui-input-inline">
-                <select name="priceStatus">
-                    <option>请选择</option>
-                    <option value="0">含税</option>
-                    <option value="1">不含税</option>
-                </select>
+    <div class="layui-form-item layui-form-text">
+        <div class="layui-inline">
+            <label class="layui-form-label">单价</label>
+            <div class="layui-form-label">
+                <input type="text" lay-verify="required" lay-reqtext="请输入商品单价"  name="price" required  placeholder="单价" autocomplete="off" class="layui-input">
             </div>
+        </div>
+        <div class="layui-inline">
+            <select name="priceStatus">
+                <option>请选择是否含税</option>
+                <option value="0">含税</option>
+                <option value="1">不含税</option>
+            </select>
+        </div>
     </div>
+
+
+
+
+
 <!--    <div class="layui-form-item">-->
 <!--        <label class="layui-form-label">总价</label>-->
 <!--        <div class="layui-input-inline">-->
@@ -138,7 +145,7 @@
 <!--            </select>-->
 <!--        </div>-->
 <!--    </div>-->
-    <div class="layui-form-item layui-form-text">
+    <div class="layui-form-item">
         <label class="layui-form-label">业务员</label>
         <div class="layui-input-inline">
             <select id="userId" name="userName" lay-verify=""></select>
@@ -152,7 +159,7 @@
             </select>
         </div>
     </div>
-    <div class="layui-form-item layui-form-text">
+    <div class="layui-form-item ">
         <label class="layui-form-label">供应商联系电话</label>
         <div class="layui-input-inline">
             <input type="text"id="phone" lay-verify="required" lay-reqtext="供应商电话不能为空" style="width: 200px" name="supplierPhone" required  adisabled="disabled" placeholder="" autocomplete="off" class="layui-input">
