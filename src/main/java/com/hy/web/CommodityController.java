@@ -30,9 +30,9 @@ public class CommodityController {
     @Autowired
     private SupplierService supplierService;
 
-    @RequestMapping("/Commoditys.do")
+    @RequestMapping("/Commodious.do")
     @ResponseBody
-    public ParseData  Commoditys(Integer page, Integer limit, Commoditys commoditys){
+    public ParseData  Commodious(Integer page, Integer limit, Commoditys commoditys){
         IPage<Commoditys> iPage=  commodityService.CommditysList(page,limit,commoditys);
         return new ParseData(0,"",Integer.parseInt(Long.toString(iPage.getTotal())),iPage.getRecords());
     }
