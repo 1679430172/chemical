@@ -21,6 +21,15 @@ public class Purchase {
      private String createTime;    //创建日期
      private  Integer ann; //是否收到发票
     private  String gid;
+    private  String sessionid;
+
+    public String getSessionid() {
+        return sessionid;
+    }
+
+    public void setSessionid(String sessionid) {
+        this.sessionid = sessionid;
+    }
 
     public String getGid() {
         return gid;
