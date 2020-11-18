@@ -2,6 +2,7 @@ package com.hy.util;
 
 import com.hy.bean.Inventory;
 import com.hy.bean.Purchase;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class PurchaseSql {
@@ -9,9 +10,9 @@ public class PurchaseSql {
     private Purchase purchase;
 
 
-    public String query(Purchase purchase){
+    public String query(@Param("em")Purchase purchase){
         StringBuffer sql = null;
-        if(purchase!=null&&!purchase.equals("")){
+        if(purchase!=null&&! purchase.equals("")){
 
             sql = new StringBuffer("select * from purchase where 1=1");
             if(purchase.getName() != null&&!"".equals(purchase.getName())){

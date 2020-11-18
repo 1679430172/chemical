@@ -21,9 +21,10 @@ public class PurchaseService extends ServiceImpl<PurchaseMapper, Purchase> {
     @Autowired
     private UserMapper userMapper;
 
-    public IPage<Purchase> iPage(Integer page, Integer limit){
-
-        IPage<Purchase> iPage=purchaseMapper.Purchase(new Page(page,limit));
+    public IPage<Purchase> iPage(Integer page, Integer limit,Purchase purchase){
+        HttpSession session = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession();
+        String userType= (String) session.getAttribute("userType");
+        IPage<Purchase> iPage=purchaseMapper.queryBy(new Page(page,limit),purchase);
         List<Purchase> list=iPage.getRecords();
         for(Purchase s:list){
             Integer userif=s.getUserId();
@@ -33,6 +34,7 @@ public class PurchaseService extends ServiceImpl<PurchaseMapper, Purchase> {
             String id="CG00000";
             id=id.substring(0,id.length()-cid.length())+cid;
             s.setGid(id);
+            s.setSessionid(userType);
         }
         return iPage;
     }
@@ -47,7 +49,6 @@ public class PurchaseService extends ServiceImpl<PurchaseMapper, Purchase> {
     public void  equals(Purchase purchase){
         purchaseMapper.equals(purchase);
     }
-
 
     public boolean save(Purchase purchase){
         System.out.println("~~~~"+purchase.getName());

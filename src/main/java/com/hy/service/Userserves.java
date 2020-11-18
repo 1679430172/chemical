@@ -33,36 +33,41 @@ public class Userserves extends ServiceImpl<UserMapper, User> {
 
     /**
      * 登陆页面查询名字(id是权限类型，uid是编号)
+     *
      * @param user1
      * @return
      */
-    public String selecet(User user1){
-        User user=userMapper.select(user1);
-        if(user!=null){
-            ServletRequestAttributes requestAttributes = (ServletRequestAttributes)RequestContextHolder.getRequestAttributes();
+    public String selecet(User user1) {
+        User user = userMapper.select(user1);
+        if (user != null) {
+            ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
             HttpServletRequest request = requestAttributes.getRequest();
             HttpSession session = request.getSession();
-            session.setAttribute("userType",user.getType());
-            session.setAttribute("userId",user.getId());
-            session.setAttribute("userName",user.getUsername());
+            session.setAttribute("userType", user.getType());
+            session.setAttribute("userId", user.getId());
+            session.setAttribute("userName", user.getUsername());
             return Util.sueess;
-        }else{
+        } else {
             return Util.defact;
         }
-    };
+    }
+
+    ;
 
     /**
      * 所有业务员信息
+     *
      * @return
      */
-    public ParseData selectlist(Integer page ,Integer limit){
-        Page<User> page1 = new Page<User>(page,limit);
-        IPage<User> iPage=userMapper.selectlist(page1);
-        return new ParseData(0,"",Integer.parseInt(Long.toString(iPage.getTotal())),iPage.getRecords());
+    public ParseData selectlist(Integer page, Integer limit) {
+        Page<User> page1 = new Page<User>(page, limit);
+        IPage<User> iPage = userMapper.selectlist(page1);
+        return new ParseData(0, "", Integer.parseInt(Long.toString(iPage.getTotal())), iPage.getRecords());
     }
 
     /**
      * 权限管理获取session
+     *
      * @param request
      * @return
      */
@@ -74,64 +79,69 @@ public class Userserves extends ServiceImpl<UserMapper, User> {
 
     /**
      * 通过id查询当前业务员
+     *
      * @param id
      * @return
      */
-    public User getbyid(String id){
-      return userMapper.selectbyid(Integer.parseInt(id));
+    public User getbyid(String id) {
+        return userMapper.selectbyid(Integer.parseInt(id));
     }
 
     /**
      * 通過id修改业务员
+     *
      * @param user
      * @return
      */
-    public String update(User user){
-        try {
-            List<User> userList= userMapper.list();
-            for (User user1:userList){
-                if(user1.getUsername().equals(user.getUsername())){
-                    return Util.defact;
-                }
-            }
+    public String update(User user) {
+        User userList = userMapper.listbyid(user.getId());
+        if (userList.getUsername().equals(user.getUsername())) {
             userMapper.update(user);
-        } catch (Exception e) {
-            return Util.defact;
+            return Util.sueess;
+        } else{
+            User user1 = userMapper.list(user.getUsername());
+            if(user1==null){
+                userMapper.update(user);
+                return Util.sueess;
+            }
         }
-        return Util.sueess;
+        return  Util.defact;
     }
 
     /**
      * 查询权限类型
+     *
      * @return
      */
-    public List<User> selecttype(){
+    public List<User> selecttype() {
         return userMapper.selcttype();
     }
 
     /**
      * 插入业务员信息
+     *
      * @param user
      * @return
      */
-    public String tt(User user){
-          List<User> userList= userMapper.list();
-           for (User user1:userList){
-               if(user1.getUsername().equals(user.getUsername())){
-                   return Util.defact;
-               }
-           }
-         userMapper.ttt(user);
-         return Util.sueess;
+    public String tt(User user) {
+        User userList = userMapper.list(user.getUsername());
+        if (userList != null) {
+            if (userList.getUsername().equals(user.getUsername())) {
+                return Util.defact;
+            }
+        }
+        userMapper.ttt(user);
+        return Util.sueess;
 
     }
 
     /**
      * 删除业务员信息
+     *
      * @param id
      * @return
      */
-    public String detele(Integer id){
+    public String detele(Integer id) {
         try {
             userMapper.deleteById(id);
         } catch (Exception e) {
@@ -142,14 +152,16 @@ public class Userserves extends ServiceImpl<UserMapper, User> {
 
     /**
      * 获取session中的UseId
+     *
      * @return
      */
     public String getSessionUserId() {
         HttpSession session = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession();
-        Integer id =  (Integer) session.getAttribute("userId");
+        Integer id = (Integer) session.getAttribute("userId");
         return String.valueOf(id);
     }
 
-    protected void checkCode() {}
+    protected void checkCode() {
+    }
 
 }

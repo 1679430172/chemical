@@ -75,7 +75,16 @@ public interface UserMapper extends BaseMapper<User> {
      */
     @Results({
             @Result(column = "user_name",property = "username"),
+            @Result(column = "uid",property = "id")
     })
-    @Select("select user_name from users ")
-    public List<User> list();
+    @Select("SELECT uid ,user_name,password,type FROM users WHERE user_name=#{username} ")
+    public User list(@Param("username") String username);
+
+    @Results({
+            @Result(column = "user_name",property = "username"),
+            @Result(column = "uid",property = "id")
+    })
+    @Select("SELECT uid ,user_name,password,type FROM users WHERE uid=#{id} ")
+    public User listbyid(@Param("id") Integer id);
+
 }
