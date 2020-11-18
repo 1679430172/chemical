@@ -33,12 +33,12 @@ public class CommodityService extends ServiceImpl<CommodityMapper, Commodity> {
         String userType= (String) session.getAttribute("userType");
         Integer userId= (Integer) session.getAttribute("userId");
         IPage<Commoditys> iPage=null;
+        System.out.println(userType);
         if(userType.equals("0") || userType.equals("2")){
-            iPage =commodityMapper.CommditysList(new Page(page,limit),commoditys,null);
-            return iPage;
+            System.out.println(commoditys.toString());
+            return commodityMapper.CommditysList(new Page(page,limit),commoditys,null);
         }else{
-            iPage= commodityMapper.CommditysList(new Page(page,limit),commoditys,String.valueOf(userId));
-            return iPage;
+            return commodityMapper.CommditysList(new Page(page,limit),commoditys,String.valueOf(userId));
         }
     }
 

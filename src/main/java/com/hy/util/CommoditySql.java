@@ -13,8 +13,8 @@ public class CommoditySql {
             if(commoditys.getCreateTime() !=null && commoditys.getCreateTimes() != null){
                 sql.append(" and c.create_time between ' "+commoditys.getCreateTime()+" ' and '"+commoditys.getCreateTimes()+" ' ");
             }
-            if(commoditys.getSupplierId() != null ){
-                sql.append(" and c.supplier ="+sid);
+            if(sid != null && sid.equals("") ){
+                sql.append(" and c.user_id ="+sid);
             }
             sql.append(" order by i.amount desc ");
         return sql.toString();
