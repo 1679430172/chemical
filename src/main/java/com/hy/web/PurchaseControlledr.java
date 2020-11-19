@@ -1,7 +1,7 @@
 package com.hy.web;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hy.bean.Purchase;
 import com.hy.service.PurchaseService;
 import com.hy.util.ParseData;
@@ -24,9 +24,15 @@ import org.springframework.web.servlet.ModelAndView;
         @RequestMapping("/purchase.do")
         @ResponseBody
         public ParseData purchase(Integer page, Integer limit,Purchase purchase) {
-            IPage<Purchase> iPage = purchaseService.iPage(page, limit,purchase);
-            return new ParseData(0, "", Integer.parseInt(Long.toString(iPage.getTotal())), iPage.getRecords());
+            Page page1=new Page(page,limit);
+            return purchaseService.selectList(page1);
         }
+    @RequestMapping("/purchase1.do")
+    @ResponseBody
+    public ParseData purchase1(Integer page, Integer limit,Purchase purchase) {
+        IPage<Purchase> iPage = purchaseService.iPage(page, limit,purchase);
+        return new ParseData(0, "", Integer.parseInt(Long.toString(iPage.getTotal())), iPage.getRecords());
+    }
 
 /*        @RequestMapping("/queryPurchase.do")
         @ResponseBody
