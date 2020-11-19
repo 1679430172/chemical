@@ -23,7 +23,7 @@ public class PurchaseSql {
             }
             if (purchase.getSupplierName() != null&&!"".equals(purchase.getSupplierName())){
                 sql.append(" and supplier_name="+purchase.getSupplierName());
-            }
+            } sql.append(" order by price_status,ann ");
         }
         return sql.toString();
     }
