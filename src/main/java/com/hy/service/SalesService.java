@@ -37,10 +37,10 @@ public class SalesService extends ServiceImpl<SalesMapper, Sales> {
         HttpSession session = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession();
         Integer  userId1 =  (Integer) session.getAttribute("userId");
         IPage<SalesOrdet> iPage=null;
-        if(userId.equals("0") || userId.equals("2")){
+        if(userId.equals("0")){
             Page<SalesOrdet> page1 = new Page<SalesOrdet>(page,limit);
             iPage= salesMapper.selectSalestwo(page1);
-        }else if(userId.equals("1")){
+        }else if(userId.equals("1") || userId.equals("2")){
             Page<SalesOrdet> page1 = new Page<SalesOrdet>(page,limit);
             iPage=salesMapper.selectSales(page1,userId1);
         }
@@ -73,10 +73,10 @@ public class SalesService extends ServiceImpl<SalesMapper, Sales> {
         String  userType =  (String) session.getAttribute("userType");
         Integer  userId =  (Integer) session.getAttribute("userId");
         IPage<SalesOrdet> iPage=null;
-        if(userType.equals("0") || userType.equals("2")){
+        if(userType.equals("0") ){
             Page<SalesOrdet> page1 = new Page<SalesOrdet>(page,limit);
             iPage=salesMapper.bytrackingNumberselect(page1,trackingNumber);
-        }else if(userType.equals("1")){
+        }else if(userType.equals("1") || userType.equals("2")){
             Page<SalesOrdet> page1 = new Page<SalesOrdet>(page,limit);
             iPage=salesMapper.bytrackingNumberselecttwo(page1,trackingNumber,userId);
         }
