@@ -52,13 +52,6 @@ public class SupplierService extends ServiceImpl<SupplierMapper, Supplier> {
             }
             return iPage;
         }
-        /*List<SupplierUsers> list=iPage.getRecords();
-        for(SupplierUsers s:list){
-            String gid=""+s.getGid();
-            String id="AH00000";
-            id=id.substring(0,id.length()-gid.length())+gid;
-            s.setId(id);
-        }*/
         return iPage;
     }
 
