@@ -82,7 +82,11 @@ public class PurchaseService extends ServiceImpl<PurchaseMapper, Purchase> {
 
     public boolean save(Purchase purchase){
         System.out.println("~~~~"+purchase.getName());
-        purchaseMapper.addPurchase(purchase);
+        if(purchase.getPriceStatus().equals("0")){
+            purchaseMapper.addPurchase(purchase);
+            return true;
+        }
+        purchaseMapper.adPurchase(purchase);
         return true;
     }
     public IPage<Purchase> wPage(Integer page, Integer limit){

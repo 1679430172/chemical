@@ -23,8 +23,9 @@ public class PurchaseSql {
             }
             if (purchase.getSupplierName() != null&&!"".equals(purchase.getSupplierName())){
                 sql.append(" and supplier_name="+purchase.getSupplierName());
-            } sql.append(" order by price_status,ann ");
+            } sql.append(" order by ann asc");
         }
+        System.out.println(sql.toString());
         return sql.toString();
     }
 

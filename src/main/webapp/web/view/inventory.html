@@ -65,6 +65,22 @@
             }
         });
 
+
+        /**
+         *
+         * 查询按钮
+         */
+        form.on('submit(formDemo)', function(data){
+            console.log(data.field);
+            table.reload('test', {
+                url: '/inventory/queryinventory.do'
+                ,where: data.field//设定异步数据接口的额外参数
+            });
+            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+        });
+     /**
+      *一键查询0库存按钮
+      */
         form.on('submit(formDemo)', function(data){
             console.log(data.field);
             table.reload('test', {
