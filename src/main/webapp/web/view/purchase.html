@@ -224,11 +224,11 @@
     {{#  } }}
 </script>
 <script type="text/html" id="suppliername">
-    {{#  if(0 == [[${session.userType}]]){ }}
+    {{#  if(0 == d.userType ){ }}
     {{d.supplierName}}
-    {{#  } else if(2 == [[${session.userType}]]){ }}
+    {{#  } else if(2 == d.userType ){ }}
     {{d.supplierName}}
-    {{#  } else if(d.userId == d.userId){ }}
+    {{#  } else if(d.userId == [[${session.userId}]]){ }}
     {{d.supplierName}}
     {{#  } else { }}
     无权限
@@ -236,12 +236,13 @@
 
 </script>
 <script type="text/html" id="supplierphone">
-    {{#  if(0 ==[[${session.userType}]]){ }}
+    {{#  if(0 == d.userType){ }}
     {{d.supplierPhone}}
-    {{#  } else if(2 ==[[${session.userType}]]){ }}
+    {{#  } else if(2 ==d.userType ){ }}
     {{d.supplierPhone}}
-    {{#  } else if(d.userId == d.userId){ }}
+    {{#  } else if(d.userId == [[${session.userId}]]){ }}
     {{d.supplierPhone}}
+    {{#  } else { }}
     无权限
     {{#  } }}
 

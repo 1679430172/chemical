@@ -17,7 +17,7 @@ public interface PurchaseMapper extends BaseMapper<Purchase> {
     public IPage<Purchase> Purchase(Page page);
 
     @Select("select * from purchase where =#{userId}")
-    public List<Purchase> supplier();
+    public IPage<Purchase> supplier(@Param("userId") Integer userId,Page page);
 
     @Update("update purchase set ann = 2 where cid=#{cid}")
     public void updateAnn(String cid);
