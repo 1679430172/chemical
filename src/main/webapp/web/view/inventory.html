@@ -209,7 +209,7 @@
 </style>
 <script type="text/html" id="toolbarDemo">
       {{#  if(0 == [[${session.userType}]]){ }}
-        <button class="layui-btn layui-btn-sm" lay-event="add">添加</button>
+    <button class="layui-btn layui-btn-sm" lay-event="add">添加</button>
         {{#  } else { }}
         暂无添加权限
         {{#  } }}
@@ -246,10 +246,17 @@
      </div>
 </script>
 <script type="text/html" id="barDemo">
+    {{#  if(0 == d.type){ }}
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="detail">添加数量</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete1">减少数量</a>
+    {{#  } else if(2 == d.type){ }}
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="detail">添加数量</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete1">减少数量</a>
+    {{#  } else { }}
+    无权限
+    {{#  } }}
 </script>
-
 </body>
 </html>

@@ -5,10 +5,16 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hy.bean.Inventory;
 import com.hy.bean.Invoice;
+import com.hy.bean.Order;
 import com.hy.mapper.InventoryMapper;
 import com.hy.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
+import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @Service
 public class InventoService extends ServiceImpl<InventoryMapper, Inventory> {
@@ -16,7 +22,13 @@ public class InventoService extends ServiceImpl<InventoryMapper, Inventory> {
     private InventoryMapper inventoryMapper;
 //查询所有
     public IPage<Inventory> iPage(Integer page, Integer limit){
+        HttpSession session = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession();
+        String type= (String) session.getAttribute("userType");
         IPage<Inventory> iPage= inventoryMapper.Inventory(new Page(page,limit));
+        List<Inventory> list=iPage.getRecords();
+        for(Inventory s:list){
+            s.setType(type);
+        }
         return iPage;
     }
 
