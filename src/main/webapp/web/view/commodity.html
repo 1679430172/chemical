@@ -35,9 +35,9 @@
                         , {field: 'createTime', title: '日期', width:180}
                         , {field: 'updateTime', title: '更新日期', width:180}
                         , {field: 'priceInfo', title: '报价信息', width:150}
-                        ,{field:'imgPath',title:'图片预览',templet:"#img ",width:150}
-                        ,{field:'filePath',title:'文件下载',templet: '#file',width:150}
-                        ,{field:"right",title:'操作',toolbar:'#barDemo',width:'400', fixed: 'right'}
+                        ,{field:'imgPath',title:'图片预览',templet:"#img ",width:130}
+                        ,{field:'filePath',title:'文件下载',templet: '#file',width:130}
+                        ,{field:"right",title:'操作',toolbar:'#barDemo',width:'470', fixed: 'right'}
                     ]
                 ]
                 ,done: function (response) {
@@ -151,6 +151,39 @@
                             layer.msg('导入失败!请重新导入');
                         }
                     });
+                }else if(layEvent == "referral"){
+                    var content="<table class='layui-table'>  " +
+                        "  <tr>" +
+                        "    <td>业务员名称</td>" +
+                        "    <td>"+data.userName+"</td>" +
+                        "  </tr>" +
+                        "  <tr>" +
+                        "    <td>产品名称</td>" +
+                        "    <td>"+data.name+"</td>" +
+                        "  </tr>" +
+                        "  <tr>" +
+                        "    <td>cas号</td>" +
+                        "    <td>"+data.cas+"</td>" +
+                        "  </tr>" +
+                        "  <tr>" +
+                        "    <td>日期</td>" +
+                        "    <td>"+data.createTime+"</td>" +
+                        "  </tr>" +
+                        "  <tr>" +
+                        "    <td>更新日期</td>" +
+                        "    <td>"+data.updateTime+"</td>" +
+                        "  </tr>" +
+                        "  <tr>" +
+                        "    <td>报价信息</td>" +
+                        "    <td>"+data.priceInfo+"</td>" +
+                        "  </tr></table>" ;
+                    layer.open({
+                        area: ['390px', '572px'],
+                        title:"订单详情",
+                        type: 1,
+                        content:content
+                        //这里content是一个普通的String
+                    });
                 }
 
             })
@@ -180,15 +213,8 @@
                             });
                         }
                     });
-                }else if(layEvent ==='form'){
-                    //监听表单
-
                 }
             })
-
-
-
-
 
             $(document).on("click",".li",function () {
                 $.get("/Commodity/commodityById.do?sid="+this.value,function (d) {
@@ -263,6 +289,7 @@
 </head>
 <script type="text/html" id="barDemo">
     <a class="layui-btn layui-btn-xs" lay-event="edit"><i class="layui-icon">&#xe615;</i>修改</a>
+    <button type="button" class="layui-btn layui-btn-sm" lay-event="referral">商品介绍</button>
     <input type="file" class="layui-btn file" lay-event="test" name="fileUpload" style="width: 80px" >
     <a class="layui-btn layui-btn-xs" lay-event="detail"><i class="layui-icon">&#xe615;</i>查看供应商</a>
     <input type="file" class="layui-btn files"  lay-event="file" name="fileUpload" style="width: 80px" >
@@ -283,8 +310,6 @@
     {{#  } }}
 </script>
 
-
-
 <body>
 <script type="text/html" id="toolbarDemo">
     <button class="layui-btn " lay-event="add"><i class="layui-icon">&#xe624;</i>添加</button>
@@ -293,7 +318,7 @@
             <div class="layui-inline">
                 <div class="layui-inline">
                     <div class="layui-inline">
-                        <input type="text" name="createTime"   placeholder="yyyy-MM-dd"  autocomplete="off" class="layui-input time">
+                        <input type="text" lay-verify="date" name="createTime"   placeholder="yyyy-MM-dd"  autocomplete="off" class="layui-input time">
                     </div>
                 </div>
                 <div class="layui-inline">
@@ -310,13 +335,7 @@
             </div>
         </form>
     </div>
-
-
-
 </script>
-<!--<div class="layui-input-inline">
-    <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
-</div>-->
 <table id="demo" lay-filter="test" STYLE=" width: 92px " ></table>
 </body>
 </html>

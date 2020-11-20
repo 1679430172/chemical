@@ -33,15 +33,24 @@ public class SupplierService extends ServiceImpl<SupplierMapper, Supplier> {
         IPage<SupplierUsers> iPage=null;
         if(userType.equals("0") || userType.equals("2")){
              iPage= supplierMapper.supplier(new Page(page,limit),null);
+            List<SupplierUsers> list=iPage.getRecords();
+            for(SupplierUsers s:list){
+                String gid=""+s.getGid();
+                String id="AH00000";
+                id=id.substring(0,id.length()-gid.length())+gid;
+                s.setId(id);
+            }
+            return iPage;
         }else if(userType == "1"){
             iPage=supplierMapper.supplier(new Page(page,limit),String.valueOf(userId));
-        }
-        List<SupplierUsers> list=iPage.getRecords();
-        for(SupplierUsers s:list){
-            String gid=""+s.getGid();
-            String id="AH00000";
-            id=id.substring(0,id.length()-gid.length())+gid;
-            s.setId(id);
+            List<SupplierUsers> list=iPage.getRecords();
+            for(SupplierUsers s:list){
+                String gid=""+s.getGid();
+                String id="AH00000";
+                id=id.substring(0,id.length()-gid.length())+gid;
+                s.setId(id);
+            }
+            return iPage;
         }
         return iPage;
     }

@@ -29,19 +29,18 @@
                             //表头
                             table.render({
                                 elem: '#demo'       //赋值到那个table
-                                ,height:600
-                                ,width:800
+                                ,height: 'full-20'
                                 ,url:'/login/yewuyuan' // 数据接口
                                 ,page:true //开启分页
                                 ,limit:10
                                 ,toolbar: '#toolbarDemo'
                                 ,defaultToolbar: ['filter', 'print', 'exports']
                                 ,cols: [[   //表头
-                                    {field:'id', width:100, title: 'ID', sort: true}
-                                    ,{field:'username', width:150, title: '用户名'}
-                                    ,{field:'password', width:150, title: '密码', sort: true}
-                                    ,{field:'type', width:150, title: '权限级别',templet:'#tranSort'}
-                                    ,{fixed: 'right', width:250, title: '操作',align:'center', toolbar: '#barDemo'}
+                                    {field:'id', title: 'ID', sort: true}
+                                    ,{field:'username',title: '用户名'}
+                                    ,{field:'password', title: '密码', sort: true}
+                                    ,{field:'type', title: '权限级别',templet:'#tranSort'}
+                                    ,{fixed: 'right', title: '操作',align:'center', toolbar: '#barDemo'}
                                 ]]
                             });
 

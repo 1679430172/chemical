@@ -70,6 +70,7 @@ public class InventoryControlledr {
 
     }
 
+
     @RequestMapping("/delete")
     @ResponseBody
     public String detelep(String number){

@@ -71,12 +71,19 @@ public class CommodityController {
     @RequestMapping("/save.do")
     @ResponseBody
     public String save(Commodity commodity){
-         supplierService.getById(commodity.getSupplierId());
-        boolean b= commodityService.save(commodity);
-        if(b == true){
-            return Util.succeed;
-        }else {
-            return Util.fail;
+        supplierService.getById(commodity.getSupplierId());
+        Integer sid=commodity.getSupplierId();
+        Integer supp=commodityService.suppliers(String.valueOf(sid));
+        System.out.println(supp+"-------");
+        if(supp > 0){
+            return Util.defact;
+        }else{
+            boolean b= commodityService.save(commodity);
+            if(b == true){
+                return Util.succeed;
+            }else {
+                return Util.fail;
+            }
         }
     }
 
@@ -90,7 +97,6 @@ public class CommodityController {
     @ResponseBody
     public String  equals(Commodity commodity){
         commodity.setUpdateTime(new Date());
-        System.out.println(commodity.toString());
         commodityService.equals(commodity);
         return "1";
     }
