@@ -19,31 +19,6 @@
         layui.use('form', function(){
             var form = layui.form;
 
-            //授权等级查询
-            $(function(){
-                $.ajax({
-                    url: '/login/selecttype',
-                    type: 'post',
-                    contentType:"application/json",
-                    success: function (data,textStatus) {
-                        var obj =eval(data);
-                        for(var b=0;b<obj.length;b++){
-                            var i=$("<option>").val(obj[b].type);
-                            var q=$("#p1").append(i);
-                            if(i.val()==="1"){
-                                i.selected;
-                                i.text("业务员");
-                            }
-                            if(i.val()==="2"){
-                                i.text("授权的业务员");
-                            }
-                        }
-                        form.render("select");
-                        //重新渲染 固定写法
-                    }
-                });
-            });
-
             //监听提交
             form.on('submit(aa)', function(data){
                 // console.log(data.elem) //被执行事件的元素DOM对象，一般为button对象
@@ -101,6 +76,9 @@
         <label class="layui-form-label">授权等级</label>
         <div class="layui-input-block">
             <select name="type" lay-filter="aihao" id="p1">
+                <option value="1">业务员</option>
+                <option value="2">授权业务员</option>
+                <option value="0">管理员</option>
             </select>
         </div>
     </div>
