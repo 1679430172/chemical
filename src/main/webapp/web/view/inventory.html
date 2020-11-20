@@ -81,10 +81,10 @@
      /**
       *一键查询0库存按钮
       */
-        form.on('submit(formDemo)', function(data){
+        form.on('submit(xxxx)', function(data){
             console.log(data.field);
             table.reload('test', {
-                url: '/inventory/queryinventory.do'
+                url: '/inventory/select1.do'
                 ,where: data.field//设定异步数据接口的额外参数
             });
             return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。

@@ -36,6 +36,11 @@ public class InventoService extends ServiceImpl<InventoryMapper, Inventory> {
         return (IPage<Inventory>) inventoryMapper.queryBy(new Page<Inventory>(page,limit),inventory);
     }
 
+    public IPage<Inventory> querylist1(Integer page, Integer limit){
+        IPage<Inventory> iPage = inventoryMapper.select1(new Page(page,limit));
+        return iPage;
+    }
+
     //修改数量(添加)
     public Integer autoUpdateBySid(Inventory inventory){
         boolean bl=inventoryMapper.autoUpdate(inventory.getAmount(),inventory.getKid());
