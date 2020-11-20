@@ -3,6 +3,7 @@ package com.hy.web;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hy.bean.Inventory;
 import com.hy.bean.Invoice;
 import com.hy.bean.Purchase;
@@ -32,7 +33,13 @@ public class InventoryControlledr {
     public ParseData inventory(Integer page, Integer limit){
         IPage<Inventory> iPage= InventoService.iPage(page,limit);
         return new ParseData(0,"",Integer.parseInt(Long.toString(iPage.getTotal())),iPage.getRecords());
+    }
 
+    @RequestMapping("/select1")
+    @ResponseBody
+    public ParseData select1(Integer page, Integer limit){
+        IPage<Inventory> iPage=InventoService.querylist1(page,limit);
+        return  new ParseData(0,"",Integer.parseInt(Long.toString(iPage.getTotal())),iPage.getRecords());
 
     }
 
