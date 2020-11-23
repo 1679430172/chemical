@@ -17,7 +17,6 @@
         $(function () {
             $.get("/supplier/users.do",function (d,s) {
                 var e=eval(d);
-                //console.log(e[0].userName);
                 for(var i=0;i<e.length;i++){
                     var option=$("<option>").text(e[i].userName);
                     option.attr("value",e[i].uid);
@@ -27,7 +26,6 @@
             })
             $.get("/supplier/get.do",function (d,s) {
                 var e=eval(d);
-                console.log(e.data[0].name);
                 for(var i=0;i<e.data.length;i++){
                     var option=$("<option>").text(e.data[i].name);
                     option.attr("value",e.data[i].gid);
@@ -39,12 +37,11 @@
 
 
         //日期
-        laydate.render({
-            elem: '#date'
-            ,type: 'datetime'
-        });
-        laydate.render({
-            elem: '#date1'
+        lay('.date').each(function(){
+            laydate.render({
+                elem: this
+                ,trigger: 'click'
+            });
         });
 
         //监听表单
@@ -52,8 +49,13 @@
             $.post("/Commodity/save.do",data.field,function (d) {
                 if (d === "1") {
                     layer.msg('已添加成功!', {icon: 1, time: 3000});
-                } else {
+                    var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                    parent.layer.close(index);
+                } else if(d=== "0") {
                     layer.msg('添加失败!', {icon: 2, time: 1000});
+                }else if(d === "2"){
+                    layer.msg('您选的供应商已存在!', {icon: 2, time: 3000});
+                    $('#formId')[0].reset();//重置清空
                 }
             })
             return false;
@@ -62,17 +64,17 @@
 
 </script>
 <body>
-<form class="layui-form" action="">
+<form id="formId" class="layui-form" action="">
     <div class="layui-form-item">
         <label class="layui-form-label">产品名称</label>
         <div class="layui-input-inline">
-            <input type="text"  name="name" required   placeholder="请输入开始时间" autocomplete="off" class="layui-input">
+            <input type="text"  name="name" required   placeholder="请输入产品名" autocomplete="off" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">cas号</label>
         <div class="layui-input-inline">
-            <input type="text " id="cas" name="cas" required   placeholder="请输入结果时间" autocomplete="off" class="layui-input">
+            <input type="text " id="cas" name="cas" required   placeholder="请输入cas号" autocomplete="off" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
@@ -92,15 +94,15 @@
     <div class="layui-form-item">
         <label class="layui-form-label">报价信息</label>
         <div class="layui-input-inline">
-            <input type="text " id="priceInfo" name="priceInfo" required   placeholder="请输入" autocomplete="off" class="layui-input">
+            <input type="text " id="priceInfo" name="priceInfo" required   placeholder="请输入信息" autocomplete="off" class="layui-input">
         </div>
     </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">验证日期</label>
-        <div class="layui-input-inline">
-            <input type="text" name="createTime" id="date"  autocomplete="off" class="layui-input" placeholder="yyyy-MM-dd HH:mm:ss">
-        </div>
-    </div>
+<!--    <div class="layui-form-item">-->
+<!--        <label class="layui-form-label">验证日期</label>-->
+<!--        <div class="layui-input-inline">-->
+<!--            <input type="text" name="createTime" id="date"  autocomplete="off" class="layui-input date" placeholder="yyyy-MM-dd HH:mm:ss">-->
+<!--        </div>-->
+<!--    </div>-->
     <input type="text" style="display:none"  name="imgStatus" value="0">
     <input type="text" style="display:none" name="fileStatus" value="0">
     <div class="layui-form-item">

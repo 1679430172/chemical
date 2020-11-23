@@ -20,11 +20,16 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.Enumeration;
 import java.util.List;
-
+import java.util.Random;
 
 @Controller
 @RequestMapping("/login")
@@ -119,13 +124,21 @@ public class Logincro {
         return userserves.detele(id);
     }
 
-
+    /**
+     * 获取sesiion中的业务员id
+     * @return
+     */
     @RequestMapping("/getSessionUserId")
     @ResponseBody
     public String getSessionUserId(){
         return userserves.getSessionUserId();
     }
 
+
+    /**
+     * 注销登陆
+     * @return
+     */
     @RequestMapping("/zhuxiao")
     @ResponseBody
     public String zhuxiao(){
@@ -136,4 +149,5 @@ public class Logincro {
         }
         return Util.sueess;
     }
+
 }

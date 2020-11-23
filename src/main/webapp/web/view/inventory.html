@@ -11,33 +11,6 @@
     <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
 </head>
 <body>
-<form class="layui-form" action="" lay-filter="example">
-    <div class="layui-form-item">
-        <div class="layui-inline">
-            <label class="layui-form-label">品名</label>
-            <div class="layui-input-block">
-                <input type="text" name="name" lay-verify="title" autocomplete="off" placeholder="请输入" class="layui-input">
-            </div>
-        </div>
-        <div class="layui-inline">
-            <label class="layui-form-label">Cas号</label>
-            <div class="layui-input-block">
-                <input type="text" name="cas" lay-verify="title" autocomplete="off" placeholder="请输入" class="layui-input">
-            </div>
-        </div>
-        <div class="layui-inline">
-            <label class="layui-form-label">编号</label>
-            <div class="layui-input-block">
-                <input type="text" name="number" lay-verify="title" autocomplete="off" placeholder="请输入" class="layui-input">
-            </div>
-        </div>
-        <div class="layui-inline">
-            <div class="layui-input-block">
-                <button type="submit" class="layui-btn" lay-submit="" lay-filter="formDemo">查询</button>
-            </div>
-        </div>
-    </div>
-</form>
 
 
 <table lay-filter="test" class="layui-hide" id="test"></table>
@@ -64,15 +37,15 @@
             ,limits:[10,20,30]
             ,cols: [
                 [
-                {title: '序号', width: 80,width: 150, sort: true,  templet:"<div>{{ d.LAY_INDEX }}</div>"}
-                ,{field:'number', title: '库存编号', width: '10%', sort: true , minWidth: 100}
-                ,{field:'name', width:80, title: '品名', width: '10%', minWidth: 100}
-                ,{field:'cas', width:80, title: 'cas号', width: '9%', minWidth: 100}
-                ,{field:'createTime', title: '创建时间', width: '15%', sort: true , minWidth: 100}
-                ,{field:'updateTime', title: '更新时间', width: '15%', sort: true , minWidth: 100}
-                ,{field:'amount', title: '库存数量',sort: true , width: '10%', minWidth: 100} //minWidth：局部定义当前单元格的最小宽度
-                ,{field:'remark', title: '备注', width: '10%',  minWidth: 100}
-                ,{fixed: 'right', width: 165, align:'center', toolbar: '#barDemo'}
+                {title: '序号', width: 80,  templet:"<div>{{ d.LAY_INDEX }}</div>"}
+                ,{field:'number', title: '库存编号', width: '10%', minWidth: 100}
+                ,{field:'name',title: '品名', Width: 80}
+                ,{field:'cas', width:80, title: 'cas号', width: '9%'}
+               // ,{field:'createTime', title: '创建时间', width: '15%', sort: true , minWidth: 100}
+                ,{field:'updateTime', title: '更新时间', width:130, minWidth: 100}
+                ,{field:'amount', title: '库存数量', width: '10%', minWidth: 100} //minWidth：局部定义当前单元格的最小宽度
+                ,{field:'remark', title: '备注', width: '10%',  minWidth: 100, edit:'text'}
+                ,{fixed: 'right', width: 300, align:'center', toolbar: '#barDemo'}
                 ]
             ]
             ,done: function (response) {
@@ -92,6 +65,11 @@
             }
         });
 
+
+        /**
+         *
+         * 查询按钮
+         */
         form.on('submit(formDemo)', function(data){
             console.log(data.field);
             table.reload('test', {
@@ -100,11 +78,20 @@
             });
             return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
         });
+     /**
+      *一键查询0库存按钮
+      */
+        form.on('submit(xxxx)', function(data){
+            console.log(data.field);
+            table.reload('test', {
+                url: '/inventory/select1.do'
+                ,where: data.field//设定异步数据接口的额外参数
+            });
+            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+        });
 
         //监听表头
         table.on('toolbar(test)',function (obj) {
-            console.log("66666666666");
-            layer.msg("111111111111111111");
             var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
             if(layEvent == 'add'){
                 layer.open({
@@ -112,34 +99,123 @@
                     //offset: 'auto',、
                     skin: 'layui-layer-rim',
                     area: ['600px', '500px'],
-                    content: '/web/view/inventoryAdd.html', //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
+                    content: '/web/view/inventoryAdd.html?', //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
                     end:function () {
                         table.reload('test', {
                             url: '/inventory/inventory.do'
                         });
                     }
                 });
-            }else if(layEvent === 'delete'){}
+            }
         });
+
+
+
 
     //监听行
     table.on('tool(test)', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
         var data = obj.data //获得当前行数据
             ,layEvent = obj.event; //获得 lay-event 对应的值
-        if(layEvent === 'detail'){
-            layer.msg('查看操作');
-        } else if(layEvent === 'del'){
-            layer.confirm('真的删除行么', function(index){
-                obj.del(); //删除对应行（tr）的DOM结构
+        if(layEvent === 'del'){ //删除
+            layer.confirm('真的删除行么', function (index) {
+                obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
                 layer.close(index);
-                //向服务端发送删除指令
+                $.ajax({
+                    url: '/inventory/delete?number='+data.number,
+                    type: 'get',
+                    dataType:"json",
+                    contentType:"application/json",
+                    success: function (data1) {
+                        if (data1==="1"){
+                            layer.msg('删除成功！！！', {
+                                icon: 1,
+                                time: 1000 //2秒关闭（如果不配置，默认是3秒）
+                            }, function(){
+                                //假设这是iframe页
+                                var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                                parent.layer.close(index); //再执行关闭
+                            });
+                        }
+                        if(data1==="2"){
+                            layer.msg("删除失败");
+                        }
+                    }
+                });
             });
-        } else if(layEvent === 'edit'){
-            layer.msg('编辑操作');
+        } else if(layEvent === 'detail'){ //查看
+            layer.prompt({
+                formType: 2,
+                value: '',
+                title: '请输入需要添加的数量',
+                area: ['100px', '40px'] //自定义文本域宽高
+            }, function(value, index, elem){
+                $.post("/inventory/autoUpdate.do",{kid:data.kid,amount:value},function (data) {
+                    if (data==1){
+                        layer.msg('修改成功');
+                        table.reload('test', {
+                            url: '/inventory/inventory.do'
+                        });
+                    }else {
+                        layer.msg('修改失败');
+                        table.reload('test', {
+                            url: '/inventory/inventory.do'
+                        });
+                    }
+
+                });
+                layer.close(index);
+            });
+        }else if(layEvent === 'delete1'){ //查看
+            layer.prompt({
+                formType: 2,
+                value: '',
+                title: '请输入需要减少的数量',
+                area: ['100px', '40px'] //自定义文本域宽高
+            }, function(value, index, elem){
+                $.post("/inventory/jUpdate.do",{kid:data.kid,amount:value},function (data) {
+                    if (data==1){
+                        layer.msg('修改成功');
+                        table.reload('test', {
+                            url: '/inventory/inventory.do'
+                        });
+                    }else {
+                        layer.msg('修改失败');
+                        table.reload('test', {
+                            url: '/inventory/inventory.do'
+                        });
+                    }
+
+                });
+                layer.close(index);
+            });
         }
-    });
+
 
     });
+
+        table.on('edit(test)', function(obj){
+            var value = obj.value //得到修改后的值
+                ,data = obj.data //得到所在行所有键值
+                ,field = obj.field; //得到字段
+            console.log(value);
+            $.post("/inventory/UpdateRe.do",{kid:data.kid,remark:value},function (data) {
+                if (data==1){
+                    table.reload('demo', {
+                        url: '/inventory/inventory.do'
+                    });
+                }else {
+                    layer.msg('修改失败');
+                    table.reload('demo', {
+                        url: '/inventory/inventory.do'
+                    });
+                }
+            })
+
+
+        });
+
+    });
+
 
 </script>
 <style>
@@ -148,14 +224,60 @@
     }
 </style>
 <script type="text/html" id="toolbarDemo">
-    <div class="layui-btn-container">
-        <button class="layui-btn layui-btn-sm" lay-event="add">添加</button>
-    </div>
+      {{#  if(0 == [[${session.userType}]]){ }}
+    <button class="layui-btn layui-btn-sm" lay-event="add">添加</button>
+        {{#  } else { }}
+        暂无添加权限
+        {{#  } }}
+       &numsp; &numsp;
+      &numsp; &numsp; &numsp; &numsp; &numsp; &numsp; &numsp; &numsp; &numsp; &numsp; &numsp; &numsp;
+      <div  style="display:inline-block;">
+    <form class="layui-form" action=""  style="display:inline-block;">
+            <div class="layui-inline">
+            <div class="layui-inline">
+                <label class="layui-inline">品名</label>
+                <div class="layui-inline">
+                    <input type="text" name="name" lay-verify="title" autocomplete="off" placeholder="请输入" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-inline">Cas号</label>
+                <div class="layui-inline">
+                    <input type="text" name="cas" lay-verify="title" autocomplete="off" placeholder="请输入" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-inline">编号</label>
+                <div class="layui-inline">
+                    <input type="text" name="number" lay-verify="title" autocomplete="off" placeholder="请输入" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <div class="layui-inline">
+                    <button type="submit" class="layui-btn" lay-submit="" lay-filter="formDemo">查询</button>
+                </div>
+            </div>
+                <div class="layui-inline">
+                    <div class="layui-inline">
+                        <button type="submit" class="layui-btn" lay-submit="" lay-filter="xxxx">一键查询0库存</button>
+                    </div>
+                </div>
+      </div>
+    </form>
+     </div>
 </script>
 <script type="text/html" id="barDemo">
+    {{#  if(0 == d.type){ }}
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="update">修改</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="detail">添加数量</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete1">减少数量</a>
+    {{#  } else if(2 == d.type){ }}
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="detail">添加数量</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete1">减少数量</a>
+    {{#  } else { }}
+    无权限
+    {{#  } }}
 </script>
-
 </body>
 </html>

@@ -7,14 +7,20 @@ import org.apache.ibatis.annotations.Param;
 public class CommoditySql {
 
     public String CommoditySql(@Param("commoditys")Commoditys commoditys, @Param("supplierId") String sid){
-        StringBuffer sql=new StringBuffer("SELECT c.sid, c.`name`,i.cas ,u.uid,u.user_name,price_info,c.create_time,c.update_time,c.supplier_id,i.amount,c.img_status,c.file_status " +
+        StringBuffer sql=new StringBuffer("SELECT c.sid, c.`name`,c.cas ,u.uid,u.user_name,price_info,c.create_time,c.update_time,c.supplier_id,i.amount,c.img_status,c.img_path,c.file_status,c.file_path " +
                 "FROM commodity c left join supplier s on c.supplier_id=s.gid left join inventory i on c.cas = i.cas LEFT JOIN users u on  c.user_id=u.uid " +
                 "where 1=1 ");
-            if(commoditys.getCreateTime() !=null && commoditys.getCreateTimes() != null){
-                sql.append(" and c.create_time between '"+commoditys.getCreateTime()+"' and '"+commoditys.getCreateTimes()+" ' ");
-            }
-            if(commoditys.getSupplierId() != null ){
-                sql.append(" and c.supplier ="+sid);
+        if(commoditys.getCreateTime() !=null && commoditys.getCreateTimes() != null){
+            sql.append(" and c.update_time between ' "+commoditys.getCreateTime()+" ' and '"+commoditys.getCreateTimes()+" ' ");
+        }
+        if (commoditys.getName() != null && !"".equals(commoditys.getName())) {
+            sql.append(" and c.name = '" + commoditys.getName()+"'");
+        }
+        if (commoditys.getCas() != null && !"".equals(commoditys.getCas())) {
+            sql.append(" and c.cas = '" + commoditys.getCas()+"'");
+        }
+            if(sid != null && !"".equals(sid) ){
+                sql.append(" and c.user_id ="+sid);
             }
             sql.append(" order by i.amount desc ");
         return sql.toString();
@@ -25,10 +31,14 @@ public class CommoditySql {
         return sql.toString();
     }
 
-    public String supplier( @Param("uid")String uid){
+    public String supplier( @Param("uid")String uid,@Param("names")String names){
         String sql="select * from supplier s inner join users u on s.user_id = u.uid where 1=1 ";
         if ( uid != null  ) {
             sql+=" and uid="+uid;
+        }
+        System.out.println(names+"===============================");
+        if (names != null && !"".equals(names)) {
+            sql += " and s.name like '%" + names + "%'";
         }
         return sql;
     }

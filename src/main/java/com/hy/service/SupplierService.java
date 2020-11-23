@@ -26,24 +26,32 @@ public class SupplierService extends ServiceImpl<SupplierMapper, Supplier> {
     @Autowired
     private SupplierMapper supplierMapper;
 
-    public IPage<SupplierUsers> iPage(Integer page, Integer limit){
+    public IPage<SupplierUsers> iPage(Integer page, Integer limit,String name){
         HttpSession session = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession();
         String userType= (String) session.getAttribute("userType");
         Integer userId= (Integer) session.getAttribute("userId");
         IPage<SupplierUsers> iPage=null;
-        if(userType.equals("0") || userType.equals("2")){
-             iPage= supplierMapper.supplier(new Page(page,limit),null);
-        }else if(userType == "1"){
-            iPage=supplierMapper.supplier(new Page(page,limit),String.valueOf(userId));
+        if(userType.equals("0") || userType.equals("1")){
+             iPage= supplierMapper.suppliers(new Page(page,limit),null,name);
+            List<SupplierUsers> list=iPage.getRecords();
+            for(SupplierUsers s:list){
+                String gid=""+s.getGid();
+                String id="AH00000";
+                id=id.substring(0,id.length()-gid.length())+gid;
+                s.setId(id);
+            }
+            return iPage;
+        }else {
+            iPage=supplierMapper.suppliers(new Page(page,limit),String.valueOf(userId),name);
+            List<SupplierUsers> list=iPage.getRecords();
+            for(SupplierUsers s:list){
+                String gid=""+s.getGid();
+                String id="AH00000";
+                id=id.substring(0,id.length()-gid.length())+gid;
+                s.setId(id);
+            }
+            return iPage;
         }
-        List<SupplierUsers> list=iPage.getRecords();
-        for(SupplierUsers s:list){
-            String gid=""+s.getGid();
-            String id="AH00000";
-            id=id.substring(0,id.length()-gid.length())+gid;
-            s.setId(id);
-        }
-        return iPage;
     }
 
     public List<SupplierUsers> iPage(){

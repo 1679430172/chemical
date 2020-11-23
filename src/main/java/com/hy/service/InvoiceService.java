@@ -16,8 +16,16 @@ public class InvoiceService extends ServiceImpl<InvoiceMapper,Invoice>{
     @Autowired
     private InvoiceMapper invoiceMapper;
 
-    public List<Invoice> queryByCas(String cas){
-        return invoiceMapper.queryBycas(cas);
+    public List<Invoice> queryByCas(String cas,String name){
+        QueryWrapper queryWrapper=new QueryWrapper();
+        if(null!=cas && cas!=""){
+            queryWrapper.eq("cas",cas);
+        }
+        if(null!=name && name!=""){
+            queryWrapper.like("name",name);
+
+        }
+        return invoiceMapper.selectList(queryWrapper);
     }
 
     public Integer updateBySid(Invoice invoice){

@@ -61,7 +61,7 @@
                                   });
                               }
                               if(data1==="2"){
-                                  layer.msg('修改成功！！！', {
+                                  layer.msg('名字重复,修改失败！！！', {
                                       icon: 1,
                                       time: 1000 //2秒关闭（如果不配置，默认是3秒）
                                   }, function(){
@@ -111,6 +111,7 @@
     <div class="layui-form-item">
         <label class="layui-form-label">权限等级</label>
         <div class="layui-input-block">
+            <input type="radio" name="type" value="0" title="管理员" checked >
             <input type="radio" name="type" value="1" title="业务员" checked >
             <input type="radio" name="type" value="2" title="已授权的业务员" >
         </div>

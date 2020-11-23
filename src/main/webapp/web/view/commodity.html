@@ -3,19 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" href="/web/component/layui/css/layui.css" th:src="@{/web/component/layui/css/layui.css}"  media="all">
+    <!--<link rel="stylesheet" href="/web/component/layui/css/layui.css" th:src="@{/web/component/layui/css/layui.css}"  media="all">
     <script type="text/javascript" src="/web/component/js/jquery-3.3.1.min.js" th:src="@{/web/component/js/jquery-3.3.1.min.js}"></script>
-    <script src="/web/component/layui/layui.js" th:src="@{/web/component/layui/layui.js}" ></script>
+    <script src="/web/component/layui/layui.js" th:src="@{/web/component/layui/layui.js}" ></script>-->
+    <link rel="stylesheet" href="/web/component/layui/css/layui.css" media="all">
+    <script src="/web/component/layui/layui.js"></script>
+    <script type="text/javascript" src="/web/component/js/jquery-3.3.1.min.js"></script>
     <script type="text/javascript" >
-        layui.use(["form","table","layer","upload"], function() {
+        layui.use(["form","table","layer","laydate","upload"], function() {
             var table = layui.table;
             var form = layui.form;
             var layer = layui.layer;
+            var laydate = layui.laydate;
             var upload = layui.upload;
 
             table.render({
                 elem: '#demo'
-                , url: '/Commodity/Commoditys.do' //数据接口
+                , url: '/Commodity/Commodious.do' //数据接口
+                ,height:'full-20'
                 ,page:true
                 ,limit:20
                 ,toolbar: '#toolbarDemo'
@@ -23,15 +28,16 @@
                 ,limits:[20,30,50]
                 , cols: [
                     [ //表头
-                        {field: 'sid', title: '商品编号'}
-                        ,{field: 'userName', title: '业务员名称'}
-                        , {field: 'name', title: '产品名称'}
-                        , {field: 'cas', title: 'cas号', sort: true}
-                        , {field: 'createTime', title: '日期', sort: true}
-                        , {field: 'updateTime', title: '更新日期', sort: true}
-                        , {field: 'priceInfo', title: '报价信息', sort: true}
-                        ,{field:'filePath',title:'图片预览',align: "center", templet: "#imgtmp" }
-                        ,{field:"",title:'操作',toolbar:'#barDemo', width: 600}
+                        {field: 'sid', title: '商品编号' ,width:95}
+                        ,{field: 'userName', title: '业务员名称',width:110}
+                        , {field: 'name', title: '产品名称' ,width:90}
+                        , {field: 'cas', title: 'cas号', width:90}
+                        // , {field: 'createTime', title: '日期', width:180}
+                        , {field: 'updateTime', title: '更新日期', width:180}
+                        , {field: 'priceInfo', title: '报价信息', width:150}
+                        ,{field:'imgPath',title:'图片预览',templet:"#img ",width:130}
+                        ,{field:'filePath',title:'文件下载',templet: '#file',width:130}
+                        ,{field:"right",title:'操作',toolbar:'#barDemo',width:'470', fixed: 'right'}
                     ]
                 ]
                 ,done: function (response) {
@@ -59,6 +65,7 @@
             table.on('tool(test)',function (obj) {
                 var data = obj.data; //获得当前行数据
                 var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+
                 if(layEvent === 'detail'){
                     console.log(data);
                     layer.open({
@@ -69,30 +76,43 @@
                         content: '/web/view/commoditySupplier.html?supplierId='+data.supplierId, //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
                         end:function () {
                             table.reload('demo', {
-                                url: '/Commoditys.do'
+                                url: '/Commodity/Commodious.do'
+                                ,done:function () {
+                                    lay('.time').each(function () {
+                                        laydate.render({
+                                            elem: this
+                                            , trigger: 'click'
+                                        });
+                                    });
+                                }
                             });
                         }
                     });
                 }else if(layEvent == "test1"){
-
-                    $(".test").each(function(){
-                        upload.render({
-                            elem: this //绑定元素
-                             ,url: '/Commodity/pictures.do' //上传接口
-                            ,data: {sid:obj.data.sid}
-                            ,accept: 'file'
-                            ,done: function(res){
-                                layer.msg(res);
-                                if(res == "1"){
-                                    layer.msg('导入成功!');
-                                }
+                    upload.render({
+                        elem: ".fileImg"//绑定元素
+                        ,url: '/Commodity/pictures.do' //上传接口
+                        ,data: {sid:obj.data.sid},
+                        accept: 'images'
+                        ,before:function(obj){
+                            //预读本地文件示例，不支持ie8
+                            // obj.preview(function(index, file, result){
+                            //     $('#demo1').attr('src', result); //图片链接（base64）
+                            // });
+                        }
+                        ,done: function(res){
+                            layer.msg(res);
+                            if(res == "1"){
+                                layer.msg('导入成功!');
                             }
-                        });
-                    })
-
+                        }
+                        , error: function (res) {
+                             //请求异常回调
+                            layer.msg('导入失败!请重新导入');
+                         }
+                    });
                     //执行实例
-                   // console.log(obj.data.sid);
-
+                   // console.log(obj.data.sid)
                 }else if (layEvent == "edit"){
                     layer.open({
                         type: 2,
@@ -102,9 +122,68 @@
                         content: '/web/view/commodityEdit.html?sid='+data.sid, //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
                         end:function () {
                             table.reload('demo', {
-                                url: '/Commodity/Commoditys.do'
+                                url: '/Commodity/Commodious.do'
+                                ,done:function () {
+                                    lay('.time').each(function () {
+                                        laydate.render({
+                                            elem: this
+                                            , trigger: 'click'
+                                        });
+                                    });
+                                }
                             });
                         }
+                    });
+                }else if(layEvent == "file1"){
+                    upload.render({
+                        elem: ".files1"//绑定元素
+                        ,url: '/Commodity/file.do' //上传接口
+                        //,field: "fileUpload"//设置字段名
+                        ,accept: 'file'
+                        ,data: {sid:obj.data.sid}
+                        ,done: function(res){
+                            layer.msg(res);
+                            if(res == "1"){
+                            layer.msg('导入成功!');
+                            }
+                        }
+                        , error: function (res) {
+                            //请求异常回调yhis
+                            layer.msg('导入失败!请重新导入');
+                        }
+                    });
+                }else if(layEvent == "referral"){
+                    var content="<table class='layui-table'>  " +
+                        "  <tr>" +
+                        "    <td>业务员名称</td>" +
+                        "    <td>"+data.userName+"</td>" +
+                        "  </tr>" +
+                        "  <tr>" +
+                        "    <td>产品名称</td>" +
+                        "    <td>"+data.name+"</td>" +
+                        "  </tr>" +
+                        "  <tr>" +
+                        "    <td>cas号</td>" +
+                        "    <td>"+data.cas+"</td>" +
+                        "  </tr>" +
+                        "  <tr>" +
+                        "    <td>日期</td>" +
+                        "    <td>"+data.createTime+"</td>" +
+                        "  </tr>" +
+                        "  <tr>" +
+                        "    <td>更新日期</td>" +
+                        "    <td>"+data.updateTime+"</td>" +
+                        "  </tr>" +
+                        "  <tr>" +
+                        "    <td>报价信息</td>" +
+                        "    <td>"+data.priceInfo+"</td>" +
+                        "  </tr></table>" ;
+                    layer.open({
+                        area: ['390px', '572px'],
+                        title:"订单详情",
+                        type: 1,
+                        content:content
+                        //这里content是一个普通的String
                     });
                 }
 
@@ -113,6 +192,7 @@
             //监听表头
             table.on('toolbar(test)',function (obj) {
                 var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+                //$("#uid").value(obj.event.uid);
                 if(layEvent === 'add'){
                     layer.open({
                         type: 2,
@@ -122,62 +202,196 @@
                         content: '/web/view/commodityAdd.html', //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
                         end:function () {
                             table.reload('demo', {
-                                url: '/Commodity/Commoditys.do'
+                                url: '/Commodity/Commodious.do'
+                                ,done:function () {
+                                    lay('.time').each(function () {
+                                        laydate.render({
+                                            elem: this
+                                            , trigger: 'click'
+                                        });
+                                    });
+                                }
                             });
                         }
                     });
                 }
             })
 
-            //监听表单
-            form.on('submit(formDemo)', function(data){
-                table.reload('demo', {
-                    url: '/Commodity/Commoditys.do'
-                    ,where: data.field//设定异步数据接口的额外参数
-                    //,height: 300
-                });
-                return false;
-            });
+            $(document).on("click",".li",function () {
+                $.get("/Commodity/commodityById.do?sid="+this.value,function (d) {
+                    var e=eval(d);
+                    var sid=e.sid;
+                    var img=d.imgPath;
+                    layer.open({//示范一个公告层
+                        type: 1
+                        ,title: false //不显示标题栏
+                        ,closeBtn: false
+                        ,area: '390px;'
+                        ,shade: 0.8
+                        ,id: 'LAY_layuipro' //设定一个id，防止重复弹出
+                        ,btn: ['下载', "关闭"]
+                        ,btnAlign: 'c'
+                        ,moveType: 1 //拖拽模式，0或者1
+                        ,content: '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;"><img src='+img+' style=" WIDTH:300PX;height:300px;">'
+                        ,success: function(layero){
+                            var btn = layero.find('.layui-layer-btn');
+                            btn.find('.layui-layer-btn0').attr({
+                                href: '/Commodity/download.do?sid='+sid
+                                ,target: '_blank'
+                            });
+                        }
+                    });
+                })
+            })
 
-            //监听锁定操作
-            form.on('button(test2)', function(obj){
-                layer.tips(this);
+            $(document).on("click",".file",function () {
+                $.get("/Commodity/commodityById.do?sid="+this.value,function (d) {
+                    var e=eval(d);
+                    var sid=e.sid;
+                    var img=d.imgPath;
+                    layer.open({//示范一个公告层
+                        type: 1
+                        ,title: false //不显示标题栏
+                        ,closeBtn: false
+                        ,area: '390px;'
+                        ,shade: 0.8
+                        ,id: 'LAY_layuipro' //设定一个id，防止重复弹出
+                        ,btn: ['下载', "关闭"]
+                        ,btnAlign: 'c'
+                        ,moveType: 1 //拖拽模式，0或者1
+                        ,content: '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;"><i class="layui-icon">&#xe621;</i>'
+                        ,success: function(layero){
+                            var btn = layero.find('.layui-layer-btn');
+                            btn.find('.layui-layer-btn0').attr({
+                                href: '/Commodity/downloads.do?sid='+sid
+                                ,target: '_blank'
+                            });
+                        }
+                    });
+                })
+            })
+
+            lay('.time').each(function(){
+                laydate.render({
+                    elem: this
+                    ,trigger: 'click'
+                });
+            });
+            form.on('submit(formDemo)', function(data){
+                console.log(data.field);
+                table.reload('demo', {
+                    url: '/Commodity/Commodious.do'
+                    ,where: data.field//设定异步数据接口的额外参数
+                });
+                lay('.time').each(function () {
+                    laydate.render({
+                        elem: this
+                        , trigger: 'click'
+                    });
+                });
+                return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
             });
         })
     </script>
+    <style>
+        .filess {
+            position: relative;
+            display: inline-block;
+            background: #009688;
+            /*border: 1px solid #99D3F5;*/
+            border-radius: 4px;
+            padding: 4px 12px;
+            overflow: hidden;
+            color: #FFFFFF;
+            text-decoration: none;
+            text-indent: 0;
+            line-height: 20px;
+        }
+        .filess input {
+            position: absolute;
+            font-size: 100px;
+            right: 0;
+            top: 0;
+            opacity: 0;
+        }
+        /*.filess:hover {*/
+        /*    background: #AADFFD;*/
+        /*    border-color: #78C3F3;*/
+        /*    color: #004974;*/
+        /*    text-decoration: none;*/
+        /*}*/
+
+    </style>
 </head>
 <script type="text/html" id="barDemo">
-    <a class="layui-btn layui-btn-xs" lay-event="edit"><i class="layui-icon">&#xe615;</i>修改</a>
-    <input type="file" id="test1" lay-event="test1"  class="test" name="file">
-    <a class="layui-btn layui-btn-xs" lay-event="detail"><i class="layui-icon">&#xe615;</i>查看供应商</a>
-    <input type="file" id="test2" lay-event="test2" >
+    <a class="filess" lay-event="edit">修改</a>
+    <a class="filess" lay-event="detail">查看供应商</a>
+    <a class="filess" lay-event="referral">商品介绍</a>
+    <a href="javascript:;" class="filess">上传图片
+        <input type="file" class="fileImg" lay-event="test1" name="fileUpload" style="width: 80px" >
+    </a>
+
+    <a href="javascript:;" class="filess">上传文件
+        <input type="file" class="files1"  lay-event="file1" name="fileUpload" style="width: 80px" >
+    </a>
+
 </script>
 
+<script type="text/html" id="img">
+    {{#  if(d.imgStatus == 0){}}
+    <button type="button" class="layui-btn files" value="{{d.sid}}" >未上传图片</button>
+    {{#  } else if(d.imgStatus == 1){ }}
+    <button type="button" class="layui-btn li" value="{{d.sid}}">已上传</button>
+    {{#  } }}
+</script>
+<script type="text/html" id="file">
+    {{#  if(d.fileStatus == 0){}}
+    <button type="button" class="layui-btn files" value="{{d.sid}}" >未上传文件</button>
+    {{#  } else if(d.fileStatus == 1){ }}
+    <button type="button" class="layui-btn file" value="{{d.sid}}">已上传</button>
+    {{#  } }}
+</script>
+
+<body>
 <script type="text/html" id="toolbarDemo">
-    <div class="layui-btn-container">
-        <button class="layui-btn layui-btn-sm" lay-event="add"><i class="layui-icon">&#xe624;</i>添加</button>
+    <button class="layui-btn " lay-event="add"><i class="layui-icon">&#xe624;</i>添加</button>
+    <div style="display: inline-block;">
+        <form class="layui-form" action=""  style="display: inline-block;">
+            <div class="layui-inline">
+                <div class="layui-inline">
+                    <div class="layui-inline">
+                        <input type="text" lay-verify="date" name="createTime"   placeholder="yyyy-MM-dd"  autocomplete="off" class="layui-input time">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <div class="layui-inline"><label class="layui-form-label">至</label></div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <div class="layui-inline">
+                        <input type="text" lay-verify="date" name="createTimes" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input time">
+                    </div>
+                </div>
+
+                <div class="layui-inline">
+                    <label class="layui-inline">名称</label>
+                    <div class="layui-inline">
+                        <input type="text" name="name"  autocomplete="off" placeholder="请输入" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-inline">Cas号</label>
+                    <div class="layui-inline">
+                        <input type="text" name="cas"  autocomplete="off" placeholder="请输入" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-inline">
+                    <div class="layui-inline">
+                        <button type="submit" class="layui-btn" lay-submit="" lay-filter="formDemo">查询</button>
+                    </div>
+                </div>
+            </div>
+        </form>
     </div>
 </script>
-<body>
-<form class="layui-form" action="">
-    <div class="layui-inline">
-        <div class="layui-input-block">
-            <input type="text" id="createTime" name="createTime" required   placeholder="请输入开始时间" autocomplete="off" class="layui-input">
-        </div>
-    </div>
-    <div class="layui-inline">
-        <label class="layui-form-label">至</label>
-        <div class="layui-input-block">
-            <input type="text " id="createTimes" name="createTimes" required   placeholder="请输入结果时间" autocomplete="off" class="layui-input">
-        </div>
-    </div>
-    <input type="text" style="display:none" id="uid" name="uid">
-    <div class="layui-inline">
-        <div class="layui-input-block">
-            <button class="layui-btn" lay-submit lay-filter="formDemo">我的商品</button>
-        </div>
-    </div>
-</form>
-<table id="demo" lay-filter="test" ></table>
+<table id="demo" lay-filter="test" STYLE=" width: 92px " ></table>
 </body>
 </html>

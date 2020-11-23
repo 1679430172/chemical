@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <title>采购管理</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -11,33 +11,6 @@
     <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
 </head>
 <body>
-<form class="layui-form" action="" lay-filter="example">
-    <div class="layui-form-item">
-        <div class="layui-inline">
-            <label class="layui-form-label">品名</label>
-            <div class="layui-input-block">
-                <input type="text" name="name" lay-verify="title" autocomplete="off" placeholder="请输入" class="layui-input">
-            </div>
-        </div>
-        <div class="layui-inline">
-            <label class="layui-form-label">Cas号</label>
-            <div class="layui-input-block">
-                <input type="text" name="cas" lay-verify="title" autocomplete="off" placeholder="请输入" class="layui-input">
-            </div>
-        </div>
-        <div class="layui-inline">
-            <label class="layui-form-label">供应商名称</label>
-            <div class="layui-input-block">
-                <input type="text" name="supplierName" lay-verify="title" autocomplete="off" placeholder="请输入" class="layui-input">
-            </div>
-        </div>
-        <div class="layui-inline">
-            <div class="layui-input-block">
-                <button type="submit" class="layui-btn" lay-submit="" lay-filter="formDemo">查询</button>
-            </div>
-        </div>
-    </div>
-</form>
 
 
 
@@ -65,23 +38,23 @@
             ,limits:[10,20,30]
             ,cols: [
                 [
-                    {field:'cid', title: '编号', sort: true , width: 50}
-                    ,{field:'userId', width:80, title: '业务员',  minWidth: 100}
+                    {field:'gid', title: '编号',width: 100}
+                    ,{field:'userName', width:80, title: '业务员',  minWidth: 100}
                     ,{field:'name', width:120, title: '产品名称'}
                     ,{field:'cas', title: 'cas号',width: 95}
-                    ,{field:'amount', title: '数量', sort: true ,width: 50}
-                    ,{field:'price', title: '单价',sort: true ,width:100} //minWidth：局部定义当前单元格的最小宽度
+                    ,{field:'amount', title: '数量', width: 60}
+                    ,{field:'price', title: '单价',width:100} //minWidth：局部定义当前单元格的最小宽度
                     ,{field:'priceStatus', title: '是否含税', width: 90,align: "center", templet: function(d){if(d.priceStatus == 0){return '含税'}else{return '不含税'}}}
-                    ,{field:'sumPrice', title: '总价', sort: true ,  width: 80}
-                    ,{field:'status', title: '是否收货',  width: 90 , templet: function(d){if(d.status == 0){return '收货'}else{return '未收货'}} }
-                    ,{field:'userName', title: '业务员',  width: 80}
-                    ,{field:'supplierName', title: '供应商名称',width: 100}
-                    ,{field:'supplierPhone', title: '供应商电话',  width: 120}
+                    ,{field:'sumPrice', title: '总价',   width: 80}
+                    // ,{field:'status', title: '是否收货',  width: 90 , templet: function(d){if(d.status == 0){return '收货'}else{return '未收货'}} }
+                    // ,{field:'userName', title: '业务员',  width: 80}
+                    ,{field:'', title: '供应商名称',width: 100,templet:"#suppliername" }
+                    ,{field:'', title: '供应商电话',  width: 120 ,templet:"#supplierphone"}
                     ,{field:'trackingNumber', title: '物流单号', width: 125}
-                    ,{field:'createTime', title: '创建日期', sort: true , width: 170}
+                    ,{field:'createTime', title: '创建日期',  width: 170}
                     ,{field:'ann', title: '发票',  width: 90 , templet: function(d){if(d.ann == 1){return '未收到'}else{return '已收到'}} }
-                    ,{fixed: 'right', width: '8%', align:'center', toolbar: '#dd'}
-                    ,{fixed: 'right', width: 50, align:'center', toolbar: '#barDemo'}
+                    ,{fixed: 'right', width: '8%', alidgn:'center', toolbar: '#dd'}
+                    ,{fixed: 'right', width: '8%', align:'center', toolbar: '#cc'}
                 ]]
             ,done: function (response) {
                 //定位当前table视图
@@ -101,7 +74,7 @@
         form.on('submit(formDemo)', function(data){
             console.log(data.field);
             table.reload('test', {
-                url: '/inventory/queryinventory.do'
+                url: '/purchase/purchase1.do'
                 ,where: data.field//设定异步数据接口的额外参数
             });
             return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
@@ -115,33 +88,22 @@
                     type: 2,
                     //offset: 'auto',、
                     skin: 'layui-layer-rim',
-                    area: ['600px', '500px'],
-                    content: '/web/view/purchaseAdd.html', //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
+                    area: ['650px', '500px'],
+                    content: '/web/view/purchaseAdd.html?', //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
                     end:function () {
                         table.reload('test', {
                             url: '/purchase/purchase.do'
-
                         });
                     }
                 });
-            }else if(layEvent === 'delete'){}
+            }
         });
 
         //监听行
         table.on('tool(test)', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
             var data = obj.data //获得当前行数据
                 ,layEvent = obj.event; //获得 lay-event 对应的值
-            if(layEvent === 'detail'){
-                layer.msg('查看操作');
-            } else if(layEvent === 'del'){
-                layer.confirm('真的删除行么', function(index){
-                    obj.del(); //删除对应行（tr）的DOM结构
-                    layer.close(index);
-                    //向服务端发送删除指令
-                });
-            } else if(layEvent === 'edit'){
-                layer.msg('编辑操作');
-            }else if (layEvent === 'getfp'){
+            if (layEvent === 'getfp'){
                 layer.open({
                     type: 1,
                     area: ['250px', '150px'],
@@ -165,7 +127,34 @@
                     },
                 });
 
-            }
+            }else if (layEvent ==='up'){
+                layer.prompt({
+                    formType: 2,
+                    value: '',
+                    title: '请输入物流单号',
+                    area: ['100px', '40px'] //自定义文本域宽高
+                }, function(value, index, elem){
+                    $.post("/purchase/updateTn.do",{cid:data.cid,trackingNumber:value},function (data) {
+                        if (data==1){
+                            layer.msg('添加成功');
+                            table.reload('test', {
+                                url: '/purchase/purchase.do'
+
+                            });
+                        }else {
+                            layer.msg('修改失败');
+                            table.reload('test', {
+                                url: '/purchase/purchase.do'
+
+                            });
+                        }
+
+                    });
+                    layer.close(index);
+                });
+                }
+
+
 
         });
 
@@ -176,6 +165,8 @@
 
 </script>
 
+
+
 <style>
     .layui-table-page {
         text-align: center;
@@ -183,22 +174,78 @@
 
 </style>
 
-
-
 <script type="text/html" id="toolbarDemo">
-    <div class="layui-btn-container">
-        <button class="layui-btn layui-btn-sm" lay-event="add">添加</button>
+    <button class="layui-btn layui-btn-sm"  lay-event="add"><i class="layui-icon"></i>添加</button>
+    &numsp; &numsp; &numsp;
+    &numsp; &numsp; &numsp;
+    &numsp; &numsp; &numsp;
+    &numsp; &numsp; &numsp;
+    <div style="display: inline-block;">
+    <form class="layui-form" action=""  style="display: inline-block;">
+        <div class="layui-inline">
+            <div class="layui-inline">
+                <label class="layui-form-label">品名</label>
+                <div class="layui-inline">
+                    <input type="text" name="name" lay-verify="title" autocomplete="off" placeholder="请输入" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-inline">Cas号</label>
+                <div class="layui-inline">
+                    <input type="text" name="cas" lay-verify="title" autocomplete="off" placeholder="请输入" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-inline">供应商名称</label>
+                <div class="layui-inline">
+                    <input type="text" name="supplierName" lay-verify="title" autocomplete="off" placeholder="请输入" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <div class="layui-inline">
+                    <button type="submit" class="layui-btn" lay-submit="" lay-filter="formDemo">查询</button>
+                </div>
+            </div>
+        </div>
+    </form>
     </div>
 </script>
-<script type="text/html" id="barDemo">
-    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-</script>
 <script type="text/html" id="dd">
-    {{#  if(d.priceStatus == 0){ }}
-    <button class="layui-btn  layui-btn-xs" class="layui-btn"  lay-event="getfp" id="withExport" >已收到发票按钮</button>
-    {{#  } else { }}
+    {{#  if(d.trackingNumber == null){ }}
+    <button class="layui-btn  layui-btn-xs layui-btn" lay-event="up" >添加物流编号</button>
+    {{#  } else if(d.trackingNumber == 1){ }}
+    {{#  } }}
+</script>
+<script type="text/html" id="cc">
+    {{#  if(d.ann === 1 && d.priceStatus == 0){ }}
+    <button class="layui-btn  layui-btn-xs layui-btn" lay-event="getfp">已收到发票</button>
+    {{#  } else if(d.ann == 1){ }}
 
     {{#  } }}
+</script>
+<script type="text/html" id="suppliername">
+    {{#  if(0 == d.userType ){ }}
+    {{d.supplierName}}
+    {{#  } else if(2 == d.userType ){ }}
+    {{d.supplierName}}
+    {{#  } else if(d.userId == [[${session.userId}]]){ }}
+    {{d.supplierName}}
+    {{#  } else { }}
+    无权限
+    {{#  } }}
+
+</script>
+<script type="text/html" id="supplierphone">
+    {{#  if(0 == d.userType){ }}
+    {{d.supplierPhone}}
+    {{#  } else if(2 ==d.userType ){ }}
+    {{d.supplierPhone}}
+    {{#  } else if(d.userId == [[${session.userId}]]){ }}
+    {{d.supplierPhone}}
+    {{#  } else { }}
+    无权限
+    {{#  } }}
+
 </script>
 </body>
 </html>

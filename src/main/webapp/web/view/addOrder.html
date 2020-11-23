@@ -61,7 +61,7 @@
             //监听提交
             form.on('submit(formDemo)', function(data){
                 $.post("/Order/",data.field,function (d,s) {
-                    if(d==="1"){
+                    if(d=="1"){
                         layer.msg('添加成功！！！', {
                             icon: 1,
                             time: 1000 //2秒关闭（如果不配置，默认是3秒）
@@ -70,6 +70,11 @@
                             var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
                             parent.layer.close(index); //再执行关闭
                         });
+                    }else{
+                        layer.msg('添加失败！！！', {
+                            icon: 1,
+                            time: 1000 //2秒关闭（如果不配置，默认是3秒）
+                        })
                     }
                 });
                 return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
@@ -83,15 +88,15 @@
     <div class="layui-form-item layui-form-text">
         <label class="layui-form-label">商品名称</label>
         <div class="layui-input-inline">
-            <select name="commodityId" lay-verify="" id="sid" lay-filter="commodity">
-                <option value="0">请选择一个商品</option>
+            <select name="commodityId" lay-verify="required" id="sid" lay-filter="commodity">
+                <option value="">请选择一个商品</option>
             </select>
         </div>
     </div>
     <div class="layui-form-item layui-form-text">
         <label class="layui-form-label">业务员</label>
         <div class="layui-input-inline">
-            <select name="city" lay-verify="" disabled="disabled">
+            <select name="city" lay-verify="required" disabled="disabled">
                 <option th:value="${session.userId}" selected>[[${session.userName}]]</option>
             </select>
         </div>
@@ -99,25 +104,25 @@
     <div class="layui-form-item">
         <label class="layui-form-label">数量</label>
         <div class="layui-input-inline">
-            <input type="text" name="amount" lay-verify="did" autocomplete="off" placeholder="" class="layui-input">
+            <input type="text" name="amount" lay-verify="required|number" autocomplete="off" placeholder="" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">单价</label>
         <div class="layui-input-inline">
-            <input type="text" name="price" lay-verify="did" autocomplete="off" placeholder="" class="layui-input">
+            <input type="text" name="price" lay-verify="required|number" autocomplete="off" placeholder="" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">成本</label>
         <div class="layui-input-inline">
-            <input type="text" name="costPrice" lay-verify="did" autocomplete="off" placeholder="" class="layui-input">
+            <input type="text" name="costPrice" lay-verify="required|number" autocomplete="off" placeholder="" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">其他成本</label>
         <div class="layui-input-inline">
-            <input type="text" name="otherCost" lay-verify="did" autocomplete="off" placeholder="" class="layui-input">
+            <input type="text" name="otherCost" lay-verify="required|number" autocomplete="off" placeholder="" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
@@ -135,7 +140,7 @@
     <div class="layui-form-item layui-form-text">
         <label class="layui-form-label">库存编号</label>
         <div class="layui-input-inline">
-            <select name="invoiceId" id="invoiceId" lay-verify="">
+            <select name="invoiceId" id="invoiceId" lay-verify="required">
                 <option value="">请选择一个编号</option>
             </select>
         </div>
@@ -143,19 +148,19 @@
     <div class="layui-form-item">
         <label class="layui-form-label">客户名称</label>
         <div class="layui-input-inline">
-            <input type="text" name="userName" lay-verify="did" autocomplete="off" placeholder="" class="layui-input">
+            <input type="text" name="userName" lay-verify="required" autocomplete="off" placeholder="" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">地址</label>
         <div class="layui-input-inline">
-            <input type="text" name="address" lay-verify="did" autocomplete="off" placeholder="" class="layui-input">
+            <input type="text" name="address" lay-verify="required" autocomplete="off" placeholder="" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">联系电话</label>
         <div class="layui-input-inline">
-            <input type="text" name="phone" lay-verify="did" autocomplete="off" placeholder="" class="layui-input">
+            <input type="text" name="phone" lay-verify="required|phone" autocomplete="off" placeholder="" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item layui-form-text">

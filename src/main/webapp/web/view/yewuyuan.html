@@ -29,20 +29,18 @@
                             //表头
                             table.render({
                                 elem: '#demo'       //赋值到那个table
-                                ,height:600
-                                ,width:1300
+                                ,height: 'full-20'
                                 ,url:'/login/yewuyuan' // 数据接口
                                 ,page:true //开启分页
                                 ,limit:10
                                 ,toolbar: '#toolbarDemo'
                                 ,defaultToolbar: ['filter', 'print', 'exports']
                                 ,cols: [[   //表头
-                                    {type: 'checkbox', fixed: 'left'}
-                                    ,{field:'id', width:150, title: 'ID', sort: true}
-                                    ,{field:'username', width:300, title: '用户名'}
-                                    ,{field:'password', width:300, title: '密码', sort: true}
-                                    ,{field:'type', width:350, title: '权限级别',templet:'#tranSort'}
-                                    ,{fixed: 'right', width:200, title: '操作',align:'center', toolbar: '#barDemo'}
+                                    {field:'id', title: 'ID', sort: true}
+                                    ,{field:'username',title: '用户名'}
+                                    ,{field:'password', title: '密码', sort: true}
+                                    ,{field:'type', title: '权限级别',templet:'#tranSort'}
+                                    ,{fixed: 'right', title: '操作',align:'center', toolbar: '#barDemo'}
                                 ]]
                             });
 
@@ -56,7 +54,7 @@
                                     layer.open({
                                         type: 2
                                         ,content: '/web/view/ywyupdate.html?id='+data.id //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
-                                        ,area: ['800px', '300px']
+                                        ,area: ['500px', '300px']
                                         ,end: function(index, layero){
                                             location.reload();
                                         }
@@ -100,7 +98,7 @@
                                     layer.open({
                                         type: 2
                                         ,content: '/web/view/ywyinsert.html' //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
-                                        ,area: ['1200px', '620px']
+                                        ,area: ['500px', '300px']
                                         ,end: function(index, layero){
                                             location.reload();
                                         }

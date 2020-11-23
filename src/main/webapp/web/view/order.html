@@ -7,8 +7,11 @@
     <script src="/web/component/layui/layui.js"></script>
     <script type="text/javascript" src="/web/component/js/jquery-3.3.1.min.js"></script>
     <script>
-        layui.use(['table','layer'], function(){
-            var table = layui.table,form = layui.form;
+        layui.use(['table','layer','form','laydate'], function(){
+            var table = layui.table;
+            var form = layui.form;
+            var laydate = layui.laydate;
+            var layer = layui.layer;
 
             //第一个实例
             table.render({
@@ -22,17 +25,17 @@
                 ,limits:[10,20,30]
                 ,cols: [
                     [ //表头
-                    {field: 'did', title: '编号', sort: true}
-                    ,{field: 'name', title: '商品名称', sort: true, totalRowText: '合计行'}
-                    ,{field: 'amount', title: '数量', sort: true}
-                    ,{field: 'price', title: '单价', sort: true, templet:"#price", totalRow: true}
-                    ,{field: 'sumPrice', title: '总价', sort: true, templet:"#sumPrice", totalRow: true}
-                    ,{field: 'costPrice', title: '成本', templet:"#costPrice", totalRow: true}
-                    ,{field: 'otherCost', title: '其他成本', templet:"#otherCost", totalRow: true}
-                    ,{field: '', title: '总成本', templet:"#zcb"}
-                    ,{field: 'royalties', title: '提成', templet:"#royalties", totalRow: true}
-                    ,{field: 'status', title: '是否出库', sort: true, templet:"#status"}
-                    ,{fixed: 'right', align:'center', toolbar: '#barDemo'}
+                    {field: 'id', title: '编号', sort: true, width:90}
+                    ,{field: 'name', title: '商品名称', sort: true, totalRowText: '合计行', width:120}
+                    ,{field: 'amount', title: '数量', sort: true, width:80}
+                    ,{field: 'price', title: '单价', sort: true, templet:"#price", totalRow: true, width:80}
+                    ,{field: 'sumPrice', title: '总价', sort: true, templet:"#sumPrice", totalRow: true, width:80}
+                    ,{field: 'costPrice', title: '成本', templet:"#costPrice", totalRow: true, width:80}
+                    ,{field: 'otherCost', title: '其他成本', templet:"#otherCost", totalRow: true, width:110}
+                    ,{field: '', title: '总成本', templet:"#zcb", width:80}
+                    ,{field: 'royalties', title: '提成', templet:"#royalties", totalRow: true, width:80}
+                    ,{field: 'status', title: '是否出库', sort: true, templet:"#status", width:110}
+                    ,{fixed: 'right', align:'center', toolbar: '#barDemo',width:195}
                 ]
                 ],done: function (response) {
                     //定位当前table视图
@@ -48,119 +51,146 @@
                 }
             });
 
-            //监听锁定操作
-            form.on('checkbox(lockDemo)', function(obj){
-                if(!obj.elem.checked){
-                    obj.elem.checked=true;
-                }else {
-                    alert(123);
-                }
+            $(document).on("click",".notOutbound",function(){
+                $.post("/Order/",{did:this.value,_method:"PUT"},function (data) {
+                    if(data==1){
+                        layer.msg('已出库！！！', {
+                            icon: 1,
+                            time: 2000 //1秒关闭（如果不配置，默认是3秒）
+                        })
+                        table.reload('demo', {
+                            url: '/Order/'
+                            ,done:function () {
+                                lay('.time').each(function(){
+                                    laydate.render({
+                                        elem: this
+                                        ,trigger: 'click'
+                                    });
+                                });
+                            }
+                        });
+                    }else{
+                        layer.msg('状态修改失败', {
+                            time: 2000 //1秒关闭（如果不配置，默认是3秒）
+                        })
+                    }
+                });
             });
+            $(document).on("click",".outbound",function(){
+                layer.msg('已在出库状态！！！', {
+                    time: 1000 //1秒关闭（如果不配置，默认是3秒）
+                })
+            });
+            $(document).on("click",".salesReturn",function(){
+                layer.msg('退货中禁止修改状态！！！', {
+                    time: 1000 //1秒关闭（如果不配置，默认是3秒）
+                })
+            });
+
 
             //监听工具条
             table.on('tool(test)', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
                 var data = obj.data; //获得当前行数据
                 var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
 
-                var content="<table class='layui-table'>  " +
-                    "  <tr>" +
-                    "    <td>商品名称</td>" +
-                    "    <td>"+data.name+ "</td>" +
-                    "  </tr>" +
-                    "  <tr>" +
-                    "    <td>数量</td>" +
-                    "    <td>"+data.amount+"</td>" +
-                    "  </tr>" +
-                    "  <tr>" +
-                    "    <td>单价</td>" +
-                    "    <td>";
-                if(0 == [[${session.userType}]] || data.userId == [[${session.userId}]] || data.suid == [[${session.userId}]]){
-                    content+=data.price;
-                }else{
-                    content+="无权限";
-                }
-                    content+="</td>" +
-                    "  </tr>" +
-                    "  <tr>" +
-                    "    <td>总价</td>" +
-                    "    <td>";
-                if(0 == [[${session.userType}]] || data.userId == [[${session.userId}]] || data.suid == [[${session.userId}]]){
-                    content+=data.sumPrice;
-                }else{
-                    content+="无权限";
-                }
-                    content+="  </tr>" +
-                    "  <tr>" +
-                    "    <td>成本</td>" +
-                    "    <td>";
-                if(0 == [[${session.userType}]] || data.userId == [[${session.userId}]] || data.suid == [[${session.userId}]]){
-                    content+=data.costPrice;
-                }else{
-                    content+="无权限";
-                }
-                    content+="</td>" +
-                    "  </tr>" +
-                    "  <tr>" +
-                    "    <td>其他成本</td>" +
-                    "    <td>";
-                if(0 == [[${session.userType}]] || data.userId == [[${session.userId}]] || data.suid == [[${session.userId}]]){
-                    content+=data.otherCost;
-                }else{
-                    content+="无权限";
-                }
-                    content+= "</td>" +
-                    "  </tr>" +
-                    "  <tr>" +
-                    "    <td>总成本</td>" +
-                    "    <td>";
-                if(0 == [[${session.userType}]] || data.userId == [[${session.userId}]] || data.suid == [[${session.userId}]]){
-                    content+=data.zcb;
-                }else{
-                    content+="无权限";
-                }
-                    content+="</td>" +
-                    "  </tr>" +
-                    "  <tr>" +
-                    "    <td>提成</td>" +
-                    "    <td>";
-                if(0 == [[${session.userType}]] || data.userId == [[${session.userId}]] || data.suid == [[${session.userId}]]){
-                    content+=data.royalties;
-                }else{
-                    content+="无权限";
-                }
-                    content+="</td>" +
-                    "  </tr>" +
-                    "  <tr>" +
-                    "    <td>客户姓名</td>" +
-                    "    <td>"+data.userName+"</td>" +
-                    "  </tr>" +
-                    "  <tr>" +
-                    "    <td>地址</td>" +
-                    "    <td>"+data.address+"</td>" +
-                    "  </tr>" +
-                    "  <tr>" +
-                    "    <td>联系电话</td>" +
-                    "    <td>"+data.phone+"</td>" +
-                    "  </tr>" +
-                    "  <tr>" +
-                    "    <td>开票资料</td>" +
-                    "    <td>"+data.createTime+"</td>" +
-                    "  </tr>" +
-                    "  <tr>" +
-                    "    <td>库存编号</td>" +
-                    "    <td>"+data.invoiceId+"</td>" +
-                    "  </tr>" +
-                    "  <tr>" +
-                    "    <td>备注</td>" +
-                    "    <td>" +
-                    "       <div class='layui-input-inline'>" +
-                    "           <textarea  class='layui-textarea' disabled='disabled' style='width: 240px'>"+data.remarks+"</textarea>" +
-                    "       </div>" +
-                    "    </td>" +
-                    "  </tr>" +
-                    "</table>";
-
                 if(layEvent === 'detail'){ //查看
+                    var content="<table class='layui-table'>  " +
+                        "  <tr>" +
+                        "    <td>商品名称</td>" +
+                        "    <td>"+data.name+ "</td>" +
+                        "  </tr>" +
+                        "  <tr>" +
+                        "    <td>数量</td>" +
+                        "    <td>"+data.amount+"</td>" +
+                        "  </tr>" +
+                        "  <tr>" +
+                        "    <td>单价</td>" +
+                        "    <td>";
+                    if(0 == data.type || data.userId == data.uid || data.suid == data.uid){
+                        content+=data.price;
+                    }else{
+                        content+="无权限";
+                    }
+                    content+="</td>" +
+                        "  </tr>" +
+                        "  <tr>" +
+                        "    <td>总价</td>" +
+                        "    <td>";
+                    if(0 == data.type || data.userId == data.uid || data.suid == data.uid){
+                        content+=data.sumPrice;
+                    }else{
+                        content+="无权限";
+                    }
+                    content+="  </tr>" +
+                        "  <tr>" +
+                        "    <td>成本</td>" +
+                        "    <td>";
+                    if(0 == data.type || data.userId == data.uid || data.suid == data.uid){
+                        content+=data.costPrice;
+                    }else{
+                        content+="无权限";
+                    }
+                    content+="</td>" +
+                        "  </tr>" +
+                        "  <tr>" +
+                        "    <td>其他成本</td>" +
+                        "    <td>";
+                    if(0 == data.type || data.userId == data.uid || data.suid == data.uid){
+                        content+=data.otherCost;
+                    }else{
+                        content+="无权限";
+                    }
+                    content+= "</td>" +
+                        "  </tr>" +
+                        "  <tr>" +
+                        "    <td>总成本</td>" +
+                        "    <td>";
+                    if(0 == data.type || data.userId == data.uid || data.suid == data.uid){
+                        content+=data.zcb;
+                    }else{
+                        content+="无权限";
+                    }
+                    content+="</td>" +
+                        "  </tr>" +
+                        "  <tr>" +
+                        "    <td>提成</td>" +
+                        "    <td>";
+                    if(0 == data.type || data.userId == data.uid || data.suid == data.uid){
+                        content+=data.royalties;
+                    }else{
+                        content+="无权限";
+                    }
+                    content+="</td>" +
+                        "  </tr>" +
+                        "  <tr>" +
+                        "    <td>客户姓名</td>" +
+                        "    <td>"+data.userName+"</td>" +
+                        "  </tr>" +
+                        "  <tr>" +
+                        "    <td>地址</td>" +
+                        "    <td>"+data.address+"</td>" +
+                        "  </tr>" +
+                        "  <tr>" +
+                        "    <td>联系电话</td>" +
+                        "    <td>"+data.phone+"</td>" +
+                        "  </tr>" +
+                        "  <tr>" +
+                        "    <td>开票资料</td>" +
+                        "    <td>"+data.billInfo+"</td>" +
+                        "  </tr>" +
+                        "  <tr>" +
+                        "    <td>库存编号</td>" +
+                        "    <td>"+data.invoiceId+"</td>" +
+                        "  </tr>" +
+                        "  <tr>" +
+                        "    <td>备注</td>" +
+                        "    <td>" +
+                        "       <div class='layui-input-inline'>" +
+                        "           <textarea  class='layui-textarea' disabled='disabled' style='width: 240px'>"+data.remarks+"</textarea>" +
+                        "       </div>" +
+                        "    </td>" +
+                        "  </tr>" +
+                        "</table>";
                     layer.open({
                         area: ['390px', '572px'],
                         title:"订单详情",
@@ -168,28 +198,109 @@
                         content:content
                              //这里content是一个普通的String
                     });
-                } else { //编辑
-
+                } else if(layEvent === 'del'){ //编辑
+                    layer.confirm('真的删除么', function(index){
+                        $.post("/Order/",{did:data.did,_method:"DELETE"},function (data) {
+                            if(data==1){
+                                layer.msg('已删除！！！', {
+                                    icon: 1,
+                                    time: 2000 //1秒关闭（如果不配置，默认是3秒）
+                                })
+                                table.reload('demo', {
+                                    url: '/Order/',
+                                    done:function () {
+                                        lay('.time').each(function(){
+                                            laydate.render({
+                                                elem: this
+                                                ,trigger: 'click'
+                                            });
+                                        });
+                                    }
+                                });
+                            }else{
+                                layer.msg('删除失败！！！', {
+                                    time: 1000 //1秒关闭（如果不配置，默认是3秒）
+                                })
+                            }
+                        });
+                        layer.close(index);
+                    });
                 }
             });
 
-            //执行实例
-            $("#test1").click(function () {
-                layer.open({
-                    area: ['450px', '500px'],
-                    type: 2,
-                    content: '/Order/toAdd' //这里content是一个普通的String
-                });
+            //监听表头
+            table.on('toolbar(test)',function (obj) {
+                var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+                if(layEvent === 'import'){
+                    layer.open({
+                        area: ['450px', '500px'],
+                        type: 2,
+                        title:'添加订单',
+                        content: '/Order/toAdd' //这里content是一个普通的String
+                        ,end:function () {
+                            table.reload('demo', {
+                                url: '/Order/'
+                                ,done:function () {
+                                    lay('.time').each(function(){
+                                        laydate.render({
+                                            elem: this
+                                            ,trigger: 'click'
+                                        });
+                                    });
+                                }
+                            });
+                        }
+                    });
+                }
             })
+
+            lay('.time').each(function(){
+                laydate.render({
+                    elem: this
+                    ,trigger: 'click'
+                });
+            });
+
+            //监听提交
+            form.on('submit(demo1)', function(data){
+                table.reload('demo', {
+                    url: '/Order/time'
+                    ,where: data.field //设定异步数据接口的额外参数
+                    ,done:function () {
+                        lay('.time').each(function(){
+                            laydate.render({
+                                elem: this
+                                ,trigger: 'click'
+                            });
+                        });
+                    }
+                });
+                return false;
+            });
         });
     </script>
     <script type="text/html" id="barDemo">
         <a class="layui-btn layui-btn-xs" lay-event="detail"><i class="layui-icon">&#xe615;</i>查看订单详情</a>
+        {{#  if(0 == d.type){ }}
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon">&#xe640;</i>删除</a>
+        {{#  } else { }}
+
+        {{#  } }}
     </script>
     <script type="text/html" id="toolbarDemo">
-        <div class="layui-btn-container">
-            <button type="button" class="layui-btn layui-btn-sm" lay-event="import" id="test1"><i class="layui-icon">&#xe654;</i>添加订单</button>
-        </div>
+            <button type="button" class="layui-btn layui-btn-sm" lay-event="import" id="test1"><i class="layui-icon">&#xe654;</i>添加订单</button>&nbsp;&nbsp;
+            <form class="layui-form" action="" style="display: inline-block;">
+                <div class="layui-input-inline">
+                    <input type="text" name="stadate" id="stadate" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input time">
+                </div>
+                &nbsp; - &nbsp;
+                <div class="layui-input-inline">
+                    <input type="text" name="enddate" id="enddate" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input time">
+                </div>&nbsp;&nbsp;
+                <div class="layui-input-inline">
+                    <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+                </div>
+            </form>
     </script>
     <style>
         .layui-table-page {
@@ -198,74 +309,74 @@
     </style>
     <script type="text/html" id="status">
         {{#  if(d.status == 0){ }}
-        <input type="checkbox" name="status" value="{{d.status}}" title="出库" lay-filter="lockDemo">
+        <button value="{{d.did}}" class="layui-btn layui-btn-normal layui-btn-xs notOutbound">未出库</button>
         {{#  } else if(d.status == 1){ }}
-        <input type="checkbox" name="status" value="{{d.status}}" title="出库" lay-filter="lockDemo" checked>
+        <button value="{{d.did}}" class="layui-btn layui-btn-xs outbound">已出库</button>
         {{#  } else if(d.status == 2){ }}
-        <input type="checkbox" name="status" value="{{d.status}}" title="退货" disabled="disabled"  lay-filter="lockDemo" checked>
+        <button value="{{d.did}}" class="layui-btn layui-btn-primary layui-btn-xs salesReturn">已退货</button>
         {{#  } }}
     </script>
     <script type="text/html" id="royalties">
-        {{#  if(0 == [[${session.userType}]]){ }}
+        {{#  if(0 == d.type){ }}
         {{d.royalties}}
-        {{#  } else if(d.userId == [[${session.userId}]]){ }}
+        {{#  } else if(d.userId == d.uid){ }}
         {{d.royalties}}
-        {{#  } else if(d.suid == [[${session.userId}]]){ }}
+        {{#  } else if(d.suid == d.uid){ }}
         {{d.royalties}}
         {{#  } else { }}
         无权限
         {{#  } }}
     </script>
     <script type="text/html" id="price">
-        {{#  if(0 == [[${session.userType}]]){ }}
+        {{#  if(0 == d.type){ }}
         {{d.price}}
-        {{#  } else if(d.userId == [[${session.userId}]]){ }}
+        {{#  } else if(d.userId == d.uid){ }}
         {{d.price}}
-        {{#  } else if(d.suid == [[${session.userId}]]){ }}
+        {{#  } else if(d.suid == d.uid){ }}
         {{d.price}}
         {{#  } else { }}
         无权限
         {{#  } }}
     </script>
     <script type="text/html" id="sumPrice">
-        {{#  if(0 == [[${session.userType}]]){ }}
+        {{#  if(0 == d.type){ }}
         {{d.sumPrice}}
-        {{#  } else if(d.userId == [[${session.userId}]]){ }}
+        {{#  } else if(d.userId == d.uid){ }}
         {{d.sumPrice}}
-        {{#  } else if(d.suid == [[${session.userId}]]){ }}
+        {{#  } else if(d.suid == d.uid){ }}
         {{d.sumPrice}}
         {{#  } else { }}
         无权限
         {{#  } }}
     </script>
     <script type="text/html" id="costPrice">
-        {{#  if(0 == [[${session.userType}]]){ }}
+        {{#  if(0 == d.type){ }}
         {{d.costPrice}}
-        {{#  } else if(d.userId == [[${session.userId}]]){ }}
+        {{#  } else if(d.userId == d.uid){ }}
         {{d.costPrice}}
-        {{#  } else if(d.suid == [[${session.userId}]]){ }}
+        {{#  } else if(d.suid == d.uid){ }}
         {{d.costPrice}}
         {{#  } else { }}
         无权限
         {{#  } }}
     </script>
     <script type="text/html" id="otherCost">
-        {{#  if(0 == [[${session.userType}]]){ }}
+        {{#  if(0 == d.type){ }}
         {{d.otherCost}}
-        {{#  } else if(d.userId == [[${session.userId}]]){ }}
+        {{#  } else if(d.userId == d.uid){ }}
         {{d.otherCost}}
-        {{#  } else if(d.suid == [[${session.userId}]]){ }}
+        {{#  } else if(d.suid == d.uid){ }}
         {{d.otherCost}}
         {{#  } else { }}
         无权限
         {{#  } }}
     </script>
     <script type="text/html" id="zcb">
-        {{#  if(0 == [[${session.userType}]]){ }}
+        {{#  if(0 == d.type){ }}
         {{ d.zcb}}
-        {{#  } else if(d.userId == [[${session.userId}]]){ }}
+        {{#  } else if(d.userId == d.uid){ }}
         {{ d.zcb}}
-        {{#  } else if(d.suid == [[${session.userId}]]){ }}
+        {{#  } else if(d.suid == d.uid){ }}
         {{ d.zcb}}
         {{#  } else { }}
         无权限

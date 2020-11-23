@@ -4,17 +4,18 @@ package com.hy.web;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.hy.bean.Inventory;
-import com.hy.bean.Order;
 import com.hy.service.InventoService;
 import com.hy.util.ParseData;
 import io.swagger.annotations.Api;
-import io.swagger.models.auth.In;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 @Api
 @Controller
@@ -28,15 +29,28 @@ public class InventoryControlledr {
     public ParseData inventory(Integer page, Integer limit){
         IPage<Inventory> iPage= InventoService.iPage(page,limit);
         return new ParseData(0,"",Integer.parseInt(Long.toString(iPage.getTotal())),iPage.getRecords());
+    }
 
+    @RequestMapping("/select1")
+    @ResponseBody
+    public ParseData select1(Integer page, Integer limit){
+        IPage<Inventory> iPage=InventoService.querylist1(page,limit);
+        return  new ParseData(0,"",Integer.parseInt(Long.toString(iPage.getTotal())),iPage.getRecords());
 
     }
 
     @PostMapping("/addinventory.do")
     @ResponseBody
-    public Integer add(Inventory inventory) throws Exception {
-        System.out.println(inventory);
-        return 1;
+    public String add(Inventory inventory) throws Exception {
+        return InventoService.add(inventory);
+    }
+
+    @GetMapping("/")
+    @ResponseBody
+    public List<Inventory> selectListByCas(String cas){
+        QueryWrapper<Inventory> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("cas",cas);
+        return InventoService.list(queryWrapper);
     }
 
     @RequestMapping("/queryinventory.do")
@@ -58,4 +72,38 @@ public class InventoryControlledr {
         return new ParseData(0, "", Integer.parseInt(Long.toString(iPage.getTotal())), iPage.getRecords());
 
     }
+
+
+    @RequestMapping("/delete")
+    @ResponseBody
+    public String detelep(String number){
+        return InventoService.detelep(number);
+    }
+
+    @RequestMapping("/toInventory")
+    @ResponseBody
+    public ModelAndView toInventory(){
+        ModelAndView modelAndView=new ModelAndView();
+        modelAndView.setViewName("inventory.html");
+        return modelAndView;
+    }
+
+    @ResponseBody
+    @RequestMapping ("/autoUpdate.do" )
+    public Integer autoUpdate(Inventory inventory){
+        return InventoService.autoUpdateBySid(inventory);
+    }
+
+    @ResponseBody
+    @RequestMapping ("/UpdateRe.do" )
+    public Integer UpdateRe(Inventory inventory){
+        return InventoService.UpdateRe(inventory);
+    }
+
+    @ResponseBody
+    @RequestMapping ("/jUpdate.do" )
+    public Integer jUpdate(Inventory inventory){
+        return InventoService.autoUpdateBykid(inventory);
+    }
+
 }
