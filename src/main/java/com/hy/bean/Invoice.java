@@ -10,6 +10,7 @@ public class Invoice {
     private String cas;
     private Integer number;
     private Double price;
+    private String unit;
     private String createTime;
 
     public Integer getSid() { return sid; }
@@ -36,8 +37,17 @@ public class Invoice {
         return createTime;
     }
 
+
     public void setCreateTime(String createTime) {
         this.createTime = createTime;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
     }
 
     @Override
@@ -48,7 +58,8 @@ public class Invoice {
                 ", cas='" + cas + '\'' +
                 ", number=" + number +
                 ", price=" + price +
-                ", create_time=" + createTime +
+                ", unit='" + unit + '\'' +
+                ", createTime='" + createTime + '\'' +
                 '}';
     }
 }
