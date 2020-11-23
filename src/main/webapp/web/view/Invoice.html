@@ -23,6 +23,14 @@
         <div class="layui-input-inline">
             <input type="text" name="cas" lay-verify="title" autocomplete="off" placeholder="请输入" class="layui-input">
         </div>
+
+        <div class="layui-input-inline">
+            产品名称
+        </div>
+        &nbsp;&nbsp;&nbsp;
+        <div class="layui-input-inline">
+            <input type="text" name="name" lay-verify="title" autocomplete="off" placeholder="请输入" class="layui-input">
+        </div>
         &nbsp;&nbsp;&nbsp;
             <div class="layui-input-inline">
             <button type="submit" class="layui-btn" lay-submit="" lay-filter="formDemo">查询</button>
@@ -55,6 +63,7 @@
                 ,{field: 'cas', title: 'Cas号'}
                 ,{field:'number',title:'数量',edit:'text'}
                 ,{field: 'price', title: '价格'}
+                ,{field: 'unit', title: '单位'}
                 ,{field: 'createTime', title: '创建日期'}
                 ,{fixed: 'right', align:'center', toolbar: '#barDemo'}
             ]]
@@ -134,7 +143,7 @@
             var layEvent = obj.event;
             if (layEvent === 'import') {
                 layer.open({
-                    area: ['350px', '380px'],
+                    area: ['360px', '420px'],
                     type: 2,
                     content: 'addInvoice.html',
                     end:function () {

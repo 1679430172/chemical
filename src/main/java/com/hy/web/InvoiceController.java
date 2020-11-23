@@ -27,10 +27,13 @@ public class InvoiceController  {
 
     @RequestMapping("/queryByCas.do")
     @ResponseBody
-    public ParseData queryByCas(String cas,Integer page,Integer limit){
-        List<Invoice> list=service.queryByCas(cas);
+    public ParseData queryByCas(String cas,String name,Integer page,Integer limit){
+        List<Invoice> list=service.queryByCas(cas,name);
         return new ParseData(0,"",null,list);
     }
+
+
+
     @ResponseBody
     @RequestMapping ("/add.do" )
     public String add(Invoice invoice){
