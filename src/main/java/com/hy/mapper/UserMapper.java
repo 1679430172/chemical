@@ -15,9 +15,7 @@ public interface UserMapper extends BaseMapper<User> {
      * @param user
      * @return
      */
-    @Results({
-            @Result(column = "uid",property = "id"),
-    })
+
     @Select("select * from users where  user_name=#{username} and password=#{password}")
     public User select(User user);
 

@@ -30,7 +30,9 @@ public class Userserves extends ServiceImpl<UserMapper, User> {
      * @return
      */
     public String selecet(User user1){
+        System.out.println(user1);
         User user=userMapper.select(user1);
+        System.out.println(user);
         if(user!=null){
             ServletRequestAttributes requestAttributes = (ServletRequestAttributes)RequestContextHolder.getRequestAttributes();
             HttpServletRequest request = requestAttributes.getRequest();
