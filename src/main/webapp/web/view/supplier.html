@@ -31,7 +31,7 @@
                     , {field: 'name', title: '供应商名称'}
                     , {field: 'phone', title: '电话'}
                     , {field: 'wechat', title: '微信或qq', width: 177}
-                    , {field: 'status', title: '状态',templet: function(d){if(d.status == 0){return '未收到'}else{return '已收到'}}}
+                    , {field: 'status', title: '商品关联状态',templet: function(d){if(d.status == 0){return '未关联'}else{return '已关联'}}}
                     , {field: 'createTime', title: '创建时间'}
                     ,{field:'remark',title:'备注'}
                 ]
@@ -70,13 +70,41 @@
                 });
             }else if(layEvent === 'delete'){}
         })
+
+        form.on('submit(formDemo)', function(data){
+            console.log(data.field);
+            table.reload('demo', {
+                url: '/supplier/supplierInquire.do'
+                ,where: data.field//设定异步数据接口的额外参数
+            });
+            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+        });
+
     })
 </script>
 <script type="text/html" id="toolbarDemo">
-    <div class="layui-btn-container">
-        <button class="layui-btn layui-btn-sm" lay-event="add"><i class="layui-icon">&#xe624;</i>添加</button>
+    <button class="layui-btn layui-btn-sm" lay-event="add"><i class="layui-icon">&#xe624;</i>添加</button>
+
+    <div style="display: inline-block;">
+        <form class="layui-form" action=""  style="display: inline-block;">
+            <div class="layui-inline">
+
+                <div class="layui-inline">
+                    <label class="layui-inline">名称</label>
+                    <div class="layui-inline">
+                        <input type="text" name="name"  autocomplete="off" placeholder="请输入" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <div class="layui-inline">
+                        <button type="submit" class="layui-btn" lay-submit="" lay-filter="formDemo">查询</button>
+                    </div>
+                </div>
+            </div>
+        </form>
     </div>
 </script>
+
 <body>
 <table id="demo" lay-filter="test"></table>
 </body>

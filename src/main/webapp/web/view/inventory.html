@@ -37,13 +37,13 @@
             ,limits:[10,20,30]
             ,cols: [
                 [
-                {title: '序号', width: 80,width: 150, sort: true,  templet:"<div>{{ d.LAY_INDEX }}</div>"}
-                ,{field:'number', title: '库存编号', width: '10%', sort: true , minWidth: 100}
-                ,{field:'name', width:80, title: '品名', width: '10%', minWidth: 100}
-                ,{field:'cas', width:80, title: 'cas号', width: '9%', minWidth: 100}
-                ,{field:'createTime', title: '创建时间', width: '15%', sort: true , minWidth: 100}
-                ,{field:'updateTime', title: '更新时间', width: '15%', sort: true , minWidth: 100}
-                ,{field:'amount', title: '库存数量',sort: true , width: '10%', minWidth: 100} //minWidth：局部定义当前单元格的最小宽度
+                {title: '序号', width: 80,  templet:"<div>{{ d.LAY_INDEX }}</div>"}
+                ,{field:'number', title: '库存编号', width: '10%', minWidth: 100}
+                ,{field:'name',title: '品名', Width: 80}
+                ,{field:'cas', width:80, title: 'cas号', width: '9%'}
+               // ,{field:'createTime', title: '创建时间', width: '15%', sort: true , minWidth: 100}
+                ,{field:'updateTime', title: '更新时间', width:130, minWidth: 100}
+                ,{field:'amount', title: '库存数量', width: '10%', minWidth: 100} //minWidth：局部定义当前单元格的最小宽度
                 ,{field:'remark', title: '备注', width: '10%',  minWidth: 100, edit:'text'}
                 ,{fixed: 'right', width: 300, align:'center', toolbar: '#barDemo'}
                 ]
@@ -65,10 +65,26 @@
             }
         });
 
+
+        /**
+         *
+         * 查询按钮
+         */
         form.on('submit(formDemo)', function(data){
             console.log(data.field);
             table.reload('test', {
                 url: '/inventory/queryinventory.do'
+                ,where: data.field//设定异步数据接口的额外参数
+            });
+            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+        });
+     /**
+      *一键查询0库存按钮
+      */
+        form.on('submit(xxxx)', function(data){
+            console.log(data.field);
+            table.reload('test', {
+                url: '/inventory/select1.do'
                 ,where: data.field//设定异步数据接口的额外参数
             });
             return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
@@ -209,7 +225,7 @@
 </style>
 <script type="text/html" id="toolbarDemo">
       {{#  if(0 == [[${session.userType}]]){ }}
-        <button class="layui-btn layui-btn-sm" lay-event="add">添加</button>
+    <button class="layui-btn layui-btn-sm" lay-event="add">添加</button>
         {{#  } else { }}
         暂无添加权限
         {{#  } }}
@@ -241,15 +257,27 @@
                     <button type="submit" class="layui-btn" lay-submit="" lay-filter="formDemo">查询</button>
                 </div>
             </div>
+                <div class="layui-inline">
+                    <div class="layui-inline">
+                        <button type="submit" class="layui-btn" lay-submit="" lay-filter="xxxx">一键查询0库存</button>
+                    </div>
+                </div>
       </div>
     </form>
      </div>
 </script>
 <script type="text/html" id="barDemo">
+    {{#  if(0 == d.type){ }}
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="detail">添加数量</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete1">减少数量</a>
+    {{#  } else if(2 == d.type){ }}
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="detail">添加数量</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete1">减少数量</a>
+    {{#  } else { }}
+    无权限
+    {{#  } }}
 </script>
-
 </body>
 </html>

@@ -33,4 +33,6 @@ public interface CommodityMapper  extends BaseMapper<Commodity> {
     @Select("select * from commodity where supplier_id=#{supplierId}")
     public List<Commodity> suppliers(@Param("supplierId") String supplierId);
 
+    @Select("select * from commodity where supplier_id=#{supplierId} and cas=#{cas}")
+    public List<Commodity> supplierss(@Param("supplierId") String supplierId,@Param("cas") String cas);
 }

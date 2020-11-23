@@ -21,10 +21,13 @@ import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 
 @Service
 public class CommodityService extends ServiceImpl<CommodityMapper, Commodity> {
+    public  static final String imgFile="/huagong/data/image";
+    public  static final String imgDowloadFile="/huagong/data";
     @Autowired
     private CommodityMapper commodityMapper;
 
@@ -58,14 +61,14 @@ public class CommodityService extends ServiceImpl<CommodityMapper, Commodity> {
             String extName = oriName.substring(oriName.lastIndexOf("."));//// 获取图片后缀
             try {
                 String webAppPath= req.getServletContext().getRealPath("/");
-                File uploadFile= new File(webAppPath,"assets\\");
+                File uploadFile= new File(imgFile);
                 if(!uploadFile.exists()){
                     uploadFile.mkdirs();
                 }
                 Commodity commodity=new Commodity();
-                File pic = new File(uploadFile+"\\"+ picName + extName);
+                File pic = new File(uploadFile,"/"+ picName + extName);
                 pictureFile.transferTo(pic);
-                commodity.setImgPath("\\assets\\"+ picName + extName);
+                commodity.setImgPath("/image/"+ picName + extName);
                 commodity.setImgStatus("1");
                 commodity.setSid(Integer.parseInt(sid));
                 commodityMapper.pictureEquals(commodity);
@@ -86,14 +89,14 @@ public class CommodityService extends ServiceImpl<CommodityMapper, Commodity> {
             try {
                 String webAppPath= req.getServletContext().getRealPath("/");
                 File webAppFile = new File(webAppPath);
-                File uploadFile= new File(webAppPath,"assets\\");
+                File uploadFile= new File(imgFile);
                 if(!uploadFile.exists()){
                     uploadFile.mkdirs();
                 }
                 Commodity commodity=new Commodity();
-                File pic = new File(uploadFile+"\\"+ picName + extName);
+                File pic = new File(uploadFile.toString(),"/"+ picName + extName);
                 pictureFile.transferTo(pic);
-                commodity.setFilePath("\\assets\\"+ picName + extName);
+                commodity.setFilePath("/image/"+ picName + extName);
                 commodity.setFileStatus("1");
                 commodity.setSid(Integer.parseInt(sid));
                 commodityMapper.paper(commodity);
@@ -112,12 +115,12 @@ public class CommodityService extends ServiceImpl<CommodityMapper, Commodity> {
         //设置内容作为附件下载  fileName有后缀,比如1.jpg
         String file=commodity.getImgPath();
         String l=file.substring(file.length()-3);
-        response.setHeader("Content-Disposition", "attachment; filename="+l);
+        response.setHeader("Content-Disposition", "attachment; filename=image."+l);
         ServletOutputStream out = null;
         try {
             // 通过文件路径获得File对象(假如此路径中有一个download.pdf文件)
-            String webAppPath= req.getServletContext().getRealPath("/");
-            file=file.substring(1);
+            String webAppPath= imgDowloadFile;
+//            file=file.substring(1);
             webAppPath+=file;
             InputStream inputStream = new FileInputStream(webAppPath);//此处是为了获得输出流
             // 3.通过response获取ServletOutputStream对象(out)
@@ -155,12 +158,12 @@ public class CommodityService extends ServiceImpl<CommodityMapper, Commodity> {
         //设置内容作为附件下载  fileName有后缀,比如1.jpg
         String file=commodity.getFilePath();
         String l=file.substring(file.length()-3);
-        response.setHeader("Content-Disposition", "attachment; filename="+l);
+        response.setHeader("Content-Disposition", "attachment; filename=file."+l);
         ServletOutputStream out = null;
         try {
             // 通过文件路径获得File对象(假如此路径中有一个download.pdf文件)
-            String webAppPath= req.getServletContext().getRealPath("/");
-            file=file.substring(1);
+            String webAppPath= imgDowloadFile;
+//            file=file.substring(1);
             webAppPath+=file;
             InputStream inputStream = new FileInputStream(webAppPath);//此处是为了获得输出流
             // 3.通过response获取ServletOutputStream对象(out)
@@ -191,9 +194,12 @@ public class CommodityService extends ServiceImpl<CommodityMapper, Commodity> {
         }
     }
 
+    public Integer suppliers(String supplierId,String cas){
+        List<Commodity> list= commodityMapper.supplierss(supplierId,cas);
+        return list.size();
+    }
     public Integer suppliers(String supplierId){
         return commodityMapper.suppliers(supplierId).size();
     }
-
 
 }

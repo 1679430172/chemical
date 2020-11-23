@@ -24,6 +24,10 @@ public interface InventoryMapper extends BaseMapper<Inventory> {
     @Select("select * from inventory where number=#{number}")
     public Inventory selectnumber(@Param("number")String number);
 
+    @Select("select * from inventory where amount<=0")
+    public IPage<Inventory> select1(Page page);
+
+
     @Select("select * from inventory where cas=#{cas}")
     public Inventory  selectcas(@Param("cas")String cas);
 

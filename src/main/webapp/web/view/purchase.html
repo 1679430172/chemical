@@ -47,7 +47,7 @@
                     ,{field:'priceStatus', title: '是否含税', width: 90,align: "center", templet: function(d){if(d.priceStatus == 0){return '含税'}else{return '不含税'}}}
                     ,{field:'sumPrice', title: '总价',   width: 80}
                     // ,{field:'status', title: '是否收货',  width: 90 , templet: function(d){if(d.status == 0){return '收货'}else{return '未收货'}} }
-                    ,{field:'userName', title: '业务员',  width: 80}
+                    // ,{field:'userName', title: '业务员',  width: 80}
                     ,{field:'', title: '供应商名称',width: 100,templet:"#suppliername" }
                     ,{field:'', title: '供应商电话',  width: 120 ,templet:"#supplierphone"}
                     ,{field:'trackingNumber', title: '物流单号', width: 125}
@@ -74,7 +74,7 @@
         form.on('submit(formDemo)', function(data){
             console.log(data.field);
             table.reload('test', {
-                url: '/purchase/purchase.do'
+                url: '/purchase/purchase1.do'
                 ,where: data.field//设定异步数据接口的额外参数
             });
             return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
@@ -224,18 +224,28 @@
     {{#  } }}
 </script>
 <script type="text/html" id="suppliername">
-    {{#  if(0 == [[${session.userType}]]){ }}
+    {{#  if(0 == d.userType ){ }}
+    {{d.supplierName}}
+    {{#  } else if(2 == d.userType ){ }}
+    {{d.supplierName}}
+    {{#  } else if(d.userId == [[${session.userId}]]){ }}
     {{d.supplierName}}
     {{#  } else { }}
     无权限
     {{#  } }}
+
 </script>
 <script type="text/html" id="supplierphone">
-    {{#  if(0 == [[${session.userType}]]){ }}
+    {{#  if(0 == d.userType){ }}
+    {{d.supplierPhone}}
+    {{#  } else if(2 ==d.userType ){ }}
+    {{d.supplierPhone}}
+    {{#  } else if(d.userId == [[${session.userId}]]){ }}
     {{d.supplierPhone}}
     {{#  } else { }}
     无权限
     {{#  } }}
+
 </script>
 </body>
 </html>

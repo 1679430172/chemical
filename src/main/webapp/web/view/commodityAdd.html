@@ -46,27 +46,18 @@
 
         //监听表单
         form.on('submit(formDemo)', function(data){
-            var s="1";
-            $.post("/Commodity/supplierId.do",data.field,function (d) {
-                var e=eval(d);
-                if(e >= 1  ){
-                    s="0";
-                    layer.msg("您选的供应商已被选了",{icon: 1, time: 5000});
+            $.post("/Commodity/save.do",data.field,function (d) {
+                if (d === "1") {
+                    layer.msg('已添加成功!', {icon: 1, time: 3000});
+                    var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                    parent.layer.close(index);
+                } else if(d=== "0") {
+                    layer.msg('添加失败!', {icon: 2, time: 1000});
+                }else if(d === "2"){
+                    layer.msg('您选的供应商已存在!', {icon: 2, time: 3000});
                     $('#formId')[0].reset();//重置清空
-                    form.render();//必须写
                 }
             })
-            if( s=== "1"){
-                $.post("/Commodity/save.do",data.field,function (d) {
-                    if (d === "1") {
-                        layer.msg('已添加成功!', {icon: 1, time: 3000});
-                        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
-                        parent.layer.close(index);
-                    } else {
-                        layer.msg('添加失败!', {icon: 2, time: 1000});
-                    }
-                })
-            }
             return false;
         });
     });
@@ -106,12 +97,12 @@
             <input type="text " id="priceInfo" name="priceInfo" required   placeholder="请输入信息" autocomplete="off" class="layui-input">
         </div>
     </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">验证日期</label>
-        <div class="layui-input-inline">
-            <input type="text" name="createTime" id="date"  autocomplete="off" class="layui-input date" placeholder="yyyy-MM-dd HH:mm:ss">
-        </div>
-    </div>
+<!--    <div class="layui-form-item">-->
+<!--        <label class="layui-form-label">验证日期</label>-->
+<!--        <div class="layui-input-inline">-->
+<!--            <input type="text" name="createTime" id="date"  autocomplete="off" class="layui-input date" placeholder="yyyy-MM-dd HH:mm:ss">-->
+<!--        </div>-->
+<!--    </div>-->
     <input type="text" style="display:none"  name="imgStatus" value="0">
     <input type="text" style="display:none" name="fileStatus" value="0">
     <div class="layui-form-item">

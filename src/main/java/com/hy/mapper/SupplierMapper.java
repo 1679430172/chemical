@@ -18,7 +18,7 @@ import java.util.List;
 public interface SupplierMapper extends BaseMapper<Supplier> {
 
     @SelectProvider(type = CommoditySql.class ,method = "supplier" )
-    public IPage<SupplierUsers> supplier(Page page,@Param("uid")String uid);
+    public IPage<SupplierUsers> suppliers(Page page,@Param("uid")String uid,@Param("names")String names);
 
     @Select("select * from supplier s inner join users u on s.user_id = u.uid")
     public List<SupplierUsers> supplier();

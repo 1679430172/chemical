@@ -32,12 +32,12 @@
                         ,{field: 'userName', title: '业务员名称',width:110}
                         , {field: 'name', title: '产品名称' ,width:90}
                         , {field: 'cas', title: 'cas号', width:90}
-                        , {field: 'createTime', title: '日期', width:180}
+                        // , {field: 'createTime', title: '日期', width:180}
                         , {field: 'updateTime', title: '更新日期', width:180}
                         , {field: 'priceInfo', title: '报价信息', width:150}
-                        ,{field:'imgPath',title:'图片预览',templet:"#img ",width:150}
-                        ,{field:'filePath',title:'文件下载',templet: '#file',width:150}
-                        ,{field:"right",title:'操作',toolbar:'#barDemo',width:'400', fixed: 'right'}
+                        ,{field:'imgPath',title:'图片预览',templet:"#img ",width:130}
+                        ,{field:'filePath',title:'文件下载',templet: '#file',width:130}
+                        ,{field:"right",title:'操作',toolbar:'#barDemo',width:'470', fixed: 'right'}
                     ]
                 ]
                 ,done: function (response) {
@@ -88,16 +88,17 @@
                             });
                         }
                     });
-                }else if(layEvent == "test"){
+                }else if(layEvent == "test1"){
                     upload.render({
-                        elem: ".file"//绑定元素
+                        elem: ".fileImg"//绑定元素
                         ,url: '/Commodity/pictures.do' //上传接口
-                        ,data: {sid:obj.data.sid}
+                        ,data: {sid:obj.data.sid},
+                        accept: 'images'
                         ,before:function(obj){
                             //预读本地文件示例，不支持ie8
-                            obj.preview(function(index, file, result){
-                                $('#demo1').attr('src', result); //图片链接（base64）
-                            });
+                            // obj.preview(function(index, file, result){
+                            //     $('#demo1').attr('src', result); //图片链接（base64）
+                            // });
                         }
                         ,done: function(res){
                             layer.msg(res);
@@ -133,9 +134,9 @@
                             });
                         }
                     });
-                }else if(layEvent == "file"){
+                }else if(layEvent == "file1"){
                     upload.render({
-                        elem: ".files"//绑定元素
+                        elem: ".files1"//绑定元素
                         ,url: '/Commodity/file.do' //上传接口
                         //,field: "fileUpload"//设置字段名
                         ,accept: 'file'
@@ -150,6 +151,39 @@
                             //请求异常回调yhis
                             layer.msg('导入失败!请重新导入');
                         }
+                    });
+                }else if(layEvent == "referral"){
+                    var content="<table class='layui-table'>  " +
+                        "  <tr>" +
+                        "    <td>业务员名称</td>" +
+                        "    <td>"+data.userName+"</td>" +
+                        "  </tr>" +
+                        "  <tr>" +
+                        "    <td>产品名称</td>" +
+                        "    <td>"+data.name+"</td>" +
+                        "  </tr>" +
+                        "  <tr>" +
+                        "    <td>cas号</td>" +
+                        "    <td>"+data.cas+"</td>" +
+                        "  </tr>" +
+                        "  <tr>" +
+                        "    <td>日期</td>" +
+                        "    <td>"+data.createTime+"</td>" +
+                        "  </tr>" +
+                        "  <tr>" +
+                        "    <td>更新日期</td>" +
+                        "    <td>"+data.updateTime+"</td>" +
+                        "  </tr>" +
+                        "  <tr>" +
+                        "    <td>报价信息</td>" +
+                        "    <td>"+data.priceInfo+"</td>" +
+                        "  </tr></table>" ;
+                    layer.open({
+                        area: ['390px', '572px'],
+                        title:"订单详情",
+                        type: 1,
+                        content:content
+                        //这里content是一个普通的String
                     });
                 }
 
@@ -180,15 +214,8 @@
                             });
                         }
                     });
-                }else if(layEvent ==='form'){
-                    //监听表单
-
                 }
             })
-
-
-
-
 
             $(document).on("click",".li",function () {
                 $.get("/Commodity/commodityById.do?sid="+this.value,function (d) {
@@ -256,16 +283,58 @@
                     url: '/Commodity/Commodious.do'
                     ,where: data.field//设定异步数据接口的额外参数
                 });
+                lay('.time').each(function () {
+                    laydate.render({
+                        elem: this
+                        , trigger: 'click'
+                    });
+                });
                 return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
             });
         })
     </script>
+    <style>
+        .filess {
+            position: relative;
+            display: inline-block;
+            background: #009688;
+            /*border: 1px solid #99D3F5;*/
+            border-radius: 4px;
+            padding: 4px 12px;
+            overflow: hidden;
+            color: #FFFFFF;
+            text-decoration: none;
+            text-indent: 0;
+            line-height: 20px;
+        }
+        .filess input {
+            position: absolute;
+            font-size: 100px;
+            right: 0;
+            top: 0;
+            opacity: 0;
+        }
+        /*.filess:hover {*/
+        /*    background: #AADFFD;*/
+        /*    border-color: #78C3F3;*/
+        /*    color: #004974;*/
+        /*    text-decoration: none;*/
+        /*}*/
+
+    </style>
 </head>
 <script type="text/html" id="barDemo">
-    <a class="layui-btn layui-btn-xs" lay-event="edit"><i class="layui-icon">&#xe615;</i>修改</a>
-    <input type="file" class="layui-btn file" lay-event="test" name="fileUpload" style="width: 80px" >
-    <a class="layui-btn layui-btn-xs" lay-event="detail"><i class="layui-icon">&#xe615;</i>查看供应商</a>
-    <input type="file" class="layui-btn files"  lay-event="file" name="fileUpload" style="width: 80px" >
+    <a class="filess" lay-event="edit">修改</a>
+    <a class="filess" lay-event="detail">查看供应商</a>
+    <a class="filess" lay-event="referral">商品介绍</a>
+    <a href="javascript:;" class="filess">上传图片
+        <input type="file" class="fileImg" lay-event="test1" name="fileUpload" style="width: 80px" >
+    </a>
+
+    <a href="javascript:;" class="filess">上传文件
+        <input type="file" class="files1"  lay-event="file1" name="fileUpload" style="width: 80px" >
+    </a>
+
 </script>
 
 <script type="text/html" id="img">
@@ -283,8 +352,6 @@
     {{#  } }}
 </script>
 
-
-
 <body>
 <script type="text/html" id="toolbarDemo">
     <button class="layui-btn " lay-event="add"><i class="layui-icon">&#xe624;</i>添加</button>
@@ -293,7 +360,7 @@
             <div class="layui-inline">
                 <div class="layui-inline">
                     <div class="layui-inline">
-                        <input type="text" name="createTime"   placeholder="yyyy-MM-dd"  autocomplete="off" class="layui-input time">
+                        <input type="text" lay-verify="date" name="createTime"   placeholder="yyyy-MM-dd"  autocomplete="off" class="layui-input time">
                     </div>
                 </div>
                 <div class="layui-inline">
@@ -302,6 +369,20 @@
                         <input type="text" lay-verify="date" name="createTimes" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input time">
                     </div>
                 </div>
+
+                <div class="layui-inline">
+                    <label class="layui-inline">名称</label>
+                    <div class="layui-inline">
+                        <input type="text" name="name"  autocomplete="off" placeholder="请输入" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-inline">Cas号</label>
+                    <div class="layui-inline">
+                        <input type="text" name="cas"  autocomplete="off" placeholder="请输入" class="layui-input">
+                    </div>
+                </div>
+
                 <div class="layui-inline">
                     <div class="layui-inline">
                         <button type="submit" class="layui-btn" lay-submit="" lay-filter="formDemo">查询</button>
@@ -310,13 +391,7 @@
             </div>
         </form>
     </div>
-
-
-
 </script>
-<!--<div class="layui-input-inline">
-    <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
-</div>-->
 <table id="demo" lay-filter="test" STYLE=" width: 92px " ></table>
 </body>
 </html>
