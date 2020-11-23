@@ -1,11 +1,10 @@
 package com.hy.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.hy.bean.Authority;
-import com.hy.bean.Order;
-import com.hy.bean.SupplierUsers;
+import com.hy.bean.*;
 import com.hy.mapper.OrderMapper;
 import com.hy.util.ParseData;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -109,4 +108,9 @@ public class OrderService extends ServiceImpl<OrderMapper, Order> {
         return new ParseData(0,"",Integer.parseInt(Long.toString(iPage.getTotal())),iPage.getRecords());
     }
 
+    public List<Commodity> cz(String cas){
+        QueryWrapper queryWrapper=new QueryWrapper();
+        queryWrapper.eq("cas",cas);
+        return commodityService.list(queryWrapper);
+    }
 }

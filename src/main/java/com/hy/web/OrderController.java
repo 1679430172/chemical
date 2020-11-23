@@ -1,6 +1,7 @@
 package com.hy.web;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.hy.bean.Commodity;
 import com.hy.bean.Order;
 import com.hy.service.OrderService;
 import com.hy.util.ParseData;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Date;
+import java.util.List;
 
 @Api
 @Controller
@@ -69,5 +71,12 @@ public class OrderController {
     public ParseData select(String stadate,String enddate,Integer page, Integer limit) throws Exception {
         Page page1=new Page(page,limit);
         return service.selectListTime(stadate,enddate,page1);
+    }
+
+    @PostMapping("/cz")
+    @ResponseBody
+    public List<Commodity> cz(String cas){
+        System.out.println(123);
+        return service.cz(cas);
     }
 }
