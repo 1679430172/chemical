@@ -26,13 +26,13 @@ public class SupplierService extends ServiceImpl<SupplierMapper, Supplier> {
     @Autowired
     private SupplierMapper supplierMapper;
 
-    public IPage<SupplierUsers> iPage(Integer page, Integer limit){
+    public IPage<SupplierUsers> iPage(Integer page, Integer limit,String name){
         HttpSession session = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession();
         String userType= (String) session.getAttribute("userType");
         Integer userId= (Integer) session.getAttribute("userId");
         IPage<SupplierUsers> iPage=null;
-        if(userType.equals("0") || userType.equals("2")){
-             iPage= supplierMapper.supplier(new Page(page,limit),null);
+        if(userType.equals("0") || userType.equals("1")){
+             iPage= supplierMapper.suppliers(new Page(page,limit),null,name);
             List<SupplierUsers> list=iPage.getRecords();
             for(SupplierUsers s:list){
                 String gid=""+s.getGid();
@@ -41,8 +41,8 @@ public class SupplierService extends ServiceImpl<SupplierMapper, Supplier> {
                 s.setId(id);
             }
             return iPage;
-        }else if(userType == "1"){
-            iPage=supplierMapper.supplier(new Page(page,limit),String.valueOf(userId));
+        }else {
+            iPage=supplierMapper.suppliers(new Page(page,limit),String.valueOf(userId),name);
             List<SupplierUsers> list=iPage.getRecords();
             for(SupplierUsers s:list){
                 String gid=""+s.getGid();
@@ -52,7 +52,6 @@ public class SupplierService extends ServiceImpl<SupplierMapper, Supplier> {
             }
             return iPage;
         }
-        return iPage;
     }
 
     public List<SupplierUsers> iPage(){

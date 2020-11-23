@@ -1,5 +1,6 @@
 package com.hy.web;
 
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.hy.bean.Commodity;
 import com.hy.bean.Commoditys;
@@ -73,12 +74,17 @@ public class CommodityController {
     public String save(Commodity commodity){
         supplierService.getById(commodity.getSupplierId());
         Integer sid=commodity.getSupplierId();
-        Integer supp=commodityService.suppliers(String.valueOf(sid));
+        Integer supp=commodityService.suppliers(String.valueOf(sid),commodity.getCas());
         System.out.println(supp+"-------");
-        if(supp > 0){
+        if(null==supp || supp > 0){
             return Util.defact;
         }else{
+            commodity.setUpdateTime(new Date());
             boolean b= commodityService.save(commodity);
+            UpdateWrapper updateWrapper=new UpdateWrapper();
+            updateWrapper.set("status","1");
+            updateWrapper.eq("gid",commodity.getSupplierId());
+            supplierService.update(updateWrapper);
             if(b == true){
                 return Util.succeed;
             }else {
