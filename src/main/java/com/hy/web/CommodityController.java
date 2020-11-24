@@ -40,13 +40,12 @@ public class CommodityController {
     @RequestMapping("/commodityById.do")
     @ResponseBody
     public Commodity  CommodityById(String sid){
-        System.out.println(sid);
         return  commodityService.byid(sid);
     }
 
     @RequestMapping("/pictures.do")
     @ResponseBody
-    public String pictures(@RequestParam("fileUpload") MultipartFile pictureFile, String sid, HttpServletRequest req){
+    public String pictures(@RequestParam("file") MultipartFile pictureFile, String sid, HttpServletRequest req){
         try {
             commodityService.pictures(pictureFile,sid,req);
         } catch (Exception e) {
@@ -58,7 +57,7 @@ public class CommodityController {
 
     @RequestMapping("/file.do")
     @ResponseBody
-    public String file(@RequestParam("fileUpload") MultipartFile pictureFile, String sid, HttpServletRequest req){
+    public String file(@RequestParam("file") MultipartFile pictureFile, String sid, HttpServletRequest req){
         try {
             commodityService.file(pictureFile,sid,req);
         } catch (Exception e) {
@@ -75,7 +74,6 @@ public class CommodityController {
         supplierService.getById(commodity.getSupplierId());
         Integer sid=commodity.getSupplierId();
         Integer supp=commodityService.suppliers(String.valueOf(sid),commodity.getCas());
-        System.out.println(supp+"-------");
         if(null==supp || supp > 0){
             return Util.defact;
         }else{
@@ -101,10 +99,15 @@ public class CommodityController {
 
     @RequestMapping("/equals.do")
     @ResponseBody
-    public String  equals(Commodity commodity){
-        commodity.setUpdateTime(new Date());
-        commodityService.equals(commodity);
-        return "1";
+    public String  equals(Commodity commodity,HttpServletRequest req){
+        System.out.println(commodity.toString());
+        try {
+            commodityService.equals(commodity,req);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Util.fail;
+        }
+        return Util.succeed;
     }
 
     @RequestMapping("/supplierId.do")

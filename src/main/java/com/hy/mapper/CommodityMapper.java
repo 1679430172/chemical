@@ -21,7 +21,7 @@ public interface CommodityMapper  extends BaseMapper<Commodity> {
     @Select("select * from commodity where  sid=#{sid}")
     public Commodity byid(String sid);
 
-    @Update("update commodity set  price_info=#{commodity.priceInfo},update_time=#{commodity.updateTime} where sid=#{commodity.sid}")
+    @SelectProvider(type = CommoditySql.class ,method = "equals" )
     public void equals(@Param("commodity") Commodity commodity);
 
     @Update("update commodity set  img_path=#{commodity.imgPath},img_status =#{commodity.imgStatus} where sid=#{commodity.sid}")

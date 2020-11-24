@@ -17,6 +17,15 @@ public class Commoditys {
     private String updateTime;
     private String userName;//业务员名称
     private String amount;
+    private String ssid;
+
+    public String getSsid() {
+        return ssid;
+    }
+
+    public void setSsid(String ssid) {
+        this.ssid = ssid;
+    }
 
     public String getAmount() {
         return amount;

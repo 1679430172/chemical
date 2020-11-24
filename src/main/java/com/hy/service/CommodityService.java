@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 import com.hy.bean.Commodity;
 import com.hy.bean.Commoditys;
+import com.hy.bean.SupplierUsers;
 import com.hy.mapper.CommodityMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -36,25 +38,30 @@ public class CommodityService extends ServiceImpl<CommodityMapper, Commodity> {
         String userType= (String) session.getAttribute("userType");
         Integer userId= (Integer) session.getAttribute("userId");
         IPage<Commoditys> iPage=null;
-        System.out.println(userType);
         if(userType.equals("0") || userType.equals("2")){
-            System.out.println(commoditys.toString());
-            return commodityMapper.CommditysList(new Page(page,limit),commoditys,null);
-        }else{
-            return commodityMapper.CommditysList(new Page(page,limit),commoditys,String.valueOf(userId));
+            iPage= commodityMapper.CommditysList(new Page(page,limit),commoditys,null);
+        }else {
+            iPage = commodityMapper.CommditysList(new Page(page, limit), commoditys, String.valueOf(userId));
         }
+        List<Commoditys> list=iPage.getRecords();
+        for(Commoditys s:list) {
+            String gid = "" + s.getSid();
+            String id = "BH00000";
+            id = id.substring(0, id.length() - gid.length()) + gid;
+            s.setSsid(id);
+        }
+         return iPage;
     }
 
     public Commodity byid(String sid){
         return commodityMapper.byid(sid);
     }
 
-    public void   equals(Commodity commodity){
+    public void   equals(Commodity commodity,HttpServletRequest req){
         commodityMapper.equals(commodity);
     }
 
     public void pictures(MultipartFile pictureFile, String sid, HttpServletRequest req) throws IOException {
-        req.setCharacterEncoding("utf-8");
         if(pictureFile != null){
             String picName = UUID.randomUUID().toString();// 设置图片名称，不能重复，可以使用uuid
             String oriName = pictureFile.getOriginalFilename();//获取文件名
@@ -81,7 +88,6 @@ public class CommodityService extends ServiceImpl<CommodityMapper, Commodity> {
     }
 
     public void file(MultipartFile pictureFile, String sid, HttpServletRequest req) throws IOException {
-        req.setCharacterEncoding("utf-8");
         if(pictureFile != null){
             String picName = UUID.randomUUID().toString();// 设置图片名称，不能重复，可以使用uuid
             String oriName = pictureFile.getOriginalFilename();//获取文件名

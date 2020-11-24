@@ -14,15 +14,15 @@ public class CommoditySql {
             sql.append(" and c.update_time between ' "+commoditys.getCreateTime()+" ' and '"+commoditys.getCreateTimes()+" ' ");
         }
         if (commoditys.getName() != null && !"".equals(commoditys.getName())) {
-            sql.append(" and c.name = '" + commoditys.getName()+"'");
+            sql.append(" and c.name like '%" + commoditys.getName()+" % '");
         }
         if (commoditys.getCas() != null && !"".equals(commoditys.getCas())) {
             sql.append(" and c.cas = '" + commoditys.getCas()+"'");
         }
-            if(sid != null && !"".equals(sid) ){
-                sql.append(" and c.user_id ="+sid);
-            }
-            sql.append(" order by i.amount desc ");
+        /*if(sid != null && !"".equals(sid) ){
+            sql.append(" and c.user_id ="+sid);
+        }*/
+        sql.append(" order by i.amount desc ");
         return sql.toString();
     }
 
@@ -36,21 +36,28 @@ public class CommoditySql {
         if ( uid != null  ) {
             sql+=" and uid="+uid;
         }
-        System.out.println(names+"===============================");
         if (names != null && !"".equals(names)) {
             sql += " and s.name like '%" + names + "%'";
         }
         return sql;
     }
 
-   /* public String Update(@Param("commodity")Commodity commodity){
-        String sql="update commodity set  price_info=#{priceInfo}  ";
-        if(commodity.getPriceInfo() != null){
-            sql+=" price_info";
+    public String equals(@Param("commodity")Commodity commodity){
+        String sql="update commodity set  price_info=#{commodity.priceInfo},name=#{commodity.name},cas=#{commodity.cas},user_id=#{commodity.userId}" +
+                ", supplier_id=#{commodity.supplierId} ";
+        if(commodity.getImgPath() != null){
+            sql+=" ,img_path="+commodity.getImgPath();
         }
-
-        sql+="where  sid="+commodity.getSid();
-
+        if(commodity.getImgStatus() != null){
+            sql+=" ,img_status="+commodity.getImgStatus();
+        }
+        if(commodity.getFileStatus() != null){
+            sql+=" ,file_status="+commodity.getFileStatus();
+        }
+        if(commodity.getFilePath() != null){
+            sql+=" ,file_path="+commodity.getFilePath();
+        }
+        sql+="  where  sid="+commodity.getSid();
         return sql;
-    }*/
+    }
 }
