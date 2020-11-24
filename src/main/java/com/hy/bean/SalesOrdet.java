@@ -69,6 +69,7 @@ public class SalesOrdet {
                 ", orderId=" + orderId +
                 ", trackingNumber='" + trackingNumber + '\'' +
                 ", trackingName='" + trackingName + '\'' +
+                ", name='" + name + '\'' +
                 ", createTime=" + createTime +
                 ", status='" + status + '\'' +
                 '}';
@@ -83,6 +84,16 @@ public class SalesOrdet {
     private String trackingNumber;
 
     private String trackingName;
+
+    private String name;//商品名称
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     @JsonFormat(pattern= "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date createTime;
