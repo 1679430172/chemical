@@ -78,6 +78,7 @@
 
             //监听提交
             form.on('submit(formDemo)', function(data){
+                $("#sub").attr("disabled",true);//按钮禁用
                 $.post("/Order/",data.field,function (d,s) {
                     if(d=="1"){
                         layer.msg('添加成功！！！', {
@@ -89,6 +90,7 @@
                             parent.layer.close(index); //再执行关闭
                         });
                     }else{
+                        $("#sub").removeAttr("disabled");//按钮启用
                         layer.msg('添加失败！！！', {
                             icon: 1,
                             time: 1000 //2秒关闭（如果不配置，默认是3秒）
@@ -195,7 +197,7 @@
     </div>
     <div class="layui-form-item">
         <div class="layui-input-inline">
-            <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+            <button class="layui-btn" id="sub" lay-submit lay-filter="formDemo">立即提交</button>
             <button type="reset" class="layui-btn layui-btn-primary">重置</button>
         </div>
     </div>
