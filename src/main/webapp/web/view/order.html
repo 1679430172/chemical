@@ -27,13 +27,13 @@
                     [ //表头
                     {field: 'id', title: '编号', sort: true, width:90}
                     ,{field: 'name', title: '商品名称', sort: true, totalRowText: '合计行', width:120}
-                    ,{field: 'amount', title: '数量', sort: true, width:80}
-                    ,{field: 'price', title: '单价', sort: true, templet:"#price", totalRow: true, width:80}
-                    ,{field: 'sumPrice', title: '总价', sort: true, templet:"#sumPrice", totalRow: true, width:80}
-                    ,{field: 'costPrice', title: '成本', templet:"#costPrice", totalRow: true, width:80}
-                    ,{field: 'otherCost', title: '其他成本', templet:"#otherCost", totalRow: true, width:110}
+                    ,{field: 'amount', title: '数量', sort: true,templet:"#price", width:80}
+                    ,{field: 'price', title: '单价', sort: true, templet:"#price", width:80}
+                    ,{field: 'sumPrice', title: '总价', sort: true, templet:"#sumPrice", totalRow: true, width:120}
+                    ,{field: 'costPrice', title: '成本', templet:"#costPrice", totalRow: true, width:120}
+                    ,{field: 'otherCost', title: '其他成本', templet:"#otherCost", totalRow: true, width:120}
                     ,{field: '', title: '总成本', templet:"#zcb", width:80}
-                    ,{field: 'royalties', title: '提成', templet:"#royalties", totalRow: true, width:80}
+                    ,{field: 'royalties', title: '提成', templet:"#royalties", totalRow: true, width:120}
                     ,{field: 'status', title: '是否出库', sort: true, templet:"#status", width:110}
                     ,{fixed: 'right', align:'center', toolbar: '#barDemo',width:195}
                 ]
@@ -298,7 +298,10 @@
                     <input type="text" name="enddate" id="enddate" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input time">
                 </div>&nbsp;&nbsp;
                 <div class="layui-input-inline">
-                    <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+                    <input type="text" name="name" autocomplete="off" lay-verify="required" placeholder="商品名称" class="layui-input" style="width: 220px;display: inline-block">
+                </div>&nbsp;&nbsp;
+                <div class="layui-input-inline">
+                    <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">立即查看</button>
                 </div>
             </form>
     </script>
@@ -326,6 +329,9 @@
         {{#  } else { }}
         无权限
         {{#  } }}
+    </script>
+    <script type="text/html" id="amount">
+        {{d.amount}}千克
     </script>
     <script type="text/html" id="price">
         {{#  if(0 == d.type){ }}

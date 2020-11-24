@@ -37,6 +37,7 @@
 
         //监听表单
         form.on('submit(formDemo)', function(data){
+            $("#sub").attr("disabled",true);//按钮禁用
             console.log(data.elem) //被执行事件的元素DOM对象，一般为button对象
             console.log(data.form) //被执行提交的form对象，一般在存在form标签时才会返回
             console.log(data.field)//当前容器的全部表单字段，名值对形式：{name: value}
@@ -50,6 +51,7 @@
                         parent.layer.close(index); //再执行关闭
                     });
                 } else {
+                    $("#sub").removeAttr("disabled");//按钮启用
                     layer.msg('添加失败,库存编号已存在或者cas号已存在!', {icon: 2, time: 1000},function () {
                         //假设这是iframe页
                         var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
@@ -99,9 +101,10 @@
 
     <div class="layui-form-item">
     <label class="layui-form-label">数量</label>
-    <div class="layui-input-block">
+    <div class="layui-input-inline">
         <input type="text" lay-verify="required"lay-reqtext="数量不能为空" name="amount" style="width: 200px" required  value="" placeholder="请输入添加数量" autocomplete="off" class="layui-input">
     </div>
+        <div class="layui-form-mid layui-word-aux">kg</div>
     </div>
     <div class="layui-form-item">
     <label class="layui-form-label">备注</label>
@@ -112,7 +115,7 @@
 
     <div class="layui-inline">
         <div class="layui-input-block">
-            <button class="layui-btn" lay-submit lay-filter="formDemo" >立即提交</button>
+            <button class="layui-btn" lay-submit lay-filter="formDemo" id="sub" >立即提交</button>
             <button type="reset" id="reset" class="layui-btn layui-btn-primary">重置</button>
         </div>
     </div>

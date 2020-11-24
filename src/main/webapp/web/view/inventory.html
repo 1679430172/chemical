@@ -37,13 +37,13 @@
             ,limits:[10,20,30]
             ,cols: [
                 [
-                {title: '序号', width: 80,width: 150, sort: true,  templet:"<div>{{ d.LAY_INDEX }}</div>"}
-                ,{field:'number', title: '库存编号', width: '10%', sort: true , minWidth: 100}
-                ,{field:'name', width:80, title: '品名', width: '10%', minWidth: 100}
-                ,{field:'cas', width:80, title: 'cas号', width: '9%', minWidth: 100}
-                ,{field:'createTime', title: '创建时间', width: '15%', sort: true , minWidth: 100}
-                ,{field:'updateTime', title: '更新时间', width: '15%', sort: true , minWidth: 100}
-                ,{field:'amount', title: '库存数量',sort: true , width: '10%', minWidth: 100} //minWidth：局部定义当前单元格的最小宽度
+                {title: '序号', width: 80,  templet:"<div>{{ d.LAY_INDEX }}</div>"}
+                ,{field:'number', title: '库存编号', width: '10%', minWidth: 100}
+                ,{field:'name',title: '品名', Width: 80}
+                ,{field:'cas', width:80, title: 'cas号', width: '9%'}
+               // ,{field:'createTime', title: '创建时间', width: '15%', sort: true , minWidth: 100}
+                ,{field:'updateTime', title: '更新时间', width:130, minWidth: 100}
+                ,{title: '库存数量', width: '10%', minWidth: 100 , toolbar:'#royalties'} //minWidth：局部定义当前单元格的最小宽度
                 ,{field:'remark', title: '备注', width: '10%',  minWidth: 100, edit:'text'}
                 ,{fixed: 'right', width: 300, align:'center', toolbar: '#barDemo'}
                 ]
@@ -278,6 +278,9 @@
     {{#  } else { }}
     无权限
     {{#  } }}
+</script>
+<script type="text/html" id="royalties">
+    {{d.amount}}kg
 </script>
 </body>
 </html>

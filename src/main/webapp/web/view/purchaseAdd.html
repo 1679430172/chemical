@@ -67,6 +67,7 @@
 
             //监听提交
             form.on('submit(formDemo)', function(data){
+                $("#sub").attr("disabled",true);//按钮禁用
                 console.log(data.elem) //被执行事件的元素DOM对象，一般为button对象
                 console.log(data.form) //被执行提交的form对象，一般在存在form标签时才会返回
                 console.log(data.field)//当前容器的全部表单字段，名值对形式：{name: value}
@@ -77,6 +78,7 @@
                             icon: 1,
                             time: 1000 //2秒关闭（如果不配置，默认是3秒）
                         }, function(){
+                            $("#sub").removeAttr("disabled");//按钮启用
                             //假设这是iframe页
                             var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
                             parent.layer.close(index); //再执行关闭
@@ -168,7 +170,7 @@
 
     <div class="layui-form-item">
         <div class="layui-input-inline">
-            <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+            <button class="layui-btn" lay-submit lay-filter="formDemo"  id="sub">立即提交</button>
             <button type="reset" class="layui-btn layui-btn-primary">重置</button>
         </div>
     </div>
