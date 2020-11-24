@@ -224,9 +224,9 @@
     {{#  } }}
 </script>
 <script type="text/html" id="suppliername">
-    {{#  if(0 == d.userType ){ }}
+    {{#  if(0 == [[${session.userType}]]){ }}
     {{d.supplierName}}
-    {{#  } else if(2 == d.userType ){ }}
+    {{#  } else if(2 == [[${session.userType}]] ){ }}
     {{d.supplierName}}
     {{#  } else if(d.userId == [[${session.userId}]]){ }}
     {{d.supplierName}}
@@ -236,9 +236,9 @@
 
 </script>
 <script type="text/html" id="supplierphone">
-    {{#  if(0 == d.userType){ }}
+    {{#  if(0 == [[${session.userType}]]){ }}
     {{d.supplierPhone}}
-    {{#  } else if(2 ==d.userType ){ }}
+    {{#  } else if(2 ==[[${session.userType}]] ){ }}
     {{d.supplierPhone}}
     {{#  } else if(d.userId == [[${session.userId}]]){ }}
     {{d.supplierPhone}}
