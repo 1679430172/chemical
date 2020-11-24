@@ -21,7 +21,7 @@ public interface SalesMapper extends BaseMapper<Sales> {
      * @param userId
      * @return
      */
-    @Select("select o.*,c.`status` from sales o inner join `order` c on o.order_id=c.did where o.user_id=#{userId}")
+    @Select("select o.*,c.`status` ,d.name from sales o , `order` c ,  commodity d WHERE o.order_id=c.did and c.commodity_id=d.sid and o.user_id=#{userId}")
     public IPage<SalesOrdet> selectSales(Page<SalesOrdet> page,@Param("userId")Integer userId);
 
     /**
@@ -29,7 +29,7 @@ public interface SalesMapper extends BaseMapper<Sales> {
      * @param page
      * @return
      */
-    @Select("select o.*,c.`status` from sales o inner join `order` c on o.order_id=c.did ")
+    @Select("select o.*,c.`status` ,d.name from sales o , `order` c ,  commodity d WHERE o.order_id=c.did and c.commodity_id=d.sid   ")
     public IPage<SalesOrdet> selectSalestwo(Page<SalesOrdet> page);
 
 

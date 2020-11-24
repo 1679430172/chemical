@@ -6,6 +6,7 @@ import com.hy.mapper.OrderMapper;
 import com.hy.service.OrderService;
 import com.hy.service.SalesService;
 import com.hy.util.ParseData;
+import com.hy.util.Util;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -70,8 +71,7 @@ public class SlaesController {
         Integer  userId =  (Integer) session.getAttribute("userId");
         sales.setUserId(userId);
         boolean a=   salesServices.save(sales);
-        return salesServices.insertSales(a);
-
+        return  salesServices.updateOrder(sales.getOrderId(),sales.getTrackingNumber());
     }
 
     /**
@@ -86,6 +86,15 @@ public class SlaesController {
         return   salesServices.updateOrder(did,trackingNumber);
     }
 
-
-
+    @RequestMapping("/delete")
+    @ResponseBody
+    public String deleteSales(@Param("did") Integer did){
+       boolean b= salesServices.removeById(did);
+        System.out.println(b+"----------");
+        if (b==true){
+            return Util.sueess;
+        }else{
+            return Util.defact;
+        }
+    }
 }

@@ -7,14 +7,14 @@
 		"data": "admin/data/menu.json",
 		"accordion": true,
 		"control": false,
-		"select": "4"
+		"select": "commodity"
 	},
 	"tab": {
 		"muiltTab": true,
 		"keepState": true,
 		"tabMax": 30,
 		"index": {
-			"id": "10",
+			"id": "commodity",
 			"href": "view/commodity.html",
 			"title": "商品管理"
 		}
