@@ -11,7 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Date;
 import java.util.List;
 
 @Api
@@ -68,9 +67,9 @@ public class OrderController {
 
     @GetMapping("/time")
     @ResponseBody
-    public ParseData select(String stadate,String enddate,Integer page, Integer limit) throws Exception {
+    public ParseData select(String stadate,String enddate,String name,Integer page, Integer limit) throws Exception {
         Page page1=new Page(page,limit);
-        return service.selectListTime(stadate,enddate,page1);
+        return service.selectListTime(stadate,enddate,name,page1);
     }
 
     @PostMapping("/cz")
