@@ -1,11 +1,10 @@
 package com.hy.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.hy.bean.Authority;
-import com.hy.bean.Order;
-import com.hy.bean.SupplierUsers;
+import com.hy.bean.*;
 import com.hy.mapper.OrderMapper;
 import com.hy.util.ParseData;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,15 +86,15 @@ public class OrderService extends ServiceImpl<OrderMapper, Order> {
         return orderMapper.updateStatus(did);
     }
 
-    public ParseData selectListTime(String stadate,String enddate,Page page){
+    public ParseData selectListTime(String stadate,String enddate,String name,Page page){
         HttpSession session = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession();
         IPage<Order> iPage=null;
         if(session.getAttribute("userType").equals(Authority.administrator)){
-            iPage=orderMapper.selectListTime(stadate,enddate,page);
+            iPage=orderMapper.selectListTime(stadate,enddate,name,page);
         }else if(session.getAttribute("userType").equals(Authority.authorizedSalesman)){
-            iPage=orderMapper.selectListTime(stadate,enddate,page);
+            iPage=orderMapper.selectListTime(stadate,enddate,name,page);
         }else if(session.getAttribute("userType").equals(Authority.salesman)){
-            iPage=orderMapper.selectListByUserIdTime(stadate,enddate,(Integer)session.getAttribute("userId"),page);
+            iPage=orderMapper.selectListByUserIdTime(stadate,enddate,name,(Integer)session.getAttribute("userId"),page);
         }
         List<Order> list=iPage.getRecords();
         for(Order s:list){
@@ -109,4 +108,9 @@ public class OrderService extends ServiceImpl<OrderMapper, Order> {
         return new ParseData(0,"",Integer.parseInt(Long.toString(iPage.getTotal())),iPage.getRecords());
     }
 
+    public List<Commodity> cz(String cas){
+        QueryWrapper queryWrapper=new QueryWrapper();
+        queryWrapper.eq("cas",cas);
+        return commodityService.list(queryWrapper);
+    }
 }
