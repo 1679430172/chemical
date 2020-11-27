@@ -7,14 +7,14 @@ import org.apache.ibatis.annotations.Param;
 public class CommoditySql {
 
     public String CommoditySql(@Param("commoditys")Commoditys commoditys, @Param("supplierId") String sid){
-        StringBuffer sql=new StringBuffer("SELECT c.sid, c.`name`,c.cas ,u.uid,u.user_name,price_info,c.create_time,c.update_time,c.supplier_id,i.amount,c.img_status,c.img_path,c.file_status,c.file_path " +
+        StringBuffer sql=new StringBuffer("SELECT c.sid, c.`name`,c.cas,c.commodity_info ,u.uid,u.user_name,price_info,c.create_time,c.update_time,c.supplier_id,i.amount,c.img_status,c.img_path,c.file_status,c.file_path " +
                 "FROM commodity c left join supplier s on c.supplier_id=s.gid left join inventory i on c.cas = i.cas LEFT JOIN users u on  c.user_id=u.uid " +
                 "where 1=1 ");
-        if(commoditys.getCreateTime() !=null && commoditys.getCreateTimes() != null){
-            sql.append(" and c.update_time between ' "+commoditys.getCreateTime()+" ' and '"+commoditys.getCreateTimes()+" ' ");
+        if (commoditys.getCreateTime() != null && commoditys.getCreateTimes() != null && !"".equals(commoditys.getCreateTime()) && !"".equals(commoditys.getCreateTimes())) {
+            sql.append(" and c.update_time between ' " + commoditys.getCreateTime() + " ' and '" + commoditys.getCreateTimes() + " ' ");
         }
         if (commoditys.getName() != null && !"".equals(commoditys.getName())) {
-            sql.append(" and c.name like '%" + commoditys.getName()+" % '");
+            sql.append(" and c.name like '%" + commoditys.getName()+"%'");
         }
         if (commoditys.getCas() != null && !"".equals(commoditys.getCas())) {
             sql.append(" and c.cas = '" + commoditys.getCas()+"'");
@@ -43,8 +43,7 @@ public class CommoditySql {
     }
 
     public String equals(@Param("commodity")Commodity commodity){
-        String sql="update commodity set  price_info=#{commodity.priceInfo},name=#{commodity.name},cas=#{commodity.cas},user_id=#{commodity.userId}" +
-                ", supplier_id=#{commodity.supplierId} ";
+        String sql="update commodity set  price_info=#{commodity.priceInfo},name=#{commodity.name},cas=#{commodity.cas} ";
         if(commodity.getImgPath() != null){
             sql+=" ,img_path="+commodity.getImgPath();
         }
@@ -56,6 +55,9 @@ public class CommoditySql {
         }
         if(commodity.getFilePath() != null){
             sql+=" ,file_path="+commodity.getFilePath();
+        }
+        if(commodity.getCommodityInfo() != null){
+            sql+=" ,commodity_info="+commodity.getCommodityInfo();
         }
         sql+="  where  sid="+commodity.getSid();
         return sql;

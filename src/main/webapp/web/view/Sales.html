@@ -49,8 +49,8 @@
                     ,{field:'userId',title: '业务员id'}
                     ,{field:'orderId', title: '订单编号'}
                     ,{field:'name', title: '商品名称'}
-                    ,{field:'trackingNumber', title: '物流编号'}
                     ,{field:'trackingName',  title: '物流公司名称'}
+                    ,{field:'trackingNumber', title: '物流编号'}
                     ,{field: 'status', title: '状态',hide:true}
                     ,{field:'createTime', title: '创建时间'}
                     ,{fixed:'right', title: '操作',align:'center', toolbar: '#barDemo'}
@@ -94,7 +94,6 @@
                 var data = obj.data; //获得当前行数据
                 var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
                 if(layEvent === 'edit'){ //确认退货
-                    if(data.trackingNumber==0){
                         layer.prompt({
 
                             formType:0,//输入框类型，支持0（文本）默认1（密码）2（多行文本）
@@ -107,13 +106,13 @@
 
                         },function(value,index,elem){
                             $.ajax({
-                                url: '/Sales/updateOrder?did='+data.orderId+"&trackingNumber="+value,
+                                url: '/Sales/updateOrder?did='+data.did+"&trackingNumber="+value,
                                 type: 'get',
                                 dataType:"json",
                                 contentType:"application/json",
                                 success: function (data1) {
                                     if (data1=="1"){
-                                        layer.msg('退货成功！！！', {
+                                        layer.msg('修改成功！！！', {
                                             icon: 6,
                                             time: 1000 //2秒关闭（如果不配置，默认是3秒）
                                         }, function(){
@@ -131,38 +130,10 @@
                             });
                             layer.close(index);
                         });
-                    }else{
-                        $.ajax({
-                            url: '/Sales/updateOrder?did='+data.orderId+"&trackingNumber="+data.trackingNumber,
-                            type: 'get',
-                            dataType:"json",
-                            contentType:"application/json",
-                            success: function (data1) {
-                                if (data1=="1"){
-                                    layer.msg('退货成功！！！', {
-                                        icon: 6,
-                                        time: 1000 //2秒关闭（如果不配置，默认是3秒）
-                                    }, function(){
-                                        table.reload('testReload', {
-                                            url:'/Sales/Saleslist'
-                                        });
-                                    });
-                                }else{
-                                    layer.msg('订单编号重复,退货失败！！！', {
-                                        icon: 6,
-                                        time: 1000 //2秒关闭（如果不配置，默认是3秒）
-                                    }, function(){
-                                        table.reload('testReload', {
-                                            url:'/Sales/Saleslist'
-                                        });
-                                    });
-                                }
-                            }
-                        });
-                    }
+
                 }
                 else if(layEvent === 'del'){ //编辑
-                    layer.confirm('真的删除么', function(index){
+                    layer.confirm('确认删除？', function(index){
                         $.post("/Sales/delete",{did:data.did},function (data) {
                             if(data==1){
                                 layer.msg('已删除！！！', {
@@ -183,7 +154,7 @@
                 }
             });
 
-            $('#p1').click(function () {
+            $(document).on("click",'#p12',function () {
                 var inputVal = $('.layui-input').val();
                 table.reload('testReload', {
                     url: '/Sales/SalesOrderbyid'
@@ -223,13 +194,11 @@
 
 <!-- //工具栏-->
 <script type="text/html" id="barDemo">
-    {{# if(d.status == 2) { }}
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="forbidden">已退货</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="edit">物流编号</a>
+    {{# if(d.type == 2 || d.type==0) { }}
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon">&#xe640;</i>删除</a>
-    {{# } else{ }}
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="edit">确认退货</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon">&#xe640;</i>删除</a>
-    {{# }}}
+    {{# } }}
+
 </script>
 
 <!--工具栏头模板-->
@@ -238,11 +207,11 @@
         <button class="layui-btn layui-btn-sm" lay-event="add">添加退货订单</button>
     </div>
     <div class="demoTable" align="center">
-        搜索订单：
+        物流编号：
         <div class="layui-inline">
             <input class="layui-input" name="id" id="demoReload" autocomplete="off">
         </div>
-        <button class="layui-btn" data-type="reload" id="p1">搜索</button>
+        <button class="layui-btn" data-type="reload" id="p12">搜索</button>
     </div>
 
 </script>

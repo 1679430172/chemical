@@ -50,6 +50,7 @@ public class CommodityService extends ServiceImpl<CommodityMapper, Commodity> {
             id = id.substring(0, id.length() - gid.length()) + gid;
             s.setSsid(id);
         }
+        iPage.setRecords(list);
          return iPage;
     }
 

@@ -56,13 +56,13 @@ public interface OrderMapper extends BaseMapper<Order> {
      * 根据业务员id查询某时间所有订单
      * @return
      */
-    @Select("select o.*,c.user_id suid,c.name name from `order` o inner join commodity c on o.commodity_id=c.sid where c.user_id=#{userId} or o.user_id=#{userId} and c.name=#{name} and o.create_time between #{stadate} and #{enddate}")
+    @Select("select o.*,c.user_id suid,c.name name from `order` o inner join commodity c on o.commodity_id=c.sid where c.user_id=#{userId} or o.user_id=#{userId} and c.name like ${name} and LEFT(o.create_time,10) between #{stadate} and #{enddate}")
     public IPage<Order> selectListByUserIdTime(@Param("stadate") String stadate,@Param("enddate") String enddate,@Param("name") String name,@Param("userId") Integer userId,Page page);
 
     /**
      * 查询某时间所有订单
      * @return
      */
-    @Select("select o.*,c.user_id suid,c.name name from `order` o inner join commodity c on o.commodity_id=c.sid where c.name=#{name} and o.create_time between #{stadate} and #{enddate}")
+    @Select("select o.*,c.user_id suid,c.name name from `order` o inner join commodity c on o.commodity_id=c.sid where c.name like ${name} and LEFT(o.create_time,10) between #{stadate} and #{enddate}")
     public IPage<Order> selectListTime(@Param("stadate") String stadate,@Param("enddate") String enddate,@Param("name") String name, Page page);
 }

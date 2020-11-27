@@ -2,6 +2,7 @@ package com.hy.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hy.bean.*;
@@ -90,11 +91,11 @@ public class OrderService extends ServiceImpl<OrderMapper, Order> {
         HttpSession session = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession();
         IPage<Order> iPage=null;
         if(session.getAttribute("userType").equals(Authority.administrator)){
-            iPage=orderMapper.selectListTime(stadate,enddate,name,page);
+            iPage=orderMapper.selectListTime(stadate,enddate,"'%"+name+"%'",page);
         }else if(session.getAttribute("userType").equals(Authority.authorizedSalesman)){
-            iPage=orderMapper.selectListTime(stadate,enddate,name,page);
+            iPage=orderMapper.selectListTime(stadate,enddate,"'%"+name+"%'",page);
         }else if(session.getAttribute("userType").equals(Authority.salesman)){
-            iPage=orderMapper.selectListByUserIdTime(stadate,enddate,name,(Integer)session.getAttribute("userId"),page);
+            iPage=orderMapper.selectListByUserIdTime(stadate,enddate,"'%"+name+"%'",(Integer)session.getAttribute("userId"),page);
         }
         List<Order> list=iPage.getRecords();
         for(Order s:list){
@@ -108,9 +109,10 @@ public class OrderService extends ServiceImpl<OrderMapper, Order> {
         return new ParseData(0,"",Integer.parseInt(Long.toString(iPage.getTotal())),iPage.getRecords());
     }
 
-    public List<Commodity> cz(String cas){
+    public List<Commodity> cz(String cas,String name){
         QueryWrapper queryWrapper=new QueryWrapper();
-        queryWrapper.eq("cas",cas);
+        queryWrapper.eq(StringUtils.isNotBlank(cas),"cas",cas);
+        queryWrapper.eq(StringUtils.isNotBlank(name),"name",name);
         return commodityService.list(queryWrapper);
     }
 }

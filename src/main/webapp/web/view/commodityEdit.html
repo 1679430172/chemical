@@ -32,6 +32,7 @@
                 $("#supplierId").val(e.supplierId);
                 $("#priceInfo").val(e.priceInfo);
                 $("#sid").val(e.sid);
+                $("#commodityInfo").val(e.commodityInfo);
             })
         }
 
@@ -119,31 +120,37 @@
                 <input type="text " id="cas" name="cas" required   placeholder="请输入cas号" autocomplete="off" class="layui-input">
             </div>
         </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">业务员</label>
-            <div class="layui-input-inline">
-                <select id ="userId" name="userId" ></select>
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">供应商名称</label>
-            <div class="layui-input-inline">
-                <select id ="supplierId" name="supplierId" ></select>
-            </div>
-        </div>
+<!--        <div class="layui-form-item">-->
+<!--            <label class="layui-form-label">业务员</label>-->
+<!--            <div class="layui-input-inline">-->
+<!--                <select id ="userId" name="userId" ></select>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="layui-form-item">-->
+<!--            <label class="layui-form-label">供应商名称</label>-->
+<!--            <div class="layui-input-inline">-->
+<!--                <select id ="supplierId" name="supplierId" ></select>-->
+<!--            </div>-->
+<!--        </div>-->
         <div class="layui-form-item layui-form-text">
             <label class="layui-form-label">报价信息</label>
             <div class="layui-input-block">
-                <textarea name="priceInfo" id="priceInfo" placeholder="请输入内容"  class="layui-textarea" ></textarea>
+                <textarea name="priceInfo" id="priceInfo" placeholder="请输入内容"  class="layui-textarea" style="resize: none;"></textarea>
             </div>
         </div>
-        <div class="layui-input-inline">
-            <button type="button" class="layui-btn img" id="img" >图片</button>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <div class="layui-input-inline">
-                <button type="button" class="layui-btn file" id="file" >文件</button>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">商品介绍</label>
+            <div class="layui-input-block">
+                <textarea name="commodityInfo" id="commodityInfo" placeholder="请输入内容"  class="layui-textarea" style="resize: none;"></textarea>
             </div>
         </div>
+<!--        <div class="layui-input-inline">-->
+<!--            <button type="button" class="layui-btn img" id="img" >图片</button>-->
+<!--            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->
+<!--            <div class="layui-input-inline">-->
+<!--                <button type="button" class="layui-btn file" id="file" >文件</button>-->
+<!--            </div>-->
+<!--        </div>-->
         <input type="text" style="display:none" id="sid" name="sid">
         <br>
         <br>

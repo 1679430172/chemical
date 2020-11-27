@@ -39,12 +39,12 @@
                 [
                 {title: '序号', width: 80,  templet:"<div>{{ d.LAY_INDEX }}</div>"}
                 ,{field:'number', title: '库存编号', width: '10%', minWidth: 100}
-                ,{field:'name',title: '品名', Width: 80}
+                ,{field:'name',title: '产品名称', Width: 300,templet:'#name'}
                 ,{field:'cas', width:80, title: 'cas号', width: '9%'}
                // ,{field:'createTime', title: '创建时间', width: '15%', sort: true , minWidth: 100}
-                ,{field:'updateTime', title: '更新时间', width:130, minWidth: 100}
+                ,{field:'updateTime', title: '更新日期', width:130, minWidth: 100}
                 ,{title: '库存数量', width: '10%', minWidth: 100 , toolbar:'#royalties'} //minWidth：局部定义当前单元格的最小宽度
-                ,{field:'remark', title: '备注', width: '10%',  minWidth: 100, edit:'text'}
+                ,{field:'remark', title: '备注', Width: 300,templet:'#remark'}
                 ,{fixed: 'right', width: 300, align:'center', toolbar: '#barDemo'}
                 ]
             ]
@@ -78,6 +78,29 @@
             });
             return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
         });
+
+        $(document).on("dblclick",".name",function () {
+            var that=this;
+            console.log(that.id)
+            layer.open({
+                area: ['300px', '300px'],
+                title:"产品名称",
+                type: 1,
+                content:"<div style='padding: 10px;'>"+that.id+"</div>"
+                //这里content是一个普通的String
+            });
+        })
+        $(document).on("dblclick",".remark",function () {
+            var that=this;
+            console.log(that.id)
+            layer.open({
+                area: ['300px', '300px'],
+                title:"备注",
+                type: 1,
+                content:"<div style='padding: 10px;'>"+that.id+"</div>"
+                //这里content是一个普通的String
+            });
+        })
      /**
       *一键查询0库存按钮
       */
@@ -280,7 +303,13 @@
     {{#  } }}
 </script>
 <script type="text/html" id="royalties">
-    {{d.amount}}kg
+    {{d.amount}}千克
+</script>
+<script type="text/html" id="name">
+    <div class="name" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;"  id="{{d.name}}">{{d.name}}</div>
+</script>
+<script type="text/html" id="remark">
+    <div class="remark" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;"  id="{{d.remark}}">{{d.remark}}</div>
 </script>
 </body>
 </html>
