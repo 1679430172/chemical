@@ -56,7 +56,7 @@ public interface SalesMapper extends BaseMapper<Sales> {
      * @param orderId
      * @return
      */
-    @Update("update sales set tracking_number=#{trackingNumber} where order_id=#{orderId}")
+    @Update("update sales set tracking_number=#{trackingNumber} where did=#{orderId}")
     public Integer updatetrackingNumber(@Param("trackingNumber")String trackingNumber,@Param("orderId")Integer orderId);
 
 

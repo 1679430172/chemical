@@ -23,8 +23,7 @@
             });
 
             $("#cz").click(function () {
-                alert($("#cas").val());
-                $.post("/Order/cz",{cas:$("#cas").val()},function (data) {
+                $.post("/Order/cz",{cas:$("#cas").val(),name:$("#name").val()},function (data) {
                     var list=eval(data);
                     $("#sid").empty();
                     var option=$("<option>").val('');
@@ -68,7 +67,7 @@
                     $("#invoiceId").append(option);
                     for(var i=0;i<list.length;i++){
                         var option=$("<option>").val(list[i].kid);
-                        option.text(list[i].name);
+                        option.text(list[i].number);
                         $("#invoiceId").append(option);
                     }
                     form.render('select');
@@ -107,10 +106,20 @@
     <div class="layui-form-item">
         <label class="layui-form-label">cas号</label>
         <div class="layui-input-inline">
-            <input type="text" name="cas" id="cas" autocomplete="off" placeholder="" class="layui-input" style="width: 220px;display: inline-block">
-            <button type="button" class="layui-btn layui-btn-sm" id="cz" style="display: inline-block">查找产品</button>&nbsp;&nbsp;
+            <input type="text" name="cas" id="cas" autocomplete="off" placeholder="" class="layui-input" style="width: 220px;">
         </div>
     </div>
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">商品名称</label>
+        <div class="layui-input-inline">
+            <input type="text" name="name" id="name" autocomplete="off" placeholder="" class="layui-input" style="width: 220px;">
+        </div>
+    </div>
+    <div class="layui-form-item layui-form-text" style="text-align: center;">
+        <button type="button" class="layui-btn layui-btn-sm" id="cz" style="display: inline-block">查找产品</button>
+    </div>
+
+
     <div class="layui-form-item layui-form-text">
         <label class="layui-form-label">商品名称</label>
         <div class="layui-input-inline">

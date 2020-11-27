@@ -3,6 +3,7 @@ package com.hy.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.hy.bean.Commoditys;
 import com.hy.bean.Order;
 import com.hy.bean.Sales;
 import com.hy.bean.SalesOrdet;
@@ -16,6 +17,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 
 @Service("SalesService")
@@ -36,6 +38,7 @@ public class SalesService extends ServiceImpl<SalesMapper, Sales> {
     public ParseData getSalesbyuserId(String userId,Integer page,Integer limit) {
         HttpSession session = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession();
         Integer  userId1 =  (Integer) session.getAttribute("userId");
+        String userType= (String) session.getAttribute("userType");
         IPage<SalesOrdet> iPage=null;
         if(userId.equals("0")){
             Page<SalesOrdet> page1 = new Page<SalesOrdet>(page,limit);
@@ -44,7 +47,15 @@ public class SalesService extends ServiceImpl<SalesMapper, Sales> {
             Page<SalesOrdet> page1 = new Page<SalesOrdet>(page,limit);
             iPage=salesMapper.selectSales(page1,userId1);
         }
-        return new ParseData(0,"",Integer.parseInt(Long.toString(iPage.getTotal())),iPage.getRecords());
+        List<SalesOrdet> ordets=iPage.getRecords();
+        for(SalesOrdet s:ordets) {
+            String gid = "" + s.getOrderId();
+            String id = "YD00000";
+            id = id.substring(0, id.length() - gid.length()) + gid;
+            s.setOrderId(id);
+            s.setType(userType);
+        }
+        return new ParseData(0,"",Integer.parseInt(Long.toString(iPage.getTotal())),ordets);
     }
 
     /**
@@ -98,19 +109,21 @@ public class SalesService extends ServiceImpl<SalesMapper, Sales> {
     /**
      * 修改订单状态为退货
      * @param did
-     * @param trackingNumber
      * @return
      */
-    public String updateOrder(Integer did, String trackingNumber) {
-       if(trackingNumber.equals("")){
-           return Util.sueess;
-       }
-        Integer b = null;
-        b = orderMapper.updateOrder(did);
-        salesMapper.updatetrackingNumber(trackingNumber,did);
+    public String updateOrder(Integer did) {
+        orderMapper.updateOrder(did);
         return Util.sueess;
     }
 
-
+    /**
+     * 修改数量编号
+     * @param did
+     * @return
+     */
+    public String updateOrder(Integer did,String trackingNumber) {
+        salesMapper.updatetrackingNumber(trackingNumber,did);
+        return Util.sueess;
+    }
 
 }

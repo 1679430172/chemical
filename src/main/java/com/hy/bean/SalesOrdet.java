@@ -21,12 +21,20 @@ public class SalesOrdet {
         this.userId = userId;
     }
 
-    public Integer getOrderId() {
+    public String getOrderId() {
         return orderId;
     }
 
-    public void setOrderId(Integer orderId) {
+    public void setOrderId(String orderId) {
         this.orderId = orderId;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getTrackingNumber() {
@@ -79,13 +87,15 @@ public class SalesOrdet {
 
     private  Integer userId;
 
-    private  Integer orderId;
+    private  String orderId;
 
     private String trackingNumber;
 
     private String trackingName;
 
     private String name;//商品名称
+
+    private String type;
 
     public String getName() {
         return name;

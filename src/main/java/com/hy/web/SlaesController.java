@@ -70,8 +70,8 @@ public class SlaesController {
         HttpSession session = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession();
         Integer  userId =  (Integer) session.getAttribute("userId");
         sales.setUserId(userId);
-        boolean a=   salesServices.save(sales);
-        return  salesServices.updateOrder(sales.getOrderId(),sales.getTrackingNumber());
+        salesServices.save(sales);
+        return  salesServices.updateOrder(sales.getOrderId());
     }
 
     /**

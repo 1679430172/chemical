@@ -74,8 +74,8 @@ public class OrderController {
 
     @PostMapping("/cz")
     @ResponseBody
-    public List<Commodity> cz(String cas){
+    public List<Commodity> cz(String cas,String name){
         System.out.println(123);
-        return service.cz(cas);
+        return service.cz(cas,name);
     }
 }

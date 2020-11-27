@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http .HttpServletResponse;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -77,6 +78,8 @@ public class CommodityController {
         if(null==supp || supp > 0){
             return Util.defact;
         }else{
+            SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
+            commodity.setCreateTime(simpleDateFormat.format(new Date()));
             commodity.setUpdateTime(new Date());
             boolean b= commodityService.save(commodity);
             UpdateWrapper updateWrapper=new UpdateWrapper();
