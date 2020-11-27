@@ -10,44 +10,10 @@
     <script src="/web/component/layui/layui.js"></script>
     <script type="text/javascript" src="/web/component/js/jquery-3.3.1.min.js"></script>
     <script type="text/javascript" >
-        var timeId;
-        var layer;
-        var test=function(type){
-            console.log(this);
-        if(type == "1"){
-            $.get("/Commodity/commodityById.do?sid=" + this.value, function (d) {
-                var e = eval(d);
-                var sid = e.sid;
-                var img = d.imgPath;
-                layer.open({//示范一个公告层
-                    type: 1
-                    ,title: false //不显示标题栏
-                    ,closeBtn: false
-                    ,area: '390px;'
-                    ,shade: 0.8
-                    ,id: 'LAY_layuipro' //设定一个id，防止重复弹出
-                    ,btn: ['下载', "关闭"]
-                    ,btnAlign: 'c'
-                    ,moveType: 1 //拖拽模式，0或者1
-                    ,content: '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;"><img src=' + img + ' style=" WIDTH:300PX;height:300px;">'
-                    ,success: function (layero) {
-                        var btn = layero.find('.layui-layer-btn');
-                        btn.find('.layui-layer-btn0').attr({
-                            href: '/Commodity/download.do?sid=' + sid
-                            , target: '_blank'
-                        });
-                    }
-                });
-            })
-        }else {
-            console.log("sadfsadgasg");
-        }
-    }
-
     layui.use(["form","table","layer","laydate","upload"], function() {
         var table = layui.table;
         var form = layui.form;
-       layer = layui.layer;
+        var layer = layui.layer;
         var laydate = layui.laydate;
         var upload = layui.upload;
 
@@ -186,41 +152,7 @@
                         layer.msg('导入失败!请重新导入');
                     }
                 });
-            }/*else if(layEvent == "referral"){
-                var content="<table class='layui-table'>  " +
-                    "  <tr>" +
-                    "    <td>业务员名称</td>" +
-                    "    <td>"+data.userName+"</td>" +
-                    "  </tr>" +
-                    "  <tr>" +
-                    "    <td>产品名称</td>" +
-                    "    <td>"+data.name+"</td>" +
-                    "  </tr>" +
-                    "  <tr>" +
-                    "    <td>cas号</td>" +
-                    "    <td>"+data.cas+"</td>" +
-                    "  </tr>" +
-                    "  <tr>" +
-                    "    <td>日期</td>" +
-                    "    <td>"+data.createTime+"</td>" +
-                    "  </tr>" +
-                    "  <tr>" +
-                    "    <td>更新日期</td>" +
-                    "    <td>"+data.updateTime+"</td>" +
-                    "  </tr>" +
-                    "  <tr>" +
-                    "    <td>报价信息</td>" +
-                    "    <td>"+data.priceInfo+"</td>" +
-                    "  </tr></table>" ;
-                layer.open({
-                    area: ['390px', '572px'],
-                    title:"商品详情",
-                    type: 1,
-                    content:content
-                    //这里content是一个普通的String
-                });
-            }*/
-
+            }
         })
 
         //监听表头
