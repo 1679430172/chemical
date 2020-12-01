@@ -60,11 +60,37 @@
             })
             return false;
         });
+
+        //查询
+        form.on('submit(sid)', function(data){
+           $.post("/supplier/supplierlist.do",data.field,function (d) {
+               var e=eval(d);
+               console.log(e[0].gid)
+               $("#name").val(e[0].gid);
+               form.val("dd", {
+                   "supplierId":e[0].gid
+               })
+           })
+            return false;
+        });
     });
 
 </script>
 <body>
-<form id="formId" class="layui-form" action="">
+<div style="display: inline-block;">
+    <form id="form" class="layui-form" action="" lay-filter="dd">
+        <div class="layui-form-item" style="display: inline-block;">
+            <label class="layui-form-label">供应商名称</label>
+            <div class="layui-input-inline">
+                <input type="text" id="sname" name="name" style="width: 150px"   placeholder="请输入供应商名" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item" style="display: inline-block;">
+            <button class="layui-btn" lay-submit lay-filter="sid">查询供应商</button>
+        </div>
+    </form>
+</div>
+<form id="formId" class="layui-form" action="" lay-filter="dd">
     <div class="layui-form-item">
         <label class="layui-form-label">产品名称</label>
         <div class="layui-input-inline">

@@ -3,8 +3,6 @@ package com.hy.web;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.hy.bean.Supplier;
 import com.hy.bean.SupplierUsers;
-import com.hy.bean.User;
-import com.hy.mapper.UserMapper;
 import com.hy.service.SupplierService;
 import com.hy.service.Userserves;
 import com.hy.util.ParseData;
@@ -12,16 +10,9 @@ import com.hy.util.Util;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-import org.springframework.web.servlet.ModelAndView;
 
-import javax.annotation.PostConstruct;
-import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Api
@@ -97,4 +88,28 @@ public class SupplierController {
         return supplierService.list();
     }
 
+    @RequestMapping("/supplierEdit")
+    @ResponseBody
+    public Integer supplierEdit(Supplier supplier){
+        return  supplierService.update(supplier);
+    }
+
+    @RequestMapping("/supplierdelete")
+    @ResponseBody
+    public Integer supplierdate(String gid){
+        return supplierService.delete(gid);
+    }
+
+    @RequestMapping("/supplierById")
+    @ResponseBody
+    public List<SupplierUsers> supplierById(Supplier gid){
+        return supplierService.supplierlist(gid);
+    }
+
+    @RequestMapping("/supplierlist")
+    @ResponseBody
+    public List<SupplierUsers> supplierlist(Supplier suppliername){
+        System.out.println(suppliername);
+        return supplierService.supplierlist(suppliername);
+    }
 }

@@ -66,4 +66,16 @@ public class SupplierService extends ServiceImpl<SupplierMapper, Supplier> {
     public List<SupplierUsers> users(){
         return supplierMapper.users();
     }
+
+    public Integer update(Supplier supplier) {
+        return supplierMapper.update(supplier);
+    }
+
+    public Integer delete(String gid){
+        return supplierMapper.delete(gid);
+    }
+
+    public List<SupplierUsers> supplierlist(Supplier name){
+        return supplierMapper.supplierlist(name);
+    }
 }
