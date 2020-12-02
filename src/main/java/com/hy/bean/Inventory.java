@@ -14,7 +14,7 @@ public class Inventory {
     private String cas;    //cas号
     private String createTime; //创建时间
     private String updateTime; //更新时间
-    private Integer amount; //库存数量
+    private Double amount; //库存数量
     private  String remark; //备注
     @TableField(exist = false)
     private String type;//当前登录权限
@@ -75,20 +75,20 @@ public class Inventory {
         this.updateTime = updateTime;
     }
 
-    public Integer getAmount() {
-        return amount;
-    }
-
-    public void setAmount(Integer amount) {
-        this.amount = amount;
-    }
-
     public String getRemark() {
         return remark;
     }
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public Double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Double amount) {
+        this.amount = amount;
     }
 
     @Override

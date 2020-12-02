@@ -290,11 +290,11 @@
      </div>
 </script>
 <script type="text/html" id="barDemo">
-    {{#  if(0 == d.type){ }}
+    {{#  if(0 == [[${session.userType}]]){ }}
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="detail">添加数量</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete1">减少数量</a>
-    {{#  } else if(2 == d.type){ }}
+    {{#  } else if(2 == [[${session.userType}]]){ }}
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="detail">添加数量</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete1">减少数量</a>

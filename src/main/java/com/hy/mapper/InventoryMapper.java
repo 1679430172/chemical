@@ -12,7 +12,7 @@ import org.apache.ibatis.annotations.*;
 import java.util.List;
 
 public interface InventoryMapper extends BaseMapper<Inventory> {
-    @Select("select * from inventory")
+    @Select("select * from inventory order by amount desc")
     public IPage<Inventory> Inventory(Page page);
 
     @SelectProvider(type = InventorySql.class,method = "query")
@@ -38,20 +38,20 @@ public interface InventoryMapper extends BaseMapper<Inventory> {
     public Inventory selecttwo(@Param("number")String number,@Param("cas")String cas);
 
     @Update("update inventory set amount=#{amount} where number=#{number}")
-    public int updateinventory(@Param("amount") Integer amount,@Param("number")String number);
+    public int updateinventory(@Param("amount") Double amount,@Param("number")String number);
 
     @Delete("delete from inventory where number=#{number}")
      public Inventory detelep(@Param("number")String number);
 
 
     @Update("update inventory set amount=amount+#{amount}  where kid=#{kid}")
-    public boolean autoUpdate(@Param("amount") Integer amount, @Param("kid")Integer kid);
+    public boolean autoUpdate(@Param("amount") Double amount, @Param("kid")Integer kid);
 
     @Update("update inventory set amount=amount-#{amount}  where kid=#{kid}")
-    public boolean jUpdate(@Param("amount") Integer amount, @Param("kid")Integer kid);
+    public boolean jUpdate(@Param("amount") Double amount, @Param("kid")Integer kid);
 
     @Update("update inventory set amount=amount-#{amount}  where number=#{number}")
-    public boolean aUpdate(@Param("amount") Integer amount, @Param("number")String number);
+    public boolean aUpdate(@Param("amount") Double amount, @Param("number")String number);
 
 
 
