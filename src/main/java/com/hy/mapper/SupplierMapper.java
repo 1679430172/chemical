@@ -15,7 +15,7 @@ import java.util.List;
 public interface SupplierMapper extends BaseMapper<Supplier> {
 
     @SelectProvider(type = CommoditySql.class ,method = "supplier" )
-    public IPage<SupplierUsers> suppliers(Page page,@Param("uid")String uid,@Param("names")String names);
+    public IPage<SupplierUsers> suppliers(Page page,@Param("names")SupplierUsers names);
 
     @Select("select * from supplier s , users u where  s.user_id = u.uid order by s.user_id ")
     public List<SupplierUsers> supplier();
