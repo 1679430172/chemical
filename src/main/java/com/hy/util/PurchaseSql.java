@@ -21,8 +21,11 @@ public class PurchaseSql {
             if (purchase.getCas() != null&&!"".equals(purchase.getCas())){
                 sql.append(" and cas='"+purchase.getCas()+"'");
             }
-            if (purchase.getSupplierName() != null&&!"".equals(purchase.getSupplierName())){
-                sql.append(" and supplier_name="+purchase.getSupplierName());
+            if (purchase.getSupplierName() != null&&!"".equals(purchase.getSupplierName())) {
+                sql.append(" and supplier_name=" + purchase.getSupplierName());
+            }
+            if (purchase.getTrackingNumber() != null&&!"".equals(purchase.getTrackingNumber())){
+                sql.append(" and tracking_number="+purchase.getTrackingNumber());
             } sql.append(" order by ann asc");
         }
         System.out.println(sql.toString());

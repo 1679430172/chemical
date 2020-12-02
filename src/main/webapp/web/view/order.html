@@ -26,8 +26,8 @@
                 ,cols: [
                     [ //表头
                     {field: 'id', title: '编号', sort: true, width:90}
-                    ,{field: 'name', title: '商品名称', sort: true, totalRowText: '合计行', width:120}
-                    ,{field: 'amount', title: '数量', sort: true,templet:"#amount", width:150}
+                    ,{field: 'name', title: '商品名称', sort: true, totalRowText: '合计行', width:150}
+                    ,{field: 'amount', title: '数量', sort: true,templet:"#amount", width:80}
                     ,{field: 'price', title: '单价', sort: true, templet:"#price", width:80}
                     ,{field: 'sumPrice', title: '总价', sort: true, templet:"#sumPrice", totalRow: true, width:120}
                     ,{field: 'costPrice', title: '成本', templet:"#costPrice", totalRow: true, width:120}
@@ -180,7 +180,7 @@
                         "  </tr>" +
                         "  <tr>" +
                         "    <td>库存编号</td>" +
-                        "    <td>"+data.invoiceId+"</td>" +
+                        "    <td>"+data.number+"</td>" +
                         "  </tr>" +
                         "  <tr>" +
                         "    <td>备注</td>" +
@@ -282,7 +282,10 @@
     <script type="text/html" id="barDemo">
         <a class="layui-btn layui-btn-xs" lay-event="detail"><i class="layui-icon">&#xe615;</i>查看订单详情</a>
         {{#  if(0 == d.type){ }}
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="upd"><i class="layui-icon">&#xe640;</i>修改</a>
         <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon">&#xe640;</i>删除</a>
+        {{#  } else if(d.userId == d.uid){ }}
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="upd"><i class="layui-icon">&#xe640;</i>修改</a>
         {{#  } else { }}
 
         {{#  } }}
