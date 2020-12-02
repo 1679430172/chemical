@@ -91,6 +91,9 @@ public class SupplierController {
     @RequestMapping("/supplierEdit")
     @ResponseBody
     public Integer supplierEdit(Supplier supplier){
+        if (supplier.getStatus().equals("on")) {
+            supplier.setStatus("0");
+        }
         return  supplierService.update(supplier);
     }
 
