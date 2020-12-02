@@ -14,7 +14,7 @@ public class Order {
     @TableId(type = IdType.AUTO)
     private Integer did;//订单id
     private Integer userId;//业务员id
-    private Integer amount;//数量
+    private Double amount;//数量
     private Double price;//单价
     private Double costPrice;//成本
     private Double otherCost;//其他成本
@@ -95,11 +95,11 @@ public class Order {
         this.name = name;
     }
 
-    public Integer getAmount() {
+    public Double getAmount() {
         return amount;
     }
 
-    public void setAmount(Integer amount) {
+    public void setAmount(Double amount) {
         this.amount = amount;
     }
 
