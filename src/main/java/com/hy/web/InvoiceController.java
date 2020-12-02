@@ -32,6 +32,11 @@ public class InvoiceController  {
         return new ParseData(0,"",null,list);
     }
 
+    @RequestMapping("/queryBysid.do")
+    @ResponseBody
+    public Invoice queryBysid(Integer sid){
+        return service.queryBysid(sid);
+    }
 
 
     @ResponseBody
@@ -48,13 +53,16 @@ public class InvoiceController  {
 
     @ResponseBody
     @RequestMapping ("/updateBySid.do" )
-    public Integer update(Invoice invoice){
-        return service.updateBySid(invoice);
-    }
+    public Integer update(Invoice invoice){ return service.updateBySid(invoice); }
 
     @ResponseBody
     @RequestMapping ("/autoUpdate.do" )
     public Integer autoUpdate(Invoice invoice){
         return service.autoUpdateBySid(invoice);
     }
+
+    @ResponseBody
+    @RequestMapping ("/updateSid.do" )
+    public Integer updateSid(Invoice invoice){
+        return service.updatesid(invoice); }
 }

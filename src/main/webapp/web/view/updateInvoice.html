@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>修改发票</title>
+    <link rel="stylesheet" href="/web/component/layui/css/layui.css" media="all">
+    <script src="/web/component/layui/layui.js"></script>
+    <script type="text/javascript" src="/web/component/js/jquery-3.3.1.min.js"></script>
+    <script>
+
+        layui.use(["form","layer"], function() {
+            var form = layui.form;
+            var id=location.search;
+            id=id.split("=");
+
+            $(function () {
+                get();
+            })
+
+            var get=function(){
+                $.get("/Invoice/queryBysid.do?sid="+id[1],function (d) {
+                    var e=eval(d);
+                    console.log(e);
+                    $("#sid").val(e.sid);
+                    form.val("dd", { //formTest 即 class="layui-form" 所在元素属性 lay-filter="" 对应的值
+                        "name":e.name
+                        ,"cas": e.cas // "name": "value"
+                        ,"number": e.number
+                        ,"price":e.price
+                        ,"unit":e.unit
+                    });
+                })
+            }
+        })
+        //Demo
+        layui.use(['layer','form'], function(){
+            var form = layui.form;
+            //监听提交
+            form.on('submit(formDemo)', function(data){
+                $.post("/Invoice/updateSid.do",data.field,function (d,s) {
+                    if(d===1){
+                        layer.msg('修改成功！！！', {
+                            icon: 1,
+                            time: 1000 //2秒关闭（如果不配置，默认是3秒）
+                        }, function(){
+                            var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                            parent.layer.close(index); //再执行关闭
+                        });
+                    }else {
+                        layer.msg('修改失败！！！');
+                    }
+                });
+                return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+            });
+
+        });
+
+    </script>
+</head>
+<body>
+<form class="layui-form" action="" lay-filter="dd">
+    <div class="layui-form-item">
+        <label class="layui-form-label">发票品名</label>
+        <div class="layui-input-inline">
+            <input type="text" name="name" lay-verify="did" autocomplete="off" placeholder="" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">Cas号</label>
+        <div class="layui-input-inline">
+            <input type="text" name="cas" lay-verify="did" autocomplete="off" placeholder="" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">数量</label>
+        <div class="layui-input-inline">
+            <input type="text" name="number" lay-verify="did" autocomplete="off" placeholder="" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">价格</label>
+        <div class="layui-input-inline">
+            <input type="text" name="price" lay-verify="did" autocomplete="off" placeholder="" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">单位</label>
+        <div class="layui-input-inline">
+            <input type="text" name="unit" lay-verify="did" autocomplete="off" placeholder="" class="layui-input">
+        </div>
+    </div>
+    <input type="text" style="display:none" name="sid" id="sid">
+
+    <div class="layui-form-item">
+    <div class="layui-input-inline">
+        <button class="layui-btn" lay-submit lay-filter="formDemo" >修改</button>
+        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+    </div>
+</div>
+</form>
+</body>
+</html>

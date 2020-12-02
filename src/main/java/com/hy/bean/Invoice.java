@@ -8,7 +8,7 @@ public class Invoice {
     private Integer sid;
     private String name;
     private String cas;
-    private Integer number;
+    private Double number;
     private Double price;
     private String unit;
     private String createTime;
@@ -25,9 +25,9 @@ public class Invoice {
 
     public void setCas(String cas) { this.cas = cas; }
 
-    public Integer getNumber() { return number; }
+    public Double getNumber() { return number; }
 
-    public void setNumber(Integer number) { this.number = number; }
+    public void setNumber(Double number) { this.number = number; }
 
     public Double getPrice() { return price; }
 
