@@ -38,7 +38,7 @@ public interface SalesMapper extends BaseMapper<Sales> {
      * @param page
      * @return
      */
-    @Select("select o.*,c.`status` from sales o inner join `order` c on o.order_id=c.did  where o.tracking_number=#{trackingNumber}")
+    @Select("select o.*,c.`status` ,d.name from sales o , `order` c ,  commodity d WHERE o.order_id=c.did and c.commodity_id=d.sid  and (o.tracking_number=#{trackingNumber} or d.name=#{trackingNumber})")
     public IPage<SalesOrdet> bytrackingNumberselect(Page<SalesOrdet> page,@Param("trackingNumber")String trackingNumber);
 
 
@@ -47,7 +47,7 @@ public interface SalesMapper extends BaseMapper<Sales> {
      * @param trackingNumber
      * @return
      */
-    @Select("select o.*,c.`status` from sales o inner join `order` c on o.order_id=c.did where  o.tracking_number=#{trackingNumber} and o.user_id =#{userId}")
+    @Select("select o.*,c.`status` ,d.name from sales o , `order` c ,  commodity d WHERE o.order_id=c.did and c.commodity_id=d.sid and (o.tracking_number=#{trackingNumber} or d.name=#{trackingNumber}) and o.user_id =#{userId}")
     public IPage<SalesOrdet> bytrackingNumberselecttwo(Page<SalesOrdet> page,@Param("trackingNumber")String trackingNumber,@Param("userId")Integer userId);
 
     /**
