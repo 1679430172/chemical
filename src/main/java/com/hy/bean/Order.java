@@ -7,6 +7,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.servlet.http.HttpSession;
 import java.text.DecimalFormat;
 import java.util.Date;
+import java.util.Objects;
 
 @TableName(value = "`order`")
 public class Order {
@@ -43,6 +44,8 @@ public class Order {
     private String type;//当前登录权限
     @TableField(exist = false)
     private Integer uid;//当前登录id
+    @TableField(exist = false)
+    private String number;//库存编号
 
     public Integer getUid() {
         return uid;
@@ -126,12 +129,12 @@ public class Order {
     }
 
     public String getRoyalties() {
-        HttpSession session = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession();
+        HttpSession session = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest().getSession();
         if(this.status.equals("2")){
             royalties=0.0;
         }else if(session.getAttribute("userType").equals(Authority.administrator)||session.getAttribute("userType").equals(Authority.authorizedSalesman)){
             royalties=((this.price*this.amount)-(this.costPrice*this.amount)-otherCost)*0.87*0.4;
-        }else if(this.userId==this.suid){
+        }else if(this.userId.equals(this.suid)){
             royalties=((this.price*this.amount)-(this.costPrice*this.amount)-otherCost)*0.87*0.4;
         }else if(session.getAttribute("userId").equals(this.userId)){
             royalties=((this.price*this.amount)-(this.costPrice*this.amount)-otherCost)*0.87*0.3;
@@ -251,6 +254,14 @@ public class Order {
         this.zcb = zcb;
     }
 
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
+    }
+
     @Override
     public String toString() {
         return "Order{" +
@@ -258,11 +269,9 @@ public class Order {
                 ", userId=" + userId +
                 ", amount=" + amount +
                 ", price=" + price +
-                ", sumPrice=" + sumPrice +
                 ", costPrice=" + costPrice +
-                ", royalties=" + royalties +
                 ", otherCost=" + otherCost +
-                ", bill=" + bill +
+                ", bill='" + bill + '\'' +
                 ", billInfo='" + billInfo + '\'' +
                 ", commodityId=" + commodityId +
                 ", invoiceId=" + invoiceId +
@@ -273,7 +282,14 @@ public class Order {
                 ", createTime=" + createTime +
                 ", remarks='" + remarks + '\'' +
                 ", name='" + name + '\'' +
-                ", suid='" + suid + '\'' +
+                ", suid=" + suid +
+                ", zcb=" + zcb +
+                ", sumPrice=" + sumPrice +
+                ", royalties=" + royalties +
+                ", id='" + id + '\'' +
+                ", type='" + type + '\'' +
+                ", uid=" + uid +
+                ", number='" + number + '\'' +
                 '}';
     }
 }
