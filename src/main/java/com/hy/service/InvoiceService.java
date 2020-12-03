@@ -44,5 +44,16 @@ public class InvoiceService extends ServiceImpl<InvoiceMapper,Invoice>{
         return 1;
     }
 
+    public Invoice queryBysid(Integer sid){
+        return invoiceMapper.queryBysid(sid);
+    }
+
+    public Integer updatesid(Invoice invoice){
+        boolean bl=invoiceMapper.updatesid(invoice);
+        if(bl){
+            return 1;
+        }
+        return 0;
+    }
 
 }
