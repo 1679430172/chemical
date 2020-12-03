@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title>添加订单</title>
+    <link rel="stylesheet" href="/web/component/layui/css/layui.css" media="all">
+    <script src="/web/component/layui/layui.js"></script>
+    <script type="text/javascript" src="/web/component/js/jquery-3.3.1.min.js"></script>
+    <script>
+        //Demo
+        layui.use('form', function(){
+            var form = layui.form;
+
+            $.get("/Commodity/commoditiesList",{},function (data) {
+                var list=eval(data);
+                for(var i=0;i<list.length;i++){
+                    var option=$("<option>").val(list[i].sid);
+                    option.text(list[i].name);
+                    option.attr("title",list[i].cas);
+                    $("#sid").append(option);
+                }
+                form.render('select');
+            });
+
+            $("#cz").click(function () {
+                $.post("/Order/cz",{cas:$("#cas").val(),name:$("#name").val()},function (data) {
+                    var list=eval(data);
+                    $("#sid").empty();
+                    var option=$("<option>").val('');
+                    option.text("请选择一个商品");
+                    $("#sid").append(option);
+                    for(var i=0;i<list.length;i++){
+                        var option=$("<option>").val(list[i].sid);
+                        option.text(list[i].name);
+                        option.attr("title",list[i].cas);
+                        $("#sid").append(option);
+                    }
+                    form.render('select');
+                })
+            });
+
+            $("#bills").click(function() {
+                if($("#bill").prop('checked')){
+                    $("#billInfo").show();
+                }else {
+                    $("#billInfo").hide();
+                }
+            });
+
+            var aaa = $("#bill").prop("checked");
+            if(aaa) {
+                $("#billInfo").show();
+            }else {
+                $("#billInfo").hide();
+            }
+
+            form.on('select(commodity)',function (data) {
+                //获取当前选中下拉项的索引
+                var indexGID = data.elem.selectedIndex;
+                //获取当前选中下拉项的自定义属性值 title
+                var cas = data.elem[indexGID].title;
+                $.get("/inventory/",{cas:cas},function (data) {
+                    var list=eval(data);
+                    $("#invoiceId").empty();
+                    var option=$("<option>");
+                    option.text("请选择一个编号");
+                    $("#invoiceId").append(option);
+                    for(var i=0;i<list.length;i++){
+                        var option=$("<option>").val(list[i].kid);
+                        option.text(list[i].number);
+                        $("#invoiceId").append(option);
+                    }
+                    form.render('select');
+                });
+            })
+
+
+            //监听提交
+            form.on('submit(formDemo)', function(data){
+                $("#sub").attr("disabled",true);//按钮禁用
+                $.post("/Order/upd",data.field,function (d,s) {
+                    if(d=="1"){
+                        layer.msg('添加成功！！！', {
+                            icon: 1,
+                            time: 1000 //2秒关闭（如果不配置，默认是3秒）
+                        }, function(){
+                            //假设这是iframe页
+                            var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                            parent.layer.close(index); //再执行关闭
+                        });
+                    }else{
+                        $("#sub").removeAttr("disabled");//按钮启用
+                        layer.msg('添加失败！！！', {
+                            icon: 1,
+                            time: 1000 //2秒关闭（如果不配置，默认是3秒）
+                        })
+                    }
+                });
+                return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+            });
+        });
+    </script>
+</head>
+<body>
+<form class="layui-form" action="">
+    <input name="did" th:value="order.did" style="display: none">
+    <div class="layui-form-item">
+        <label class="layui-form-label">cas号</label>
+        <div class="layui-input-inline">
+            <input type="text" name="cas" id="cas" autocomplete="off" placeholder="" class="layui-input" style="width: 220px;">
+        </div>
+    </div>
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">商品名称</label>
+        <div class="layui-input-inline">
+            <input type="text" name="name" id="name" autocomplete="off" placeholder="" th:value="${order.name}" class="layui-input" style="width: 220px;">
+        </div>
+    </div>
+    <div class="layui-form-item layui-form-text" style="text-align: center;">
+        <button type="button" class="layui-btn layui-btn-sm" id="cz" style="display: inline-block">查找产品</button>
+    </div>
+
+
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">商品名称</label>
+        <div class="layui-input-inline">
+            <select name="commodityId" lay-verify="required" id="sid" lay-filter="commodity" th:value="${order.commodityId}">
+                <option value="">请选择一个商品</option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">业务员</label>
+        <div class="layui-input-inline">
+            <select name="city" lay-verify="required" disabled="disabled">
+                <option th:value="${session.userId}" selected>[[${session.userName}]]</option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">数量</label>
+        <div class="layui-input-inline">
+            <input type="text" name="amount" th:value="${order.amount}" lay-verify="required|number" autocomplete="off" placeholder="" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">单价</label>
+        <div class="layui-input-inline">
+            <input type="text" name="price" th:value="${order.price}" lay-verify="required|number" autocomplete="off" placeholder="" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">成本</label>
+        <div class="layui-input-inline">
+            <input type="text" name="costPrice" lay-verify="required|number" th:value="${order.costPrice}" autocomplete="off" placeholder="" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">其他成本</label>
+        <div class="layui-input-inline">
+            <input type="text" name="otherCost" lay-verify="required|number" th:value="${order.otherCost}" autocomplete="off" placeholder="" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">有无票据</label>
+        <div class="layui-input-inline" id="bills">
+            <input type="checkbox" id="bill" name="bill" th:value="${order.bill}" lay-skin="switch" lay-text="有|无">
+        </div>
+    </div>
+    <div class="layui-form-item layui-form-text" style="display: none" id="billInfo">
+        <label class="layui-form-label">开票资料</label>
+        <div class="layui-input-inline">
+            <textarea name="billInfo" placeholder="请输入开票资料" th:value="${order.billInfo}" class="layui-textarea"></textarea>
+        </div>
+    </div>
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">库存编号</label>
+        <div class="layui-input-inline">
+            <select name="invoiceId" id="invoiceId" lay-verify="required" th:value="${order.invoiceId}">
+                <option value="">请选择一个编号</option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">客户名称</label>
+        <div class="layui-input-inline">
+            <input type="text" name="userName" lay-verify="required" th:value="${order.userName}" autocomplete="off" placeholder="" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">地址</label>
+        <div class="layui-input-inline">
+            <input type="text" name="address" lay-verify="required" th:value="${order.address}" autocomplete="off" placeholder="" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">联系电话</label>
+        <div class="layui-input-inline">
+            <input type="text" name="phone" lay-verify="required|phone" th:value="${order.phone}" autocomplete="off" placeholder="" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">备注</label>
+        <div class="layui-input-inline">
+            <textarea name="remarks" placeholder="请输入内容" th:text="${order.remarks}" class="layui-textarea"></textarea>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-inline">
+            <button class="layui-btn" id="sub" lay-submit lay-filter="formDemo">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+</body>
+</html>

@@ -46,6 +46,8 @@ public class Order {
     private Integer uid;//当前登录id
     @TableField(exist = false)
     private String number;//库存编号
+    @TableField(exist = false)
+    private String cas;//cas
 
     public Integer getUid() {
         return uid;
@@ -126,6 +128,14 @@ public class Order {
 
     public void setCostPrice(Double costPrice) {
         this.costPrice = costPrice;
+    }
+
+    public String getCas() {
+        return cas;
+    }
+
+    public void setCas(String cas) {
+        this.cas = cas;
     }
 
     public String getRoyalties() {

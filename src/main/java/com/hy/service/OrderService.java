@@ -91,11 +91,29 @@ public class OrderService extends ServiceImpl<OrderMapper, Order> {
         HttpSession session = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession();
         IPage<Order> iPage=null;
         if(session.getAttribute("userType").equals(Authority.administrator)){
-            iPage=orderMapper.selectListTime(stadate,enddate,"'%"+name+"%'",page);
+            if(null!=name&&!name.equals("")&&null!=stadate&&!stadate.equals("")&&null!=enddate&&!enddate.equals("")){
+                iPage=orderMapper.selectListTime(stadate,enddate,"'%"+name+"%'",page);
+            }else if (null!=name&&!name.equals("")){
+                iPage=orderMapper.selectListName("'%"+name+"%'",page);
+            }else if(null!=stadate&&!stadate.equals("")&&null!=enddate&&!enddate.equals("")){
+                iPage=orderMapper.selectListTime(stadate,enddate,page);
+            }
         }else if(session.getAttribute("userType").equals(Authority.authorizedSalesman)){
-            iPage=orderMapper.selectListTime(stadate,enddate,"'%"+name+"%'",page);
+            if(null!=name&&!name.equals("")&&null!=stadate&&!stadate.equals("")&&null!=enddate&&!enddate.equals("")){
+                iPage=orderMapper.selectListTime(stadate,enddate,"'%"+name+"%'",page);
+            }else if (null!=name&&!name.equals("")){
+                iPage=orderMapper.selectListName("'%"+name+"%'",page);
+            }else if(null!=stadate&&!stadate.equals("")&&null!=enddate&&!enddate.equals("")){
+                iPage=orderMapper.selectListTime(stadate,enddate,page);
+            }
         }else if(session.getAttribute("userType").equals(Authority.salesman)){
-            iPage=orderMapper.selectListByUserIdTime(stadate,enddate,"'%"+name+"%'",(Integer)session.getAttribute("userId"),page);
+            if(null!=name&&!name.equals("")&&null!=stadate&&!stadate.equals("")&&null!=enddate&&!enddate.equals("")){
+                iPage=orderMapper.selectListByUserIdTime(stadate,enddate,"'%"+name+"%'",(Integer)session.getAttribute("userId"),page);
+            }else if (null!=name&&!name.equals("")){
+                iPage=orderMapper.selectListByUserIdName("'%"+name+"%'",(Integer)session.getAttribute("userId"),page);
+            }else if(null!=stadate&&!stadate.equals("")&&null!=enddate&&!enddate.equals("")){
+                iPage=orderMapper.selectListByUserIdTime(stadate,enddate,(Integer)session.getAttribute("userId"),page);
+            }
         }
         List<Order> list=iPage.getRecords();
         for(Order s:list){
@@ -114,5 +132,9 @@ public class OrderService extends ServiceImpl<OrderMapper, Order> {
         queryWrapper.eq(StringUtils.isNotBlank(cas),"cas",cas);
         queryWrapper.eq(StringUtils.isNotBlank(name),"name",name);
         return commodityService.list(queryWrapper);
+    }
+
+    public Order getById(Integer did){
+        return orderMapper.getById(did);
     }
 }

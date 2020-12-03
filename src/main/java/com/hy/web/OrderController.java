@@ -78,4 +78,26 @@ public class OrderController {
         System.out.println(123);
         return service.cz(cas,name);
     }
+
+    @RequestMapping("/toUpd")
+    @ResponseBody
+    public ModelAndView toUpd(Integer did){
+        ModelAndView modelAndView=new ModelAndView();
+        Order order=service.getById(did);
+        System.out.println(order);
+        modelAndView.addObject("order",order);
+        modelAndView.setViewName("updOrder.html");
+        return modelAndView;
+    }
+
+    @PostMapping("/upd")
+    @ResponseBody
+    public Integer upd(Order order){
+        boolean f;
+        f = service.updateById(order);
+        if(f){
+            return 1;
+        }
+        return 0;
+    }
 }
