@@ -27,8 +27,8 @@ public class SupplierController {
 
     @RequestMapping("/supplierInquire.do")
     @ResponseBody
-    public ParseData supplierInquire(Integer page, Integer limit,String name){
-        IPage<SupplierUsers> iPage= supplierService.iPage(page,limit,name);
+    public ParseData supplierInquire(Integer page, Integer limit,SupplierUsers supplierUsers){
+        IPage<SupplierUsers> iPage= supplierService.iPage(page,limit,supplierUsers);
         return new ParseData(0,"",Integer.parseInt(Long.toString(iPage.getTotal())),iPage.getRecords());
     }
 

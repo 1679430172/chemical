@@ -3,6 +3,7 @@ package com.hy.util;
 import com.hy.bean.Commodity;
 import com.hy.bean.Commoditys;
 import com.hy.bean.Supplier;
+import com.hy.bean.SupplierUsers;
 import org.apache.ibatis.annotations.Param;
 import org.apache.poi.util.SystemOutLogger;
 
@@ -35,14 +36,18 @@ public class CommoditySql {
         return sql.toString();
     }
 
-    public String supplier( @Param("uid")String uid,@Param("names")String names){
+    public String supplier(@Param("names") SupplierUsers names){
         String sql="select * from supplier s inner join users u on s.user_id = u.uid where 1=1 ";
-        if ( uid != null  ) {
-            sql+=" and uid="+uid;
+        if ( names.getUid() != null  ) {
+            sql+=" and uid="+names.getUid();
         }
-        if (names != null && !"".equals(names)) {
-            sql += " and s.name like '%" + names + "%'";
+        if (names.getName() != null && !"".equals(names.getName())) {
+            sql += " and s.name like '%" + names.getName() + "%'";
         }
+        if (names.getUserName() != null && !"".equals(names.getUserName())) {
+            sql += " and user_name like '%" + names.getUserName() + "%'";
+        }
+        sql+=" order by s.gid  ";
         return sql;
     }
 

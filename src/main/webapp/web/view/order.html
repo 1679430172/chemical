@@ -26,8 +26,8 @@
                 ,cols: [
                     [ //表头
                     {field: 'id', title: '编号', sort: true, width:90}
-                    ,{field: 'name', title: '商品名称', sort: true, totalRowText: '合计行', width:120}
-                    ,{field: 'amount', title: '数量', sort: true,templet:"#amount", width:150}
+                    ,{field: 'name', title: '商品名称', sort: true, totalRowText: '合计行', width:150}
+                    ,{field: 'amount', title: '数量', sort: true,templet:"#amount", width:80}
                     ,{field: 'price', title: '单价', sort: true, templet:"#price", width:80}
                     ,{field: 'sumPrice', title: '总价', sort: true, templet:"#sumPrice", totalRow: true, width:120}
                     ,{field: 'costPrice', title: '成本', templet:"#costPrice", totalRow: true, width:120}
@@ -35,7 +35,7 @@
                     ,{field: '', title: '总成本', templet:"#zcb", width:80}
                     ,{field: 'royalties', title: '提成', templet:"#royalties", totalRow: true, width:120}
                     ,{field: 'status', title: '是否出库', sort: true, templet:"#status", width:110}
-                    ,{fixed: 'right', align:'center', toolbar: '#barDemo',width:195}
+                    ,{fixed: 'right', align:'center', toolbar: '#barDemo',width:280}
                 ]
                 ],done: function (response) {
                     //定位当前table视图
@@ -225,6 +225,26 @@
                         });
                         layer.close(index);
                     });
+                } else if(layEvent === 'upd'){
+                    layer.open({
+                        area: ['450px', '500px'],
+                        type: 2,
+                        title:'修改订单',
+                        content: '/Order/toUpd?did='+data.did  //这里content是一个普通的String
+                        ,end:function () {
+                            table.reload('demo', {
+                                url: '/Order/'
+                                ,done:function () {
+                                    lay('.time').each(function(){
+                                        laydate.render({
+                                            elem: this
+                                            ,trigger: 'click'
+                                        });
+                                    });
+                                }
+                            });
+                        }
+                    });
                 }
             });
 
@@ -282,7 +302,10 @@
     <script type="text/html" id="barDemo">
         <a class="layui-btn layui-btn-xs" lay-event="detail"><i class="layui-icon">&#xe615;</i>查看订单详情</a>
         {{#  if(0 == d.type){ }}
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="upd"><i class="layui-icon">&#xe640;</i>修改</a>
         <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon">&#xe640;</i>删除</a>
+        {{#  } else if(d.userId == d.uid){ }}
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="upd"><i class="layui-icon">&#xe640;</i>修改</a>
         {{#  } else { }}
 
         {{#  } }}
@@ -291,11 +314,11 @@
             <button type="button" class="layui-btn layui-btn-sm" lay-event="import" id="test1"><i class="layui-icon">&#xe654;</i>添加订单</button>&nbsp;&nbsp;
             <form class="layui-form" action="" style="display: inline-block;">
                 <div class="layui-input-inline">
-                    <input type="text" name="stadate" id="stadate" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input time">
+                    <input type="text" name="stadate" id="stadate" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input time">
                 </div>
                 &nbsp; - &nbsp;
                 <div class="layui-input-inline">
-                    <input type="text" name="enddate" id="enddate" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input time">
+                    <input type="text" name="enddate" id="enddate" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input time">
                 </div>&nbsp;&nbsp;
                 <div class="layui-input-inline">
                     <input type="text" name="name" autocomplete="off"  placeholder="商品名称" class="layui-input" style="width: 220px;display: inline-block">

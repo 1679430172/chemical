@@ -14,7 +14,7 @@ public class Order {
     @TableId(type = IdType.AUTO)
     private Integer did;//订单id
     private Integer userId;//业务员id
-    private Integer amount;//数量
+    private Double amount;//数量
     private Double price;//单价
     private Double costPrice;//成本
     private Double otherCost;//其他成本
@@ -46,6 +46,8 @@ public class Order {
     private Integer uid;//当前登录id
     @TableField(exist = false)
     private String number;//库存编号
+    @TableField(exist = false)
+    private String cas;//cas
 
     public Integer getUid() {
         return uid;
@@ -95,11 +97,11 @@ public class Order {
         this.name = name;
     }
 
-    public Integer getAmount() {
+    public Double getAmount() {
         return amount;
     }
 
-    public void setAmount(Integer amount) {
+    public void setAmount(Double amount) {
         this.amount = amount;
     }
 
@@ -126,6 +128,14 @@ public class Order {
 
     public void setCostPrice(Double costPrice) {
         this.costPrice = costPrice;
+    }
+
+    public String getCas() {
+        return cas;
+    }
+
+    public void setCas(String cas) {
+        this.cas = cas;
     }
 
     public String getRoyalties() {
