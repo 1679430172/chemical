@@ -83,10 +83,6 @@ import org.springframework.web.servlet.ModelAndView;
         }
         return Util.succeed;
     }
-
-
-
-
     @RequestMapping("/toPurchase")
     @ResponseBody
     public ModelAndView toPurchase(){
@@ -94,6 +90,13 @@ import org.springframework.web.servlet.ModelAndView;
         modelAndView.setViewName("purchase.html");
         return modelAndView;
     }
+
+    @RequestMapping("/delete")
+    @ResponseBody
+    public String detelep(String cid){
+        return purchaseService.detelep(cid);
+    }
+
 
 
     }

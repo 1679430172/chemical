@@ -16,6 +16,13 @@ public interface PurchaseMapper extends BaseMapper<Purchase> {
     @Select("select * from purchase order by ann asc")
     public IPage<Purchase> Purchase(Page page);
 
+    @Select("select * from purchase where cid=#{cid}")
+    public IPage<Purchase> selectByid(Page page);
+
+    @Update("update purchase set cid=#{cid} where cid=#{cid}")
+    public void updateA(String cid);
+
+
     @Select("select * from purchase where user_id=#{userId} order by ann asc")
     public IPage<Purchase> supplier(@Param("userId") Integer userId,Page page);
 
@@ -37,5 +44,7 @@ public interface PurchaseMapper extends BaseMapper<Purchase> {
     @SelectProvider(type = PurchaseSql.class,method = "query")
     public IPage<Purchase> queryBy(Page page, @Param("em")Purchase purchase);
 
+    @Delete("delete from purchase where cid=#{cid}")
+    public Inventory detelep(@Param("cid")String number);
 
 }

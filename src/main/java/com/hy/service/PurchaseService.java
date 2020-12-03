@@ -7,6 +7,7 @@ import com.hy.bean.*;
 import com.hy.mapper.PurchaseMapper;
 import com.hy.mapper.UserMapper;
 import com.hy.util.ParseData;
+import com.hy.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -94,9 +95,20 @@ public class PurchaseService extends ServiceImpl<PurchaseMapper, Purchase> {
         return iPage;
     }
 
+
     public Integer wwww(){
         HttpSession session = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession();
         Integer userId= (Integer) session.getAttribute("userId");
         return userId;
     }
+
+    public String detelep(String cid){
+        try {
+            purchaseMapper.detelep(cid);
+        } catch (Exception e) {
+            return Util.defact;
+        }
+        return Util.sueess;
+    }
+
 }
