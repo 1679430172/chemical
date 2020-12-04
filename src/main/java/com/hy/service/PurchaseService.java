@@ -68,7 +68,16 @@ public class PurchaseService extends ServiceImpl<PurchaseMapper, Purchase> {
         return new ParseData(0,"",Integer.parseInt(Long.toString(iPage.getTotal())),iPage.getRecords());
     }
 
-
+    public Integer updatecid(Purchase purchase){
+        boolean bl=purchaseMapper.updatea(purchase);
+        if(bl){
+            return 1;
+        }
+        return 0;
+    }
+    public Purchase queryBycid(Integer cid){
+        return purchaseMapper.selectBycid(cid);
+    }
 
     public void updateAnn(String cid){
        purchaseMapper.updateAnn(cid);

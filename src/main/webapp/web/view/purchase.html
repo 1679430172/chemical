@@ -62,16 +62,16 @@
                     , {field: 'createTime', title: '创建日期', width: 120}
                     , {
                     field: 'ann', title: '发票', width: 90, templet: function (d) {
-                        if (d.ann == 1) {
+                        if (d.ann== 1) {
                             return '未收到'
                         } else {
                             return '已收到'
                         }
                     }
                 }
-                    , {fixed: 'right', width: '8%', align: 'center', toolbar: '#dd'}
-                    , {fixed: 'right', width: '8%', align: 'center', toolbar: '#cc'}
-                    , {fixed: 'right', width: '8%', align: 'center', toolbar: '#ccs'}
+                    , {fixed: 'right', width: '7%', align: 'center', toolbar: '#dd'}
+                    , {fixed: 'right', width: '7%', align: 'center', toolbar: '#cc'}
+                    , {fixed: 'right', width: '10%', align: 'center', toolbar: '#ccs'}
                 ]]
             , done: function (response) {
                 //定位当前table视图
@@ -201,16 +201,14 @@
                 })
             }else if (layEvent == 'updateT') {
                 layer.open({
+                    area: ['360px', '420px'],
                     type: 2,
-                    //offset: 'auto',、
-                    skin: 'layui-layer-rim',
-                    area: ['650px', '500px'],
-                    content: '/web/view/purchaseAdd.html?', //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
-                    end: function () {
-                        table.reload('test', {
+                    content: '/web/view/purchaseUpdate.html?cid='+data.cid,
+                    end:function () {
+                        table.reload('demo', {
                             url: '/purchase/purchase.do'
                         });
-                    }
+                    },
                 });
             }
         })
@@ -223,7 +221,6 @@
     .layui-table-page {
         text-align: center;
     }
-
 </style>
 
 <script type="text/html" id="toolbarDemo">
@@ -273,7 +270,7 @@
 
 <script type="text/html" id="dd">
     {{#  if(d.trackingNumber == null){ }}
-    <button class="layui-btn  layui-btn-xs layui-btn" lay-event="up" >添加物流编号</button>
+    <button class="layui-btn  layui-btn-xs layui-btn" lay-event="up" >添加物流</button>
     {{#  } else if(d.trackingNumber == 1){ }}
     {{#  } }}
 </script>
@@ -287,7 +284,7 @@
 </script>
 <script type="text/html" id="ccs">
     <button class="layui-btn  layui-btn-xs layui-btn" lay-event="del">删除</button>
-<!--    <button class="layui-btn  layui-btn-xs layui-btn" lay-event="updateT">修改</button>-->
+    <button class="layui-btn  layui-btn-xs layui-btn" lay-event="updateT">修改</button>
 </script>
 <script type="text/html" id="suppliername">
     {{#  if(0 == [[${session.userType}]]){ }}

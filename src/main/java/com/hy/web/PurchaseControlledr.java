@@ -2,7 +2,10 @@ package com.hy.web;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.hy.bean.Invoice;
 import com.hy.bean.Purchase;
+import com.hy.bean.Supplier;
+import com.hy.bean.SupplierUsers;
 import com.hy.service.PurchaseService;
 import com.hy.util.ParseData;
 import com.hy.util.Util;
@@ -12,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 
 @Api
@@ -60,8 +65,12 @@ import org.springframework.web.servlet.ModelAndView;
         purchaseService.equals(purchase);
         return "1";
     }
+    @ResponseBody
+    @RequestMapping ("/updateCid.do" )
+    public Integer updateSid(Purchase purchase){
+        return purchaseService.updatecid(purchase);
 
-
+        }
         @RequestMapping("/toAdd")
         @ResponseBody
         public ModelAndView toAdd(){
@@ -69,6 +78,12 @@ import org.springframework.web.servlet.ModelAndView;
             modelAndView.setViewName("purchaseAdd.html");
             return modelAndView;
         }
+
+    @RequestMapping("/querybyCid.do")
+    @ResponseBody
+    public Purchase querybyCid(Integer cid){
+        return purchaseService.queryBycid(cid);
+    }
 
     @RequestMapping("/add.do")
     @ResponseBody
