@@ -62,9 +62,6 @@
                 $.get("/inventory/",{cas:cas},function (data) {
                     var list=eval(data);
                     $("#invoiceId").empty();
-                    var option=$("<option>");
-                    option.text("请选择一个编号");
-                    $("#invoiceId").append(option);
                     for(var i=0;i<list.length;i++){
                         var option=$("<option>").val(list[i].kid);
                         option.text(list[i].number);

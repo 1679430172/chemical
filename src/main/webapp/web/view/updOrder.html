@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" >
 <head>
     <meta charset="UTF-8">
-    <title>添加订单</title>
+    <title>修改订单</title>
     <link rel="stylesheet" href="/web/component/layui/css/layui.css" media="all">
     <script src="/web/component/layui/layui.js"></script>
     <script type="text/javascript" src="/web/component/js/jquery-3.3.1.min.js"></script>
@@ -17,8 +17,19 @@
                     var option=$("<option>").val(list[i].sid);
                     option.text(list[i].name);
                     option.attr("title",list[i].cas);
+                    if([[${order.commodityId}]]==list[i].sid){
+                        option.attr("selected",true);
+                    }
                     $("#sid").append(option);
                 }
+                form.render('select');
+            });
+
+            $.get("/Order/invento",{kid:[[${order.invoiceId}]]},function (data) {
+                var list=eval(data);
+                    var option=$("<option>").val(list.kid);
+                    option.text(list.number);
+                    $("#invoiceId").append(option);
                 form.render('select');
             });
 
@@ -74,13 +85,13 @@
                 });
             })
 
-
+            $("#sid").val([[${order.commodityId}]]);
             //监听提交
             form.on('submit(formDemo)', function(data){
                 $("#sub").attr("disabled",true);//按钮禁用
                 $.post("/Order/upd",data.field,function (d,s) {
                     if(d=="1"){
-                        layer.msg('添加成功！！！', {
+                        layer.msg('修改成功！！！', {
                             icon: 1,
                             time: 1000 //2秒关闭（如果不配置，默认是3秒）
                         }, function(){
@@ -90,7 +101,7 @@
                         });
                     }else{
                         $("#sub").removeAttr("disabled");//按钮启用
-                        layer.msg('添加失败！！！', {
+                        layer.msg('修改失败！！！', {
                             icon: 1,
                             time: 1000 //2秒关闭（如果不配置，默认是3秒）
                         })
@@ -103,7 +114,7 @@
 </head>
 <body>
 <form class="layui-form" action="">
-    <input name="did" th:value="order.did" style="display: none">
+    <input type="text" name="did" th:value="${order.did}" style="display: none">
     <div class="layui-form-item">
         <label class="layui-form-label">cas号</label>
         <div class="layui-input-inline">
@@ -124,7 +135,7 @@
     <div class="layui-form-item layui-form-text">
         <label class="layui-form-label">商品名称</label>
         <div class="layui-input-inline">
-            <select name="commodityId" lay-verify="required" id="sid" lay-filter="commodity" th:value="${order.commodityId}">
+            <select name="commodityId" lay-verify="required" id="sid" lay-filter="commodity">
                 <option value="">请选择一个商品</option>
             </select>
         </div>
@@ -177,7 +188,6 @@
         <label class="layui-form-label">库存编号</label>
         <div class="layui-input-inline">
             <select name="invoiceId" id="invoiceId" lay-verify="required" th:value="${order.invoiceId}">
-                <option value="">请选择一个编号</option>
             </select>
         </div>
     </div>

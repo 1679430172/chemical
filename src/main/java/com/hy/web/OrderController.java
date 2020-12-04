@@ -2,6 +2,7 @@ package com.hy.web;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hy.bean.Commodity;
+import com.hy.bean.Inventory;
 import com.hy.bean.Order;
 import com.hy.service.OrderService;
 import com.hy.util.ParseData;
@@ -92,12 +93,18 @@ public class OrderController {
 
     @PostMapping("/upd")
     @ResponseBody
-    public Integer upd(Order order){
+    public Integer upd(Order order,String did){
         boolean f;
         f = service.updateById(order);
         if(f){
             return 1;
         }
         return 0;
+    }
+
+    @GetMapping("/invento")
+    @ResponseBody
+    public Inventory getInvento(Integer kid){
+        return service.getinvento(kid);
     }
 }
