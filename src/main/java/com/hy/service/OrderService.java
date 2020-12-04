@@ -137,4 +137,8 @@ public class OrderService extends ServiceImpl<OrderMapper, Order> {
     public Order getById(Integer did){
         return orderMapper.getById(did);
     }
+
+    public Inventory getinvento(Integer kid){
+        return inventoService.getById(kid);
+    }
 }
