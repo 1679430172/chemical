@@ -43,7 +43,7 @@ public class SalesService extends ServiceImpl<SalesMapper, Sales> {
         if(userId.equals("0")){
             Page<SalesOrdet> page1 = new Page<SalesOrdet>(page,limit);
             iPage= salesMapper.selectSalestwo(page1);
-        }else if(userId.equals("1") || userId.equals("2")){
+        }else {
             Page<SalesOrdet> page1 = new Page<SalesOrdet>(page,limit);
             iPage=salesMapper.selectSales(page1,userId1);
         }
@@ -79,17 +79,17 @@ public class SalesService extends ServiceImpl<SalesMapper, Sales> {
      * @param limit
      * @return
      */
-    public ParseData selectorderby(String trackingNumber,Integer page,Integer limit){
+    public ParseData selectorderby(String trackingNumber,String name,Integer page,Integer limit){
         HttpSession session = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession();
         String  userType =  (String) session.getAttribute("userType");
         Integer  userId =  (Integer) session.getAttribute("userId");
         IPage<SalesOrdet> iPage=null;
         if(userType.equals("0") ){
             Page<SalesOrdet> page1 = new Page<SalesOrdet>(page,limit);
-            iPage=salesMapper.bytrackingNumberselect(page1,trackingNumber);
+            iPage=salesMapper.bytrackingNumberselect(page1,trackingNumber,name,null);
         }else if(userType.equals("1") || userType.equals("2")){
             Page<SalesOrdet> page1 = new Page<SalesOrdet>(page,limit);
-            iPage=salesMapper.bytrackingNumberselecttwo(page1,trackingNumber,userId);
+            iPage=salesMapper.bytrackingNumberselect(page1,trackingNumber,name,userId);
         }
         return new ParseData(0,"",Integer.parseInt(Long.toString(iPage.getTotal())),iPage.getRecords());
     }

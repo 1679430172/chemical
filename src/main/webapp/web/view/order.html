@@ -1,12 +1,25 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"  >
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>订单列表</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="stylesheet" href="/web/component/layui/css/layui.css" media="all">
     <script src="/web/component/layui/layui.js"></script>
-    <script type="text/javascript" src="/web/component/js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="/web/component/js/jquery-3.3.1.min.js" th:src="@{/web/component/js/jquery-3.3.1.min.js}"></script>
     <script>
+        var types=1;
+        $(function () {
+                $.ajax({
+                    url:'/Order/userType',
+                    type:'get',
+                    success:function (data) {
+                        types=data;
+                    }
+                })
+        })
         layui.use(['table','layer','form','laydate'], function(){
             var table = layui.table;
             var form = layui.form;
@@ -23,19 +36,22 @@
                 ,limit:20
                 ,totalRow: true
                 ,limits:[10,20,30]
+                ,defaultToolbar:[]
                 ,cols: [
                     [ //表头
-                    {field: 'id', title: '编号', sort: true, width:90}
-                    ,{field: 'name', title: '商品名称', sort: true, totalRowText: '合计行', width:150}
-                    ,{field: 'amount', title: '数量', sort: true,templet:"#amount", width:80}
-                    ,{field: 'price', title: '单价', sort: true, templet:"#price", width:80}
+                    {type: 'radio', fixed: 'left'},
+                    {field: 'id', title: '编号', sort: true, width:90},
+                    {field: '', title: '标签' ,width:240,templet:'#biaoqian'},
+                    ,{field: 'name', title: '商品名称', sort: true, totalRowText: '合计行', width:170}
+                    ,{field: 'amount', title: '数量', sort: true,templet:"#amount", width:120}
+                    ,{field: 'price', title: '单价', sort: true, templet:"#price", width:120}
                     ,{field: 'sumPrice', title: '总价', sort: true, templet:"#sumPrice", totalRow: true, width:120}
                     ,{field: 'costPrice', title: '成本', templet:"#costPrice", totalRow: true, width:120}
                     ,{field: 'otherCost', title: '其他成本', templet:"#otherCost", totalRow: true, width:120}
-                    ,{field: '', title: '总成本', templet:"#zcb", width:80}
+                    ,{field: '', title: '总成本', templet:"#zcb", width:120}
                     ,{field: 'royalties', title: '提成', templet:"#royalties", totalRow: true, width:120}
-                    ,{field: 'status', title: '是否出库', sort: true, templet:"#status", width:110}
-                    ,{fixed: 'right', align:'center', toolbar: '#barDemo',width:280}
+                    ,{field: 'status', title: '是否出库', sort: true, templet:"#status", width:120}
+                    ,{fixed: 'right', title: '操作', align:'center', toolbar: '#barDemo',width:150}
                 ]
                 ],done: function (response) {
                     //定位当前table视图
@@ -60,13 +76,23 @@
                         })
                         table.reload('demo', {
                             url: '/Order/'
-                            ,done:function () {
+                            ,done:function (response) {
                                 lay('.time').each(function(){
                                     laydate.render({
                                         elem: this
                                         ,trigger: 'click'
                                     });
                                 });
+                                //定位当前table视图
+                                var tableView = this.elem.next();
+                                $.each(response.data,function (index,item) {
+                                    //逻辑判断
+                                    if(item.status == "2"){
+                                        //改变TR行颜色和标签内字体颜色
+                                        tableView.find('tbody tr[data-index="'+ index +'"]').css('background-color','#FF5722');
+                                        tableView.find('tbody tr[data-index="'+ index +'"]').css('color','#F0F0F0');
+                                    }
+                                })
                             }
                         });
                     }else{
@@ -185,65 +211,18 @@
                         "  <tr>" +
                         "    <td>备注</td>" +
                         "    <td>" +
-                        "       <div class='layui-input-inline'>" +
-                        "           <textarea  class='layui-textarea' disabled='disabled' style='width: 240px'>"+data.remarks+"</textarea>" +
+                        "       <div class='layui-input-inline' style='width: 100%;'>" +
+                        "           <textarea  class='layui-textarea' disabled='disabled' >"+data.remarks+"</textarea>" +
                         "       </div>" +
                         "    </td>" +
                         "  </tr>" +
                         "</table>";
                     layer.open({
-                        area: ['390px', '572px'],
+                        area: ['470px', '572px'],
                         title:"订单详情",
                         type: 1,
                         content:content
                              //这里content是一个普通的String
-                    });
-                } else if(layEvent === 'del'){ //编辑
-                    layer.confirm('真的删除么', function(index){
-                        $.post("/Order/",{did:data.did,_method:"DELETE"},function (data) {
-                            if(data==1){
-                                layer.msg('已删除！！！', {
-                                    icon: 1,
-                                    time: 2000 //1秒关闭（如果不配置，默认是3秒）
-                                })
-                                table.reload('demo', {
-                                    url: '/Order/',
-                                    done:function () {
-                                        lay('.time').each(function(){
-                                            laydate.render({
-                                                elem: this
-                                                ,trigger: 'click'
-                                            });
-                                        });
-                                    }
-                                });
-                            }else{
-                                layer.msg('删除失败！！！', {
-                                    time: 1000 //1秒关闭（如果不配置，默认是3秒）
-                                })
-                            }
-                        });
-                        layer.close(index);
-                    });
-                } else if(layEvent === 'upd'){
-                    layer.open({
-                        area: ['450px', '500px'],
-                        type: 2,
-                        title:'修改订单',
-                        content: '/Order/toUpd?did='+data.did  //这里content是一个普通的String
-                        ,end:function () {
-                            table.reload('demo', {
-                                url: '/Order/'
-                                ,done:function () {
-                                    lay('.time').each(function(){
-                                        laydate.render({
-                                            elem: this
-                                            ,trigger: 'click'
-                                        });
-                                    });
-                                }
-                            });
-                        }
                     });
                 }
             });
@@ -260,13 +239,103 @@
                         ,end:function () {
                             table.reload('demo', {
                                 url: '/Order/'
-                                ,done:function () {
+                                ,done:function (response) {
                                     lay('.time').each(function(){
                                         laydate.render({
                                             elem: this
                                             ,trigger: 'click'
                                         });
                                     });
+                                    //定位当前table视图
+                                    var tableView = this.elem.next();
+                                    $.each(response.data,function (index,item) {
+                                        //逻辑判断
+                                        if(item.status == "2"){
+                                            //改变TR行颜色和标签内字体颜色
+                                            tableView.find('tbody tr[data-index="'+ index +'"]').css('background-color','#FF5722');
+                                            tableView.find('tbody tr[data-index="'+ index +'"]').css('color','#F0F0F0');
+                                        }
+                                    })
+                                }
+                            });
+                        }
+                    });
+                }
+                else if(layEvent === 'del'){ //编辑
+                    var checkStatus = table.checkStatus(obj.config.id); //获取选中行状态
+                    var data = checkStatus.data;
+                    if(data.length==0){
+                        layer.msg('请选择一行');
+                        return;
+                    }
+                    layer.confirm('确认删除？', function(index){
+                        $.post("/Order/",{did:data[0].did,_method:"DELETE"},function (data) {
+                            if(data==1){
+                                layer.msg('已删除！！！', {
+                                    icon: 1,
+                                    time: 2000 //1秒关闭（如果不配置，默认是3秒）
+                                })
+                                table.reload('demo', {
+                                    url: '/Order/',
+                                    done:function (response) {
+                                        lay('.time').each(function(){
+                                            laydate.render({
+                                                elem: this
+                                                ,trigger: 'click'
+                                            });
+                                        });
+                                        //定位当前table视图
+                                        var tableView = this.elem.next();
+                                        $.each(response.data,function (index,item) {
+                                            //逻辑判断
+                                            if(item.status == "2"){
+                                                //改变TR行颜色和标签内字体颜色
+                                                tableView.find('tbody tr[data-index="'+ index +'"]').css('background-color','#FF5722');
+                                                tableView.find('tbody tr[data-index="'+ index +'"]').css('color','#F0F0F0');
+                                            }
+                                        })
+                                    }
+                                });
+                            }else{
+                                layer.msg('删除失败！！！', {
+                                    time: 1000 //1秒关闭（如果不配置，默认是3秒）
+                                })
+                            }
+                        });
+                        layer.close(index);
+                    });
+                } else if(layEvent === 'upd'){
+                    var checkStatus = table.checkStatus(obj.config.id); //获取选中行状态
+                    var data = checkStatus.data;
+                    if(data.length==0){
+                        layer.msg('请选择一行');
+                        return;
+                    }
+                    layer.open({
+                        area: ['450px', '500px'],
+                        type: 2,
+                        title:'修改订单',
+                        content: '/Order/toUpd?did='+data[0].did  //这里content是一个普通的String
+                        ,end:function () {
+                            table.reload('demo', {
+                                url: '/Order/'
+                                ,done:function (response) {
+                                    lay('.time').each(function(){
+                                        laydate.render({
+                                            elem: this
+                                            ,trigger: 'click'
+                                        });
+                                    });
+                                    //定位当前table视图
+                                    var tableView = this.elem.next();
+                                    $.each(response.data,function (index,item) {
+                                        //逻辑判断
+                                        if(item.status == "2"){
+                                            //改变TR行颜色和标签内字体颜色
+                                            tableView.find('tbody tr[data-index="'+ index +'"]').css('background-color','#FF5722');
+                                            tableView.find('tbody tr[data-index="'+ index +'"]').css('color','#F0F0F0');
+                                        }
+                                    })
                                 }
                             });
                         }
@@ -286,13 +355,23 @@
                 table.reload('demo', {
                     url: '/Order/time'
                     ,where: data.field //设定异步数据接口的额外参数
-                    ,done:function () {
+                    ,done:function (response) {
                         lay('.time').each(function(){
                             laydate.render({
                                 elem: this
                                 ,trigger: 'click'
                             });
                         });
+                        //定位当前table视图
+                        var tableView = this.elem.next();
+                        $.each(response.data,function (index,item) {
+                            //逻辑判断
+                            if(item.status == "2"){
+                                //改变TR行颜色和标签内字体颜色
+                                tableView.find('tbody tr[data-index="'+ index +'"]').css('background-color','#FF5722');
+                                tableView.find('tbody tr[data-index="'+ index +'"]').css('color','#F0F0F0');
+                            }
+                        })
                     }
                 });
                 return false;
@@ -300,18 +379,10 @@
         });
     </script>
     <script type="text/html" id="barDemo">
-        <a class="layui-btn layui-btn-xs" lay-event="detail"><i class="layui-icon">&#xe615;</i>查看订单详情</a>
-        {{#  if(0 == d.type){ }}
-        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="upd"><i class="layui-icon">&#xe640;</i>修改</a>
-        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon">&#xe640;</i>删除</a>
-        {{#  } else if(d.userId == d.uid){ }}
-        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="upd"><i class="layui-icon">&#xe640;</i>修改</a>
-        {{#  } else { }}
-
-        {{#  } }}
+        <a class="layui-btn layui-btn-xs" lay-event="detail">查看详情</a>
     </script>
     <script type="text/html" id="toolbarDemo">
-            <button type="button" class="layui-btn layui-btn-sm" lay-event="import" id="test1"><i class="layui-icon">&#xe654;</i>添加订单</button>&nbsp;&nbsp;
+&nbsp;      <span  style="text-align: center;margin-left: 17%;">
             <form class="layui-form" action="" style="display: inline-block;">
                 <div class="layui-input-inline">
                     <input type="text" name="stadate" id="stadate" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input time">
@@ -324,9 +395,18 @@
                     <input type="text" name="name" autocomplete="off"  placeholder="商品名称" class="layui-input" style="width: 220px;display: inline-block">
                 </div>&nbsp;&nbsp;
                 <div class="layui-input-inline">
-                    <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">立即查看</button>
+                    <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">查询</button>
                 </div>
             </form>
+            <button type="button" class="layui-btn layui-btn-normal" lay-event="import" id="test1">添加</button>
+            {{#  if(0 == types){ }}
+            <button class="layui-btn  layui-btn-normal" style="margin-left: 0px" lay-event="upd">修改</button>
+            <button class="layui-btn  layui-btn-danger" style="margin-left: 0px"  lay-event="del">删除</button>
+            {{#  } else { }}
+                <button class="layui-btn  layui-btn-normal" style="margin-left: 0px"  lay-event="upd">修改</button>
+            {{#  } }}
+
+        </span>
     </script>
     <style>
         .layui-table-page {
@@ -411,8 +491,51 @@
         无权限
         {{#  } }}
     </script>
+    <script type="text/html" id="biaoqian">
+            <div class="aa">
+                <a >{{d.userName}}</a>
+                <a >{{d.phone}}</a>
+            </div>
+            <div  class="aa1">
+                <a >{{d.name}}</a>
+                <a >{{d.amount}}kg</a>
+            </div>
+
+    </script>
 </head>
 <body>
     <table id="demo" lay-filter="test"></table>
+<style>
+    .layui-table-cell {
+        height: 35px;
+        line-height: 35px;
+    }
+    .tr>td:nth-child(3){
+        padding: 0px;
+        line-height: 0px;
+    }
+    .aa{
+        position: absolute;
+        top: 50%;
+        height: 7px;
+        margin-top: -27px;
+        font-size: 12px;
+    }
+    .aa1{
+        position: absolute;
+        top: 50%;
+        height: 10px;
+        margin-top: -8px;
+        font-size: 12px;
+    }
+    a{
+        color: #FFFFFF;
+        border-radius: 0 9px 9px 0;
+        padding: 0 4px;
+        border: 1px solid currentColor;
+        background-color: #1989fa;
+
+    }
+</style>
 </body>
 </html>

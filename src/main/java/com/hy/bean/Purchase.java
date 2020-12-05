@@ -1,6 +1,8 @@
 package com.hy.bean;
 
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
 @TableName(value = "Purchase")
@@ -20,7 +22,9 @@ public class Purchase {
      private String trackingNumber;//物流单号
      private String createTime;    //创建日期
      private  Integer ann; //是否收到发票
+    @TableField(exist = false)
     private  String gid;
+    @TableField(exist = false)
     private  String sessionid;
 
     public String getSessionid() {

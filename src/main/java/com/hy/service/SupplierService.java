@@ -10,6 +10,7 @@ import com.hy.bean.User;
 import com.hy.mapper.OrderMapper;
 import com.hy.mapper.SupplierMapper;
 import com.hy.mapper.UserMapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -78,5 +79,8 @@ public class SupplierService extends ServiceImpl<SupplierMapper, Supplier> {
 
     public List<SupplierUsers> supplierlist(Supplier name){
         return supplierMapper.supplierlist(name);
+    }
+    public void updateById(Integer id){
+        supplierMapper.updateById(id);
     }
 }

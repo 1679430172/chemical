@@ -6,10 +6,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hy.bean.Order;
 import com.hy.bean.Sales;
 import com.hy.bean.SalesOrdet;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import com.hy.util.PurchaseSql;
+import org.apache.ibatis.annotations.*;
 import org.apache.xmlbeans.impl.xb.xsdschema.Public;
 
 
@@ -38,8 +36,8 @@ public interface SalesMapper extends BaseMapper<Sales> {
      * @param page
      * @return
      */
-    @Select("select o.*,c.`status` ,d.name from sales o , `order` c ,  commodity d WHERE o.order_id=c.did and c.commodity_id=d.sid  and (o.tracking_number=#{trackingNumber} or d.name=#{trackingNumber})")
-    public IPage<SalesOrdet> bytrackingNumberselect(Page<SalesOrdet> page,@Param("trackingNumber")String trackingNumber);
+    @SelectProvider(type = PurchaseSql.class,method = "bytrackingNumberselect")
+    public IPage<SalesOrdet> bytrackingNumberselect(Page<SalesOrdet> page,@Param("trackingNumber")String trackingNumber,@Param("name")String name,@Param("userId")Integer userId);
 
 
     /**

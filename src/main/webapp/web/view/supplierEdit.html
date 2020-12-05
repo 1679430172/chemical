@@ -68,7 +68,7 @@
             //阻止表单跳转。如果需要表单跳转，去掉这段即可。
             //{name:data.field.name,phone:data.field.phone,wechat:data.field.wechat,status:data.field.status,createTime:data.field.createTime,userId:data.field.userId}
             $.post("/supplier/supplierEdit.do?",data.field, function (d) {
-                if (d === "1") {
+                if (d === 1) {
                     layer.msg('已修改成功!', {icon: 1, time: 3000});
                     var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
                     parent.layer.close(index);
@@ -104,10 +104,10 @@
         </div>
     </div>
 
-    <div class="layui-form-item">
+    <div class="layui-form-item" style="display: none">
         <label class="layui-form-label">是否关联商品</label>
         <div class="layui-input-block">
-            <input type="checkbox" name="status" id="status"  lay-skin="switch" lay-text="ON|OFF">
+            <input type="hidden" name="status" id="status"  >
         </div>
     </div>
 
@@ -119,7 +119,7 @@
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">业务员</label>
-        <div class="layui-input-block">
+        <div class="layui-input-block" style="width: 200px">
             <select id ="userId" lay-filter="aihao" name="userId" id="userId" width="50px"></select>
         </div>
     </div>

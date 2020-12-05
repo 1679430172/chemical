@@ -13,7 +13,7 @@ package com.hy.mapper;
         import java.util.List;
 
 public interface PurchaseMapper extends BaseMapper<Purchase> {
-    @Select("select * from purchase order by ann asc")
+    @Select("select cid,user_id,name,cas,amount,price,price_status,sum_price,status,supplier_name,supplier_phone,tracking_number,create_time,ann,b.user_name  from purchase a,users b where a.user_id=b.uid order by ann asc")
     public IPage<Purchase> Purchase(Page page);
 
     @Select("select * from purchase where cid=#{cid}")

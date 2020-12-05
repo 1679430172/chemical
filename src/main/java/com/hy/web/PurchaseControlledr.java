@@ -1,5 +1,7 @@
 package com.hy.web;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hy.bean.Purchase;
@@ -12,6 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.Arrays;
+import java.util.List;
 
 
 @Api
@@ -74,7 +79,7 @@ import org.springframework.web.servlet.ModelAndView;
     @ResponseBody
     public  String addPurchase(Purchase purchase) throws Exception {
         purchase.setSumPrice(purchase.getAmount()*purchase.getPrice());
-        System.out.println(purchase.getSumPrice());
+//        System.out.println(purchase.getSumPrice());
         purchase.setUserId(purchaseService.wwww());
         try {
             purchaseService.save(purchase);
@@ -83,6 +88,21 @@ import org.springframework.web.servlet.ModelAndView;
         }
         return Util.succeed;
     }
+    @RequestMapping("/updateById.do")
+    @ResponseBody
+    public  String updateById(Purchase purchase) throws Exception {
+        purchase.setSumPrice(purchase.getAmount()*purchase.getPrice());
+        purchase.setUserId(purchaseService.wwww());
+        try {
+            UpdateWrapper updateWrapper = new UpdateWrapper<Purchase>();
+            updateWrapper.eq("cid", purchase.getCid());
+            purchaseService.update(purchase, updateWrapper);
+        } catch (Exception e) {
+            return Util.fail;
+        }
+        return Util.succeed;
+    }
+
     @RequestMapping("/toPurchase")
     @ResponseBody
     public ModelAndView toPurchase(){
@@ -97,6 +117,12 @@ import org.springframework.web.servlet.ModelAndView;
         return purchaseService.detelep(cid);
     }
 
-
+    @RequestMapping("/findById")
+    @ResponseBody
+    public List<Purchase> findById(String cid){
+        QueryWrapper queryWrapper=new QueryWrapper();
+        queryWrapper.eq("cid",cid);
+        return purchaseService.list(queryWrapper);
+    }
 
     }

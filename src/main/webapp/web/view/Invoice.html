@@ -11,29 +11,34 @@
 <table id="demo" lay-filter="test"></table>
 
 <script type="text/html" id="toolbarDemo">
-        <button type="button" class="layui-btn layui-btn-sm" lay-event="import" id="test1"><i class="layui-icon">&#xe654;</i>添加</button>
-    <form class="layui-form" action="" lay-filter="example" style="display: inline-block;">
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <div class="layui-input-inline">
-                    Cas号
-        </div>
-        &nbsp;&nbsp;&nbsp;
-        <div class="layui-input-inline">
-            <input type="text" name="cas" lay-verify="title" autocomplete="off" placeholder="请输入" class="layui-input">
-        </div>
 
-        <div class="layui-input-inline">
-            产品名称
-        </div>
-        &nbsp;&nbsp;&nbsp;
-        <div class="layui-input-inline">
-            <input type="text" name="name" lay-verify="title" autocomplete="off" placeholder="请输入" class="layui-input">
-        </div>
-        &nbsp;&nbsp;&nbsp;
-            <div class="layui-input-inline">
-            <button type="submit" class="layui-btn" lay-submit="" lay-filter="formDemo">查询</button>
-            </div>
-    </form>
+   <div style="text-align: center">
+       <form class="layui-form" action="" lay-filter="example" style="display: inline-block;">
+           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+           <div class="layui-input-inline">
+               Cas号
+           </div>
+           &nbsp;&nbsp;&nbsp;
+           <div class="layui-input-inline">
+               <input type="text" name="cas" lay-verify="title" autocomplete="off" placeholder="请输入" class="layui-input">
+           </div>
+
+           <div class="layui-input-inline">
+               产品名称
+           </div>
+           &nbsp;&nbsp;&nbsp;
+           <div class="layui-input-inline">
+               <input type="text" name="name" lay-verify="title" autocomplete="off" placeholder="请输入" class="layui-input">
+           </div>
+           &nbsp;&nbsp;&nbsp;
+           <div class="layui-input-inline">
+               <button type="submit" class="layui-btn" lay-submit="" lay-filter="formDemo">查询</button>
+           </div>
+       </form>
+       <button type="button" class="layui-btn layui-btn-normal" lay-event="import" id="test1">添加</button>
+       <button type="button" class="layui-btn layui-btn-normal" style="margin-left: 0px" lay-event="update">修改</button>
+
+   </div>
 </script>
 
 <script type="text/javascript">
@@ -55,7 +60,9 @@
             ,limit:20
             ,height: 'full-20'
             ,limits:[10,20,30]
+            ,defaultToolbar:[]
             ,cols: [[ //表头
+                {type: 'radio', fixed: 'left'},
                  {field: 'sid', title: 'ID'}
                 ,{field: 'name', title: '发票品名'}
                 ,{field: 'cas', title: 'Cas号'}
@@ -63,7 +70,7 @@
                 ,{field: 'price', title: '价格'}
                 ,{field: 'unit', title: '单位'}
                 ,{field: 'createTime', title: '创建日期',width:200}
-                ,{fixed: 'right', align:'center', toolbar: '#barDemo',width:250}
+                ,{fixed: 'right', title: '操作', align:'center', toolbar: '#barDemo',width:200}
             ]]
         });
 
@@ -94,18 +101,6 @@
                     });
                     layer.close(index);
                 });
-            } else if(layEvent === 'update'){//查看
-                layer.open({
-                    area: ['360px', '420px'],
-                    type: 2,
-                    content: 'updateInvoice.html?sid='+data.sid,
-                    end:function () {
-                        table.reload('demo', {
-                            url: '/Invoice/select.do'
-                        });
-                    },
-                });
-
             }
         });
 
@@ -161,13 +156,32 @@
                         });
                     },
                 });
+            }else if(layEvent === 'update'){//查看
+                var checkStatus = table.checkStatus(obj.config.id); //获取选中行状态
+                var data = checkStatus.data;
+                if(data.length==0){
+                    layer.msg('请选择一行');
+                    return;
+                }
+
+                layer.open({
+                    area: ['360px', '420px'],
+                    type: 2,
+                    content: 'updateInvoice.html?sid='+data[0].sid,
+                    end:function () {
+                        table.reload('demo', {
+                            url: '/Invoice/select.do'
+                        });
+                    },
+                });
+
             }
         });
     });
 </script>
 <script type="text/html" id="barDemo">
-    <a class="layui-btn layui-btn-xs" lay-event="detail"><i class="layui-icon">&#xe615;</i>自动计算数量</a>
-    <a class="layui-btn layui-btn-xs" lay-event="update"><i class="layui-icon">&#xe642;</i>修改</a>
+    <a class="layui-btn layui-btn-xs" lay-event="detail">自动计算数量</a>
+<!--    <a class="layui-btn layui-btn-xs" lay-event="update">修改</a>-->
 </script>
 
 </body>

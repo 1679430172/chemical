@@ -34,7 +34,7 @@
                                 ,page:true //开启分页
                                 ,limit:10
                                 ,toolbar: '#toolbarDemo'
-                                ,defaultToolbar: ['filter', 'print', 'exports']
+                                ,defaultToolbar: []
                                 ,cols: [[   //表头
                                     {field:'id', title: 'ID', sort: true}
                                     ,{field:'username',title: '用户名'}
@@ -121,7 +121,7 @@
 
     <!-- //工具栏-->
     <script type="text/html" id="barDemo">
-        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+        <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="edit">修改</a>
         <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
     </script>
 

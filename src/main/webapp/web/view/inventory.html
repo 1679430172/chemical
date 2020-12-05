@@ -33,11 +33,12 @@
             ,limit:20
             ,height:'full-20'
             ,toolbar: '#toolbarDemo'
-            ,defaultToolbar:["filter"]
+            ,defaultToolbar:[]
             ,limits:[10,20,30]
             ,cols: [
                 [
-                {title: '序号', width: 80,  templet:"<div>{{ d.LAY_INDEX }}</div>"}
+                {type: 'radio', fixed: 'left'},
+                {field:'xid',title: '序号', width: 80}
                 ,{field:'number', title: '库存编号', width: '10%', minWidth: 100}
                 ,{field:'name',title: '产品名称', Width: 300,templet:'#name'}
                 ,{field:'cas', width:80, title: 'cas号', width: '9%'}
@@ -45,7 +46,7 @@
                 ,{field:'updateTime', title: '更新日期', width:130, minWidth: 100}
                 ,{title: '库存数量', width: '10%', minWidth: 100 , toolbar:'#royalties'} //minWidth：局部定义当前单元格的最小宽度
                 ,{field:'remark', title: '备注', Width: 300,templet:'#remark'}
-                ,{fixed: 'right', width: 300, align:'center', toolbar: '#barDemo'}
+                ,{fixed: 'right', title: '操作', width: 220, align:'center', toolbar: '#barDemo'}
                 ]
             ]
             ,done: function (response) {
@@ -121,13 +122,50 @@
                     type: 2,
                     //offset: 'auto',、
                     skin: 'layui-layer-rim',
-                    area: ['600px', '500px'],
+                    area: ['370px', '500px'],
                     content: '/web/view/inventoryAdd.html?', //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
                     end:function () {
                         table.reload('test', {
                             url: '/inventory/inventory.do'
                         });
                     }
+                });
+            }else if(layEvent === 'del'){ //删除
+                var checkStatus = table.checkStatus(obj.config.id); //获取选中行状态
+                var data = checkStatus.data;
+                if(data.length==0){
+                    layer.msg('请选择一行');
+                    return;
+                }
+
+                layer.confirm('确认删除？', function (index) {
+                    // obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
+                    layer.close(index);
+                    $.ajax({
+                        url: '/inventory/delete?number='+data[0].number,
+                        type: 'get',
+                        dataType:"json",
+                        contentType:"application/json",
+                        success: function (data1) {
+                            table.reload('test', {
+                                url: '/inventory/inventory.do'
+                            });
+                            if (data1==="1"){
+                                layer.msg('删除成功！！！', {
+                                    icon: 1,
+                                    time: 1000 //2秒关闭（如果不配置，默认是3秒）
+                                }, function(){
+                                    // //假设这是iframe页
+                                    // var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                                    // parent.layer.close(index); //再执行关闭
+                                });
+
+                            }
+                            if(data1==="2"){
+                                layer.msg("删除失败");
+                            }
+                        }
+                    });
                 });
             }
         });
@@ -139,33 +177,7 @@
     table.on('tool(test)', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
         var data = obj.data //获得当前行数据
             ,layEvent = obj.event; //获得 lay-event 对应的值
-        if(layEvent === 'del'){ //删除
-            layer.confirm('真的删除行么', function (index) {
-                obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
-                layer.close(index);
-                $.ajax({
-                    url: '/inventory/delete?number='+data.number,
-                    type: 'get',
-                    dataType:"json",
-                    contentType:"application/json",
-                    success: function (data1) {
-                        if (data1==="1"){
-                            layer.msg('删除成功！！！', {
-                                icon: 1,
-                                time: 1000 //2秒关闭（如果不配置，默认是3秒）
-                            }, function(){
-                                //假设这是iframe页
-                                var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
-                                parent.layer.close(index); //再执行关闭
-                            });
-                        }
-                        if(data1==="2"){
-                            layer.msg("删除失败");
-                        }
-                    }
-                });
-            });
-        } else if(layEvent === 'detail'){ //查看
+      if(layEvent === 'detail'){ //查看
             layer.prompt({
                 formType: 2,
                 value: '',
@@ -247,11 +259,7 @@
     }
 </style>
 <script type="text/html" id="toolbarDemo">
-      {{#  if(0 == [[${session.userType}]]){ }}
-    <button class="layui-btn layui-btn-sm" lay-event="add">添加</button>
-        {{#  } else { }}
-        暂无添加权限
-        {{#  } }}
+
        &numsp; &numsp;
       &numsp; &numsp; &numsp; &numsp; &numsp; &numsp; &numsp; &numsp; &numsp; &numsp; &numsp; &numsp;
       <div  style="display:inline-block;">
@@ -282,22 +290,30 @@
             </div>
                 <div class="layui-inline">
                     <div class="layui-inline">
-                        <button type="submit" class="layui-btn" lay-submit="" lay-filter="xxxx">一键查询0库存</button>
+                        <button type="submit" class="layui-btn" lay-submit="" lay-filter="xxxx">查询0库存</button>
                     </div>
                 </div>
       </div>
     </form>
+          {{#  if(0 == [[${session.userType}]]){ }}
+          <button class="layui-btn layui-btn-normal" lay-event="add">添加</button>
+          <button class="layui-btn layui-btn-danger" style="margin-left: 0px" lay-event="del">删除</button>
+          {{#  } else if(2 == [[${session.userType}]]){ }}
+          <button class="layui-btn layui-btn-danger" style="margin-left: 0px" lay-event="del">删除</button>
+          {{#  } else { }}
+          {{#  } }}
+
      </div>
 </script>
 <script type="text/html" id="barDemo">
     {{#  if(0 == [[${session.userType}]]){ }}
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="detail">添加数量</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete1">减少数量</a>
+<!--    <a class="layui-btn  layui-btn-xs" lay-event="del">删除</a>-->
+    <a class="layui-btn  layui-btn-xs" lay-event="detail">添加数量</a>
+    <a class="layui-btn  layui-btn-xs" lay-event="delete1">减少数量</a>
     {{#  } else if(2 == [[${session.userType}]]){ }}
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="detail">添加数量</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete1">减少数量</a>
+<!--    <a class="layui-btn  layui-btn-xs" lay-event="del">删除</a>-->
+    <a class="layui-btn  layui-btn-xs" lay-event="detail">添加数量</a>
+    <a class="layui-btn  layui-btn-xs" lay-event="delete1">减少数量</a>
     {{#  } else { }}
     无权限
     {{#  } }}

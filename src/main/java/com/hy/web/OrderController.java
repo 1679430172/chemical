@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Api
@@ -106,5 +107,11 @@ public class OrderController {
     @ResponseBody
     public Inventory getInvento(Integer kid){
         return service.getinvento(kid);
+    }
+
+    @GetMapping("/userType")
+    @ResponseBody
+    public Integer userType(HttpServletRequest request) throws Exception {
+        return Integer.valueOf(request.getSession().getAttribute("userType").toString());
     }
 }

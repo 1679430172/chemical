@@ -1,13 +1,14 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8" content="text/html;charset=UTF-8" >
     <script type="text/javascript"  src="/web/component/js/jquery-3.3.1.min.js" ></script>
     <title>退货管理</title>
     <link rel="stylesheet" href="/web/component/layui/css/layui.css" media="all">
-    <script src="/web/component/layui/layui.js" charset="utf-8"></script>
+    <script src="/web/component/layui/layui.js" charset="utf-8" th:src="@{/web/component/js/jquery-3.3.1.min.js}"></script>
 </head>
 <script>
+    var types=1;
     $(function(){
         $.ajax({
             url: '/login/session',
@@ -27,6 +28,13 @@
                 }
             }
         });
+        $.ajax({
+            url:'/Order/userType',
+            type:'get',
+            success:function (data) {
+                types=data;
+            }
+        })
     });
 
 
@@ -43,16 +51,17 @@
                 ,limit:10
                 , id: 'testReload'
                 ,toolbar: '#toolbarDemo'
-                ,defaultToolbar: ['filter', 'print', 'exports']
+                ,defaultToolbar: []
                 ,cols: [[   //表头
-                    {field:'did', title: 'ID', sort: true}
-                    ,{field:'userId',title: '业务员id'}
-                    ,{field:'orderId', title: '订单编号'}
-                    ,{field:'name', title: '商品名称'}
+                    {type: 'radio', fixed: 'left'},
+                    {field:'did',width:100, title: 'ID', sort: true}
+                    ,{field:'userId',width:100,title: '业务员id'}
+                    ,{field:'orderId',width:100, title: '订单编号'}
+                    ,{field:'name', title: '商品名称',width:330}
                     ,{field:'trackingName',  title: '物流公司名称'}
                     ,{field:'trackingNumber', title: '物流编号'}
                     ,{field: 'status', title: '状态',hide:true}
-                    ,{field:'createTime', title: '创建时间'}
+                    ,{field:'createTime',width:170, title: '创建时间'}
                     ,{fixed:'right', title: '操作',align:'center', toolbar: '#barDemo'}
                 ]],done: function (response) {
                     //定位当前table视图
@@ -62,7 +71,7 @@
                         if(item.trackingNumber==0){
                             //改变TR行颜色和标签内字体颜色
                             tableView.find('tbody tr[data-index="'+ index +'"]').css('background-color','yellow');
-                            tableView.find('tbody tr[data-index="'+ index +'"]').find('td').data('edit', true);
+                            // tableView.find('tbody tr[data-index="'+ index +'"]').find('td').data('edit', true);
                         }
                         if(item.status==2){
                             tableView.find('tbody tr[data-index="'+ index +'"]').css('background-color','red');
@@ -85,6 +94,33 @@
                         ,end: function(index, layero){
                             location.reload();
                         }
+                    });
+                }  else if(layEvent === 'del'){ //编辑
+
+                    var checkStatus = table.checkStatus(obj.config.id); //获取选中行状态
+                    var data = checkStatus.data;
+                    if(data.length==0){
+                        layer.msg('请选择一行');
+                        return;
+                    }
+
+                    layer.confirm('确认删除？', function(index){
+                        $.post("/Sales/delete",{did:data[0].did},function (data) {
+                            if(data==1){
+                                layer.msg('已删除！！！', {
+                                    icon: 1,
+                                    time: 2000 //1秒关闭（如果不配置，默认是3秒）
+                                })
+                                table.reload('testReload', {
+                                    url: '/Sales/Saleslist'
+                                });
+                            }else{
+                                layer.msg('删除失败！！！', {
+                                    time: 1000 //1秒关闭（如果不配置，默认是3秒）
+                                })
+                            }
+                        });
+                        layer.close(index);
                     });
                 }
 
@@ -132,30 +168,11 @@
                         });
 
                 }
-                else if(layEvent === 'del'){ //编辑
-                    layer.confirm('确认删除？', function(index){
-                        $.post("/Sales/delete",{did:data.did},function (data) {
-                            if(data==1){
-                                layer.msg('已删除！！！', {
-                                    icon: 1,
-                                    time: 2000 //1秒关闭（如果不配置，默认是3秒）
-                                })
-                                table.reload('testReload', {
-                                    url: '/Sales/Saleslist'
-                                });
-                            }else{
-                                layer.msg('删除失败！！！', {
-                                    time: 1000 //1秒关闭（如果不配置，默认是3秒）
-                                })
-                            }
-                        });
-                        layer.close(index);
-                    });
-                }
+
             });
 
             $(document).on("click",'#p12',function () {
-                var inputVal = $('.layui-input').val();
+
                 table.reload('testReload', {
                     url: '/Sales/SalesOrderbyid'
                     // ,methods:"post"
@@ -164,7 +181,8 @@
                         ,limitName: 'limit' //每页数据量的参数名，默认：limit
                     }
                     ,where: {
-                        trackingNumber : inputVal
+                        trackingNumber : $('#demoReload').val(),
+                        name :  $('#name').val()
                     }
                     ,page: {
                         curr: 1
@@ -194,28 +212,30 @@
 
 <!-- //工具栏-->
 <script type="text/html" id="barDemo">
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="edit">物流编号</a>
-    {{# if(d.type == 2 || d.type==0) { }}
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon">&#xe640;</i>删除</a>
-    {{# } }}
-
+    <a class="layui-btn layui-btn-xs" lay-event="edit">物流编号</a>
 </script>
 
 <!--工具栏头模板-->
 <script type="text/html" id="toolbarDemo">
-    <div class="layui-btn-container">
-        <button class="layui-btn layui-btn-sm" lay-event="add">添加退货订单</button>
-    </div>
     <div class="demoTable" align="center">
-        搜索订单：
+
+        物流编号：
         <div class="layui-inline">
             <input class="layui-input" name="id" id="demoReload" autocomplete="off">
         </div>
-        <button class="layui-btn" data-type="reload" id="p12">搜索</button>
+        产品名称：
+        <div class="layui-inline">
+            <input class="layui-input" name="id" id="name" autocomplete="off">
+        </div>
+        <button class="layui-btn" data-type="reload" id="p12">查询</button>
+        <button class="layui-btn layui-btn-normal" style="margin-left: 0px" lay-event="add">添加</button>
+        {{# if( types == 2 ||  types ==0) { }}
+        <button class="layui-btn layui-btn-danger" style="margin-left: 0px" lay-event="del">删除</button>
+        {{# } }}
     </div>
 
 </script>
-<body>
+<body style="overflow-x: scroll;">
 
 <table class="layui-hide" id="demo" lay-filter="test"></table>
 </body>

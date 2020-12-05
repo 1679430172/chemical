@@ -53,8 +53,8 @@ public class SlaesController {
      */
     @RequestMapping("/SalesOrderbyid")
     @ResponseBody
-    public ParseData selectorderby(String trackingNumber,Integer page ,Integer limit){
-        return salesServices.selectorderby(trackingNumber,page,limit);
+    public ParseData selectorderby(String trackingNumber,String name,Integer page ,Integer limit){
+        return salesServices.selectorderby(trackingNumber,name,page,limit);
 
     }
 

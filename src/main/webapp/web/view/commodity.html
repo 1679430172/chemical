@@ -29,12 +29,13 @@
             ,page:true
             ,limit:20
             ,toolbar: '#toolbarDemo'
-            ,defaultToolbar:["filter"]
+            ,defaultToolbar:[]
             ,limits:[20,30,50]
             , cols: [
                 [ //表头
+                    {type: 'radio', fixed: 'left'},
                     {field: 'ssid', title: '商品编号' ,width:95},
-                    {field: 'sid', title: '商品编号' ,width:95,hide:true}
+                    {field: 'sid', title: '商品编号' ,width:95,hide:true},
                     , {field: 'name', title: '产品名称' ,width:350}
                     , {field: 'cas', title: 'cas号', width:110}
                     , {field: 'createTime', title: '创建日期', width:110,hide:true}
@@ -43,7 +44,7 @@
                     , {field: 'updateTime', title: '更新日期', width:120}
                    ,{field:'commodityInfo',title:'商品介绍',width:130,hide:true}
                     //,{field:'filePath',title:'文件下载',templet: '#file',width:130}
-                    ,{field:"right",title:'操作',toolbar:'#barDemo',width:'520', fixed: 'right'}
+                    ,{field:"right",title:'操作',toolbar:'#barDemo',width:'415', fixed: 'right'}
                 ]
             ]
             ,done: function (response) {
@@ -82,13 +83,30 @@
                     end:function () {
                         table.reload('demo', {
                             url: '/Commodity/Commodious.do'
-                            ,done:function () {
+                            ,done:function (response) {
                                 lay('.time').each(function () {
                                     laydate.render({
                                         elem: this
                                         , trigger: 'click'
                                     });
                                 });
+                                //定位当前table视图
+                                var tableView = this.elem.next();
+                                $.each(response.data, function (index, item) {
+                                    //逻辑判断
+                                    if (item.amount > 0) {
+                                        //改变TR标签内字体颜色
+                                        tableView.find('tbody tr[data-index="' + index + '"]').css('background-color', '#33a1c9');
+                                        tableView.find('tbody tr[data-index="' + index + '"]').css('color', '#F0F0F0');
+                                    }else if(item.amount == 0){
+                                        //改变TR标签内字体颜色
+                                        tableView.find('tbody tr[data-index="' + index + '"]').css('background-color', '#1E9FFF');
+                                        tableView.find('tbody tr[data-index="' + index + '"]').css('color', '#F0F0F0');
+                                    }else if(item.amount === null ){//00009C
+                                        tableView.find('tbody tr[data-index="' + index + '"]').addClass("layui-bg-cyan ");
+                                        tableView.find('tbody tr[data-index="' + index + '"]').css('color', '#F0F0F0');
+                                    }
+                                })
                             }
                         });
                     }
@@ -112,28 +130,8 @@
                 });
                 //执行实例
                // console.log(obj.data.sid)
-            }else if (layEvent == "edit"){
-                layer.open({
-                    type: 2,
-                    //offset: 'auto',、
-                    skin: 'layui-layer-rim',
-                    area: ['400', '500px'],
-                    content: '/web/view/commodityEdit.html?sid='+data.sid, //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
-                    end:function () {
-                        table.reload('demo', {
-                            url: '/Commodity/Commodious.do'
-                            ,done:function () {
-                                lay('.time').each(function () {
-                                    laydate.render({
-                                        elem: this
-                                        , trigger: 'click'
-                                    });
-                                });
-                            }
-                        });
-                    }
-                });
-            }else if(layEvent == "file1"){
+            }
+            else if(layEvent == "file1"){
                 upload.render({
                     elem: ".files1"//绑定元素
                     ,url: '/Commodity/file.do' //上传接口
@@ -205,6 +203,7 @@
             if(layEvent === 'add'){
                 layer.open({
                     type: 2,
+                    title:"添加商品",
                     //offset: 'auto',、
                     skin: 'layui-layer-rim',
                     area: ['400px', '450px'],
@@ -212,13 +211,74 @@
                     end:function () {
                         table.reload('demo', {
                             url: '/Commodity/Commodious.do'
-                            ,done:function () {
+                            ,done:function (response) {
                                 lay('.time').each(function () {
                                     laydate.render({
                                         elem: this
                                         , trigger: 'click'
                                     });
                                 });
+                                //定位当前table视图
+                                var tableView = this.elem.next();
+                                $.each(response.data, function (index, item) {
+                                    //逻辑判断
+                                    if (item.amount > 0) {
+                                        //改变TR标签内字体颜色
+                                        tableView.find('tbody tr[data-index="' + index + '"]').css('background-color', '#33a1c9');
+                                        tableView.find('tbody tr[data-index="' + index + '"]').css('color', '#F0F0F0');
+                                    }else if(item.amount == 0){
+                                        //改变TR标签内字体颜色
+                                        tableView.find('tbody tr[data-index="' + index + '"]').css('background-color', '#1E9FFF');
+                                        tableView.find('tbody tr[data-index="' + index + '"]').css('color', '#F0F0F0');
+                                    }else if(item.amount === null ){//00009C
+                                        tableView.find('tbody tr[data-index="' + index + '"]').addClass("layui-bg-cyan ");
+                                        tableView.find('tbody tr[data-index="' + index + '"]').css('color', '#F0F0F0');
+                                    }
+                                })
+                            }
+                        });
+                    }
+                });
+            }else if (layEvent == "edit"){
+                var checkStatus = table.checkStatus(obj.config.id); //获取选中行状态
+                var data = checkStatus.data;
+                if(data.length==0){
+                    layer.msg('请选择一行');
+                    return;
+                }
+                layer.open({
+                    type: 2,
+                    //offset: 'auto',、
+                    skin: 'layui-layer-rim',
+                    area: ['370px', '500px'],
+                    content: '/web/view/commodityEdit.html?sid='+data[0].sid, //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
+                    end:function () {
+                        table.reload('demo', {
+                            url: '/Commodity/Commodious.do'
+                            ,done:function (response) {
+                                lay('.time').each(function () {
+                                    laydate.render({
+                                        elem: this
+                                        , trigger: 'click'
+                                    });
+                                });
+                                //定位当前table视图
+                                var tableView = this.elem.next();
+                                $.each(response.data, function (index, item) {
+                                    //逻辑判断
+                                    if (item.amount > 0) {
+                                        //改变TR标签内字体颜色
+                                        tableView.find('tbody tr[data-index="' + index + '"]').css('background-color', '#33a1c9');
+                                        tableView.find('tbody tr[data-index="' + index + '"]').css('color', '#F0F0F0');
+                                    }else if(item.amount == 0){
+                                        //改变TR标签内字体颜色
+                                        tableView.find('tbody tr[data-index="' + index + '"]').css('background-color', '#1E9FFF');
+                                        tableView.find('tbody tr[data-index="' + index + '"]').css('color', '#F0F0F0');
+                                    }else if(item.amount === null ){//00009C
+                                        tableView.find('tbody tr[data-index="' + index + '"]').addClass("layui-bg-cyan ");
+                                        tableView.find('tbody tr[data-index="' + index + '"]').css('color', '#F0F0F0');
+                                    }
+                                })
                             }
                         });
                     }
@@ -382,9 +442,9 @@
     <div class="price_info" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;"  id="{{d.priceInfo}}">{{d.priceInfo}}</div>
 </script>
 <script type="text/html" id="barDemo">
-    <a class="filess" lay-event="edit"><i class="layui-icon">&#xe642;</i>修改</a>
-    <a class="filess" lay-event="detail"><i class="layui-icon">&#xe615;</i>查看供应商</a>
-    <a class="filess" lay-event="referral"><i class="layui-icon">&#xe615;</i>商品介绍</a>
+<!--    <a class="filess" lay-event="edit">修改</a>-->
+    <a class="filess" lay-event="detail">查看供应商</a>
+    <a class="filess" lay-event="referral">商品介绍</a>
     {{#  if(d.imgStatus == 0){}}
     <a href="javascript:;" class="filess"><i class="layui-icon">&#xe64a;</i>上传图片
         <input type="file" class="fileImg" lay-event="test1" name="file"  style="width: 80px" >
@@ -412,40 +472,43 @@
 
 <body>
 <script type="text/html" id="toolbarDemo">
-    <button class="layui-btn " lay-event="add"><i class="layui-icon">&#xe654;</i>添加</button>
-    <div style="display: inline-block;">
-        <form class="layui-form" action=""  style="display: inline-block;">
-            <div class="layui-input-inline">
-                <div class="layui-input-inline">
-                    <label class="layui-input-inline">产品名称</label>
-                    <div class="layui-input-inline">
-                        <input type="text" name="name"  autocomplete="off" placeholder="请输入" class="layui-input">
-                    </div>
-                </div>
-                <div class="layui-input-inline">
-                    <label class="layui-input-inline">Cas号</label>
-                    <div class="layui-input-inline">
-                        <input type="text" name="cas"  autocomplete="off" placeholder="请输入" class="layui-input">
-                    </div>
-                </div>
-                <div class="layui-input-inline">
-                    <label class="layui-input-inline">日期</label>
-                    <div class="layui-input-inline">
-                        <input type="text" name="createTime" id="createTime"   placeholder="yyyy-MM-dd"  autocomplete="off" class="layui-input time">
-                    </div>
-                </div>
-                &nbsp;- &nbsp;
-                <div class="layui-input-inline">
-                    <input type="text" name="createTimes" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input time">
-                </div>
+        <div style="text-align: center">
+            <form class="layui-form" action=""  style="display: inline-block;">
                 <div class="layui-input-inline">
                     <div class="layui-input-inline">
-                        <button type="submit" class="layui-btn" lay-submit="" lay-filter="formDemo">查询</button>
+                        <label class="layui-input-inline">产品名称</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="name"  autocomplete="off" placeholder="请输入" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-input-inline">
+                        <label class="layui-input-inline">Cas号</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="cas"  autocomplete="off" placeholder="请输入" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-input-inline">
+                        <label class="layui-input-inline">日期</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="createTime" id="createTime"   placeholder="yyyy-MM-dd"  autocomplete="off" class="layui-input time">
+                        </div>
+                    </div>
+                    &nbsp;- &nbsp;
+                    <div class="layui-input-inline">
+                        <input type="text" name="createTimes" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input time">
+                    </div>
+                    <div class="layui-input-inline">
+                        <div class="layui-input-inline">
+                            <button type="submit" class="layui-btn " lay-submit="" lay-filter="formDemo">查询</button>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </form>
+            </form>
+            <button class="layui-btn layui-btn-normal" lay-event="add">添加</button>
+            <button class="layui-btn layui-btn-normal" style="margin-left: 0px" lay-event="edit">修改</button>
+
     </div>
+
 </script>
 <table id="demo" lay-filter="test" STYLE=" width: 92px " ></table>
 </body>

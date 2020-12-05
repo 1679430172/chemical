@@ -1,5 +1,6 @@
 package com.hy.service;
 
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -54,20 +55,17 @@ public class PurchaseService extends ServiceImpl<PurchaseMapper, Purchase> {
             iPage=purchaseMapper.supplier((Integer)session.getAttribute("userId"),page);
         }
         List<Purchase> list1=iPage.getRecords();
-        for(Purchase s:list1){
-            Integer userId=s.getUserId();
-            User user=userMapper.selectbyid(userId);
-            s.setUserName(user.getUsername());
-            String cid=""+s.getCid();
-            String id="CG00000";
-            id=id.substring(0,id.length()-cid.length())+cid;
-            s.setGid(id);
+        for(Purchase s:list1){ ;
+            s.setGid(String.format("CG%05d",s.getCid()));
             s.setSessionid(userType);
 //            s.setUserId((Integer) session.getAttribute("userId"));
         }
         return new ParseData(0,"",Integer.parseInt(Long.toString(iPage.getTotal())),iPage.getRecords());
     }
 
+    public static void main(String[] args) {
+        System.out.println(String.format("CG%05d",2));
+    }
 
 
     public void updateAnn(String cid){

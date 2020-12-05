@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Api
 @Controller
@@ -28,14 +29,24 @@ public class InventoryControlledr {
     @ResponseBody
     public ParseData inventory(Integer page, Integer limit){
         IPage<Inventory> iPage= InventoService.iPage(page,limit);
-        return new ParseData(0,"",Integer.parseInt(Long.toString(iPage.getTotal())),iPage.getRecords());
+        List<Inventory> list = iPage.getRecords();
+        page = page == 0 ? 1 : page;
+        limit = limit == 0 ? 20 : limit;
+        for (int i = 0; i < list.size(); i++) {
+            list.get(i).setXid((page - 1) * limit + (i + 1));
+        }
+        return new ParseData(0,"",Integer.parseInt(Long.toString(iPage.getTotal())),list);
     }
 
     @RequestMapping("/select1")
     @ResponseBody
     public ParseData select1(Integer page, Integer limit){
         IPage<Inventory> iPage=InventoService.querylist1(page,limit);
-        return  new ParseData(0,"",Integer.parseInt(Long.toString(iPage.getTotal())),iPage.getRecords());
+        List<Inventory> list = iPage.getRecords();
+        for (int i = 0; i < list.size(); i++) {
+            list.get(i).setXid((page - 1) * limit + (i + 1));
+        }
+        return  new ParseData(0,"",Integer.parseInt(Long.toString(iPage.getTotal())),list);
 
     }
 

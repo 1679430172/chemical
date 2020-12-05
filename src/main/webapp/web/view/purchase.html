@@ -34,18 +34,19 @@
             , height: 'full-20'
             , limit: 20
             , toolbar: '#toolbarDemo'
-            , defaultToolbar: ["filter"]
+            , defaultToolbar: []
             , limits: [10, 20, 30]
             , cols: [
                 [
+                    {type: 'radio', fixed: 'left'},
                     {field: 'gid', title: '编号', width: 100}
                     , {field: 'userName', width: 80, title: '业务员', minWidth: 100}
-                    , {field: 'name', width: 120, title: '产品名称'}
-                    , {field: 'cas', title: 'cas号', width: 95}
-                    , {field: 'amount', title: '数量', width: 60}
+                    , {field: 'name', width: 300, title: '产品名称'}
+                    , {field: 'cas', title: 'cas号', width: 100}
+                    , {field: 'amount', title: '数量', width: 100, toolbar:'#royalties'}
                     , {field: 'price', title: '单价', width: 100} //minWidth：局部定义当前单元格的最小宽度
                     , {
-                    field: 'priceStatus', title: '是否含税', width: 90, align: "center", templet: function (d) {
+                    field: 'priceStatus', title: '是否含税', width: 100, align: "center", templet: function (d) {
                         if (d.priceStatus == 0) {
                             return '含税'
                         } else {
@@ -53,12 +54,12 @@
                         }
                     }
                 }
-                    , {field: 'sumPrice', title: '总价', width: 80}
+                    , {field: 'sumPrice', title: '总价', width: 100}
                     // ,{field:'status', title: '是否收货',  width: 90 , templet: function(d){if(d.status == 0){return '收货'}else{return '未收货'}} }
                     // ,{field:'userName', title: '业务员',  width: 80}
-                    , {field: '', title: '供应商名称', width: 100, toolbar: "#suppliername"}
+                    , {field: '', title: '供应商名称', width: 190, toolbar: "#suppliername"}
                     , {field: '', title: '供应商电话', width: 120, toolbar: "#supplierphone"}
-                    , {field: 'trackingNumber', title: '物流单号', width: 175}
+                    , {field: 'trackingNumber', title: '物流单号', width: 200}
                     , {field: 'createTime', title: '创建日期', width: 120}
                     , {
                     field: 'ann', title: '发票', width: 90, templet: function (d) {
@@ -69,9 +70,9 @@
                         }
                     }
                 }
-                    , {fixed: 'right', width: '8%', align: 'center', toolbar: '#dd'}
-                    , {fixed: 'right', width: '8%', align: 'center', toolbar: '#cc'}
-                    , {fixed: 'right', width: '8%', align: 'center', toolbar: '#ccs'}
+                    , {fixed: 'right', title: '操作', width: 220, align: 'center', toolbar: '#dd'}
+                    // , {fixed: 'right', width: '8%', align: 'center', toolbar: '#cc'}
+                    // , {fixed: 'right', width: '8%', align: 'center', toolbar: '#ccs'}
                 ]]
             , done: function (response) {
                 //定位当前table视图
@@ -105,8 +106,62 @@
                     type: 2,
                     //offset: 'auto',、
                     skin: 'layui-layer-rim',
-                    area: ['650px', '500px'],
+                    area: ['452px', '500px'],
                     content: '/web/view/purchaseAdd.html?', //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
+                    end: function () {
+                        table.reload('test', {
+                            url: '/purchase/purchase.do'
+                        });
+                    }
+                });
+            } else if (layEvent === 'del') { //删除
+
+                var checkStatus = table.checkStatus(obj.config.id); //获取选中行状态
+                var data = checkStatus.data;
+                if(data.length==0){
+                    layer.msg('请选择一行');
+                    return;
+                }
+                layer.confirm('确认删除？', function (index) {
+                    layer.close(index);
+                    $.ajax({
+                        url: "/purchase/delete?cid=" + data[0].cid,
+                        type: 'get',
+                        dataType: "json",
+                        contentType: "application/json",
+                        success: function (data1) {
+                            if (data == 1) {
+                                layer.msg('删除失败');
+                                table.reload('test', {
+                                    url: '/purchase/purchase.do'
+
+                                });
+                            }else {
+                                layer.msg('删除成功');
+                                table.reload('test', {
+                                    url: '/purchase/purchase.do'
+
+                                });
+                            }
+                        }
+
+
+                    });
+                })
+            }else if (layEvent == 'updateT') {
+
+                var checkStatus = table.checkStatus(obj.config.id); //获取选中行状态
+                var data = checkStatus.data;
+                if(data.length==0){
+                    layer.msg('请选择一行');
+                    return;
+                }
+                layer.open({
+                    type: 2,
+                    //offset: 'auto',、
+                    skin: 'layui-layer-rim',
+                    area: ['452px', '500px'],
+                    content: '/web/view/purchaseUpdate.html?id='+data[0].cid, //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
                     end: function () {
                         table.reload('test', {
                             url: '/purchase/purchase.do'
@@ -172,46 +227,6 @@
                     });
                     layer.close(index);
                 });
-            } else if (layEvent === 'del') { //删除
-                layer.confirm('真的删除行么', function (index) {
-                    layer.close(index);
-                    $.ajax({
-                        url: "/purchase/delete?cid=" + data.cid,
-                        type: 'get',
-                        dataType: "json",
-                        contentType: "application/json",
-                        success: function (data1) {
-                            if (data == 1) {
-                                layer.msg('删除失败');
-                                table.reload('test', {
-                                    url: '/purchase/purchase.do'
-
-                                });
-                            }else {
-                                layer.msg('删除成功');
-                                table.reload('test', {
-                                    url: '/purchase/purchase.do'
-
-                                });
-                            }
-                        }
-
-
-                    });
-                })
-            }else if (layEvent == 'updateT') {
-                layer.open({
-                    type: 2,
-                    //offset: 'auto',、
-                    skin: 'layui-layer-rim',
-                    area: ['650px', '500px'],
-                    content: '/web/view/purchaseAdd.html?', //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
-                    end: function () {
-                        table.reload('test', {
-                            url: '/purchase/purchase.do'
-                        });
-                    }
-                });
             }
         })
     })
@@ -226,38 +241,32 @@
 
 </style>
 
-<script type="text/html" id="toolbarDemo">
-    <button class="layui-btn layui-btn-sm"  lay-event="add"><i class="layui-icon"></i>添加</button>
-
-    &numsp; &numsp; &numsp;
-    &numsp; &numsp; &numsp;
-    &numsp; &numsp; &numsp;
-    &numsp; &numsp; &numsp;
+<script type="text/html" id="toolbarDemo">&numsp; &numsp;
     <div style="display: inline-block;">
     <form class="layui-form" action=""  style="display: inline-block;">
         <div class="layui-inline">
             <div class="layui-inline">
                 <label class="layui-form-label">品名</label>
                 <div class="layui-inline">
-                    <input type="text" name="name" lay-verify="title" autocomplete="off" placeholder="请输入" class="layui-input">
+                    <input type="text" style="width: 115px;" name="name" lay-verify="title" autocomplete="off" placeholder="请输入" class="layui-input">
                 </div>
             </div>
             <div class="layui-inline">
                 <label class="layui-inline">Cas号</label>
                 <div class="layui-inline">
-                    <input type="text" name="cas" lay-verify="title" autocomplete="off" placeholder="请输入" class="layui-input">
+                    <input type="text" style="width: 115px;"  name="cas" lay-verify="title" autocomplete="off" placeholder="请输入" class="layui-input">
                 </div>
             </div>
             <div class="layui-inline">
                 <label class="layui-inline">供应商名称</label>
                 <div class="layui-inline">
-                    <input type="text" name="supplierName" lay-verify="title" autocomplete="off" placeholder="请输入" class="layui-input">
+                    <input type="text" style="width: 115px;"  name="supplierName" lay-verify="title" autocomplete="off" placeholder="请输入" class="layui-input">
                 </div>
             </div>
             <div class="layui-inline">
                 <label class="layui-inline">物流单号</label>
                 <div class="layui-inline">
-                    <input type="text" name="trackingNumber" lay-verify="title" autocomplete="off" placeholder="请输入" class="layui-input">
+                    <input type="text" style="width: 115px;"  name="trackingNumber" lay-verify="title" autocomplete="off" placeholder="请输入" class="layui-input">
                 </div>
             </div>
             <div class="layui-inline">
@@ -267,6 +276,10 @@
             </div>
         </div>
     </form>
+     <button class="layui-btn layui-btn-normal"  lay-event="add">添加</button>
+     <button class="layui-btn  layui-btn-normal"  style="margin-left: 0px"  lay-event="updateT">修改</button>
+     <button class="layui-btn  layui-btn-danger"  style="margin-left: 0px"  lay-event="del">删除</button>
+
     </div>
 
 </script>
@@ -275,6 +288,12 @@
     {{#  if(d.trackingNumber == null){ }}
     <button class="layui-btn  layui-btn-xs layui-btn" lay-event="up" >添加物流编号</button>
     {{#  } else if(d.trackingNumber == 1){ }}
+    {{#  } }}
+
+    {{#  if(d.ann === 1 && d.priceStatus == 0){ }}
+    <button class="layui-btn  layui-btn-xs layui-btn" lay-event="getfp">已收到发票</button>
+    {{#  } else if(d.ann == 1){ }}
+
     {{#  } }}
 </script>
 
@@ -287,7 +306,7 @@
 </script>
 <script type="text/html" id="ccs">
     <button class="layui-btn  layui-btn-xs layui-btn" lay-event="del">删除</button>
-<!--    <button class="layui-btn  layui-btn-xs layui-btn" lay-event="updateT">修改</button>-->
+    <button class="layui-btn  layui-btn-xs layui-btn" lay-event="updateT">修改</button>
 </script>
 <script type="text/html" id="suppliername">
     {{#  if(0 == [[${session.userType}]]){ }}
@@ -311,6 +330,9 @@
     无权限
     {{#  } }}
 
+</script>
+<script type="text/html" id="royalties">
+    {{d.amount}}千克
 </script>
 </body>
 </html>

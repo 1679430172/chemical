@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.hy.bean.Commodity;
 import com.hy.bean.Commoditys;
+import com.hy.bean.Supplier;
 import com.hy.service.CommodityService;
 import com.hy.service.SupplierService;
 import com.hy.util.ParseData;
@@ -82,10 +83,7 @@ public class CommodityController {
             commodity.setCreateTime(simpleDateFormat.format(new Date()));
             commodity.setUpdateTime(new Date());
             boolean b= commodityService.save(commodity);
-            UpdateWrapper updateWrapper=new UpdateWrapper();
-            updateWrapper.set("status","1");
-            updateWrapper.eq("gid",commodity.getSupplierId());
-            supplierService.update(updateWrapper);
+            supplierService.updateById(commodity.getSupplierId());
             if(b == true){
                 return Util.succeed;
             }else {

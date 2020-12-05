@@ -6,6 +6,21 @@
     <link rel="stylesheet" href="/web/component/layui/css/layui.css" th:src="@{/web/component/layui/css/layui.css}"  media="all">
     <script type="text/javascript" src="/web/component/js/jquery-3.3.1.min.js" th:src="@{/web/component/js/jquery-3.3.1.min.js}"></script>
     <script src="/web/component/layui/layui.js" th:src="@{/web/component/layui/layui.js}" ></script>
+    <style>
+        .filess {
+            position: relative;
+            display: inline-block;
+            background: #009688;
+            /*border: 1px solid #99D3F5;*/
+            border-radius: 4px;
+            padding: 4px 12px;
+            overflow: hidden;
+            color: #FFFFFF;
+            text-decoration: none;
+            text-indent: 0;
+            line-height: 20px;
+        }
+    </style>
 </head>
 <script type="text/javascript" >
     layui.use(["form","table","layer","upload"], function() {
@@ -144,19 +159,23 @@
                 <textarea name="commodityInfo" id="commodityInfo" placeholder="请输入内容"  class="layui-textarea" style="resize: none;"></textarea>
             </div>
         </div>
-        <div class="layui-input-inline">
-            <button type="button" class="layui-btn img" id="img" >图片</button>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <div class="layui-input-inline">
-                <button type="button" class="layui-btn file" id="file" >文件</button>
-            </div>
+        <div class="layui-input-inline" style="padding-left: 30%;">
+            <a href="javascript:;" class="filess img" id="img"><i class="layui-icon">&#xe64a;</i>上传图片
+            </a>
+<!--            <button type="button" class="layui-btn img" id="img" >图片</button>-->
+            <a href="javascript:;" class="filess file" id="file"><i class="layui-icon">&#xe621;</i>上传文件
+            </a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<!--            <div class="layui-input-inline">-->
+<!--               -->
+<!--&lt;!&ndash;                <button type="button" class="layui-btn file" id="file" >文件</button>&ndash;&gt;-->
+<!--            </div>-->
         </div>
         <input type="text" style="display:none" id="sid" name="sid">
         <br>
         <br>
         <br>
         <div class="layui-form-item">
-            <div class="layui-input-inline">
+            <div class="layui-input-inline" style="padding-left: 14%;">
                 <button class="layui-btn"  id="form" lay-submit lay-filter="formDemo">修改</button>
             </div>
         </div>

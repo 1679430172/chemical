@@ -18,6 +18,16 @@ public class Inventory {
     private  String remark; //备注
     @TableField(exist = false)
     private String type;//当前登录权限
+    @TableField(exist = false)
+    private Integer xid;//自定义序号
+
+    public Integer getXid() {
+        return xid;
+    }
+
+    public void setXid(Integer xid) {
+        this.xid = xid;
+    }
 
     public String getType() {
         return type;

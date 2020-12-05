@@ -26,6 +26,9 @@ public interface SupplierMapper extends BaseMapper<Supplier> {
     @Update("update supplier set user_id=#{supplier.userId},name=#{supplier.name},phone=#{supplier.phone},wechat=#{supplier.wechat},status=#{supplier.status},create_time=#{supplier.createTime},remark=#{supplier.remark}  where gid=#{supplier.gid}")
     public Integer update(@Param("supplier") Supplier supplier);
 
+    @Update("update supplier set status='1' where gid=#{id}")
+    public Integer updateById(@Param("id")Integer id);
+
     @Delete("DELETE FROM supplier where gid=#{gid} ")
     public Integer delete(String gid);
 

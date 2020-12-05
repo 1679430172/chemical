@@ -91,29 +91,11 @@ public class OrderService extends ServiceImpl<OrderMapper, Order> {
         HttpSession session = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession();
         IPage<Order> iPage=null;
         if(session.getAttribute("userType").equals(Authority.administrator)){
-            if(null!=name&&!name.equals("")&&null!=stadate&&!stadate.equals("")&&null!=enddate&&!enddate.equals("")){
-                iPage=orderMapper.selectListTime(stadate,enddate,"'%"+name+"%'",page);
-            }else if (null!=name&&!name.equals("")){
-                iPage=orderMapper.selectListName("'%"+name+"%'",page);
-            }else if(null!=stadate&&!stadate.equals("")&&null!=enddate&&!enddate.equals("")){
-                iPage=orderMapper.selectListTime(stadate,enddate,page);
-            }
+            iPage=orderMapper.selectListTime(stadate,enddate,name,null,page);
         }else if(session.getAttribute("userType").equals(Authority.authorizedSalesman)){
-            if(null!=name&&!name.equals("")&&null!=stadate&&!stadate.equals("")&&null!=enddate&&!enddate.equals("")){
-                iPage=orderMapper.selectListTime(stadate,enddate,"'%"+name+"%'",page);
-            }else if (null!=name&&!name.equals("")){
-                iPage=orderMapper.selectListName("'%"+name+"%'",page);
-            }else if(null!=stadate&&!stadate.equals("")&&null!=enddate&&!enddate.equals("")){
-                iPage=orderMapper.selectListTime(stadate,enddate,page);
-            }
+            iPage=orderMapper.selectListTime(stadate,enddate,name,null,page);
         }else if(session.getAttribute("userType").equals(Authority.salesman)){
-            if(null!=name&&!name.equals("")&&null!=stadate&&!stadate.equals("")&&null!=enddate&&!enddate.equals("")){
-                iPage=orderMapper.selectListByUserIdTime(stadate,enddate,"'%"+name+"%'",(Integer)session.getAttribute("userId"),page);
-            }else if (null!=name&&!name.equals("")){
-                iPage=orderMapper.selectListByUserIdName("'%"+name+"%'",(Integer)session.getAttribute("userId"),page);
-            }else if(null!=stadate&&!stadate.equals("")&&null!=enddate&&!enddate.equals("")){
-                iPage=orderMapper.selectListByUserIdTime(stadate,enddate,(Integer)session.getAttribute("userId"),page);
-            }
+            iPage=orderMapper.selectListTime(stadate,enddate,name,(Integer)session.getAttribute("userId"),page);
         }
         List<Order> list=iPage.getRecords();
         for(Order s:list){

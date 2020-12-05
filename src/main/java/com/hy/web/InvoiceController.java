@@ -1,11 +1,13 @@
 package com.hy.web;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.hy.bean.Invoice;
 import com.hy.service.InvoiceService;
 import com.hy.util.ParseData;
 import com.hy.util.Util;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -21,7 +23,9 @@ public class InvoiceController  {
     @RequestMapping("/select")
     @ResponseBody
     public ParseData select() throws Exception {
-        List<Invoice> list=service.list();
+        QueryWrapper queryWrapper=new QueryWrapper();
+        queryWrapper.orderByDesc("create_time");
+        List<Invoice> list=service.list(queryWrapper);
         return new ParseData(0,"",null,list);
     }
 

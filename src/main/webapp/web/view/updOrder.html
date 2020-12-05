@@ -134,7 +134,7 @@
 
     <div class="layui-form-item layui-form-text">
         <label class="layui-form-label">商品名称</label>
-        <div class="layui-input-inline">
+        <div class="layui-input-inline" style="width: 220px;">
             <select name="commodityId" lay-verify="required" id="sid" lay-filter="commodity">
                 <option value="">请选择一个商品</option>
             </select>
@@ -142,7 +142,7 @@
     </div>
     <div class="layui-form-item layui-form-text">
         <label class="layui-form-label">业务员</label>
-        <div class="layui-input-inline">
+        <div class="layui-input-inline" style="width: 220px;">
             <select name="city" lay-verify="required" disabled="disabled">
                 <option th:value="${session.userId}" selected>[[${session.userName}]]</option>
             </select>
@@ -150,76 +150,74 @@
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">数量</label>
-        <div class="layui-input-inline">
+        <div class="layui-input-inline" style="width: 220px;">
             <input type="text" name="amount" th:value="${order.amount}" lay-verify="required|number" autocomplete="off" placeholder="" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">单价</label>
-        <div class="layui-input-inline">
+        <div class="layui-input-inline" style="width: 220px;">
             <input type="text" name="price" th:value="${order.price}" lay-verify="required|number" autocomplete="off" placeholder="" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">成本</label>
-        <div class="layui-input-inline">
+        <div class="layui-input-inline" style="width: 220px;">
             <input type="text" name="costPrice" lay-verify="required|number" th:value="${order.costPrice}" autocomplete="off" placeholder="" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">其他成本</label>
-        <div class="layui-input-inline">
+        <div class="layui-input-inline" style="width: 220px;">
             <input type="text" name="otherCost" lay-verify="required|number" th:value="${order.otherCost}" autocomplete="off" placeholder="" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">有无票据</label>
-        <div class="layui-input-inline" id="bills">
+        <div class="layui-input-inline" id="bills" style="width: 220px;">
             <input type="checkbox" id="bill" name="bill" th:value="${order.bill}" lay-skin="switch" lay-text="有|无">
         </div>
     </div>
     <div class="layui-form-item layui-form-text" style="display: none" id="billInfo">
         <label class="layui-form-label">开票资料</label>
-        <div class="layui-input-inline">
+        <div class="layui-input-inline" style="width: 220px;">
             <textarea name="billInfo" placeholder="请输入开票资料" th:value="${order.billInfo}" class="layui-textarea"></textarea>
         </div>
     </div>
     <div class="layui-form-item layui-form-text">
         <label class="layui-form-label">库存编号</label>
-        <div class="layui-input-inline">
+        <div class="layui-input-inline" style="width: 220px;">
             <select name="invoiceId" id="invoiceId" lay-verify="required" th:value="${order.invoiceId}">
             </select>
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">客户名称</label>
-        <div class="layui-input-inline">
+        <div class="layui-input-inline" style="width: 220px;">
             <input type="text" name="userName" lay-verify="required" th:value="${order.userName}" autocomplete="off" placeholder="" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">地址</label>
-        <div class="layui-input-inline">
+        <div class="layui-input-inline" style="width: 220px;">
             <input type="text" name="address" lay-verify="required" th:value="${order.address}" autocomplete="off" placeholder="" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">联系电话</label>
-        <div class="layui-input-inline">
+        <div class="layui-input-inline" style="width: 220px;">
             <input type="text" name="phone" lay-verify="required|phone" th:value="${order.phone}" autocomplete="off" placeholder="" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item layui-form-text">
         <label class="layui-form-label">备注</label>
-        <div class="layui-input-inline">
+        <div class="layui-input-inline" style="width: 220px;">
             <textarea name="remarks" placeholder="请输入内容" th:text="${order.remarks}" class="layui-textarea"></textarea>
         </div>
     </div>
-    <div class="layui-form-item">
-        <div class="layui-input-inline">
+    <div class="layui-form-item" style="text-align: center">
             <button class="layui-btn" id="sub" lay-submit lay-filter="formDemo">立即提交</button>
             <button type="reset" class="layui-btn layui-btn-primary">重置</button>
-        </div>
     </div>
 </form>
 </body>

@@ -7,24 +7,39 @@
     <script src="/web/component/layui/layui.js"></script>
     <script type="text/javascript" src="/web/component/js/jquery-3.3.1.min.js" th:src="@{/web/component/js/jquery-3.3.1.min.js}"></script>
     <script>
-        $(function () {
-            user();
-            get();
-        })
+        var form;
+        var id=location.search;
+        id=id.split("=");
         var get=function(){
-            $.get("/supplier/supplierById.do?gid="+id[1],function (d) {
+            $.get("/purchase/findById?cid="+id[1],function (d) {
                 var e=eval(d);
                 console.log(e);
-                $("#gid").val(e[0].gid);
+                // $("#gid").val(e[0].gid);
+                $("#priceStatus").val(e[0].priceStatus);
+                $("#supplierName option").each(function(i,n){
+                    console.log($(n).text()+" "+e[0].supplierName)
+                    if($(n).text()==e[0].supplierName)
+                    {
+                        console.log(111)
+                        $(n).attr("selected",true);
+                    }
+                })
+                var s=$("#supplierName option:selected").attr("id");
+                $("#phone").val(s);
                 form.val("dd", { //formTest 即 class="layui-form" 所在元素属性 lay-filter="" 对应的值
                     "name":e[0].name
                     ,"cas": e[0].cas // "name": "value"
                     ,"amount": e[0].amount
                     ,"price":e[0].price
-                    ,"check[status]": true
-                    ,"userId":e[0].uid
-                    ,"supplierName":e[0].supplierName
+                    ,"userId":e[0].userId
+                    // ,"supplierName":e[0].supplierName
+                    ,"cid":e[0].cid
+                    ,"phone":e[0].phone
+                    ,"status":e[0].status
+                    ,"trackingNumber":e[0].trackingNumber
                     ,"createTime":e[0].createTime
+                    ,"ann":e[0].ann
+
                 });
             })
         }
@@ -39,19 +54,21 @@
                     $("#userId").append(option);
                     form.render();
                 }
+                get();
             })
         }
 
         //日期
-        lay('.time').each(function(){
-            laydate.render({
-                elem: this
-                ,trigger: 'click'
-            });
-        });
+        // lay('.time').each(function(){
+        //     laydate.render({
+        //         elem: this
+        //         ,trigger: 'click'
+        //     });
+        // });
 
         layui.use('form', function(){
-            var form = layui.form;
+             form = layui.form;
+            user();
 
             $.get("/Commodity/commoditiesList",{},function (data) {
                 var list=eval(data);
@@ -114,9 +131,9 @@
                 console.log(data.form) //被执行提交的form对象，一般在存在form标签时才会返回
                 console.log(data.field)//当前容器的全部表单字段，名值对形式：{name: value}
                 //阻止表单跳转。如果需要表单跳转，去掉这段即可。
-                $.post("/purchase/add.do",data.field,function (d) {
+                $.post("/purchase/updateById.do",data.field,function (d) {
                     if(d==="1"){
-                        layer.msg('添加成功！！！', {
+                        layer.msg('修改成功！！！', {
                             icon: 1,
                             time: 1000 //2秒关闭（如果不配置，默认是3秒）
                         }, function(){
@@ -134,35 +151,42 @@
     </script>
 </head>
 <body>
-<form class="layui-form" action="">
+<form class="layui-form" action="" lay-filter="dd">
+    <input type="text" style="display:none" name="cid" id="cid">
+    <input type="text" style="display:none" name="userId" id="userId">
+    <input type="text" style="display:none" name="status" id="status">
+    <input type="text" style="display:none" name="trackingNumber" id="trackingNumber">
+    <input type="text" style="display:none" name="createTime" id="createTime">
+    <input type="text" style="display:none" name="ann" id="ann">
+
     <div class="layui-form-item">
         <label class="layui-form-label">名称</label>
-        <div class="layui-input-block">
-            <input type="text" lay-verify="required" lay-reqtext="名称不能为空" style="width: 200px" name="name" required   placeholder="请输入名称" autocomplete="off" class="layui-input">
+        <div class="layui-input-block" style="width: 255px;">
+            <input type="text" lay-verify="required" lay-reqtext="名称不能为空"  name="name" required   placeholder="请输入名称" autocomplete="off" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">cas号</label>
-        <div class="layui-input-inline">
-            <input type="text" lay-verify="required" lay-reqtext="cas号不能为空" style="width: 200px" name="cas" required   placeholder="请输入cas号" autocomplete="off" class="layui-input">
+        <div class="layui-input-inline" style="width: 255px;">
+            <input type="text" lay-verify="required" lay-reqtext="cas号不能为空" name="cas" required   placeholder="请输入cas号" autocomplete="off" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">数量</label>
-        <div class="layui-input-inline">
-            <input type="text" lay-verify="required" lay-reqtext="数量不能为空" style="width: 200px" name="amount" required   placeholder="请输入数量" autocomplete="off" class="layui-input">
+        <div class="layui-input-inline" style="width: 255px;">
+            <input type="text" lay-verify="required" lay-reqtext="数量不能为空" name="amount" required   placeholder="请输入数量" autocomplete="off" class="layui-input">
         </div>
     </div>
 
     <div class="layui-form-item layui-form-text">
         <div class="layui-inline">
             <label class="layui-form-label">单价</label>
-            <div class="layui-form-label">
-                <input type="text" lay-verify="required" lay-reqtext="请输入商品单价"  name="price" required  placeholder="单价" autocomplete="off" class="layui-input">
+            <div class="layui-form-label" style="padding-left: 0px">
+                <input type="text"  lay-verify="required" lay-reqtext="请输入商品单价"  name="price" required  placeholder="单价" autocomplete="off" class="layui-input">
             </div>
         </div>
-        <div class="layui-inline">
-            <select name="priceStatus">
+        <div class="layui-inline" style="width: 146px;">
+            <select name="priceStatus" id="priceStatus">
                 <option>请选择是否含税</option>
                 <option value="0">含税</option>
                 <option value="1">不含税</option>
@@ -197,7 +221,7 @@
     <!--    </div>-->
     <div class="layui-form-item">
         <label class="layui-form-label">供应商名称</label>
-        <div class="layui-input-inline">
+        <div class="layui-input-inline" style="width: 255px;">
             <select id ="supplierName" name="supplierName"  lay-filter="aihao"  onabort="is()" >
                 <option>请选择</option>
             </select>
@@ -205,16 +229,14 @@
     </div>
     <div class="layui-form-item ">
         <label class="layui-form-label">联系电话</label>
-        <div class="layui-input-inline">
-            <input type="text"id="phone" lay-verify="required" lay-reqtext="供应商电话不能为空" style="width: 200px" name="supplierPhone" required  adisabled="disabled" placeholder="" autocomplete="off" class="layui-input">
+        <div class="layui-input-inline" style="width: 255px;">
+            <input type="text"id="phone" lay-verify="required" lay-reqtext="供应商电话不能为空" name="supplierPhone" required  adisabled="disabled" placeholder="" autocomplete="off" class="layui-input">
         </div>
     </div>
 
-    <div class="layui-form-item">
-        <div class="layui-input-inline">
-            <button class="layui-btn" lay-submit lay-filter="formDemo"  id="sub">立即提交</button>
-            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
-        </div>
+    <div class="layui-form-item" style="text-align: center">
+        <button class="layui-btn" lay-submit lay-filter="formDemo"  id="sub">立即提交</button>
+        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
     </div>
 </form>
 </body>

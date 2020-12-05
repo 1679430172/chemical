@@ -53,7 +53,6 @@ public class SupplierController {
     @RequestMapping("/supplierAdd.do")
     @ResponseBody
     public String supplierAdd(Supplier supplier){
-        System.out.println(supplier.toString());
         boolean b= supplierService.save(supplier);
         if(b == true){
             return Util.succeed;
@@ -71,9 +70,7 @@ public class SupplierController {
     @RequestMapping("/save.do")
     @ResponseBody
     public String supplierSave(Supplier supplier){
-        if (supplier.getStatus().equals("on")) {
-            supplier.setStatus("0");
-        }
+        supplier.setStatus("0");
         Boolean b = supplierService.save(supplier);
         if(b == true){
             return Util.succeed;
@@ -91,9 +88,6 @@ public class SupplierController {
     @RequestMapping("/supplierEdit")
     @ResponseBody
     public Integer supplierEdit(Supplier supplier){
-        if (supplier.getStatus().equals("on")) {
-            supplier.setStatus("0");
-        }
         return  supplierService.update(supplier);
     }
 
@@ -112,7 +106,7 @@ public class SupplierController {
     @RequestMapping("/supplierlist")
     @ResponseBody
     public List<SupplierUsers> supplierlist(Supplier suppliername){
-        System.out.println(suppliername);
+//        System.out.println(suppliername);
         return supplierService.supplierlist(suppliername);
     }
 }

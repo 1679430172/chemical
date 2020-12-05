@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hy.bean.Order;
+import com.hy.util.PurchaseSql;
 import org.apache.ibatis.annotations.*;
 
 @Mapper
@@ -61,8 +62,8 @@ public interface OrderMapper extends BaseMapper<Order> {
      * 查询某时间所有订单
      * @return
      */
-    @Select("select o.*,c.user_id suid,c.name name,i.number from `order` o inner join commodity c on o.commodity_id=c.sid inner join inventory i on i.kid=o.invoice_id where c.name like ${name} and LEFT(o.create_time,10) between #{stadate} and #{enddate} order by o.create_time desc")
-    public IPage<Order> selectListTime(@Param("stadate") String stadate,@Param("enddate") String enddate,@Param("name") String name, Page page);
+    @SelectProvider(type = PurchaseSql.class,method = "selectListTime")
+    public IPage<Order> selectListTime(@Param("stadate") String stadate,@Param("enddate") String enddate,@Param("name") String name,@Param("userId") Integer userId, Page page);
 
     /**
      * 查询
