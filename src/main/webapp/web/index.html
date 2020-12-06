@@ -70,6 +70,16 @@
 		<script src="component/pear/pear.js"></script>
 		<!-- 框 架 初 始 化 -->
 		<script>
+			$.ajax({
+				url:'/Order/userType',
+				type:'get',
+				dataType: "json",
+				success:function (data) {
+					localStorage.setItem("types",data[0]);
+					localStorage.setItem("userId",data[1]);
+				}
+			})
+
 			layui.use(['admin'], function() {
 				var admin = layui.admin;
 				var $ = layui.jquery;

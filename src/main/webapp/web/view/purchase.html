@@ -21,6 +21,9 @@
 <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
 
 <script>
+    var types=localStorage.getItem("types");
+    var userId=localStorage.getItem("userId");
+
     layui.use(["form","table","layer","upload"], function() {
         var table = layui.table;
         var form = layui.form;
@@ -242,7 +245,7 @@
 </style>
 
 <script type="text/html" id="toolbarDemo">&numsp; &numsp;
-    <div style="display: inline-block;">
+
     <form class="layui-form" action=""  style="display: inline-block;">
         <div class="layui-inline">
             <div class="layui-inline">
@@ -280,7 +283,6 @@
      <button class="layui-btn  layui-btn-normal"  style="margin-left: 0px"  lay-event="updateT">修改</button>
      <button class="layui-btn  layui-btn-danger"  style="margin-left: 0px"  lay-event="del">删除</button>
 
-    </div>
 
 </script>
 
@@ -309,22 +311,22 @@
     <button class="layui-btn  layui-btn-xs layui-btn" lay-event="updateT">修改</button>
 </script>
 <script type="text/html" id="suppliername">
-    {{#  if(0 == [[${session.userType}]]){ }}
+    {{#  if(0 == types){ }}
     {{d.supplierName}}
-    {{#  } else if(2 == [[${session.userType}]] ){ }}
+    {{#  } else if(2 == types ){ }}
     {{d.supplierName}}
-    {{#  } else if(d.userId == [[${session.userId}]]){ }}
+    {{#  } else if(d.userId == userId){ }}
     {{d.supplierName}}
     {{#  } else { }}
     无权限
     {{#  } }}
 </script>
 <script type="text/html" id="supplierphone">
-    {{#  if(0 == [[${session.userType}]]){ }}
+    {{#  if(0 == types){ }}
     {{d.supplierPhone}}
-    {{#  } else if(2 ==[[${session.userType}]] ){ }}
+    {{#  } else if(2 ==types ){ }}
     {{d.supplierPhone}}
-    {{#  } else if(d.userId == [[${session.userId}]]){ }}
+    {{#  } else if(d.userId == userId){ }}
     {{d.supplierPhone}}
     {{#  } else { }}
     无权限

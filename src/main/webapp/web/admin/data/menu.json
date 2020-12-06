@@ -20,7 +20,7 @@
 		"icon": "layui-icon layui-icon-auz",
 		"type": 1,
 		"openType": "_iframe",
-		"href": "/inventory/toInventory"
+		"href": "/web/view/inventory.html"
 	},
 	{
 		"id": "supplier",
@@ -44,7 +44,7 @@
 		"icon": "layui-icon layui-icon-template-1",
 		"type": 1,
 		"openType": "_iframe",
-		"href": "/purchase/toPurchase"
+		"href": "/web/view/purchase.html"
 	},{
 		"id": "echarts",
 		"title": "业务员管理",

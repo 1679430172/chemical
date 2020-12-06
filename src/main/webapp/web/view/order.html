@@ -10,16 +10,8 @@
     <script src="/web/component/layui/layui.js"></script>
     <script type="text/javascript" src="/web/component/js/jquery-3.3.1.min.js" th:src="@{/web/component/js/jquery-3.3.1.min.js}"></script>
     <script>
-        var types=1;
-        $(function () {
-                $.ajax({
-                    url:'/Order/userType',
-                    type:'get',
-                    success:function (data) {
-                        types=data;
-                    }
-                })
-        })
+        var types=localStorage.getItem("types");
+
         layui.use(['table','layer','form','laydate'], function(){
             var table = layui.table;
             var form = layui.form;

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 @Api
@@ -111,7 +112,10 @@ public class OrderController {
 
     @GetMapping("/userType")
     @ResponseBody
-    public Integer userType(HttpServletRequest request) throws Exception {
-        return Integer.valueOf(request.getSession().getAttribute("userType").toString());
+    public List userType(HttpServletRequest request) throws Exception {
+        List arr=new ArrayList();
+        arr.add( Integer.valueOf(request.getSession().getAttribute("userType").toString()));
+        arr.add( Integer.valueOf(request.getSession().getAttribute("userId").toString()));
+        return arr;
     }
 }
