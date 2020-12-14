@@ -19,7 +19,7 @@ public interface SalesMapper extends BaseMapper<Sales> {
      * @param userId
      * @return
      */
-    @Select("select o.*,c.`status` ,d.name from sales o , `order` c ,  commodity d WHERE o.order_id=c.did and c.commodity_id=d.sid and o.user_id=#{userId}")
+    @Select("select o.*,c.amount ,d.name from sales o , `order` c ,  commodity d WHERE o.order_id=c.did and c.commodity_id=d.sid and o.user_id=#{userId}")
     public IPage<SalesOrdet> selectSales(Page<SalesOrdet> page,@Param("userId")Integer userId);
 
     /**
@@ -27,7 +27,7 @@ public interface SalesMapper extends BaseMapper<Sales> {
      * @param page
      * @return
      */
-    @Select("select o.*,c.`status` ,d.name from sales o , `order` c ,  commodity d WHERE o.order_id=c.did and c.commodity_id=d.sid   ")
+    @Select("select o.*,c.amount ,d.name from sales o , `order` c ,  commodity d WHERE o.order_id=c.did and c.commodity_id=d.sid   ")
     public IPage<SalesOrdet> selectSalestwo(Page<SalesOrdet> page);
 
 
@@ -45,7 +45,7 @@ public interface SalesMapper extends BaseMapper<Sales> {
      * @param trackingNumber
      * @return
      */
-    @Select("select o.*,c.`status` ,d.name from sales o , `order` c ,  commodity d WHERE o.order_id=c.did and c.commodity_id=d.sid and (o.tracking_number=#{trackingNumber} or d.name=#{trackingNumber}) and o.user_id =#{userId}")
+    @Select("select o.*,c.`status`,c.amount ,d.name from sales o , `order` c ,  commodity d WHERE o.order_id=c.did and c.commodity_id=d.sid and (o.tracking_number=#{trackingNumber} or d.name=#{trackingNumber}) and o.user_id =#{userId}")
     public IPage<SalesOrdet> bytrackingNumberselecttwo(Page<SalesOrdet> page,@Param("trackingNumber")String trackingNumber,@Param("userId")Integer userId);
 
     /**

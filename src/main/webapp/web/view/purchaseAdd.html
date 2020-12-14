@@ -87,11 +87,37 @@
                 });
                 return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
             });
-
+            //供应商查询
+            form.on('submit(sid)', function(data){
+                $.post("/supplier/supplierlist.do",data.field,function (d) {
+                    var e=eval(d);
+                    if(e.length==0){
+                        layer.msg("暂无记录")
+                        return;
+                    }
+                    var select = 'dd[lay-value=' + e[0].name + ']';
+                    $('#supplierName').siblings("div.layui-form-select").find('dl').find(select).click();
+                    var s=$("#supplierName option:selected").attr("id");
+                    $("#phone").val(s);
+                })
+                return false;
+            });
         });
     </script>
 </head>
 <body>
+<div style="display: inline-block;margin-bottom: 15px;">
+    <form id="form" class="layui-form" action="" lay-filter="dd">
+        <div class="layui-form-item" style="display: inline-block;">
+            <label class="layui-form-label">供应商名称</label>
+            <div class="layui-input-inline">
+                <input type="text" id="sname" name="name" style="width: 150px"   placeholder="请输入供应商名" autocomplete="off" class="layui-input">
+
+            </div>
+            <button class="layui-btn" lay-submit lay-filter="sid">查询</button>
+        </div>
+    </form>
+</div>
 <form class="layui-form" action="">
     <div class="layui-form-item">
         <label class="layui-form-label">名称</label>

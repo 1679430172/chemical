@@ -23,6 +23,15 @@ public class Sales {
 
     private String trackingName;
 
+    private  String status;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     @JsonFormat(pattern= "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date createTime;

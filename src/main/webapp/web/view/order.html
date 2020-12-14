@@ -31,9 +31,9 @@
                 ,defaultToolbar:[]
                 ,cols: [
                     [ //表头
-                    {type: 'radio', fixed: 'left'},
-                    {field: 'id', title: '编号', sort: true, width:90},
-                    {field: '', title: '标签' ,width:240,templet:'#biaoqian'},
+                    {type: 'radio', fixed: 'left'}
+                    ,{field: 'id', title: '编号', sort: true, width:90}
+                    // ,{field: '', title: '标签' ,width:240,templet:'#biaoqian'}
                     ,{field: 'name', title: '商品名称', sort: true, totalRowText: '合计行', width:170}
                     ,{field: 'amount', title: '数量', sort: true,templet:"#amount", width:120}
                     ,{field: 'price', title: '单价', sort: true, templet:"#price", width:120}
@@ -43,7 +43,7 @@
                     ,{field: '', title: '总成本', templet:"#zcb", width:120}
                     ,{field: 'royalties', title: '提成', templet:"#royalties", totalRow: true, width:120}
                     ,{field: 'status', title: '是否出库', sort: true, templet:"#status", width:120}
-                    ,{fixed: 'right', title: '操作', align:'center', toolbar: '#barDemo',width:150}
+                    ,{fixed: 'right', title: '操作', align:'center', toolbar: '#barDemo',width:200}
                 ]
                 ],done: function (response) {
                     //定位当前table视图
@@ -58,6 +58,11 @@
                     })
                 }
             });
+
+            table.on('row(test)', function (obj) {
+                obj.tr.addClass('layui-table-click').siblings().removeClass('layui-table-click')
+                obj.tr.find('div.layui-unselect.layui-form-radio')[1].click();
+            })
 
             $(document).on("click",".notOutbound",function(){
                 $.post("/Order/",{did:this.value,_method:"PUT"},function (data) {
@@ -216,6 +221,11 @@
                         content:content
                              //这里content是一个普通的String
                     });
+                }else if(layEvent=="imgUpload"){
+
+                    var data1="name="+data.name+"&amount="+data.amount+"&companyName="+data.userName+"&phone="+data.phone
+                    window.location.href="/Order/imgUpload?"+data1
+
                 }
             });
 
@@ -372,6 +382,7 @@
     </script>
     <script type="text/html" id="barDemo">
         <a class="layui-btn layui-btn-xs" lay-event="detail">查看详情</a>
+        <a class="layui-btn layui-btn-xs" lay-event="imgUpload">生成标签</a>
     </script>
     <script type="text/html" id="toolbarDemo">
 &nbsp;      <span  style="text-align: center;margin-left: 17%;">

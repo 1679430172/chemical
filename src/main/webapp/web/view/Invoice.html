@@ -37,6 +37,7 @@
        </form>
        <button type="button" class="layui-btn layui-btn-normal" lay-event="import" id="test1">添加</button>
        <button type="button" class="layui-btn layui-btn-normal" style="margin-left: 0px" lay-event="update">修改</button>
+       <button class="layui-btn layui-btn-danger" style="margin-left: 0px" lay-event="del">删除</button>
 
    </div>
 </script>
@@ -63,10 +64,11 @@
             ,defaultToolbar:[]
             ,cols: [[ //表头
                 {type: 'radio', fixed: 'left'},
-                 {field: 'sid', title: 'ID'}
+                {field: 'xid', title: '序号'},
+                 {field: 'sid', title: '序号',hide:true}
                 ,{field: 'name', title: '发票品名'}
                 ,{field: 'cas', title: 'Cas号'}
-                ,{field:'number',title:'数量',edit:'text'}
+                ,{field:'number',title:'数量'}
                 ,{field: 'price', title: '价格'}
                 ,{field: 'unit', title: '单位'}
                 ,{field: 'createTime', title: '创建日期',width:200}
@@ -104,7 +106,10 @@
             }
         });
 
-
+        table.on('row(test)', function (obj) {
+            obj.tr.addClass('layui-table-click').siblings().removeClass('layui-table-click')
+            obj.tr.find('div.layui-unselect.layui-form-radio')[1].click();
+        })
 
         table.on('edit(test)', function(obj){
             var value = obj.value //得到修改后的值
@@ -174,6 +179,30 @@
                         });
                     },
                 });
+
+            }else if(layEvent == "del"){
+                var checkStatus = table.checkStatus(obj.config.id); //获取选中行状态
+                var data = checkStatus.data;
+                if(data.length==0){
+                    layer.msg('请选择一行');
+                    return;
+                }
+                layer.confirm('确认删除？', function (index) {
+                    layer.close(index);
+                    $.ajax({
+                        url:'/Invoice/deleteById.do',
+                        type: 'get',
+                        data:{"sid":data[0].sid},
+                        success:function (data) {
+                            table.reload('demo', {
+                                url: '/Invoice/select.do'
+                            });
+                        },error:function (error) {
+                            layer.msg("删除失败，请重试")
+                        }
+                    })
+                })
+
 
             }
         });

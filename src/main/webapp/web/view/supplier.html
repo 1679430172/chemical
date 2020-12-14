@@ -139,6 +139,11 @@
             }
         })
 
+        table.on('row(test)', function (obj) {
+            obj.tr.addClass('layui-table-click').siblings().removeClass('layui-table-click')
+            obj.tr.find('div.layui-unselect.layui-form-radio')[1].click();
+        })
+
         form.on('submit(formDemo)', function(data){
             console.log(data.field);
             table.reload('demo', {

@@ -1,5 +1,6 @@
 package com.hy.web;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.hy.bean.Commodity;
@@ -139,5 +140,20 @@ public class CommodityController {
             return Util.fail;
         }
         return Util.succeed;
+    }
+
+    /**
+     * 删除
+     * @param req
+     * @param response
+     * @param sid
+     * @return
+     */
+    @RequestMapping("/deleteById.do")
+    @ResponseBody
+    public boolean deleteById(HttpServletRequest req,HttpServletResponse response, String sid){
+        QueryWrapper<Commodity> updateById=new QueryWrapper();
+        updateById.eq("sid",sid);
+        return commodityService.remove(updateById);
     }
 }

@@ -8,6 +8,17 @@
     <script src="/web/component/layui/layui.js" th:src="@{/web/component/layui/layui.js}" ></script>
 </head>
 <script>
+    $(function () {
+        var id=decodeURI(location.search);
+        id=JSON.parse(id.split("=")[1]);
+        $("#kid").val(id.kid)
+        $("#number").val(id.number)
+        $("#name").val(id.name)
+        $("#cas").val(id.cas)
+        $("#remark").val(id.remark)
+        $("#amount").val(id.amount)
+    })
+
     layui.use(["form","table","layer","laydate"], function() {
         var table = layui.table;
         var form = layui.form;
@@ -43,19 +54,19 @@
             console.log(data.field)//当前容器的全部表单字段，名值对形式：{name: value}
             //阻止表单跳转。如果需要表单跳转，去掉这段即可。
             //{name:data.field.name,phone:data.field.phone,wechat:data.field.wechat,status:data.field.status,createTime:data.field.createTime,userId:data.field.userId}
-            $.post("/inventory/addinventory.do?",data.field, function (d) {
+            $.post("/inventory/updateInventory.do?",data.field, function (d) {
                 if (d === "1") {
-                    layer.msg('已添加成功!', {icon: 1, time: 1000},function () {
+                    layer.msg('修改成功!', {icon: 1, time: 1000},function () {
                         //假设这是iframe页
                         var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
                         parent.layer.close(index); //再执行关闭
                     });
                 } else {
                     $("#sub").removeAttr("disabled");//按钮启用
-                    layer.msg('添加失败,库存编号已存在或者cas号已存在!', {icon: 2, time: 1000},function () {
+                    layer.msg('修改失败,库存编号已存在或者cas号已存在!', {icon: 2, time: 1000},function () {
                         //假设这是iframe页
-                        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
-                        parent.layer.close(index); //再执行关闭
+                        // var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                        // parent.layer.close(index); //再执行关闭
                     });
                 }
             })
@@ -78,31 +89,32 @@
 </script>
 <body>
 <form class="layui-form" action="">
+    <input type="hidden" name="kid" id="kid">
     <div class="layui-form-item">
         <label class="layui-form-label">库存编号</label>
         <div class="layui-input-block">
-            <input type="text" lay-verify="required" lay-reqtext="编号不能为空" style="width: 200px" name="number" required   placeholder="请输入库存编号" autocomplete="off" class="layui-input">
+            <input type="text" lay-verify="required" lay-reqtext="编号不能为空" style="width: 200px" name="number" id="number"  required   placeholder="请输入库存编号" autocomplete="off" class="layui-input">
         </div>
     </div>
 
     <div class="layui-form-item">
         <label class="layui-form-label">品名</label>
         <div class="layui-input-block">
-            <input type="text" lay-verify="required" lay-reqtext="品名不能为空" name="name" style="width: 200px" required   placeholder="请输入产品名称" autocomplete="off" class="layui-input">
+            <input type="text" lay-verify="required" lay-reqtext="品名不能为空" name="name" style="width: 200px" required  id="name"  placeholder="请输入产品名称" autocomplete="off" class="layui-input">
         </div>
     </div>
 
     <div class="layui-form-item">
         <label class="layui-form-label">cas号</label>
         <div class="layui-input-inline" style="width: 200px;">
-            <input type="text"  name="cas" lay-reqtext="cas号不能为空" placeholder="请输入cas号"  autocomplete="off" class="layui-input">
+            <input type="text"  name="cas" lay-reqtext="cas号不能为空" placeholder="请输入cas号"  autocomplete="off" id="cas" class="layui-input">
         </div>
     </div>
 
     <div class="layui-form-item">
     <label class="layui-form-label">数量</label>
     <div class="layui-input-inline" style="display: flex">
-        <input type="text" lay-verify="required"lay-reqtext="数量不能为空" name="amount" style="width: 200px" required  value="" placeholder="请输入添加数量" autocomplete="off" class="layui-input">
+        <input type="text" lay-verify="required"lay-reqtext="数量不能为空" name="amount" style="width: 200px" required  value="" id="amount" placeholder="请输入添加数量" autocomplete="off" class="layui-input">
         <div class="layui-form-mid layui-word-aux">kg</div>
     </div>
 
@@ -110,7 +122,7 @@
     <div class="layui-form-item">
     <label class="layui-form-label">备注</label>
     <div class="layui-input-block">
-        <input type="text" lay-verify="required" lay-reqtext="备注不能为空" name="remark" style="width: 200px" required   placeholder="建议" autocomplete="off" class="layui-input">
+        <input type="text" lay-verify="required" lay-reqtext="备注不能为空" name="remark" style="width: 200px" required   placeholder="建议" id="remark" autocomplete="off" class="layui-input">
     </div>
     </div>
 

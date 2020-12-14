@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
-@TableName(value = "Purchase")
+@TableName(value = "purchase")
 public class Purchase {
      private Integer cid;
      private Integer userId;       //业务员id

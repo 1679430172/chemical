@@ -1,5 +1,6 @@
 package com.hy.bean;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.util.Date;
@@ -83,6 +84,22 @@ public class SalesOrdet {
                 '}';
     }
 
+    public String getOrderIds() {
+        return orderIds;
+    }
+
+    public void setOrderIds(String orderIds) {
+        this.orderIds = orderIds;
+    }
+
+    public String getAmount() {
+        return amount;
+    }
+
+    public void setAmount(String amount) {
+        this.amount = amount;
+    }
+
     private Integer did;
 
     private  Integer userId;
@@ -109,4 +126,10 @@ public class SalesOrdet {
     private Date createTime;
 
     private String status;
+
+    @TableField(exist = false)
+    private String orderIds;
+
+    @TableField(exist = false)
+    private String amount;
 }

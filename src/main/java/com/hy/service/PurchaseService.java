@@ -72,7 +72,7 @@ public class PurchaseService extends ServiceImpl<PurchaseMapper, Purchase> {
        purchaseMapper.updateAnn(cid);
     }
 
-    public void updateTN(String cid){purchaseMapper.updateTN(cid);}
+
 
 
     public void  equals(Purchase purchase){
@@ -107,6 +107,10 @@ public class PurchaseService extends ServiceImpl<PurchaseMapper, Purchase> {
             return Util.defact;
         }
         return Util.sueess;
+    }
+
+    public void updateByIds(String trackingNumber,String cid){
+        purchaseMapper.updateTN(trackingNumber,cid);
     }
 
 }

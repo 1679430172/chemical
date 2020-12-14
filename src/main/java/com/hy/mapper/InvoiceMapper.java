@@ -1,17 +1,17 @@
 package com.hy.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hy.bean.Invoice;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import com.hy.util.PurchaseSql;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 @Mapper
 public interface InvoiceMapper extends BaseMapper<Invoice> {
-    @Select("select * from invoice where cas=#{cas}")
-    public List<Invoice> queryBycas(String cas);
+    @SelectProvider(type = PurchaseSql.class,method = "queryBycass")
+    public IPage<Invoice> queryBycass(@Param("name") String name, @Param("cas") String cas, Page page);
 
     @Select("select * from invoice where sid=#{sid}")
     public Invoice queryBysid(Integer sid);

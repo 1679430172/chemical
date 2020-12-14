@@ -2,10 +2,13 @@ package com.hy.web;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.hy.bean.Inventory;
+import com.hy.mapper.InventoryMapper;
 import com.hy.service.InventoService;
 import com.hy.util.ParseData;
+import com.hy.util.Util;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,7 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 @Api
 @Controller
@@ -24,6 +27,8 @@ import java.util.stream.Collectors;
 public class InventoryControlledr {
     @Autowired
     private InventoService InventoService;
+    @Autowired
+    private InventoryMapper inventoryMapper;
 
     @RequestMapping("/inventory.do")
     @ResponseBody
@@ -56,6 +61,35 @@ public class InventoryControlledr {
         return InventoService.add(inventory);
     }
 
+    @PostMapping("/updateInventory.do")
+    @ResponseBody
+    public String updateInventory(Inventory inventory) throws Exception {
+        QueryWrapper<Inventory> queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("kid",inventory.getKid());
+        Inventory inventory1=InventoService.getOne(queryWrapper);
+        Inventory b2=null;
+        Inventory b1=null;
+        if(!inventory1.getCas().equals(inventory.getCas())){
+            b2=inventoryMapper.selectcas(inventory.getCas());
+        }
+        if(!inventory1.getNumber().equals(inventory.getNumber())){
+            b1=inventoryMapper.selectnumber(inventory.getNumber());;
+        }
+        if(b1==null &&b2==null){
+            UpdateWrapper<Inventory> updateWrapper=new UpdateWrapper<>();
+            updateWrapper.set("number",inventory.getNumber());
+            updateWrapper.set("name",inventory.getName());
+            updateWrapper.set("cas",inventory.getCas());
+            updateWrapper.set("remark",inventory.getRemark());
+            updateWrapper.set("amount",inventory.getAmount());
+            updateWrapper.eq("kid",inventory.getKid());
+           InventoService.update(updateWrapper);
+            return  Util.sueess;
+        }
+        return Util.defact;
+
+    }
+
     @GetMapping("/")
     @ResponseBody
     public List<Inventory> selectListByCas(String cas){
@@ -80,7 +114,12 @@ public class InventoryControlledr {
         }
         IPage<Inventory> iPage=InventoService.page(InventoService.iPage(page,limit),queryWrapper);
 
-        return new ParseData(0, "", Integer.parseInt(Long.toString(iPage.getTotal())), iPage.getRecords());
+        List<Inventory> list = iPage.getRecords();
+        for (int i = 0; i < list.size(); i++) {
+            list.get(i).setXid((page - 1) * limit + (i + 1));
+        }
+
+        return new ParseData(0, "", Integer.parseInt(Long.toString(iPage.getTotal())), list);
 
     }
 

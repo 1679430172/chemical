@@ -49,11 +49,9 @@ public class SalesService extends ServiceImpl<SalesMapper, Sales> {
         }
         List<SalesOrdet> ordets=iPage.getRecords();
         for(SalesOrdet s:ordets) {
-            String gid = "" + s.getOrderId();
-            String id = "YD00000";
-            id = id.substring(0, id.length() - gid.length()) + gid;
-            s.setOrderId(id);
+            s.setOrderIds(String.format("YD%05d",Integer.valueOf(s.getOrderId())));
             s.setType(userType);
+            s.setAmount(s.getAmount()+"千克");
         }
         return new ParseData(0,"",Integer.parseInt(Long.toString(iPage.getTotal())),ordets);
     }
@@ -91,7 +89,13 @@ public class SalesService extends ServiceImpl<SalesMapper, Sales> {
             Page<SalesOrdet> page1 = new Page<SalesOrdet>(page,limit);
             iPage=salesMapper.bytrackingNumberselect(page1,trackingNumber,name,userId);
         }
-        return new ParseData(0,"",Integer.parseInt(Long.toString(iPage.getTotal())),iPage.getRecords());
+        List<SalesOrdet> ordets=iPage.getRecords();
+        for(SalesOrdet s:ordets) {
+            s.setOrderIds(String.format("YD%05d",Integer.valueOf(s.getOrderId())));
+            s.setType(userType);
+            s.setAmount(s.getAmount()+"千克");
+        }
+        return new ParseData(0,"",Integer.parseInt(Long.toString(iPage.getTotal())),ordets);
     }
 
     /**

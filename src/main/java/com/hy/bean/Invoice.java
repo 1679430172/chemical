@@ -1,5 +1,6 @@
 package com.hy.bean;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import net.sf.jsqlparser.expression.DateTimeLiteralExpression;
 
 import java.util.Date;
@@ -12,6 +13,16 @@ public class Invoice {
     private Double price;
     private String unit;
     private String createTime;
+    @TableField(exist = false)
+    private Integer xid;
+
+    public Integer getXid() {
+        return xid;
+    }
+
+    public void setXid(Integer xid) {
+        this.xid = xid;
+    }
 
     public Integer getSid() { return sid; }
 

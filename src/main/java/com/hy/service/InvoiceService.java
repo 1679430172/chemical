@@ -1,6 +1,8 @@
 package com.hy.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hy.bean.Inventory;
 import com.hy.bean.Invoice;
@@ -16,16 +18,8 @@ public class InvoiceService extends ServiceImpl<InvoiceMapper,Invoice>{
     @Autowired
     private InvoiceMapper invoiceMapper;
 
-    public List<Invoice> queryByCas(String cas,String name){
-        QueryWrapper queryWrapper=new QueryWrapper();
-        if(null!=cas && cas!=""){
-            queryWrapper.eq("cas",cas);
-        }
-        if(null!=name && name!=""){
-            queryWrapper.like("name",name);
-
-        }
-        return invoiceMapper.selectList(queryWrapper);
+    public IPage<Invoice> queryByCas(String cas, String name, Page page){
+        return invoiceMapper.queryBycass(name,cas,page);
     }
 
     public Integer updateBySid(Invoice invoice){

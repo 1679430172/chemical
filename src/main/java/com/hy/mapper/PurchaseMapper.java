@@ -9,21 +9,21 @@ package com.hy.mapper;
         import org.apache.ibatis.annotations.*;
 
 public interface PurchaseMapper extends BaseMapper<Purchase> {
-    @Select("select cid,user_id,name,cas,amount,price,price_status,sum_price,status,supplier_name,supplier_phone,tracking_number,create_time,ann,b.user_name  from purchase a,users b where a.user_id=b.uid order by ann asc")
+    @Select("select cid,user_id,name,cas,amount,price,price_status,sum_price,status,supplier_name,supplier_phone,tracking_number,create_time,ann,b.user_name  from purchase a,users b where a.user_id=b.uid and ann=1 UNION all select cid,user_id,name,cas,amount,price,price_status,sum_price,status,supplier_name,supplier_phone,tracking_number,create_time,ann,b.user_name  from purchase a,users b where a.user_id=b.uid and ann in(2,3) ORDER BY ann asc,create_time desc")
     public IPage<Purchase> Purchase(Page page);
 
     @Select("select * from purchase where cid=#{cid}")
     public Purchase selectBycid(Integer cid);
 
 
-    @Select("select * from purchase where user_id=#{userId} order by ann asc")
+    @Select("SELECT * FROM ( select cid,user_id,name,cas,amount,price,price_status,sum_price,status,supplier_name,supplier_phone,tracking_number,create_time,ann,b.user_name  from purchase a,users b where a.user_id=b.uid and ann=1 UNION all select cid,user_id,name,cas,amount,price,price_status,sum_price,status,supplier_name,supplier_phone,tracking_number,create_time,ann,b.user_name  from purchase a,users b where a.user_id=b.uid and ann in(2,3) ORDER BY ann asc,create_time desc)  aa WHERE user_id=#{userId}")
     public IPage<Purchase> supplier(@Param("userId") Integer userId,Page page);
 
     @Update("update purchase set ann = 2 where cid=#{cid}")
     public void updateAnn(String cid);
 
     @Update("update purchase set tracking_number = #{trackingNumber} where cid=#{cid}")
-    public void  updateTN(String trackingNumber);
+    public void  updateTN(@Param("trackingNumber")String trackingNumber,@Param("cid")String cid);
 
     @Update("update purchase set  name=#{name},cas=#{cas},amount=#{amount},price=#{price}where cid=#{purchase.cid}")
     public boolean updatea(@Param("purchase") Purchase purchase);

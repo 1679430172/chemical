@@ -104,6 +104,10 @@
                 //这里content是一个普通的String
             });
         })
+        table.on('row(test)', function (obj) {
+            obj.tr.addClass('layui-table-click').siblings().removeClass('layui-table-click')
+            obj.tr.find('div.layui-unselect.layui-form-radio')[1].click();
+        })
      /**
       *一键查询0库存按钮
       */
@@ -168,6 +172,27 @@
                             }
                         }
                     });
+                });
+            }else if(layEvent=='upd'){
+                var checkStatus = table.checkStatus(obj.config.id); //获取选中行状态
+                var data = checkStatus.data;
+                if(data.length==0){
+                    layer.msg('请选择一行');
+                    return;
+                }
+                console.log()
+
+                layer.open({
+                    type: 2,
+                    //offset: 'auto',、
+                    skin: 'layui-layer-rim',
+                    area: ['370px', '500px'],
+                    content: '/web/view/inventoryEdit.html?id='+encodeURI(JSON.stringify(data[0])), //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
+                    end:function () {
+                        table.reload('test', {
+                            url: '/inventory/inventory.do'
+                        });
+                    }
                 });
             }
         });
@@ -261,48 +286,47 @@
     }
 </style>
 <script type="text/html" id="toolbarDemo">
-
-       &numsp; &numsp;
-      &numsp; &numsp; &numsp; &numsp; &numsp; &numsp; &numsp; &numsp; &numsp; &numsp; &numsp; &numsp;
-
-    <form class="layui-form" action=""  style="display:inline-block;">
-            <div class="layui-inline">
-            <div class="layui-inline">
-                <label class="layui-inline">品名</label>
-                <div class="layui-inline">
-                    <input type="text" name="name" lay-verify="title" autocomplete="off" placeholder="请输入" class="layui-input">
-                </div>
-            </div>
-            <div class="layui-inline">
-                <label class="layui-inline">Cas号</label>
-                <div class="layui-inline">
-                    <input type="text" name="cas" lay-verify="title" autocomplete="off" placeholder="请输入" class="layui-input">
-                </div>
-            </div>
-            <div class="layui-inline">
-                <label class="layui-inline">编号</label>
-                <div class="layui-inline">
-                    <input type="text" name="number" lay-verify="title" autocomplete="off" placeholder="请输入" class="layui-input">
-                </div>
-            </div>
+    <div style="text-align: center;width: 100%">
+        <form class="layui-form" action="" style="display: inline-block">
             <div class="layui-inline">
                 <div class="layui-inline">
-                    <button type="submit" class="layui-btn" lay-submit="" lay-filter="formDemo">查询</button>
+                    <label class="layui-inline">品名</label>
+                    <div class="layui-inline">
+                        <input type="text" name="name" lay-verify="title" autocomplete="off" placeholder="请输入" class="layui-input">
+                    </div>
                 </div>
-            </div>
+                <div class="layui-inline">
+                    <label class="layui-inline">Cas号</label>
+                    <div class="layui-inline">
+                        <input type="text" name="cas" lay-verify="title" autocomplete="off" placeholder="请输入" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-inline">编号</label>
+                    <div class="layui-inline">
+                        <input type="text" name="number" lay-verify="title" autocomplete="off" placeholder="请输入" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <div class="layui-inline">
+                        <button type="submit" class="layui-btn" lay-submit="" lay-filter="formDemo">查询</button>
+                    </div>
+                </div>
                 <div class="layui-inline">
                     <div class="layui-inline">
                         <button type="submit" class="layui-btn" lay-submit="" lay-filter="xxxx">查询0库存</button>
                     </div>
                 </div>
-      </div>
-    </form>
-          {{#  if(0 == types || 1 == types){ }}
-          <button class="layui-btn layui-btn-normal" lay-event="add">添加</button>
-          <button class="layui-btn layui-btn-danger" style="margin-left: 0px" lay-event="del">删除</button>
-          {{#  } else { }}
-          {{#  } }}
+            </div>
+        </form>
+        {{#  if(0 == types || 1 == types){ }}
+        <button class="layui-btn layui-btn-normal" lay-event="add">添加</button>
+        <button class="layui-btn layui-btn-normal" style="margin-left: 0px"  lay-event="upd">修改</button>
+        <button class="layui-btn layui-btn-danger" style="margin-left: 0px" lay-event="del">删除</button>
+        {{#  } else { }}
+        {{#  } }}
 
+    </div>
 
 </script>
 <script type="text/html" id="barDemo">

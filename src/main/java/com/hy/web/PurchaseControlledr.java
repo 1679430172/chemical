@@ -57,12 +57,9 @@ import java.util.List;
     }
     @RequestMapping("/updateTn.do")
     @ResponseBody
-    public String  updateTn(@Param("cid") Integer cid,@Param("trackingNumber") String trackingNumber){
-        Purchase purchase = new Purchase();
-        purchase.setCid(cid);
-        purchase.setTrackingNumber(trackingNumber);
-        System.out.println(purchase.toString());
-        purchaseService.equals(purchase);
+    public String  updateTn(@Param("cid") String cid,@Param("trackingNumber") String trackingNumber){
+
+        purchaseService.updateByIds(trackingNumber,cid);
         return "1";
     }
 
@@ -120,7 +117,7 @@ import java.util.List;
     @RequestMapping("/findById")
     @ResponseBody
     public List<Purchase> findById(String cid){
-        QueryWrapper queryWrapper=new QueryWrapper();
+        QueryWrapper<Purchase> queryWrapper=new QueryWrapper();
         queryWrapper.eq("cid",cid);
         return purchaseService.list(queryWrapper);
     }

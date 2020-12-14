@@ -12,21 +12,19 @@
         var form = layui.form;
         var layer =layui.layer;
         var a =GetRequest();
-        $("#p1").attr("value",a);
-        layer.msg('请填写单号和物流公司名称', {icon: 6});
+        console.log(a[0].split("=")[1])
+        $("#p1").attr("value",a[0].split("=")[1]);
+        $("#trackingNumber").attr("value",a[1].split("=")[1]);
+        $("#trackingName").attr("value",a[2].split("=")[1]);
         form.on('submit(aa)', function(data){
-            // console.log(data.elem) //被执行事件的元素DOM对象，一般为button对象
-            // console.log(data.form) //被执行提交的form对象，一般在存在form标签时才会返回
-            // console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
-            // layer.msg("修改");
             $("#sub").attr("disabled",true);
             $.ajax({
-                url:'/Sales/insertSales',
+                url:'/Sales/updateInfo',
                 type:'get',
                 data:data.field,
                 success: function (data1) {
-                    if (data1==="1"){
-                        layer.msg('成功！！！', {
+                    if (data1){
+                        layer.msg('修改成功！！！', {
                             icon: 1,
                             time: 1000 //2秒关闭（如果不配置，默认是3秒）
                         }, function(){
@@ -35,8 +33,8 @@
                             parent.layer.close(index); //再执行关闭
                         });
                     }
-                    else if(data1==="2"){
-                        layer.msg('失败！！！', {
+                    else{
+                        layer.msg('修改失败！！！', {
                             icon: 1,
                             time: 1000 //2秒关闭（如果不配置，默认是3秒）
                         }, function(){
@@ -52,11 +50,12 @@
 
     });
     function GetRequest() {
-        var url = location.search; //获取url中"?"符后的字串
+        var url = decodeURI(location.search); //获取url中"?"符后的字串
         if (url.indexOf("?") != -1) {    //判断是否有参数
             var str = url.substr(1); //从第一个字符开始 因为第0个是?号 获取所有除问号的所有符串
-            strs = str.split("=");   //用等号进行分隔 （因为知道只有一个参数 所以直接用等号进分隔 如果有多个参数 要用&号分隔 再用等号进行分隔）
-            return strs[1];          //直接弹出第一个参数 （如果有多个参数 还要进行循环的）
+            strs = str.split("&");   //用等号进行分隔 （因为知道只有一个参数 所以直接用等号进分隔 如果有多个参数 要用&号分隔 再用等号进行分隔）
+            console.log(strs)
+            return strs;          //直接弹出第一个参数 （如果有多个参数 还要进行循环的）
         }
     }
 </script>
@@ -65,18 +64,18 @@
     <div class="layui-form-item">
         <label class="layui-form-label">退货单号</label>
         <div class="layui-input-block">
-            <input type="text" name="trackingNumber" placeholder="请输入退货单号" autocomplete="off" class="layui-input">
+            <input type="text" id="trackingNumber" name="trackingNumber" placeholder="请输入退货单号" autocomplete="off" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">物流公司</label>
         <div class="layui-input-block">
-            <input type="text" name="trackingName" placeholder="请输入物流公司名称" autocomplete="off" class="layui-input" lay-verify="required" lay-reqtext="物流公司名称是必填项">
+            <input type="text" id="trackingName" name="trackingName" placeholder="请输入物流公司名称" autocomplete="off" class="layui-input" lay-verify="required" lay-reqtext="物流公司名称是必填项">
         </div>
     </div>
     <div class="layui-form-item">
         <div class="layui-input-block">
-            <input type="hidden" name="orderId"  autocomplete="off" class="layui-input" id="p1">
+            <input type="hidden" name="did"  autocomplete="off" class="layui-input" id="p1">
         </div>
     </div>
     <div class="layui-form-item">
