@@ -27,7 +27,7 @@ public interface SalesMapper extends BaseMapper<Sales> {
      * @param page
      * @return
      */
-    @Select("select o.*,c.amount ,d.name from sales o , `order` c ,  commodity d WHERE o.order_id=c.did and c.commodity_id=d.sid   ")
+    @Select("select o.*,c.amount ,d.name,c.invoice_id from sales o , `order` c ,  commodity d WHERE o.order_id=c.did and c.commodity_id=d.sid   ")
     public IPage<SalesOrdet> selectSalestwo(Page<SalesOrdet> page);
 
 

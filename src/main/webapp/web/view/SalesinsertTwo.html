@@ -49,6 +49,41 @@
             });
             return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
         });
+        form.on('submit(bb)', function(data){
+            // console.log(data.elem) //被执行事件的元素DOM对象，一般为button对象
+            // console.log(data.form) //被执行提交的form对象，一般在存在form标签时才会返回
+            // console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
+            // layer.msg("修改");
+            $("#sub2").attr("disabled",true); //防止表单重复提交
+            $.ajax({
+                url:'/Sales/insertSales',
+                type:'get',
+                data:data.field,
+                success: function (data1) {
+                    if (data1==="1"){
+                        layer.msg('成功！！！', {
+                            icon: 1,
+                            time: 1000 //2秒关闭（如果不配置，默认是3秒）
+                        }, function(){
+                            //假设这是iframe页
+                            var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                            parent.layer.close(index); //再执行关闭
+                        });
+                    }
+                    else if(data1==="2"){
+                        layer.msg('失败！！！', {
+                            icon: 1,
+                            time: 1000 //2秒关闭（如果不配置，默认是3秒）
+                        }, function(){
+                            //假设这是iframe页
+                            var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                            parent.layer.close(index); //再执行关闭
+                        });
+                    }
+                }
+            });
+            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+        });
 
     });
     function GetRequest() {
@@ -61,7 +96,7 @@
     }
 </script>
 <body>
-<form class="layui-form" lay-filter="dd">
+<form class="layui-form" lay-filter="dd" s>
     <div class="layui-form-item">
         <label class="layui-form-label">退货单号</label>
         <div class="layui-input-block">
@@ -71,7 +106,7 @@
     <div class="layui-form-item">
         <label class="layui-form-label">物流公司</label>
         <div class="layui-input-block">
-            <input type="text" name="trackingName" placeholder="请输入物流公司名称" autocomplete="off" class="layui-input" lay-verify="required" lay-reqtext="物流公司名称是必填项">
+            <input type="text" name="trackingName" placeholder="请输入物流公司名称" autocomplete="off" class="layui-input" >
         </div>
     </div>
     <div class="layui-form-item">
@@ -82,6 +117,7 @@
     <div class="layui-form-item">
         <div class="layui-input-block">
             <button class="layui-btn" lay-submit lay-filter="aa" id="sub">立即提交</button>
+            <button class="layui-btn" lay-submit lay-filter="bb" id="sub2">无单号提交</button>
             <button type="reset" class="layui-btn layui-btn-primary">重置</button>
         </div>
     </div>
