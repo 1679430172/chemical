@@ -44,7 +44,8 @@ public class SupplierController {
     public ParseData get(){
         return  new ParseData(0,"",null,supplierService.list());
     }
-    @RequestMapping("/suppliers.do")
+
+    @RequestMapping("/supplierByid.do")
     @ResponseBody
     public Supplier suppliers(String gid){
         return supplierService.getById(gid);

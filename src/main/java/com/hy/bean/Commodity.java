@@ -20,8 +20,26 @@ public class Commodity {
     private Integer supplierId;
     private String createTime;
     private Date updateTime;
+    private String remark;//备注
+    private Double cost;
     @TableField(exist = false)
     private Integer supplier;
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+    public Double getCost() {
+        return cost;
+    }
+
+    public void setCost(Double cost) {
+        this.cost = cost;
+    }
 
     public Integer getSupplier() {
         return supplier;

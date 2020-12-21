@@ -31,6 +31,7 @@
                     ,"phone": e[0].phone // "name": "value"
                     ,"wechat": e[0].wechat
                     ,"status":e[0].status
+                    ,"linkman":e[0].linkman
                     ,"check[status]": true
                     ,"userId":e[0].uid
                     ,"remark":e[0].remark
@@ -96,7 +97,12 @@
             <input type="text" lay-verify="required|phone" id="phone" name="phone" style="width: 200px" required   placeholder="请输入电话" autocomplete="off" class="layui-input">
         </div>
     </div>
-
+    <div class="layui-form-item">
+        <label class="layui-form-label">联系人</label>
+        <div class="layui-input-block">
+            <input type="text " id="linkman" name="linkman" placeholder="请输入联系人"    autocomplete="off" class="layui-input">
+        </div>
+    </div>
     <div class="layui-form-item">
         <label class="layui-form-label">微信或qq</label>
         <div class="layui-input-block">

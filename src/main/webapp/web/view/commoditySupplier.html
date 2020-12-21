@@ -18,10 +18,12 @@
 
             var id = location.search;
             id = id.split("=");
-            $.get("/supplier/suppliers.do?gid="+id[1],function (d) {
+            $.get("/supplier/supplierByid.do?gid="+id[1],function (d) {
                 var i=eval(d);
+                console.log(i);
                 $("#name").val(i.name);
                 $("#phone").val(i.phone);
+                $("#linkman").val(i.linkman);
             })
 
         })
@@ -39,5 +41,11 @@
         <input type="text " id="phone" name="phone" required  disabled="disabled"  autocomplete="off" class="layui-input">
     </div>
 </div>
+    <div class="layui-inline">
+        <label class="layui-form-label">联系人</label>
+        <div class="layui-input-block">
+            <input type="text " id="linkman" name="linkman" required  disabled="disabled"  autocomplete="off" class="layui-input">
+        </div>
+    </div>
 </body>
 </html>

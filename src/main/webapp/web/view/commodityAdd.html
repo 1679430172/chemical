@@ -116,7 +116,12 @@
             <select id ="name" name="supplierId" ></select>
         </div>
     </div>
-
+    <div class="layui-form-item">
+        <label class="layui-form-label">成本</label>
+        <div class="layui-input-inline">
+            <input type="text " id="cost" name="cost" required   placeholder="请输入信息" autocomplete="off" class="layui-input">
+        </div>
+    </div>
     <div class="layui-form-item">
         <label class="layui-form-label">报价信息</label>
         <div class="layui-input-inline">
@@ -126,9 +131,13 @@
     <div class="layui-form-item">
         <label class="layui-form-label">商品介绍</label>
         <div class="layui-input-inline">
-<!--            <textarea  id="commodityInfo" name="commodityInfo" required   placeholder="请输入信息" autocomplete="off" class="layui-textarea" style="resize: none;">-->
-            </textarea>
             <textarea name="commodityInfo" id="commodityInfo" placeholder="请输入信息"  class="layui-textarea" style="resize: none;"></textarea>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">备注</label>
+        <div class="layui-input-inline">
+            <textarea name="remark" id="remark" placeholder="请输入信息"  class="layui-textarea" style="resize: none;"></textarea>
         </div>
     </div>
     <input type="text" style="display:none"  name="imgStatus" value="0">
