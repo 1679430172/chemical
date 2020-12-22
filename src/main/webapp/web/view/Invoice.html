@@ -7,11 +7,8 @@
     <script type="text/javascript" src="/web/component/js/jquery-3.3.1.min.js"></script>
 </head>
 <body>
-
 <table id="demo" lay-filter="test"></table>
-
 <script type="text/html" id="toolbarDemo">
-
    <div style="text-align: center">
        <form class="layui-form" action="" lay-filter="example" style="display: inline-block;">
            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -38,7 +35,6 @@
        <button type="button" class="layui-btn layui-btn-normal" lay-event="import" id="test1">添加</button>
        <button type="button" class="layui-btn layui-btn-normal" style="margin-left: 0px" lay-event="update">修改</button>
        <button class="layui-btn layui-btn-danger" style="margin-left: 0px" lay-event="del">删除</button>
-
    </div>
 </script>
 
@@ -64,15 +60,16 @@
             ,defaultToolbar:[]
             ,cols: [[ //表头
                 {type: 'radio', fixed: 'left'},
-                {field: 'xid', title: '序号'},
+                {field: 'xid', title: '序号',width:70},
                  {field: 'sid', title: '序号',hide:true}
-                ,{field: 'name', title: '发票品名'}
-                ,{field: 'cas', title: 'Cas号'}
-                ,{field:'number',title:'数量'}
-                ,{field: 'price', title: '价格'}
-                ,{field: 'unit', title: '单位'}
+                ,{field: 'name', title: '发票品名',width:200}
+                ,{field: 'cas', title: 'Cas号',width:130}
+                ,{field:'number',title:'数量',width:90}
+                ,{field: 'price', title: '价格',width:90}
+                ,{field: 'unit', title: '单位',width:90}
                 ,{field: 'createTime', title: '创建日期',width:200}
-                ,{fixed: 'right', title: '操作', align:'center', toolbar: '#barDemo',width:200}
+                ,{field: 'description', title: '备注栏'}
+                ,{fixed: 'right', title: '操作', align:'center', toolbar: '#barDemo'}
             ]]
         });
 
@@ -99,7 +96,6 @@
                                 url: '/Invoice/select.do'
                             });
                         }
-
                     });
                     layer.close(index);
                 });
@@ -138,7 +134,6 @@
             }
         });
 
-
         form.on('submit(formDemo)', function(data){
             table.reload('demo', {
                 url: '/Invoice/queryByCas.do'
@@ -152,7 +147,7 @@
             var layEvent = obj.event;
             if (layEvent === 'import') {
                 layer.open({
-                    area: ['360px', '420px'],
+                    area: ['420px', '520px'],
                     type: 2,
                     content: 'addInvoice.html',
                     end:function () {
@@ -170,7 +165,7 @@
                 }
 
                 layer.open({
-                    area: ['360px', '420px'],
+                    area: ['420px', '520px'],
                     type: 2,
                     content: 'updateInvoice.html?sid='+data[0].sid,
                     end:function () {
@@ -202,15 +197,12 @@
                         }
                     })
                 })
-
-
             }
         });
     });
 </script>
 <script type="text/html" id="barDemo">
     <a class="layui-btn layui-btn-xs" lay-event="detail">自动计算数量</a>
-<!--    <a class="layui-btn layui-btn-xs" lay-event="update">修改</a>-->
 </script>
 
 </body>
