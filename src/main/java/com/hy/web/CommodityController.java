@@ -96,7 +96,15 @@ public class CommodityController {
     @RequestMapping("/commoditiesList")
     @ResponseBody
     public List<Commodity> commoditiesList(){
-        return commodityService.list();
+        List<Commodity> list=commodityService.list();
+        for(Commodity s:list) {
+            String gid = "" + s.getSid();
+            String id = "BH00000";
+            id = id.substring(0, id.length() - gid.length()) + gid;
+            s.setCommodityInfo(id);
+            System.out.println(s.getCommodityInfo());
+        }
+        return list;
     }
 
     @RequestMapping("/equals.do")

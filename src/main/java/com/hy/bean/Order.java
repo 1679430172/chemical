@@ -18,16 +18,12 @@ public class Order {
     private Double price;//单价
     private Double costPrice;//成本
     private Double otherCost;//其他成本
-    private String bill;//发票状态
-    private String billInfo;//发票内容
     private Integer commodityId;//商品id
     private Integer invoiceId;//库存标号
     private String status;//是否出库
-    private String userName;//客户名
-    private String address;//客户地址
-    private String phone;//客户电话
     private Date createTime;//创建时间
     private String remarks;//备注
+    private Integer cid;
     @TableField(exist = false)
     private String name;//商品名称
     @TableField(exist = false)
@@ -50,9 +46,25 @@ public class Order {
     private String cas;//cas
     @TableField(exist = false)
     private Double profit;//利润
+    @TableField(exist = false)
+    private String cname;
+    @TableField(exist = false)
+    private String address;
+    @TableField(exist = false)
+    private String phone;
+    @TableField(exist = false)
+    private String invoiceAddress;
 
     public Double getProfit() {
         return price*amount-costPrice*amount-otherCost;
+    }
+
+    public Integer getCid() {
+        return cid;
+    }
+
+    public void setCid(Integer cid) {
+        this.cid = cid;
     }
 
     public void setProfit(Double profit) {
@@ -177,24 +189,8 @@ public class Order {
         this.otherCost = otherCost;
     }
 
-    public String getBillInfo() {
-        return billInfo;
-    }
-
-    public void setBillInfo(String billInfo) {
-        this.billInfo = billInfo;
-    }
-
     public Integer getCommodityId() {
         return commodityId;
-    }
-
-    public String getBill() {
-        return bill;
-    }
-
-    public void setBill(String bill) {
-        this.bill = bill;
     }
 
     public void setCommodityId(Integer commodityId) {
@@ -215,30 +211,6 @@ public class Order {
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
     }
 
     public Date getCreateTime() {
@@ -282,6 +254,38 @@ public class Order {
         this.number = number;
     }
 
+    public String getCname() {
+        return cname;
+    }
+
+    public void setCname(String cname) {
+        this.cname = cname;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getInvoiceAddress() {
+        return invoiceAddress;
+    }
+
+    public void setInvoiceAddress(String invoiceAddress) {
+        this.invoiceAddress = invoiceAddress;
+    }
+
     @Override
     public String toString() {
         return "Order{" +
@@ -291,16 +295,12 @@ public class Order {
                 ", price=" + price +
                 ", costPrice=" + costPrice +
                 ", otherCost=" + otherCost +
-                ", bill='" + bill + '\'' +
-                ", billInfo='" + billInfo + '\'' +
                 ", commodityId=" + commodityId +
                 ", invoiceId=" + invoiceId +
                 ", status='" + status + '\'' +
-                ", userName='" + userName + '\'' +
-                ", address='" + address + '\'' +
-                ", phone='" + phone + '\'' +
                 ", createTime=" + createTime +
                 ", remarks='" + remarks + '\'' +
+                ", cid=" + cid +
                 ", name='" + name + '\'' +
                 ", suid=" + suid +
                 ", zcb=" + zcb +
@@ -312,6 +312,10 @@ public class Order {
                 ", number='" + number + '\'' +
                 ", cas='" + cas + '\'' +
                 ", profit=" + profit +
+                ", cname='" + cname + '\'' +
+                ", address='" + address + '\'' +
+                ", phone='" + phone + '\'' +
+                ", invoiceAddress='" + invoiceAddress + '\'' +
                 '}';
     }
 }

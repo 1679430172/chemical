@@ -13,14 +13,14 @@ public interface OrderMapper extends BaseMapper<Order> {
      * 根据业务员id查询所有订单
      * @return
      */
-    @Select("select o.*,c.user_id suid,c.name name,i.number from `order` o inner join commodity c on o.commodity_id=c.sid inner join inventory i on i.kid=o.invoice_id where c.user_id=#{userId} or o.user_id=#{userId} order by o.create_time desc")
+    @Select("select o.*,c.user_id suid,c.name name,i.number,s.name cname,s.* from `order` o inner join commodity c on o.commodity_id=c.sid inner join inventory i on i.kid=o.invoice_id inner join client s on s.cid=o.cid where c.user_id=#{userId} or o.user_id=#{userId} order by o.create_time desc")
     public IPage<Order> selectListByUserId(@Param("userId") Integer userId,Page page);
 
     /**
      * 查询所有订单
      * @return
      */
-    @Select("select o.*,c.user_id suid,c.name name,i.number from `order` o inner join commodity c on o.commodity_id=c.sid inner join inventory i on i.kid=o.invoice_id order by o.create_time desc")
+    @Select("select o.*,c.user_id suid,c.name name,i.number,s.name cname,s.* from `order` o inner join commodity c on o.commodity_id=c.sid inner join inventory i on i.kid=o.invoice_id inner join client s on s.cid=o.cid order by o.create_time desc")
     public IPage<Order> selectList(Page page);
 
     /**
@@ -55,7 +55,7 @@ public interface OrderMapper extends BaseMapper<Order> {
      * 根据业务员id查询某时间所有订单
      * @return
      */
-    @Select("select o.*,c.user_id suid,c.name name,i.number from `order` o inner join commodity c on o.commodity_id=c.sid inner join inventory i on i.kid=o.invoice_id where c.user_id=#{userId} or o.user_id=#{userId} and c.name like ${name} and LEFT(o.create_time,10) between #{stadate} and #{enddate} order by o.create_time desc")
+    @Select("select o.*,c.user_id suid,c.name name,i.number,s.name cname,s.* from `order` o inner join commodity c on o.commodity_id=c.sid inner join inventory i on i.kid=o.invoice_id inner join client s on s.cid=o.cid where c.user_id=#{userId} or o.user_id=#{userId} and c.name like ${name} and LEFT(o.create_time,10) between #{stadate} and #{enddate} order by o.create_time desc")
     public IPage<Order> selectListByUserIdTime(@Param("stadate") String stadate,@Param("enddate") String enddate,@Param("name") String name,@Param("userId") Integer userId,Page page);
 
     /**
@@ -69,7 +69,7 @@ public interface OrderMapper extends BaseMapper<Order> {
      * 查询
      * @return
      */
-    @Select("select o.*,c.user_id suid,c.name name,i.number from `order` o inner join commodity c on o.commodity_id=c.sid inner join inventory i on i.kid=o.invoice_id where o.did=#{did}")
+    @Select("select o.*,c.user_id suid,c.name name,i.number,s.name cname,s.* from `order` o inner join commodity c on o.commodity_id=c.sid inner join inventory i on i.kid=o.invoice_id inner join client s on s.cid=o.cid where o.did=#{did}")
     public Order getById(@Param("did") Integer did);
 
 
@@ -77,7 +77,7 @@ public interface OrderMapper extends BaseMapper<Order> {
      * 根据业务员id查询所有订单
      * @return
      */
-    @Select("select o.*,c.user_id suid,c.name name,i.number from `order` o inner join commodity c on o.commodity_id=c.sid inner join inventory i on i.kid=o.invoice_id where c.user_id=#{userId} or o.user_id=#{userId} and LEFT(o.create_time,10) between #{stadate} and #{enddate} order by o.create_time desc")
+    @Select("select o.*,c.user_id suid,c.name name,i.number,s.name cname,s.* from `order` o inner join commodity c on o.commodity_id=c.sid inner join inventory i on i.kid=o.invoice_id inner join client s on s.cid=o.cid where c.user_id=#{userId} or o.user_id=#{userId} and LEFT(o.create_time,10) between #{stadate} and #{enddate} order by o.create_time desc")
     public IPage<Order> selectListByUserIdTime(@Param("stadate") String stadate,@Param("enddate") String enddate,@Param("userId") Integer userId,Page page);
 
     /**
@@ -91,13 +91,13 @@ public interface OrderMapper extends BaseMapper<Order> {
      * 根据业务员id查询所有订单
      * @return
      */
-    @Select("select o.*,c.user_id suid,c.name name,i.number from `order` o inner join commodity c on o.commodity_id=c.sid inner join inventory i on i.kid=o.invoice_id where c.user_id=#{userId} or o.user_id=#{userId} and c.name like ${name} order by o.create_time desc")
+    @Select("select o.*,c.user_id suid,c.name name,i.number,s.name cname,s.* from `order` o inner join commodity c on o.commodity_id=c.sid inner join inventory i on i.kid=o.invoice_id inner join client s on s.cid=o.cid where c.user_id=#{userId} or o.user_id=#{userId} and c.name like ${name} order by o.create_time desc")
     public IPage<Order> selectListByUserIdName(@Param("name") String name,@Param("userId") Integer userId,Page page);
 
     /**
      * 查询所有订单
      * @return
      */
-    @Select("select o.*,c.user_id suid,c.name name,i.number from `order` o inner join commodity c on o.commodity_id=c.sid inner join inventory i on i.kid=o.invoice_id where c.name like ${name} order by o.create_time desc")
+    @Select("select o.*,c.user_id suid,c.name name,i.number,s.name cname,s.* from `order` o inner join commodity c on o.commodity_id=c.sid inner join inventory i on i.kid=o.invoice_id inner join client s on s.cid=o.cid where c.name like ${name} order by o.create_time desc")
     public IPage<Order> selectListName(@Param("name") String name,Page page);
 }

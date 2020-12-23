@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Api
 @Controller
@@ -28,7 +29,13 @@ public class ClientController {
 
     @GetMapping("/")
     @ResponseBody
-    public ParseData list(){
+    public ParseData get(){
         return new ParseData(0,"",null,service.list());
+    }
+
+    @GetMapping("/list")
+    @ResponseBody
+    public List<Client> list(){
+        return service.list();
     }
 }

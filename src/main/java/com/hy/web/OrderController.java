@@ -2,6 +2,7 @@ package com.hy.web;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hy.bean.Commodity;
+import com.hy.bean.Commoditys;
 import com.hy.bean.Inventory;
 import com.hy.bean.Order;
 import com.hy.service.OrderService;
@@ -86,8 +87,15 @@ public class OrderController {
     @PostMapping("/cz")
     @ResponseBody
     public List<Commodity> cz(String cas,String name){
-        System.out.println(123);
-        return service.cz(cas,name);
+        List<Commodity> list=service.cz(cas,name);
+        for(Commodity s:list) {
+            String gid = "" + s.getSid();
+            String id = "BH00000";
+            id = id.substring(0, id.length() - gid.length()) + gid;
+            s.setCommodityInfo(id);
+            System.out.println(s.getCommodityInfo());
+        }
+        return list;
     }
 
     @RequestMapping("/toUpd")
