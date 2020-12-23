@@ -48,6 +48,16 @@ public class Order {
     private String number;//库存编号
     @TableField(exist = false)
     private String cas;//cas
+    @TableField(exist = false)
+    private Double profit;//利润
+
+    public Double getProfit() {
+        return price*amount-costPrice*amount-otherCost;
+    }
+
+    public void setProfit(Double profit) {
+        this.profit = profit;
+    }
 
     public Integer getUid() {
         return uid;
@@ -143,11 +153,11 @@ public class Order {
         if(this.status.equals("2")){
             royalties=0.0;
         }else if(session.getAttribute("userType").equals(Authority.administrator)||session.getAttribute("userType").equals(Authority.authorizedSalesman)){
-            royalties=((this.price*this.amount)-(this.costPrice*this.amount)-otherCost)*0.87*0.4;
-        }else if(this.userId.equals(this.suid)){
-            royalties=((this.price*this.amount)-(this.costPrice*this.amount)-otherCost)*0.87*0.4;
-        }else if(session.getAttribute("userId").equals(this.userId)){
             royalties=((this.price*this.amount)-(this.costPrice*this.amount)-otherCost)*0.87*0.3;
+        }else if(this.userId.equals(this.suid)){
+            royalties=((this.price*this.amount)-(this.costPrice*this.amount)-otherCost)*0.87*0.3;
+        }else if(session.getAttribute("userId").equals(this.userId)){
+            royalties=((this.price*this.amount)-(this.costPrice*this.amount)-otherCost)*0.87*0.2;
         }else if(session.getAttribute("userId").equals(this.suid)){
             royalties=((this.price*this.amount)-(this.costPrice*this.amount)-otherCost)*0.87*0.1;
         }
@@ -300,6 +310,8 @@ public class Order {
                 ", type='" + type + '\'' +
                 ", uid=" + uid +
                 ", number='" + number + '\'' +
+                ", cas='" + cas + '\'' +
+                ", profit=" + profit +
                 '}';
     }
 }
