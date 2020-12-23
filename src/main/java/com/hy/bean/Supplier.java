@@ -18,6 +18,15 @@ public class Supplier {
     private String status;
     private String  createTime;
     private String  remark;
+    private String linkman;
+
+    public String getLinkman() {
+        return linkman;
+    }
+
+    public void setLinkman(String linkman) {
+        this.linkman = linkman;
+    }
 
     public String getRemark() {
         return remark;

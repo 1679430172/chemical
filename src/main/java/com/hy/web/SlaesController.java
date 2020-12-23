@@ -74,6 +74,26 @@ public class SlaesController {
         HttpSession session = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession();
         Integer  userId =  (Integer) session.getAttribute("userId");
         sales.setUserId(userId);
+        UpdateWrapper<Sales> select=new UpdateWrapper();
+        select.eq("order_id",sales.getOrderId());
+        Sales sales1=salesServices.getOne(select);
+        if(sales1!=null){
+            System.out.println(sales);
+            UpdateWrapper<Sales> updateWrapper=new UpdateWrapper();
+            updateWrapper.set("tracking_number",sales.getTrackingNumber());
+            updateWrapper.set("tracking_name",sales.getTrackingName());
+            updateWrapper.set("status","1");
+            updateWrapper.eq("did",sales1.getDid());
+            salesServices.update(updateWrapper);
+            return Util.sueess;
+        }
+        if(sales.getTrackingName().equals("") ||sales.getTrackingNumber().equals("")){
+            sales.setTrackingName("");
+            sales.setTrackingName("");
+            sales.setStatus("2");
+            salesServices.save(sales);
+            return salesServices.updateOrder(sales.getOrderId());
+        }
         sales.setStatus("0");
         salesServices.save(sales);
         return  salesServices.updateOrder(sales.getOrderId());
@@ -83,6 +103,7 @@ public class SlaesController {
      * 修改
      * @return
      * @throws Exception
+     *
      */
     @RequestMapping("/updateInfo")
     @ResponseBody
@@ -114,7 +135,6 @@ public class SlaesController {
         updateWrapper.set("status","1");
         updateWrapper.eq("did",orderId);
         service.update(updateWrapper);
-        System.out.println(b+"----------");
         if (b==true){
             return Util.sueess;
         }else{

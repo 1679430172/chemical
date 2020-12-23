@@ -14,7 +14,16 @@ public class SupplierUsers {
     private String createTime;
     private String remark;
     private String id;
+    private String linkman;
 
+    public String getLinkman() {
+        return linkman;
+    }
+
+    public void setLinkman(String linkman) {
+        this.linkman = linkman;
+    }
+    
     public String getId() {
         return id;
     }

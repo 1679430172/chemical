@@ -39,12 +39,14 @@
                     , {field: 'name', title: '产品名称' ,width:350}
                     , {field: 'cas', title: 'cas号', width:110}
                     , {field: 'createTime', title: '创建日期', width:110,hide:true}
+                    ,{field:"cost",title:'成本',width:100}
+                    ,{field:"amount",title:'库存数量',width:100}
                     , {field: 'priceInfo', title: '报价信息',templet:'#price', width:350}
                     ,{field: 'userName', title: '业务员名称',width:110}
                     , {field: 'updateTime', title: '更新日期', width:120}
                    ,{field:'commodityInfo',title:'商品介绍',width:130,hide:true}
-                    //,{field:'filePath',title:'文件下载',templet: '#file',width:130}
-                    ,{field:"right",title:'操作',toolbar:'#barDemo',width:'415', fixed: 'right'}
+                    ,{field:'remark',title:'备注',templet: '#file',width:130}
+                    ,{field:"right",title:'操作',toolbar:'#barDemo',width:'350', fixed: 'right'}
                 ]
             ]
             ,done: function (response) {
@@ -56,12 +58,9 @@
                         //改变TR标签内字体颜色
                         tableView.find('tbody tr[data-index="' + index + '"]').css('background-color', '#33a1c9');
                         tableView.find('tbody tr[data-index="' + index + '"]').css('color', '#F0F0F0');
-                    }else if(item.amount == 0){
+                    }else if(item.amount === 0){
                         //改变TR标签内字体颜色
                         tableView.find('tbody tr[data-index="' + index + '"]').css('background-color', '#1E9FFF');
-                        tableView.find('tbody tr[data-index="' + index + '"]').css('color', '#F0F0F0');
-                    }else if(item.amount === null ){//00009C
-                        tableView.find('tbody tr[data-index="' + index + '"]').addClass("layui-bg-cyan ");
                         tableView.find('tbody tr[data-index="' + index + '"]').css('color', '#F0F0F0');
                     }
                 })
@@ -498,7 +497,7 @@
     <a class="filess" lay-event="detail">查看供应商</a>
     <a class="filess" lay-event="referral">商品介绍</a>
     {{#  if(d.imgStatus == 0){}}
-    <a href="javascript:;" class="filess"><i class="layui-icon">&#xe64a;</i>上传图片
+    <a href="javascript:;" class="filess"><i class="layui-icon">&#xe64a;</i>
         <input type="file" class="fileImg" lay-event="test1" name="file"  style="width: 80px" >
     </a>
     {{#  } else if(d.imgStatus == 1){ }}
@@ -510,7 +509,7 @@
     {{#  } }}
 
     {{#  if(d.fileStatus == 0){}}
-    <a href="javascript:;" class="filess"><i class="layui-icon">&#xe621;</i>上传文件
+    <a href="javascript:;" class="filess"><i class="layui-icon">&#xe621;</i>
         <input type="file" class="files1"   lay-event="file1" name="file" style="width: 80px" >
     </a>
     {{#  } else if(d.fileStatus == 1){ }}

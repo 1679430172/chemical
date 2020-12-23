@@ -15,6 +15,15 @@ public class Invoice {
     private String createTime;
     @TableField(exist = false)
     private Integer xid;
+    private String description;
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     public Integer getXid() {
         return xid;
@@ -71,6 +80,8 @@ public class Invoice {
                 ", price=" + price +
                 ", unit='" + unit + '\'' +
                 ", createTime='" + createTime + '\'' +
+                ", xid=" + xid +
+                ", description='" + description + '\'' +
                 '}';
     }
 }

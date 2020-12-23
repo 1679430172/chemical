@@ -47,6 +47,8 @@
                 $("#supplierId").val(e.supplierId);
                 $("#priceInfo").val(e.priceInfo);
                 $("#sid").val(e.sid);
+                $("#cost").val(e.cost);
+                $("#remark").val(e.remark);
                 $("#commodityInfo").val(e.commodityInfo);
             })
         }
@@ -135,18 +137,12 @@
                 <input type="text " id="cas" name="cas" required   placeholder="请输入cas号" autocomplete="off" class="layui-input">
             </div>
         </div>
-<!--        <div class="layui-form-item">-->
-<!--            <label class="layui-form-label">业务员</label>-->
-<!--            <div class="layui-input-inline">-->
-<!--                <select id ="userId" name="userId" ></select>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--        <div class="layui-form-item">-->
-<!--            <label class="layui-form-label">供应商名称</label>-->
-<!--            <div class="layui-input-inline">-->
-<!--                <select id ="supplierId" name="supplierId" ></select>-->
-<!--            </div>-->
-<!--        </div>-->
+        <div class="layui-form-item">
+            <label class="layui-form-label">成本</label>
+            <div class="layui-input-inline">
+                <input type="text " id="cost" name="cost" required   placeholder="请输入信息" autocomplete="off" class="layui-input">
+            </div>
+        </div>
         <div class="layui-form-item layui-form-text">
             <label class="layui-form-label">报价信息</label>
             <div class="layui-input-block">
@@ -157,6 +153,12 @@
             <label class="layui-form-label">商品介绍</label>
             <div class="layui-input-block">
                 <textarea name="commodityInfo" id="commodityInfo" placeholder="请输入内容"  class="layui-textarea" style="resize: none;"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">备注</label>
+            <div class="layui-input-inline">
+                <textarea name="remark" id="remark" placeholder="请输入信息"  class="layui-textarea" style="resize: none;"></textarea>
             </div>
         </div>
         <div class="layui-input-inline" style="padding-left: 30%;">

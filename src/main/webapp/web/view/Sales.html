@@ -46,12 +46,13 @@
                 ,toolbar: '#toolbarDemo'
                 ,defaultToolbar: []
                 ,cols: [[   //表头
-                    {type: 'radio', fixed: 'left'},
-                    {field:'did',width:100, title: 'ID', sort: true}
-                    ,{field:'userId',width:100,title: '业务员id'}
+                    {type: 'radio', fixed: 'left'}
+                    ,{field:'did', title: 'ID',hide:true}
                     ,{field:'orderIds',width:100, title: '订单编号'}
+                    ,{field:'userId',width:100,title: '业务员id'}
                     ,{field:'orderId',width:100, hide: true}
-                    ,{field:'name', title: '商品名称',width:330}
+                    ,{field:'name', title: '商品名称',width:300}
+                    ,{field:'invoiceId', title: '库存编号'}
                     ,{field:'amount', title: '数量',width:120}
                     ,{field:'trackingName',  title: '物流公司名称'}
                     ,{field:'trackingNumber', title: '物流编号'}
@@ -170,8 +171,17 @@
                             });
 
 
+                }else if(layEvent === 'edittwo'){ //添加退货单号
+                    layer.open({
+                        type: 2
+                        ,title:'订单退货'
+                        ,content:'/web/view/SalesinsertTwo.html?order_id='+data.orderId //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
+                        ,area: ['800px', '300px']
+                        ,end: function(index, layero){
+                            location.reload();
+                        }
+                    });
                 }
-
             });
 
             table.on('row(test)', function (obj) {
@@ -222,6 +232,9 @@
 <script type="text/html" id="barDemo">
     {{# if(d.status=="0"){ }}
         <a class="layui-btn layui-btn-xs" lay-event="edit">收到退货</a>
+    {{# } }}
+    {{# if(d.status=="2"){ }}
+    <a class="layui-btn layui-btn-xs" lay-event="edittwo">添加退货单号</a>
     {{# } }}
 
 </script>

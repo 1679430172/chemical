@@ -23,7 +23,7 @@ public interface SupplierMapper extends BaseMapper<Supplier> {
     @Select("select * from users")
     public List<SupplierUsers> users();
 
-    @Update("update supplier set user_id=#{supplier.userId},name=#{supplier.name},phone=#{supplier.phone},wechat=#{supplier.wechat},status=#{supplier.status},create_time=#{supplier.createTime},remark=#{supplier.remark}  where gid=#{supplier.gid}")
+    @Update("update supplier set user_id=#{supplier.userId},name=#{supplier.name},phone=#{supplier.phone},wechat=#{supplier.wechat},status=#{supplier.status},create_time=#{supplier.createTime},remark=#{supplier.remark},linkman=#{supplier.linkman}  where gid=#{supplier.gid}")
     public Integer update(@Param("supplier") Supplier supplier);
 
     @Update("update supplier set status='1' where gid=#{id}")

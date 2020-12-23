@@ -10,7 +10,7 @@ import org.apache.poi.util.SystemOutLogger;
 public class CommoditySql {
 
     public String CommoditySql(@Param("commoditys")Commoditys commoditys, @Param("supplierId") String sid){
-        StringBuffer sql=new StringBuffer(" SELECT * FROM ( SELECT * FROM (SELECT c.sid, c.`name`,c.cas,c.commodity_info , u.uid,u.user_name,price_info,c.create_time,c.update_time,c.supplier_id,i.amount,c.img_status,c.img_path,c.file_status,c.file_path FROM commodity c left join inventory i on c.cas = i.cas LEFT JOIN users u on c.user_id=u.uid left join supplier s on c.supplier_id=s.gid where i.amount is not null ) aaa UNION all SELECT * FROM (SELECT c.sid, c.`name`,c.cas,c.commodity_info , u.uid,u.user_name,price_info,c.create_time,c.update_time,c.supplier_id,i.amount,c.img_status,c.img_path,c.file_status,c.file_path FROM commodity c left join inventory i on c.cas = i.cas LEFT JOIN users u on c.user_id=u.uid left join supplier s on c.supplier_id=s.gid where i.amount is null ) bb  ORDER BY amount desc,update_time desc ) ccc  where 1=1  " );
+        StringBuffer sql=new StringBuffer(" SELECT * FROM ( SELECT * FROM (SELECT c.*, u.uid,u.user_name,i.amount FROM commodity c left join inventory i on c.cas = i.cas LEFT JOIN users u on c.user_id=u.uid left join supplier s on c.supplier_id=s.gid where i.amount is not null ) aaa UNION all SELECT * FROM (SELECT c.*, u.uid,u.user_name,i.amount FROM commodity c left join inventory i on c.cas = i.cas LEFT JOIN users u on c.user_id=u.uid left join supplier s on c.supplier_id=s.gid where i.amount is null ) bb  ORDER BY amount desc,update_time desc ) ccc  where 1=1  " );
         if (commoditys.getCreateTime() != null && commoditys.getCreateTimes() != null && !"".equals(commoditys.getCreateTime()) && !"".equals(commoditys.getCreateTimes())) {
             sql.append(" and update_time between '" + commoditys.getCreateTime() + "' and '" + commoditys.getCreateTimes() + "' ");
         }
@@ -26,10 +26,6 @@ public class CommoditySql {
         if(seach){
             sql.append(" and amount is not null");
         }
-        /*if(sid != null && !"".equals(sid) ){
-            sql.append(" and user_id ="+sid);
-        }*/
-//        sql.append(" ORDER BY amount desc,update_time desc");
         return sql.toString();
     }
 

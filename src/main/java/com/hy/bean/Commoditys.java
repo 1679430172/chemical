@@ -16,8 +16,26 @@ public class Commoditys {
     private String createTimes;//结果时间
     private String updateTime;
     private String userName;//业务员名称
-    private String amount;
+    private String amount;//库存数量
     private String ssid;
+    private String remark;//备注
+    private Double cost;
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+    public Double getCost() {
+        return cost;
+    }
+
+    public void setCost(Double cost) {
+        this.cost = cost;
+    }
 
     public String getSsid() {
         return ssid;

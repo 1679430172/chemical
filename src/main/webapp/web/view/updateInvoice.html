@@ -24,10 +24,11 @@
                     $("#sid").val(e.sid);
                     form.val("dd", { //formTest 即 class="layui-form" 所在元素属性 lay-filter="" 对应的值
                         "name":e.name
-                        ,"cas": e.cas // "name": "value"
+                        ,"cas": e.cas
                         ,"number": e.number
                         ,"price":e.price
                         ,"unit":e.unit
+                        ,"description":e.description
                     });
                 })
             }
@@ -92,6 +93,14 @@
             <input type="text" name="unit" lay-verify="did" autocomplete="off" placeholder="" class="layui-input">
         </div>
     </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">备注栏</label>
+        <div class="layui-input-inline">
+            <input type="text" name="description" lay-verify="did" autocomplete="off" placeholder="" class="layui-input">
+        </div>
+    </div>
+
     <input type="text" style="display:none" name="sid" id="sid">
 
     <div class="layui-form-item">
