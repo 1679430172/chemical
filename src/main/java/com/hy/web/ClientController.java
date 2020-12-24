@@ -38,4 +38,30 @@ public class ClientController {
     public List<Client> list(){
         return service.list();
     }
+
+    @DeleteMapping("/")
+    @ResponseBody
+    public Integer del(Integer cid){
+        boolean f=service.removeById(cid);
+        if(f){
+            return 1;
+        }
+        return 0;
+    }
+
+    @PostMapping("/upd")
+    @ResponseBody
+    public Integer upd(Client client){
+        boolean f=service.updateById(client);
+        if(f){
+            return 1;
+        }
+        return 0;
+    }
+
+    @GetMapping("/get")
+    @ResponseBody
+    public Client get(Integer cid){
+        return service.getById(cid);
+    }
 }

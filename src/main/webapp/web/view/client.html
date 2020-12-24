@@ -12,6 +12,7 @@
     <script>
         layui.use(['table'], function(){
             var table = layui.table;
+
             table.render({
                 elem: '#demo'
                 ,toolbar: '#toolbarDemo'
@@ -19,7 +20,8 @@
                 ,url: '/Client/' //数据接口
                 ,cols: [
                     [ //表头
-                        {field: 'cid', title: '编号', sort: true, width:90}
+                        {type: 'radio', fixed: 'left'}
+                        ,{field: 'cid', title: '编号', sort: true, width:90}
                         ,{field: 'name', title: '客户名称', sort: true, width:120}
                         ,{field: 'address', title: '地址', sort: true,  width:120}
                         ,{field: 'phone', title: '电话',  width:120}
@@ -37,12 +39,71 @@
                         area: ['450px', '500px'],
                         type: 2,
                         title:'添加客户',
-                        content: '/Order/toAdd' //这里content是一个普通的String
+                        content: 'addClient.html' //这里content是一个普通的String
                         ,end:function () {
                             table.reload('demo', {
                                 url: '/Client/'
                             });
                         }
+                    });
+                }else if(layEvent === 'upd'){
+                    var checkStatus = table.checkStatus(obj.config.id); //获取选中行状态
+                    var data = checkStatus.data;
+                    if(data.length==0){
+                        layer.msg('请选择一行');
+                        return;
+                    }
+                    layer.open({
+                        area: ['450px', '500px'],
+                        type: 2,
+                        title:'修改客户',
+                        content: 'updClient.html?cid='+data[0].cid  //这里content是一个普通的String
+                        ,end:function () {
+                            table.reload('demo', {
+                                url: '/Client/'
+                                ,done:function (response) {
+                                    lay('.time').each(function(){
+                                        laydate.render({
+                                            elem: this
+                                            ,trigger: 'click'
+                                        });
+                                    });
+                                }
+                            });
+                        }
+                    });
+                }else if(layEvent === 'del'){ //编辑
+                    var checkStatus = table.checkStatus(obj.config.id); //获取选中行状态
+                    var data = checkStatus.data;
+                    if(data.length==0){
+                        layer.msg('请选择一行');
+                        return;
+                    }
+                    layer.confirm('确认删除？', function(index){
+                        $.post("/Client/",{cid:data[0].cid,_method:"DELETE"},function (data) {
+                            if(data==1){
+                                layer.msg('已删除！！！', {
+                                    icon: 1,
+                                    time: 2000 //1秒关闭（如果不配置，默认是3秒）
+                                })
+                                table.reload('demo', {
+                                    url: '/Client/',
+                                    done:function (response) {
+                                        lay('.time').each(function(){
+                                            laydate.render({
+                                                elem: this
+                                                ,trigger: 'click'
+                                            });
+                                        });
+                                    }
+                                });
+                            }else{
+                                layer.msg('删除失败！！！', {
+                                    time: 1000 //1秒关闭（如果不配置，默认是3秒）
+                                })
+                            }
+                        });
+                        layer.close(index);
                     });
                 }
             });
@@ -50,6 +111,8 @@
     </script>
     <script type="text/html" id="toolbarDemo">
         <button type="button" class="layui-btn layui-btn-normal" lay-event="import" id="test1">添加</button>
+        <button type="button" class="layui-btn layui-btn-normal" lay-event="upd" >修改</button>
+        <button type="button" class="layui-btn layui-btn-normal" lay-event="del" >删除</button>
     </script>
 </head>
 <body>

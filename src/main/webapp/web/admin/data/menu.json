@@ -46,6 +46,13 @@
 		"openType": "_iframe",
 		"href": "/web/view/purchase.html"
 	},{
+	"id": "client",
+	"title": "客户管理",
+	"icon": "layui-icon layui-icon-console",
+	"type": 1,
+	"openType": "_iframe",
+	"href": "/web/view/client.html"
+	},{
 		"id": "echarts",
 		"title": "业务员管理",
 		"icon": "layui-icon layui-icon-chart",
