@@ -29,7 +29,7 @@ public class CommoditySql {
         return sql.toString();
     }
 
-    public String sql(@Param("sid")String sid,@Param("priceInfo") String priceInfo){
+     public String sql(@Param("sid")String sid,@Param("priceInfo") String priceInfo){
         StringBuffer sql=new StringBuffer("update commodity set price_info=#{priceInfo} where  sid=#{id}");
         return sql.toString();
     }
