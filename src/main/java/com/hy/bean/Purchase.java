@@ -12,6 +12,7 @@ public class Purchase {
      private String name;          //产品名称
      private String cas;           //cas号
      private Integer amount;       //数量
+    private  String bh;            //库存编号
      private double price;         //单价
      private String priceStatus;   //0单价（含税），1单价（不含税）
      private double sumPrice;      //总价
@@ -22,6 +23,8 @@ public class Purchase {
      private String trackingNumber;//物流单号
      private String createTime;    //创建日期
      private  Integer ann; //是否收到发票
+    private String lxr;
+    private  Integer zt;
     @TableField(exist = false)
     private  String gid;
     @TableField(exist = false)
@@ -160,6 +163,30 @@ public class Purchase {
         this.createTime = createTime;
     }
 
+    public String getBh() {
+        return bh;
+    }
+
+    public void setBh(String bh) {
+        this.bh = bh;
+    }
+
+    public String getLxr() {
+        return lxr;
+    }
+
+    public void setLxr(String lxr) {
+        this.lxr = lxr;
+    }
+
+    public Integer getZt() {
+        return zt;
+    }
+
+    public void setZt(Integer zt) {
+        this.zt = zt;
+    }
+
     @Override
     public String toString() {
         return "Purchase{" +
@@ -168,6 +195,7 @@ public class Purchase {
                 ", name='" + name + '\'' +
                 ", cas='" + cas + '\'' +
                 ", amount=" + amount +
+                ", bh='" + bh + '\'' +
                 ", price=" + price +
                 ", priceStatus='" + priceStatus + '\'' +
                 ", sumPrice=" + sumPrice +
@@ -179,6 +207,7 @@ public class Purchase {
                 ", createTime='" + createTime + '\'' +
                 ", ann=" + ann +
                 ", gid='" + gid + '\'' +
+                ", sessionid='" + sessionid + '\'' +
                 '}';
     }
 }

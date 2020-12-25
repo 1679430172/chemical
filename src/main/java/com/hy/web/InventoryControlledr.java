@@ -80,6 +80,7 @@ public class InventoryControlledr {
             updateWrapper.set("number",inventory.getNumber());
             updateWrapper.set("name",inventory.getName());
             updateWrapper.set("cas",inventory.getCas());
+            updateWrapper.set("cf",inventory.getCf());
             updateWrapper.set("remark",inventory.getRemark());
             updateWrapper.set("amount",inventory.getAmount());
             updateWrapper.eq("kid",inventory.getKid());

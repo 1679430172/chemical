@@ -15,6 +15,7 @@
         $("#number").val(id.number)
         $("#name").val(id.name)
         $("#cas").val(id.cas)
+        $("#cf").val(id.cf)
         $("#remark").val(id.remark)
         $("#amount").val(id.amount)
     })
@@ -118,6 +119,12 @@
         <div class="layui-form-mid layui-word-aux">kg</div>
     </div>
 
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">存放位置</label>
+        <div class="layui-input-block">
+            <input type="text" lay-verify="required" lay-reqtext="存放位置" name="cf" style="width: 200px" required   placeholder="存放位置" id="cf" autocomplete="off" class="layui-input">
+        </div>
     </div>
     <div class="layui-form-item">
     <label class="layui-form-label">备注</label>
