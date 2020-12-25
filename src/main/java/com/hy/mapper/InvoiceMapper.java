@@ -23,7 +23,7 @@ public interface InvoiceMapper extends BaseMapper<Invoice> {
     public boolean autoUpdate(@Param("number") Double number, @Param("sid")Integer sid);
 
     @Update("update invoice set name =#{invoice.name},cas=#{invoice.cas} ,number=#{invoice.number}," +
-            "price=#{invoice.price},unit=#{invoice.unit} where sid=#{invoice.sid}")
+            "price=#{invoice.price},unit=#{invoice.unit},description=#{invoice.description} where sid=#{invoice.sid}")
     public boolean updatesid(@Param("invoice")Invoice invoice);
 
 }

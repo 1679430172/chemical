@@ -15,6 +15,7 @@ public class Inventory {
     private String createTime; //创建时间
     private String updateTime; //更新时间
     private Double amount; //库存数量
+    private String cf;
     private  String remark; //备注
     @TableField(exist = false)
     private String type;//当前登录权限
@@ -93,6 +94,14 @@ public class Inventory {
         this.remark = remark;
     }
 
+    public String getCf() {
+        return cf;
+    }
+
+    public void setCf(String cf) {
+        this.cf = cf;
+    }
+
     public Double getAmount() {
         return amount;
     }
@@ -111,7 +120,10 @@ public class Inventory {
                 ", createTime='" + createTime + '\'' +
                 ", updateTime='" + updateTime + '\'' +
                 ", amount=" + amount +
+                ", cf='" + cf + '\'' +
                 ", remark='" + remark + '\'' +
+                ", type='" + type + '\'' +
+                ", xid=" + xid +
                 '}';
     }
 }

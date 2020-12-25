@@ -42,12 +42,12 @@
                 {type: 'radio', fixed: 'left'},
                 {field:'xid',title: '序号', width: 80}
                 ,{field:'number', title: '库存编号', width: '10%', minWidth: 100}
-                ,{field:'name',title: '产品名称', Width: 300,templet:'#name'}
+                ,{field:'name',title: '产品名称', Width: 80,templet:'#name'}
                 ,{field:'cas', width:80, title: 'cas号', width: '9%'}
                // ,{field:'createTime', title: '创建时间', width: '15%', sort: true , minWidth: 100}
                 ,{field:'updateTime', title: '更新日期', width:130, minWidth: 100}
                 ,{title: '库存数量', width: '10%', minWidth: 100 , toolbar:'#royalties'} //minWidth：局部定义当前单元格的最小宽度
-                ,{field:'number', title: ' 存放位置', width: '10%', minWidth: 100}
+                ,{field:'cf', title: ' 存放位置', width: '10%', minWidth: 100}
                 ,{field:'remark', title: '备注', Width: 300,templet:'#remark'}
                 ,{fixed: 'right', title: '操作', width: 220, align:'center', toolbar: '#barDemo'}
                 ]
@@ -241,7 +241,6 @@
                         table.reload('test', {
                             url: '/inventory/inventory.do'
                         });
-                    }else {
                         layer.msg('修改失败');
                         table.reload('test', {
                             url: '/inventory/inventory.do'
@@ -251,6 +250,7 @@
                 });
                 layer.close(index);
             });
+
         }
 
 

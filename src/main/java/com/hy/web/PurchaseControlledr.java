@@ -55,6 +55,15 @@ import java.util.List;
 
 
     }
+
+    @GetMapping ("/updateZ.do")
+    @ResponseBody
+    public  void  updateZ(String cid){
+        purchaseService.updatezt(cid);
+
+
+    }
+
     @RequestMapping("/updateTn.do")
     @ResponseBody
     public String  updateTn(@Param("cid") String cid,@Param("trackingNumber") String trackingNumber){

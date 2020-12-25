@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>修改客户</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="/web/component/layui/css/layui.css" media="all">
+    <script src="/web/component/layui/layui.js"></script>
+    <script type="text/javascript" src="/web/component/js/jquery-3.3.1.min.js" th:src="@{/web/component/js/jquery-3.3.1.min.js}"></script>
+    <script>
+        //Demo
+        layui.use('form', function(){
+            var form = layui.form;
+
+            var query = window.location.search.substring(1);
+            var vars = query.split("&");
+            for (var i=0;i<vars.length;i++) {
+                var pair = vars[i].split("=");
+                if(pair[0] === "cid"){
+                    $.get("/Client/get",{cid:pair[1]},function (data) {
+                        var a=eval(data);
+                        $("#cid").val(a.cid);
+                        $("#name").val(a.name);
+                        $("#address").val(a.address);
+                        $("#phone").val(a.phone);
+                        $("#invoice1").val(a.invoice);
+                        $("#invoiceAddress1").val(a.invoiceAddress);
+                        $("#remark").val(a.remark);
+                        if((null==a.invoice||""===a.invoice)&&(null==a.invoiceAddress||""===a.invoiceAddress)){
+                            $("#gr").click();
+                        }else{
+                            $("#gs").click();
+                        }
+                    });
+                }
+            }
+
+            //监听提交
+            form.on('submit(formDemo)', function(data){
+                $("#sub").attr("disabled",true);//按钮禁用
+                $.post("/Client/upd",data.field,function (d,s) {
+                    if(d=="1"){
+                        layer.msg('修改成功！！！', {
+                            icon: 1,
+                            time: 1000 //2秒关闭（如果不配置，默认是3秒）
+                        }, function(){
+                            //假设这是iframe页
+                            var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                            parent.layer.close(index); //再执行关闭
+                        });
+                    }else{
+                        $("#sub").removeAttr("disabled");//按钮启用
+                        layer.msg('修改失败！！！', {
+                            icon: 1,
+                            time: 1000 //2秒关闭（如果不配置，默认是3秒）
+                        })
+                    }
+                });
+                return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+            });
+
+            $("#gs").click(function () {
+                if(0===$("#qwe").children("#asd").length){
+                    $("#asd").clone().appendTo("#qwe");
+                    $("#qwe").children("#asd").show();
+                }
+                $("#gr").removeClass("layui-btn-normal");
+                $("#gr").addClass("layui-btn-primary");
+                $("#gs").removeClass("layui-btn-primary");
+                $("#gs").addClass("layui-btn-normal");
+            });
+            $("#gr").click(function () {
+                $("#qwe").empty();
+                $("#gs").removeClass("layui-btn-normal");
+                $("#gs").addClass("layui-btn-primary");
+                $("#gr").removeClass("layui-btn-primary");
+                $("#gr").addClass("layui-btn-normal");
+            });
+        });
+    </script>
+</head>
+<body>
+<center>
+    <button type="button" id="gs" class="layui-btn layui-btn-normal">公司客户</button>
+    <button type="button" id="gr" class="layui-btn layui-btn-primary">个人客户</button>
+</center>
+    <form class="layui-form" action="">
+        <input type="text" name="cid" id="cid" style="display: none">
+        <div class="layui-form-item">
+            <label class="layui-form-label">客户名称</label>
+            <div class="layui-input-inline" style="width: 220px;">
+                <input type="text" name="name" id="name" lay-verify="required" autocomplete="off" placeholder="" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">客户地址</label>
+            <div class="layui-input-inline" style="width: 220px;">
+                <input type="text" name="address" id="address" lay-verify="required" autocomplete="off" placeholder="" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">客户电话</label>
+            <div class="layui-input-inline" style="width: 220px;">
+                <input type="text" name="phone" id="phone" lay-verify="required" autocomplete="off" placeholder="" class="layui-input">
+            </div>
+        </div>
+        <div id="qwe">
+
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">备注</label>
+            <div class="layui-input-inline"  style="width: 220px;">
+                <textarea name="remark" id="remark" placeholder="请输入内容" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item" style="text-align: center;">
+            <button class="layui-btn" id="sub" lay-submit lay-filter="formDemo">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </form>
+    <div id="asd" style="display: none">
+        <div class="layui-form-item layui-form-text" id="invoice">
+            <label class="layui-form-label">开票资料</label>
+            <div class="layui-input-inline"  style="width: 220px;">
+                <textarea name="invoice" id="invoice1" placeholder="请输入开票资料" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item" id="invoiceAddress">
+            <label class="layui-form-label">收发票地址</label>
+            <div class="layui-input-inline" style="width: 220px;">
+                <input type="text" name="invoiceAddress" id="invoiceAddress1" autocomplete="off" placeholder="" class="layui-input">
+            </div>
+        </div>
+    </div>
+</body>
+</html>
