@@ -48,7 +48,7 @@ public class PurchaseSql {
     }
 
     public String selectListTime(@Param("stadate") String stadate, @Param("enddate") String enddate, @Param("name") String name, @Param("userId") Integer userId) {
-        StringBuffer sql = new StringBuffer("select o.*,c.user_id suid,c.name name,i.number from `order` o inner join commodity c on o.commodity_id=c.sid inner join inventory i on i.kid=o.invoice_id where 1=1 ");
+        StringBuffer sql = new StringBuffer("select o.*,c.user_id suid,c.name name,i.number,s.name cname,s.* from `order` o inner join commodity c on o.commodity_id=c.sid inner join inventory i on i.kid=o.invoice_id inner join client s on s.cid=o.cid where 1=1 ");
         if (userId != null && !"".equals(userId)) {
             sql.append(" and c.user_id=" + userId);
         }

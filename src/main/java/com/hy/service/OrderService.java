@@ -55,9 +55,6 @@ public class OrderService extends ServiceImpl<OrderMapper, Order> {
         order.setUserId((Integer) session.getAttribute("userId"));
         order.setStatus("0");
         order.setCreateTime(new Date());
-        if(null==order.getBill()){
-            order.setBill("0");
-        }
         return orderMapper.insert(order);
     }
 

@@ -72,7 +72,9 @@ public class PurchaseService extends ServiceImpl<PurchaseMapper, Purchase> {
        purchaseMapper.updateAnn(cid);
     }
 
-
+    public void updatezt(String cid){
+        purchaseMapper.updatezt(cid);
+    }
 
 
     public void  equals(Purchase purchase){

@@ -18,7 +18,7 @@ public interface InventoryMapper extends BaseMapper<Inventory> {
     @SelectProvider(type = InventorySql.class,method = "query")
     public List<Inventory> queryBy(Page page, @Param("em")Inventory inventory);
 
-    @Insert("insert into inventory(number,name,cas,create_time,update_time,amount,remark) values(#{number},#{name},#{cas},now(),now(),#{amount},#{remark})")
+    @Insert("insert into inventory(number,name,cas,create_time,update_time,amount,cf,remark) values(#{number},#{name},#{cas},now(),now(),#{amount},#{cf},#{remark})")
     public int insertinventory(Inventory inventory);
 
     @Select("select * from inventory where number=#{number}")
@@ -53,7 +53,8 @@ public interface InventoryMapper extends BaseMapper<Inventory> {
     @Update("update inventory set amount=amount-#{amount}  where number=#{number}")
     public boolean aUpdate(@Param("amount") Double amount, @Param("number")String number);
 
-
+    @Update("update inventory set cf=#{cf}  where kid=#{kid}")
+    public boolean Updatecf(@Param("cf") String remark, @Param("kid")Integer kid);
 
     @Update("update inventory set remark=#{remark}  where kid=#{kid}")
     public boolean UpdateRe(@Param("remark") String remark, @Param("kid")Integer kid);

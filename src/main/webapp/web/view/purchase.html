@@ -12,14 +12,9 @@
 </head>
 <body>
 
-
-
 <table lay-filter="test" class="layui-hide" id="test"></table>
-
-
 <script src="/web/component/layui/layui.js" charset="utf-8"></script>
 <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
-
 <script>
     var types=localStorage.getItem("types");
     var userId=localStorage.getItem("userId");
@@ -42,40 +37,24 @@
             , cols: [
                 [
                     {type: 'radio', fixed: 'left'},
-                    {field: 'gid', title: '编号', width: 100}
+                    //{field: 'gid', title: '编号', width: 100}
                     , {field: 'userName', width: 80, title: '业务员', minWidth: 100}
-                    , {field: 'name', width: 155, title: '产品名称'}
+                    , {field: 'bh', width: 100, title: '库存编号', minWidth: 100}
+                    , {field: 'name', width: 100, title: '产品名称'}
                     , {field: 'cas', title: 'cas号', width: 115}
-                    , {field: 'amount', title: '数量', width: 100, toolbar:'#royalties'}
-                    , {field: 'price', title: '单价', width: 100} //minWidth：局部定义当前单元格的最小宽度
-                    , {
-                    field: 'priceStatus', title: '是否含税', width: 100, align: "center", templet: function (d) {
-                        if (d.priceStatus == 0) {
-                            return '含税'
-                        } else {
-                            return '不含税'
-                        }
-                    }
-                }
-                    , {field: 'sumPrice', title: '总价', width: 100}
+                    , {field: 'amount', title: '数量', width: 90, toolbar:'#royalties'}
+                   // , {field: 'price', title: '单价', width: 100} //minWidth：局部定义当前单元格的最小宽度
+                    , {field: 'priceStatus', title: '是否含税', width: 89, align: "center", templet: function (d) {if (d.priceStatus == 0) { return '含税'} else {return '不含税'}}}
+                   // , {field: 'sumPrice', title: '总价', width: 100}
                     // ,{field:'status', title: '是否收货',  width: 90 , templet: function(d){if(d.status == 0){return '收货'}else{return '未收货'}} }
                     // ,{field:'userName', title: '业务员',  width: 80}
-                    , {field: '', title: '供应商名称', width: 200, toolbar: "#suppliername"}
-                    , {field: '', title: '供应商电话', width: 120, toolbar: "#supplierphone"}
-                    , {field: 'trackingNumber', title: '物流单号', width: 200}
-                    , {field: 'createTime', title: '创建日期', width: 120}
-                    , {
-                    field: 'ann', title: '发票', width: 90, templet: function (d) {
-                        if (d.ann == 1) {
-                            return '未收到'
-                        } else if (d.ann == 2) {
-                            return '已收到'
-                        }else{
-                            return ""
-                        }
-                    }
-                }
-                    , {fixed: 'right', title: '操作', width: 175, align: 'center', toolbar: '#dd'}
+                  //  , {fixed: 'right', width: '8%', align: 'center', toolbar: '#cc'}
+                    , {field: '', title: '供应商名称', width: 100, toolbar: "#xq"}
+                   // , {field: '', title: '供应商电话', width: 120, toolbar: "#supplierphone"}
+                    , {field: 'trackingNumber', title: '物流单号', width: 180}
+                    , {field: 'createTime', title: '创建日期', width: 105}
+                   // , { field: 'ann', title: '发票', width: 90, templet: function (d) {if (d.ann == 1) {return '未收到' } else if (d.ann == 2) {return '已收到'}else{return ""}}}
+                    , {fixed: 'right', title: '操作', width: 280, align: 'center', toolbar: '#dd'}
                     // , {fixed: 'right', width: '8%', align: 'center', toolbar: '#cc'}
                     // , {fixed: 'right', width: '8%', align: 'center', toolbar: '#ccs'}
                 ]]
@@ -92,7 +71,6 @@
                 })
             }
         });
-
 
         form.on('submit(formDemo)', function (data) {
             console.log(data.field);
@@ -184,7 +162,9 @@
         //监听行
         table.on('tool(test)', function (obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
             var data = obj.data //获得当前行数据
-                , layEvent = obj.event; //获得 lay-event 对应的值
+            var layEvent = obj.event; //获得 lay-event 对应的值
+
+
             if (layEvent === 'getfp') {
                 layer.open({
                     type: 1,
@@ -237,6 +217,63 @@
                     });
                     layer.close(index);
                 });
+            }else if (layEvent === 'getsh'){
+                layer.open({
+                    type: 1,
+                    area: ['250px', '150px'],
+                    btn: ['确定', '点错了'],
+                    content: '  <div align="center">您是否确认收到货？</div> ',
+                    btn1: function (index, layero) {
+                        $.ajax({
+                            type: "GET",
+                            url: "/purchase/updateZ.do?cid=" + data.cid,
+                            dataType: "json",
+                        });
+                        table.reload('test', {
+                            url: '/purchase/purchase.do'
+
+                        });
+                        layer.closeAll();
+                    },
+                    btn2: function (index, layero) {
+                        layer.closeAll();
+                    },
+                })
+            }else if(layEvent === 'detail'){ //查看
+                var content="<table class='layui-table'>  " +
+                    "  <tr>" +
+                    "    <td>单价</td>" +
+                    "    <td>"+data.price+ "</td>" +
+                    "  </tr>" +
+                    "  <tr>" +
+                    "    <td>总价</td>" +
+                    "    <td>";
+                if(0 == data.type || data.userId == data.uid || data.suid == data.uid){
+                    content+=data.sumPrice;
+                }else{
+                    content+="无权限";
+                }content+="</td>" +
+                    "  </tr>" +
+                    "  <tr>" +
+                    "    <td>供应商名称</td>" +
+                    "    <td>"+data.supplierName+ "</td>" +
+                      "<tr>"+
+                    "  <tr>" +
+                    "    <td>供应商电话</td>" +
+                    "    <td>"+data.supplierPhone+ "</td>" +
+                    "<tr>"+
+                    "  <tr>" +
+                    "    <td>联系人</td>" +
+                    "    <td>"+data.lxr+ "</td>" +
+                    "<tr>"+
+                    "</table>";
+                layer.open({
+                    area: ['300px', '300px'],
+                    title:"订单详情",
+                    type: 1,
+                    content:content
+                    //这里content是一个普通的String
+                });
             }
         })
     })
@@ -250,7 +287,9 @@
     }
 
 </style>
-
+<script type="text/html" id="xq">
+    <a class="layui-btn layui-btn-xs" lay-event="detail">查看详情</a>
+</script>
 <script type="text/html" id="toolbarDemo">&numsp; &numsp;
 
     <form class="layui-form" action=""  style="display: inline-block;">
@@ -294,7 +333,7 @@
 </script>
 
 <script type="text/html" id="dd">
-    {{#  if(d.trackingNumber == null){ }}
+    {{#  if(d.trackingNumber === null){ }}
     <button class="layui-btn  layui-btn-xs layui-btn" lay-event="up" >添加物流编号</button>
     {{#  } else if(d.trackingNumber == 1){ }}
     {{#  } }}
@@ -304,19 +343,26 @@
     {{#  } else if(d.ann == 1){ }}
 
     {{#  } }}
+
+  {{#  if(d.zt === 1){ }}
+    <button class="layui-btn layui-btn-sm layui-btn-danger layui-btn-xs" lay-event="getsh">已收到货</button>
+  {{#  } else if(d.zt == 2){ }}
+  <button class="layui-btn  layui-btn-xs layui-btn">已收到货</button>
+   {{#  } }}
+
 </script>
 
-<script type="text/html" id="cc">
-    {{#  if(d.ann === 1 && d.priceStatus == 0){ }}
-    <button class="layui-btn  layui-btn-xs layui-btn" lay-event="getfp">已收到发票</button>
-    {{#  } else if(d.ann == 1){ }}
+<!--<script type="text/html" id="cc">-->
+<!--    {{#  if(d.ann === 1 && d.priceStatus == 0){ }}-->
+<!--    <button class="layui-btn  layui-btn-xs layui-btn" lay-event="getfp">已收到发票</button>-->
+<!--    {{#  } else if(d.ann == 1){ }}-->
 
-    {{#  } }}
-</script>
-<script type="text/html" id="ccs">
-    <button class="layui-btn  layui-btn-xs layui-btn" lay-event="del">删除</button>
-    <button class="layui-btn  layui-btn-xs layui-btn" lay-event="updateT">修改</button>
-</script>
+<!--    {{#  } }}-->
+<!--</script>-->
+<!--<script type="text/html" id="ccs">-->
+<!--    <button class="layui-btn  layui-btn-xs layui-btn" lay-event="del">删除</button>-->
+<!--    <button class="layui-btn  layui-btn-xs layui-btn" lay-event="updateT">修改</button>-->
+<!--</script>-->
 <script type="text/html" id="suppliername">
     {{#  if(0 == types){ }}
     {{d.supplierName}}

@@ -28,6 +28,7 @@
                 $("#phone").val(s);
                 form.val("dd", { //formTest 即 class="layui-form" 所在元素属性 lay-filter="" 对应的值
                     "name":e[0].name
+                    ,"bh": e[0].bh // "name": "value"
                     ,"cas": e[0].cas // "name": "value"
                     ,"amount": e[0].amount
                     ,"price":e[0].price
@@ -37,6 +38,7 @@
                     ,"phone":e[0].phone
                     ,"status":e[0].status
                     ,"trackingNumber":e[0].trackingNumber
+                    ,"lxr":e[0].lxr
                     ,"createTime":e[0].createTime
                     ,"ann":e[0].ann
 
@@ -180,6 +182,7 @@
     </form>
 </div>
 <form class="layui-form" action="" lay-filter="dd">
+
     <input type="text" style="display:none" name="cid" id="cid">
     <input type="text" style="display:none" name="userId" id="userId">
     <input type="text" style="display:none" name="status" id="status">
@@ -187,6 +190,13 @@
     <input type="text" style="display:none" name="createTime" id="createTime">
     <input type="text" style="display:none" name="ann" id="ann">
 
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">库存编号</label>
+        <div class="layui-input-block" style="width: 255px;">
+            <input type="text" lay-verify="required" lay-reqtext="库存编号不能为空"  name="bh" required   placeholder="请输入库存编号" autocomplete="off" class="layui-input">
+        </div>
+    </div>
     <div class="layui-form-item">
         <label class="layui-form-label">名称</label>
         <div class="layui-input-block" style="width: 255px;">
@@ -261,7 +271,12 @@
             <input type="text"id="phone" lay-verify="required" lay-reqtext="供应商电话不能为空" name="supplierPhone" required  adisabled="disabled" placeholder="" autocomplete="off" class="layui-input">
         </div>
     </div>
-
+    <div class="layui-form-item">
+        <label class="layui-form-label">联系人</label>
+        <div class="layui-input-block" style="width: 255px;">
+            <input type="text" id="lxr" lay-verify="required" lay-reqtext="联系人不能为空"  name="lxr" required   placeholder="请输入联系人" autocomplete="off" class="layui-input">
+        </div>
+    </div>
     <div class="layui-form-item" style="text-align: center">
         <button class="layui-btn" lay-submit lay-filter="formDemo"  id="sub">立即提交</button>
         <button type="reset" class="layui-btn layui-btn-primary">重置</button>

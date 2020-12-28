@@ -15,9 +15,19 @@
                 var list=eval(data);
                 for(var i=0;i<list.length;i++){
                     var option=$("<option>").val(list[i].sid);
-                    option.text(list[i].name);
+                    option.text(list[i].name+list[i].commodityInfo);
                     option.attr("title",list[i].cas);
                     $("#sid").append(option);
+                }
+                form.render('select');
+            });
+
+            $.get("/Client/list",{},function (data) {
+                var list=eval(data);
+                for(var i=0;i<list.length;i++){
+                    var option=$("<option>").val(list[i].cid);
+                    option.text(list[i].name);
+                    $("#cid").append(option);
                 }
                 form.render('select');
             });
@@ -31,7 +41,7 @@
                     $("#sid").append(option);
                     for(var i=0;i<list.length;i++){
                         var option=$("<option>").val(list[i].sid);
-                        option.text(list[i].name);
+                        option.text(list[i].name+list[i].commodityInfo);
                         option.attr("title",list[i].cas);
                         $("#sid").append(option);
                     }
@@ -59,6 +69,7 @@
                 var indexGID = data.elem.selectedIndex;
                 //获取当前选中下拉项的自定义属性值 title
                 var cas = data.elem[indexGID].title;
+                var sid = data.elem[indexGID].value;
                 $.get("/inventory/",{cas:cas},function (data) {
                     var list=eval(data);
                     $("#invoiceId").empty();
@@ -68,6 +79,10 @@
                         $("#invoiceId").append(option);
                     }
                     form.render('select');
+                });
+                $.get("/Commodity/commodityById.do/",{sid:sid},function (data) {
+                    var com=eval(data);
+                    $("#costPrice").val(com.cost);
                 });
             })
 
@@ -148,25 +163,13 @@
     <div class="layui-form-item">
         <label class="layui-form-label">成本</label>
         <div class="layui-input-inline"  style="width: 220px;">
-            <input type="text" name="costPrice" lay-verify="required|number" autocomplete="off" placeholder="" class="layui-input">
+            <input type="text" id="costPrice" disabled="disabled" name="costPrice" lay-verify="required|number" autocomplete="off" placeholder="" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">其他成本</label>
         <div class="layui-input-inline"  style="width: 220px;">
             <input type="text" name="otherCost" lay-verify="required|number" autocomplete="off" placeholder="" class="layui-input">
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">有无票据</label>
-        <div class="layui-input-inline" id="bills"  style="width: 220px;">
-            <input type="checkbox" id="bill" name="bill" value="1" lay-skin="switch" lay-text="有|无">
-        </div>
-    </div>
-    <div class="layui-form-item layui-form-text" style="display: none" id="billInfo">
-        <label class="layui-form-label">开票资料</label>
-        <div class="layui-input-inline"  style="width: 220px;">
-            <textarea name="billInfo" placeholder="请输入开票资料" class="layui-textarea"></textarea>
         </div>
     </div>
     <div class="layui-form-item layui-form-text">
@@ -177,22 +180,12 @@
             </select>
         </div>
     </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">客户名称</label>
-        <div class="layui-input-inline"  style="width: 220px;">
-            <input type="text" name="userName" lay-verify="required" autocomplete="off" placeholder="" class="layui-input">
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">地址</label>
-        <div class="layui-input-inline"  style="width: 220px;">
-            <input type="text" name="address" lay-verify="required" autocomplete="off" placeholder="" class="layui-input">
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">联系电话</label>
-        <div class="layui-input-inline"  style="width: 220px;">
-            <input type="text" name="phone" lay-verify="required|phone" autocomplete="off" placeholder="" class="layui-input">
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">客户</label>
+        <div class="layui-input-inline" style="width: 220px;">
+            <select name="cid" lay-verify="required" id="cid">
+                <option value="">请选择一个客户</option>
+            </select>
         </div>
     </div>
     <div class="layui-form-item layui-form-text">
