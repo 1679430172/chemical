@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hy.bean.Inventory;
-import com.hy.bean.Purchase;
 import com.hy.util.InventorySql;
 import org.apache.ibatis.annotations.*;
 
