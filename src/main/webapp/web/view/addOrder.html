@@ -33,7 +33,7 @@
             });
 
             $("#cz").click(function () {
-                $.post("/Order/cz",{cas:$("#cas").val(),name:$("#name").val()},function (data) {
+                $.post("/Order/cz",{cas:$("#cas").val()},function (data) {
                     var list=eval(data);
                     $("#sid").empty();
                     var option=$("<option>").val('');
@@ -121,21 +121,13 @@
             <input type="text" name="cas" id="cas" autocomplete="off" placeholder="" class="layui-input" style="width: 220px;">
         </div>
     </div>
-    <div class="layui-form-item layui-form-text">
-        <label class="layui-form-label">商品名称</label>
-        <div class="layui-input-inline">
-            <input type="text" name="name" id="name" autocomplete="off" placeholder="" class="layui-input" style="width: 220px;">
-        </div>
-    </div>
     <div class="layui-form-item layui-form-text" style="text-align: center;">
         <button type="button" class="layui-btn layui-btn-sm" id="cz" style="display: inline-block">查找产品</button>
     </div>
-
-
     <div class="layui-form-item layui-form-text">
         <label class="layui-form-label">商品名称</label>
         <div class="layui-input-inline" style="width: 220px;">
-            <select name="commodityId" lay-verify="required" id="sid" lay-filter="commodity">
+            <select name="commodityId" lay-verify="required" id="sid" lay-filter="commodity" lay-search>
                 <option value="">请选择一个商品</option>
             </select>
         </div>
@@ -183,7 +175,7 @@
     <div class="layui-form-item layui-form-text">
         <label class="layui-form-label">客户</label>
         <div class="layui-input-inline" style="width: 220px;">
-            <select name="cid" lay-verify="required" id="cid">
+            <select name="cid" lay-verify="required" id="cid" lay-search>
                 <option value="">请选择一个客户</option>
             </select>
         </div>

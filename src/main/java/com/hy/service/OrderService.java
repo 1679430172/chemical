@@ -84,15 +84,15 @@ public class OrderService extends ServiceImpl<OrderMapper, Order> {
         return orderMapper.updateStatus(did);
     }
 
-    public ParseData selectListTime(String stadate,String enddate,String name,Page page){
+    public ParseData selectListTime(String stadate,String enddate,String name,String cname,Page page){
         HttpSession session = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession();
         IPage<Order> iPage=null;
         if(session.getAttribute("userType").equals(Authority.administrator)){
-            iPage=orderMapper.selectListTime(stadate,enddate,name,null,page);
+            iPage=orderMapper.selectListTime(stadate,enddate,name,cname,null,page);
         }else if(session.getAttribute("userType").equals(Authority.authorizedSalesman)){
-            iPage=orderMapper.selectListTime(stadate,enddate,name,null,page);
+            iPage=orderMapper.selectListTime(stadate,enddate,name,cname,null,page);
         }else if(session.getAttribute("userType").equals(Authority.salesman)){
-            iPage=orderMapper.selectListTime(stadate,enddate,name,(Integer)session.getAttribute("userId"),page);
+            iPage=orderMapper.selectListTime(stadate,enddate,name,cname,(Integer)session.getAttribute("userId"),page);
         }
         List<Order> list=iPage.getRecords();
         for(Order s:list){
@@ -106,10 +106,9 @@ public class OrderService extends ServiceImpl<OrderMapper, Order> {
         return new ParseData(0,"",Integer.parseInt(Long.toString(iPage.getTotal())),iPage.getRecords());
     }
 
-    public List<Commodity> cz(String cas,String name){
+    public List<Commodity> cz(String cas){
         QueryWrapper queryWrapper=new QueryWrapper();
         queryWrapper.eq(StringUtils.isNotBlank(cas),"cas",cas);
-        queryWrapper.eq(StringUtils.isNotBlank(name),"name",name);
         return commodityService.list(queryWrapper);
     }
 

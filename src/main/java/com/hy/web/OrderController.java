@@ -79,15 +79,15 @@ public class OrderController {
 
     @GetMapping("/time")
     @ResponseBody
-    public ParseData select(String stadate,String enddate,String name,Integer page, Integer limit) throws Exception {
+    public ParseData select(String stadate,String enddate,String name,String cname,Integer page, Integer limit) throws Exception {
         Page page1=new Page(page,limit);
-        return service.selectListTime(stadate,enddate,name,page1);
+        return service.selectListTime(stadate,enddate,name,cname,page1);
     }
 
     @PostMapping("/cz")
     @ResponseBody
-    public List<Commodity> cz(String cas,String name){
-        List<Commodity> list=service.cz(cas,name);
+    public List<Commodity> cz(String cas){
+        List<Commodity> list=service.cz(cas);
         for(Commodity s:list) {
             String gid = "" + s.getSid();
             String id = "BH00000";
@@ -136,7 +136,7 @@ public class OrderController {
     }
     @ResponseBody
     @RequestMapping("/imgUpload")
-    public void imgUpload(HttpServletResponse response,String name,String amount,String companyName,String phone){
+    public void imgUpload(HttpServletResponse response,String name,String count,String company,String phone){
         try {
             response.setContentType("image/png");
             //获取批号（当前日期减10天，格式：20201214）
@@ -144,7 +144,7 @@ public class OrderController {
             c.add(Calendar.DAY_OF_MONTH,-10);
             String number=new SimpleDateFormat("yyyyMMdd").format(c.getTime());
             //基础信息
-            BufferedImage image = ImgUtils.imgSave(name,amount+"千克",number,"广州远达新材料有限公司","18620540041");
+            BufferedImage image = ImgUtils.imgSave(name,count+"千克",number,company,phone);
             //以png格式向客户端发送
             response.setHeader("Content-Disposition", "attachment; filename=image.png");
             ServletOutputStream os = response.getOutputStream();

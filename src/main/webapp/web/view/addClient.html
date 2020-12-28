@@ -80,7 +80,13 @@
         <div class="layui-form-item">
             <label class="layui-form-label">客户电话</label>
             <div class="layui-input-inline" style="width: 220px;">
-                <input type="text" name="phone" lay-verify="required" autocomplete="off" placeholder="" class="layui-input">
+                <input type="text" name="phone" lay-verify="required|phone" autocomplete="off" placeholder="" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">联系人</label>
+            <div class="layui-input-inline" style="width: 220px;">
+                <input type="text" name="cname" lay-verify="required" autocomplete="off" placeholder="" class="layui-input">
             </div>
         </div>
         <div id="qwe">
@@ -101,13 +107,13 @@
         <div class="layui-form-item layui-form-text" id="invoice">
             <label class="layui-form-label">开票资料</label>
             <div class="layui-input-inline"  style="width: 220px;">
-                <textarea name="invoice" id="invoice1" placeholder="请输入开票资料" class="layui-textarea"></textarea>
+                <textarea name="invoice" id="invoice1" lay-verify="required" placeholder="请输入开票资料" class="layui-textarea"></textarea>
             </div>
         </div>
         <div class="layui-form-item" id="invoiceAddress">
             <label class="layui-form-label">收发票地址</label>
             <div class="layui-input-inline" style="width: 220px;">
-                <input type="text" name="invoiceAddress" id="invoiceAddress1" autocomplete="off" placeholder="" class="layui-input">
+                <input type="text" name="invoiceAddress" lay-verify="required" id="invoiceAddress1" autocomplete="off" placeholder="" class="layui-input">
             </div>
         </div>
     </div>
