@@ -28,16 +28,12 @@
             ,toolbar: '#toolbarDemo'
             ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
             ,cols: [[
-                {field:'id', width:80, title: 'ID'}
-                ,{field:'bt', width:80, title: '标题'}
-                ,{field:'nr', width:80, title: '内容'}
-                ,{field:'fjr', width:80, title: '发布人'}
-                ,{field: 'status', title: '状态', templet:'<div class="layui-form-item">\n' +
-                        '    <div class="layui-input-block">\n' +
-                        '      <input type="checkbox" name="close" lay-skin="switch" lay-text="发布|隐藏">\n' +
-                        '    </div>\n' +
-                        '  </div>'}
-                ,{field:'sj',  width:80, title: '发布时间'}
+                {field:'id', width:20, title: 'ID'}
+                ,{field:'bt', width:100, title: '标题'}
+                ,{field:'nr', title: '内容', Width: 10,templet:'#nr'}
+                ,{field:'fjr', width:100, title: '发布人'}
+                ,{field: 'status', width:100,title: '状态', templet:''}
+                ,{field:'sj',  width:100, title: '发布时间'}
 
             ]]
         });
@@ -120,9 +116,23 @@
         }
     });
 
-
+    $(document).on("dblclick",".nr",function () {
+        var that=this;
+        console.log(that.id)
+        layer.open({
+            area: ['300px', '300px'],
+            title:"内容",
+            type: 1,
+            content:"<div style='padding: 10px;'>"+that.id+"</div>"
+            //这里content是一个普通的String
+        });
+    })
 
 </script>
+<script type="text/html" id="nr">
+    <div class="nr" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;"  id="{{d.cf}}">{{d.nr}}</div>
+</script>
+
 <script type="text/html" id="toolbarDemo">&numsp; &numsp;
 <button class="layui-btn layui-btn-normal"  lay-event="add">添加</button>
 <button class="layui-btn  layui-btn-normal"  style="margin-left: 0px"  lay-event="upd">修改</button>
