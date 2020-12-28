@@ -8,6 +8,14 @@
 		"openType": "_iframe"
 	},
 	{
+		"id": "gg",
+		"title": "公告栏",
+		"type": 1,
+		"icon": "layui-icon layui-icon-console",
+		"href": "/web/view/Gg.html",
+		"openType": "_iframe"
+	},
+	{
 		"id": "commodity",
 		"title": "商品管理",
 		"type": 1,

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title>公告添加</title>
+    <link rel="stylesheet" href="/web/component/layui/css/layui.css" media="all">
+    <script src="/web/component/layui/layui.js"></script>
+    <script type="text/javascript" src="/web/component/js/jquery-3.3.1.min.js" th:src="@{/web/component/js/jquery-3.3.1.min.js}"></script>
+    <script>
+        //Demo
+        layui.use('form', function(){
+            var form = layui.form;
+
+            form.on("select(aihao)",function (d) {
+                var s=$("#supplierName option:selected").attr("id");
+                $("#phone").val(s);
+            })
+
+            //监听提交
+            form.on('submit(formDemo)', function(data){
+                $("#sub").attr("disabled",true);//按钮禁用
+                console.log(data.elem) //被执行事件的元素DOM对象，一般为button对象
+                console.log(data.form) //被执行提交的form对象，一般在存在form标签时才会返回
+                console.log(data.field)//当前容器的全部表单字段，名值对形式：{name: value}
+                //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+                $.post("/purchase/add.do",data.field,function (d) {
+                    if(d==="1"){
+                        layer.msg('添加成功！！！', {
+                            icon: 1,
+                            time: 1000 //2秒关闭（如果不配置，默认是3秒）
+                        }, function(){
+                            $("#sub").removeAttr("disabled");//按钮启用
+                            //假设这是iframe页
+                            var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                            parent.layer.close(index); //再执行关闭
+                        });
+                    }
+                });
+                return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+            });
+
+        });
+    </script>
+</head>
+<body>
+<form class="layui-form" action="">
+    <div class="layui-form-item">
+        <label class="layui-form-label">ID</label>
+        <div class="layui-input-block" style="width: 255px;">
+            <input type="text" lay-verify="required" lay-reqtext="ID"  name="id" required   placeholder="请输入库存编号  (没有可填无)" autocomplete="off" class="layui-input">
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">标题</label>
+            <div class="layui-input-block" style="width: 255px;">
+                <input type="text" lay-verify="required" lay-reqtext="名称不能为空"  name="bt" required   placeholder="请输入名称" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">内容</label>
+            <div class="layui-input-block">
+                <textarea lay-reqtext="内容不能为空" placeholder="请输入内容" name="nr" class="layui-textarea"></textarea>
+            </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">发布人</label>
+            <div class="layui-input-inline" style="width: 255px;">
+                <input type="text" lay-verify="required" lay-reqtext="数量不能为空" name="fjt" required   placeholder="请输入数量" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">状态</label>
+            <div class="layui-input-block" style="width: 255px;">
+                <input type="text" lay-verify="required" lay-reqtext="状态不能为空"  name="zt" required   placeholder="请输入联系人" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item" style="text-align: center">
+            <button class="layui-btn" lay-submit lay-filter="formDemo"  id="sub">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+</form>
+</body>
+</html>

@@ -47,7 +47,7 @@
                // ,{field:'createTime', title: '创建时间', width: '15%', sort: true , minWidth: 100}
                 ,{field:'updateTime', title: '更新日期', width:130, minWidth: 100}
                 ,{title: '库存数量', width: '10%', minWidth: 100 , toolbar:'#royalties'} //minWidth：局部定义当前单元格的最小宽度
-                ,{field:'cf', title: ' 存放位置', width: '10%', minWidth: 100}
+                ,{field:'cf', title: '存放位置', Width: 300,templet:'#cf'}
                 ,{field:'remark', title: '备注', Width: 300,templet:'#remark'}
                 ,{fixed: 'right', title: '操作', width: 220, align:'center', toolbar: '#barDemo'}
                 ]
@@ -94,6 +94,17 @@
                 //这里content是一个普通的String
             });
         })
+        $(document).on("dblclick",".cf",function () {
+            var that=this;
+            console.log(that.id)
+            layer.open({
+                area: ['300px', '300px'],
+                title:"存放位置",
+                type: 1,
+                content:"<div style='padding: 10px;'>"+that.id+"</div>"
+                //这里content是一个普通的String
+            });
+        })
         $(document).on("dblclick",".remark",function () {
             var that=this;
             console.log(that.id)
@@ -105,6 +116,8 @@
                 //这里content是一个普通的String
             });
         })
+
+
         table.on('row(test)', function (obj) {
             obj.tr.addClass('layui-table-click').siblings().removeClass('layui-table-click')
             obj.tr.find('div.layui-unselect.layui-form-radio')[1].click();
@@ -304,6 +317,12 @@
                 </div>
                 <div class="layui-inline">
                     <label class="layui-inline">编号</label>
+                    <div class="layui-inline">
+                        <input type="text" name="number" lay-verify="title" autocomplete="off" placeholder="请输入" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-inline">最大编号</label>
                     <div class="layui-inline">
                         <input type="text" name="number" lay-verify="title" autocomplete="off" placeholder="请输入" class="layui-input">
                     </div>
