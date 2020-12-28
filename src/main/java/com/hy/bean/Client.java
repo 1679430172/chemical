@@ -1,6 +1,7 @@
 package com.hy.bean;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
@@ -14,6 +15,9 @@ public class Client {
     private String remark;
     private String invoice;
     private String invoiceAddress;
+    private String cname;
+    @TableField(exist = false)
+    private String cids;
 
     public Integer getCid() {
         return cid;
@@ -21,6 +25,14 @@ public class Client {
 
     public void setCid(Integer cid) {
         this.cid = cid;
+    }
+
+    public String getCname() {
+        return cname;
+    }
+
+    public void setCname(String cname) {
+        this.cname = cname;
     }
 
     public String getName() {
@@ -71,6 +83,14 @@ public class Client {
         this.invoiceAddress = invoiceAddress;
     }
 
+    public String getCids() {
+        return cids;
+    }
+
+    public void setCids(String cids) {
+        this.cids = cids;
+    }
+
     @Override
     public String toString() {
         return "Client{" +
@@ -81,6 +101,8 @@ public class Client {
                 ", remark='" + remark + '\'' +
                 ", invoice='" + invoice + '\'' +
                 ", invoiceAddress='" + invoiceAddress + '\'' +
+                ", cname='" + cname + '\'' +
+                ", cids='" + cids + '\'' +
                 '}';
     }
 }

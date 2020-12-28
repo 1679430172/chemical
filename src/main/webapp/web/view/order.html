@@ -194,6 +194,10 @@
                         "    <td>"+data.cname+"  "+data.address+"  "+data.phone+"</td>" +
                         "  </tr>" +
                         "  <tr>" +
+                        "    <td>收票地址</td>" +
+                        "    <td>"+data.invoiceAddress+"</td>" +
+                        "  </tr>" +
+                        "  <tr>" +
                         "    <td>库存编号</td>" +
                         "    <td>"+data.number+"</td>" +
                         "  </tr>" +
@@ -216,8 +220,13 @@
                 }else if(layEvent=="imgUpload"){
 
                     var data1="name="+data.name+"&amount="+data.amount+"&companyName="+data.userName+"&phone="+data.phone
-                    window.location.href="/Order/imgUpload?"+data1
-
+                    layer.open({
+                        area: ['470px', '300px'],
+                        title:"生成标签",
+                        type: 2,
+                        content:'label.html?'+data1
+                        //这里content是一个普通的String
+                    });
                 }
             });
 
@@ -389,6 +398,9 @@
                 <div class="layui-input-inline">
                     <input type="text" name="name" autocomplete="off"  placeholder="商品名称" class="layui-input" style="width: 220px;display: inline-block">
                 </div>&nbsp;&nbsp;
+                <div class="layui-input-inline">
+                    <input type="text" name="cname" autocomplete="off"  placeholder="客户名称" class="layui-input" style="width: 220px;display: inline-block">
+                </div>
                 <div class="layui-input-inline">
                     <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">查询</button>
                 </div>

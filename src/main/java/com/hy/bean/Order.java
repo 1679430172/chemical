@@ -165,13 +165,13 @@ public class Order {
         if(this.status.equals("2")){
             royalties=0.0;
         }else if(session.getAttribute("userType").equals(Authority.administrator)||session.getAttribute("userType").equals(Authority.authorizedSalesman)){
-            royalties=((this.price*this.amount)-(this.costPrice*this.amount)-otherCost)*0.87*0.3;
+            royalties=((this.price*this.amount)-(this.costPrice*this.amount)-otherCost)*0.83*0.3;
         }else if(this.userId.equals(this.suid)){
-            royalties=((this.price*this.amount)-(this.costPrice*this.amount)-otherCost)*0.87*0.3;
+            royalties=((this.price*this.amount)-(this.costPrice*this.amount)-otherCost)*0.83*0.3;
         }else if(session.getAttribute("userId").equals(this.userId)){
-            royalties=((this.price*this.amount)-(this.costPrice*this.amount)-otherCost)*0.87*0.2;
+            royalties=((this.price*this.amount)-(this.costPrice*this.amount)-otherCost)*0.83*0.2;
         }else if(session.getAttribute("userId").equals(this.suid)){
-            royalties=((this.price*this.amount)-(this.costPrice*this.amount)-otherCost)*0.87*0.1;
+            royalties=((this.price*this.amount)-(this.costPrice*this.amount)-otherCost)*0.83*0.1;
         }
         DecimalFormat df = new DecimalFormat("0.00");
         return df.format(royalties);
