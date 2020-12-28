@@ -23,6 +23,7 @@
                         var a=eval(data);
                         $("#cid").val(a.cid);
                         $("#name").val(a.name);
+                        $("#cname").val(a.cname);
                         $("#address").val(a.address);
                         $("#phone").val(a.phone);
                         $("#invoice1").val(a.invoice);
@@ -104,6 +105,12 @@
             <label class="layui-form-label">客户电话</label>
             <div class="layui-input-inline" style="width: 220px;">
                 <input type="text" name="phone" id="phone" lay-verify="required" autocomplete="off" placeholder="" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">联系人</label>
+            <div class="layui-input-inline" style="width: 220px;">
+                <input type="text" name="cname" id="cname" lay-verify="required" autocomplete="off" placeholder="" class="layui-input">
             </div>
         </div>
         <div id="qwe">

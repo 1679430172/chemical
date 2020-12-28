@@ -1,6 +1,7 @@
 package com.hy.web;
 
 import com.hy.bean.Client;
+import com.hy.bean.Order;
 import com.hy.service.ClientService;
 import com.hy.util.ParseData;
 import io.swagger.annotations.Api;
@@ -30,7 +31,14 @@ public class ClientController {
     @GetMapping("/")
     @ResponseBody
     public ParseData get(){
-        return new ParseData(0,"",null,service.list());
+        List<Client> list=service.list();
+        for(Client s:list){
+            String did=""+s.getCid();
+            String id="KH00000";
+            id=id.substring(0,id.length()-did.length())+did;
+            s.setCids(id);
+        }
+        return new ParseData(0,"",null,list);
     }
 
     @GetMapping("/list")

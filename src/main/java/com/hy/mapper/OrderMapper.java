@@ -63,7 +63,7 @@ public interface OrderMapper extends BaseMapper<Order> {
      * @return
      */
     @SelectProvider(type = PurchaseSql.class,method = "selectListTime")
-    public IPage<Order> selectListTime(@Param("stadate") String stadate,@Param("enddate") String enddate,@Param("name") String name,@Param("userId") Integer userId, Page page);
+    public IPage<Order> selectListTime(@Param("stadate") String stadate,@Param("enddate") String enddate,@Param("name") String name,@Param("cname") String cname,@Param("userId") Integer userId, Page page);
 
     /**
      * 查询
