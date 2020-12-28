@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>公告栏</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="/web/component/layui/css/layui.css" media="all">
+    <script type="text/javascript" src="/web/component/js/jquery-3.3.1.min.js" th:src="@{/web/component/js/jquery-3.3.1.min.js}"></script>
+    <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
+</head>
+<body>
+
+<table class="layui-hide" id="test"></table>
+
+
+<script src="/web/component/layui/layui.js" charset="utf-8"></script>
+<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+
+<script>
+    layui.use('table', function(){
+        var table = layui.table;
+
+        table.render({
+            elem: '#test'
+            ,url:'/Gg/Gg.do'
+            ,toolbar: '#toolbarDemo'
+            ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+            ,cols: [[
+                {field:'id', width:80, title: 'ID'}
+                ,{field:'bt', width:80, title: '标题'}
+                ,{field:'nr', width:80, title: '内容'}
+                ,{field:'fjr', width:80, title: '发布人'}
+                ,{field: 'status', title: '状态', templet:'<div class="layui-form-item">\n' +
+                        '    <div class="layui-input-block">\n' +
+                        '      <input type="checkbox" name="close" lay-skin="switch" lay-text="发布|隐藏">\n' +
+                        '    </div>\n' +
+                        '  </div>'}
+                ,{field:'sj',  width:80, title: '发布时间'}
+
+            ]]
+        });
+    });
+
+    //监听表头
+    table.on('toolbar(test)',function (obj) { //添加
+        var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+        if(layEvent == 'add'){
+            layer.open({
+                type: 2,
+                //offset: 'auto',、
+                skin: 'layui-layer-rim',
+                area: ['370px', '500px'],
+                content: '/web/view/GdAdd.html?', //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
+                end:function () {
+                    table.reload('test', {
+                        url: '/Gg/Gg.do'
+                    });
+                }
+            });
+        }else if(layEvent === 'del'){ //删除
+            var checkStatus = table.checkStatus(obj.config.id); //获取选中行状态
+            var data = checkStatus.data;
+            if(data.length==0){
+                layer.msg('请选择一行');
+                return;
+            }
+
+            layer.confirm('确认删除？', function (index) {
+                // obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
+                layer.close(index);
+                $.ajax({
+                    url: '/inventory/delete?id='+data[0].id,
+                    type: 'get',
+                    dataType:"json",
+                    contentType:"application/json",
+                    success: function (data1) {
+                        table.reload('test', {
+                            url: '/Gg/Gg.do'
+                        });
+                        if (data1==="1"){
+                            layer.msg('删除成功！！！', {
+                                icon: 1,
+                                time: 1000 //2秒关闭（如果不配置，默认是3秒）
+                            }, function(){
+                                // //假设这是iframe页
+                                // var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                                // parent.layer.close(index); //再执行关闭
+                            });
+
+                        }
+                        if(data1==="2"){
+                            layer.msg("删除失败");
+                        }
+                    }
+                });
+            });
+        }else if(layEvent=='upd'){
+            var checkStatus = table.checkStatus(obj.config.id); //获取选中行状态
+            var data = checkStatus.data;
+            if(data.length==0){
+                layer.msg('请选择一行');
+                return;
+            }
+            console.log()
+
+            layer.open({
+                type: 2,
+                //offset: 'auto',、
+                skin: 'layui-layer-rim',
+                area: ['370px', '500px'],
+                content: '/web/view/inventoryEdit.html?id='+encodeURI(JSON.stringify(data[0])), //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
+                end:function () {
+                    table.reload('test', {
+                        url: '/Gg/Gg.do'
+                    });
+                }
+            });
+        }
+    });
+
+
+
+</script>
+<script type="text/html" id="toolbarDemo">&numsp; &numsp;
+<button class="layui-btn layui-btn-normal"  lay-event="add">添加</button>
+<button class="layui-btn  layui-btn-normal"  style="margin-left: 0px"  lay-event="upd">修改</button>
+<button class="layui-btn  layui-btn-danger"  style="margin-left: 0px"  lay-event="del">删除</button>
+</script>
+</body>
+</html>
