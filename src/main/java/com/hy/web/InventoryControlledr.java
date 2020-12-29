@@ -4,12 +4,16 @@ package com.hy.web;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hy.bean.Inventory;
+import com.hy.bean.Purchase;
 import com.hy.mapper.InventoryMapper;
 import com.hy.service.InventoService;
 import com.hy.util.ParseData;
 import com.hy.util.Util;
 import io.swagger.annotations.Api;
+import org.apache.poi.util.SystemOutLogger;
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -99,9 +103,9 @@ public class InventoryControlledr {
         return InventoService.list(queryWrapper);
     }
 
-    @RequestMapping("/queryinventory.do")
+    @RequestMapping("/queryInventory.do")
     @ResponseBody
-    public ParseData queryinventory(Integer page, Integer limit,Inventory inventory) {
+    public ParseData queryInventory(Integer page, Integer limit,Inventory inventory) {
         System.out.println("inventory:" + inventory);
         QueryWrapper<Inventory> queryWrapper=new QueryWrapper<>();
         if(inventory.getName() != null&&!"".equals(inventory.getName())){
@@ -124,6 +128,18 @@ public class InventoryControlledr {
 
     }
 
+    @RequestMapping("/queryN.do")
+    @ResponseBody
+    public ParseData queryN(Integer page, Integer limit , String number){
+        IPage<Inventory> iPage= InventoService.queryN(page,limit,number);
+        List<Inventory> list = iPage.getRecords();
+        page = page == 0 ? 1 : page;
+        limit = limit == 0 ? 20 : limit;
+        for (int i = 0; i < list.size(); i++) {
+            list.get(i).setXid((page - 1) * limit + (i + 1));
+        }
+        return new ParseData(0,"",Integer.parseInt(Long.toString(iPage.getTotal())),list);
+    }
 
     @RequestMapping("/delete")
     @ResponseBody

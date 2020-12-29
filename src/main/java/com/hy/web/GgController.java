@@ -9,6 +9,7 @@ import com.hy.bean.Purchase;
 import com.hy.service.GgService;
 import com.hy.service.PurchaseService;
 import com.hy.util.ParseData;
+import com.hy.util.Util;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -36,6 +37,29 @@ public class GgController {
             list.get(i).setId((page - 1) * limit + (i + 1));
         }
         return new ParseData(0,"",Integer.parseInt(Long.toString(iPage.getTotal())),list);
+    }
+
+    @RequestMapping("/addGg.do")
+    @ResponseBody
+    public  String addPurchase(Gg gg) throws Exception {
+        try {
+            ggService.addgg(gg);
+        } catch (Exception e) {
+            return Util.fail;
+        }
+        return Util.succeed;
+    }
+
+    @RequestMapping("/delete")
+    @ResponseBody
+    public String detelep(Integer id){
+        return ggService.detelep(id);
+    }
+
+    @RequestMapping ("/autoUpdate.do" )
+    @ResponseBody
+    public Integer autoUpdate(Gg gg){
+        return ggService.autoUpdateBySid(gg);
     }
 }
 

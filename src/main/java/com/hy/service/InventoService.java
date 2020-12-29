@@ -4,16 +4,17 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hy.bean.Inventory;
-import com.hy.bean.Invoice;
-import com.hy.bean.Order;
 import com.hy.mapper.InventoryMapper;
 import com.hy.util.Util;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpSession;
+import javax.swing.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -30,6 +31,13 @@ public class InventoService extends ServiceImpl<InventoryMapper, Inventory> {
             s.setType(type);
         }
         return iPage;
+    }
+
+
+
+    public IPage<Inventory> queryN(Integer page, Integer limit, String number){
+
+        return  inventoryMapper.queryn(new Page<Inventory>(page,limit),number);
     }
 
     public IPage<Inventory> querylist(Integer page, Integer limit, Inventory inventory){

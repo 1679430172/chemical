@@ -14,6 +14,9 @@ public interface InventoryMapper extends BaseMapper<Inventory> {
     @Select("select * from inventory order by amount desc")
     public IPage<Inventory> Inventory(Page page);
 
+    @Select("SELECT kid ,number,NAME,cas,update_time,amount,cf,remark FROM inventory WHERE  number LIKE '%${number}%' ORDER BY number DESC")
+    public IPage<Inventory> queryn(Page page,@Param("number")String number);
+
     @SelectProvider(type = InventorySql.class,method = "query")
     public List<Inventory> queryBy(Page page, @Param("em")Inventory inventory);
 

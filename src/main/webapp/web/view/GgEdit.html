@@ -16,6 +16,15 @@
 
 
 <script>
+    $(function () {
+        var id=decodeURI(location.search);
+        id=JSON.parse(id.split("=")[1]);
+        $("#bt").val(id.bt)
+        $("#nr").val(id.nr)
+        $("#fjr").val(id.fjt)
+        $("#remark").val(id.remark)
+        $("#amount").val(id.amount)
+    })
 
     //监听提交
     form.on('submit(formDemo)', function(data){
@@ -75,14 +84,14 @@
 </script>
 <form class="layui-form" action="">
 
-        <div class="layui-form-item">
-            <label class="layui-form-label">标题</label>
-            <div class="layui-input-block" style="width: 255px;">
-                <input type="text" lay-verify="required" lay-reqtext="名称不能为空"  name="bt" required   placeholder="请输入标题" autocomplete="off" class="layui-input">
-            </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">标题</label>
+        <div class="layui-input-block" style="width: 255px;">
+            <input type="text" id="bt" lay-verify="required" lay-reqtext="名称不能为空"  name="bt" required   placeholder="请输入标题" autocomplete="off" class="layui-input">
         </div>
+    </div>
 
-    <textarea id="demo" style="display: none;"></textarea>
+    <textarea id="demo" name="demo" style="display: none;"></textarea>
     <script>
         layui.use('layedit', function(){
             var layedit = layui.layedit;
@@ -90,18 +99,18 @@
         });
     </script>
 
-        <div class="layui-form-item">
-            <label class="layui-form-label">发布人</label>
-            <div class="layui-input-inline" style="width: 255px;">
-                <input type="text" lay-verify="required" lay-reqtext="数量不能为空" name="fjt" required   placeholder="请输入发布人" autocomplete="off" class="layui-input">
-            </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">发布人</label>
+        <div class="layui-input-inline" style="width: 255px;">
+            <input type="text" id="fig" lay-verify="required" lay-reqtext="数量不能为空" name="fjt" required   placeholder="请输入发布人" autocomplete="off" class="layui-input">
         </div>
+    </div>
 
 
-        <div class="layui-form-item" style="text-align: center">
-            <button class="layui-btn " lay-submit lay-filter="formDemo"   id="sub">立即发布</button>
-            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
-        </div>
+    <div class="layui-form-item" style="text-align: center">
+        <button class="layui-btn " lay-submit lay-filter="formDemo"   id="sub">立即发布</button>
+        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+    </div>
 
 </form>
 
