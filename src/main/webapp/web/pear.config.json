@@ -14,9 +14,9 @@
 		"keepState": true,
 		"tabMax": 30,
 		"index": {
-			"id": "commodity",
-			"href": "view/commodity.html",
-			"title": "商品管理"
+			"id": "index",
+			"href": "/web/view/2.html",
+			"title": "首页"
 		}
 	},
 	"theme": {
