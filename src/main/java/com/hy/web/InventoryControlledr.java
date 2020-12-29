@@ -106,26 +106,8 @@ public class InventoryControlledr {
     @RequestMapping("/queryInventory.do")
     @ResponseBody
     public ParseData queryInventory(Integer page, Integer limit,Inventory inventory) {
-        System.out.println("inventory:" + inventory);
-        QueryWrapper<Inventory> queryWrapper=new QueryWrapper<>();
-        if(inventory.getName() != null&&!"".equals(inventory.getName())){
-            queryWrapper.like("name",inventory.getName());
-        }
-        if (inventory.getCas() != null&&!"".equals(inventory.getCas())){
-            queryWrapper.eq("cas",inventory.getCas());
-        }
-        if (inventory.getNumber() != null&&!"".equals(inventory.getNumber())){
-            queryWrapper.eq("number",inventory.getNumber());
-        }
-        IPage<Inventory> iPage=InventoService.page(InventoService.iPage(page,limit),queryWrapper);
-
-        List<Inventory> list = iPage.getRecords();
-        for (int i = 0; i < list.size(); i++) {
-            list.get(i).setXid((page - 1) * limit + (i + 1));
-        }
-
-        return new ParseData(0, "", Integer.parseInt(Long.toString(iPage.getTotal())), list);
-
+        IPage<Inventory> list= InventoService.querylist(page,limit,inventory);
+        return new ParseData(0, "", Integer.parseInt(Long.toString(list.getTotal())), list.getRecords());
     }
 
     @RequestMapping("/queryN.do")

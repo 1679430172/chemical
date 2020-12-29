@@ -21,6 +21,16 @@ public class Inventory {
     private String type;//当前登录权限
     @TableField(exist = false)
     private Integer xid;//自定义序号
+    @TableField(exist = false)
+    private String number1;
+
+    public String getNumber1() {
+        return number1;
+    }
+
+    public void setNumber1(String number1) {
+        this.number1 = number1;
+    }
 
     public Integer getXid() {
         return xid;

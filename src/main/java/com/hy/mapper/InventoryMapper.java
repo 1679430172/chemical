@@ -18,7 +18,7 @@ public interface InventoryMapper extends BaseMapper<Inventory> {
     public IPage<Inventory> queryn(Page page,@Param("number")String number);
 
     @SelectProvider(type = InventorySql.class,method = "query")
-    public List<Inventory> queryBy(Page page, @Param("em")Inventory inventory);
+    public IPage<Inventory> queryBy(Page page, @Param("em")Inventory inventory);
 
     @Insert("insert into inventory(number,name,cas,create_time,update_time,amount,cf,remark) values(#{number},#{name},#{cas},now(),now(),#{amount},#{cf},#{remark})")
     public int insertinventory(Inventory inventory);

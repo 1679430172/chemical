@@ -41,7 +41,7 @@ public class InventoService extends ServiceImpl<InventoryMapper, Inventory> {
     }
 
     public IPage<Inventory> querylist(Integer page, Integer limit, Inventory inventory){
-        return (IPage<Inventory>) inventoryMapper.queryBy(new Page<Inventory>(page,limit),inventory);
+        return  inventoryMapper.queryBy(new Page<Inventory>(page,limit),inventory);
     }
 
     public IPage<Inventory> querylist1(Integer page, Integer limit){
