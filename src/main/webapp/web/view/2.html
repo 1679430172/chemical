@@ -29,7 +29,7 @@
                     </div>
                     <div class="layui-col-md6" style="text-align: center ;width: 715px">
                         <div class="layui-card">
-                            <div class="layui-card-header">待办事项</div>
+                            <div class="layui-card-header">公共文档</div>
                             <div class="layui-card-body">
                                 <table id="demo1" lay-filter="test1" STYLE=" width: 92px " ></table>
                             </div>
@@ -38,7 +38,7 @@
                     </div>
                     <div class="layui-col-md12" >
                         <div class="layui-card">
-                            <div class="layui-card-header">数据概览</div>
+                            <div class="layui-card-header">个人文档</div>
                             <div class="layui-card-body">
                                 <table id="demo2" lay-filter="test2" STYLE=" width: 92px " ></table>
                             </div>
@@ -112,8 +112,7 @@
                 ,url: '/upload/up' //数据接口
                 ,page: false //开启分页
                 ,cols: [[ //表头
-                    {field: 'userName', title: '上传人'}
-                    ,{field: 'uploadDate', title: '上传时间'}
+                    {field: 'uploadDate', title: '上传时间'}
                     ,{field: 'file', title: '上传文件'}
                 ]]
             });

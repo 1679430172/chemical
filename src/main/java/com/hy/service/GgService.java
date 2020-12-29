@@ -35,11 +35,10 @@ public class GgService extends ServiceImpl<GgMapper, Gg> {
         System.out.println(gg.toString());
         return true;
 
-
-
     }
     public List<Gg> list(){
         return ggMapper.list();
+
     }
     //删除
     public String detelep(Integer id){
@@ -59,6 +58,5 @@ public class GgService extends ServiceImpl<GgMapper, Gg> {
     public void auUpdateByid(Integer id){
         ggMapper.UpdatId(id);
     }
-
 
 }
