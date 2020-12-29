@@ -15,10 +15,8 @@ public interface GgMapper extends BaseMapper<Gg> {
     @Select("select * from gg ORDER BY zt desc")
     public IPage<Gg> quergg(Page page);
 
-<<<<<<< HEAD
     @Select("select * from gg where gg.zt='1'")
     public List<Gg> list();
-=======
 
     @Insert("insert into gg(bt,nr,fjr,zt,sj) values(#{bt},#{nr},#{fjr},#{zt},now())")
     public int addgg(Gg gg);
@@ -28,5 +26,4 @@ public interface GgMapper extends BaseMapper<Gg> {
 
     @Update("update gg set bt=#{bt},nr=#{nr},fjr=#{fjr},zt=#{zt},create_time=now()")
     public boolean autoUpdate(@Param("id")Integer id);
->>>>>>> b738226a43824aae2134a62e2973ed459b6344e9
 }

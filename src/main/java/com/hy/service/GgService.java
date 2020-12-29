@@ -32,12 +32,9 @@ public class GgService extends ServiceImpl<GgMapper, Gg> {
     public boolean addgg(Gg gg) {
         ggMapper.addgg(gg);
         return true;
-
-<<<<<<< HEAD
-public List<Gg> list(){
-        return ggMapper.list();
-}
-=======
+    }
+    public List<Gg> list(){
+            return ggMapper.list();
     }
 
     //删除
@@ -58,5 +55,4 @@ public List<Gg> list(){
        return 1;
    }
 
->>>>>>> b738226a43824aae2134a62e2973ed459b6344e9
 }
