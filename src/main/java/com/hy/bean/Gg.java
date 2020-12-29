@@ -1,18 +1,20 @@
 package com.hy.bean;
 
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
 import javax.swing.*;
 
-@TableName(value = "Gg")
+@TableName(value = "gg")
 public class Gg {
     private  int id;
     private  String bt;
     private  String nr;
     private  String fjr;
     private  int zt;
-    private Spring sj;
+    @TableId("create_time")
+    private Spring createTime;
     @TableField(exist = false)
     private String type;//当前登录权限
 
@@ -20,8 +22,18 @@ public class Gg {
         return type;
     }
 
+
     public void setType(String type) {
         this.type = type;
+    }
+
+
+    public Spring getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Spring createTime) {
+        this.createTime = createTime;
     }
 
     public int getId() {
@@ -64,14 +76,6 @@ public class Gg {
         this.zt = zt;
     }
 
-    public Spring getSj() {
-        return sj;
-    }
-
-    public void setSj(Spring sj) {
-        this.sj = sj;
-    }
-
     @Override
     public String toString() {
         return "Gg{" +
@@ -80,7 +84,8 @@ public class Gg {
                 ", nr='" + nr + '\'' +
                 ", fjr='" + fjr + '\'' +
                 ", zt=" + zt +
-                ", sj=" + sj +
+                ", createTime=" + createTime +
+                ", type='" + type + '\'' +
                 '}';
     }
 }

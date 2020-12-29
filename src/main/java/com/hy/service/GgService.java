@@ -4,7 +4,9 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hy.bean.Gg;
+import com.hy.bean.Inventory;
 import com.hy.mapper.GgMapper;
+import com.hy.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -27,8 +29,34 @@ public class GgService extends ServiceImpl<GgMapper, Gg> {
         }
         return iPage;
     }
+    public boolean addgg(Gg gg) {
+        ggMapper.addgg(gg);
+        return true;
 
+<<<<<<< HEAD
 public List<Gg> list(){
         return ggMapper.list();
 }
+=======
+    }
+
+    //删除
+    public String detelep(Integer id){
+        try {
+            ggMapper.detelep(id);
+        } catch (Exception e) {
+            return Util.defact;
+        }
+        return Util.sueess;
+    }
+   //修改
+   public Integer autoUpdateBySid(Gg gg){
+       boolean bl=ggMapper.autoUpdate(gg.getId());
+       if(!bl){
+           return 0;
+       }
+       return 1;
+   }
+
+>>>>>>> b738226a43824aae2134a62e2973ed459b6344e9
 }

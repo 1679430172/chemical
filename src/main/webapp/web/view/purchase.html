@@ -36,8 +36,8 @@
             , limits: [10, 20, 30]
             , cols: [
                 [
-                    {type: 'radio', fixed: 'left'},
-                    //{field: 'gid', title: '编号', width: 100}
+                    {type: 'radio', fixed: 'left'}
+                    //,{field: 'gid', title: '编号', width: 100}
                     , {field: 'userName', width: 90, title: '业务员'}
                     , {field: 'bh', width: 100, title: '库存编号', }
                     , {field: 'name', width: 100, title: '产品名称'}
@@ -57,7 +57,8 @@
                     , {fixed: 'right', title: '操作', width: 280, align: 'center', toolbar: '#dd'}
                     // , {fixed: 'right', width: '8%', align: 'center', toolbar: '#cc'}
                     // , {fixed: 'right', width: '8%', align: 'center', toolbar: '#ccs'}
-                ]]
+                ]
+            ]
             , done: function (response) {
                 //定位当前table视图
                 var tableView = this.elem.next();

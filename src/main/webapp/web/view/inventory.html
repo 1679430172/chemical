@@ -77,11 +77,24 @@
         form.on('submit(formDemo)', function(data){
             console.log(data.field);
             table.reload('test', {
-                url: '/inventory/queryinventory.do'
+                url: '/inventory/queryInventory.do?'
                 ,where: data.field//设定异步数据接口的额外参数
             });
             return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
         });
+
+
+        form.on('submit(queryN)', function(data){
+            console.log(data.field);
+
+            table.reload('test', {
+                url: '/inventory/queryN.do?page=1&limit=1'
+                ,where: data.field//设定异步数据接口的额外参数
+            });
+            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+        });
+
+
 
         $(document).on("dblclick",".name",function () {
             var that=this;
@@ -318,15 +331,10 @@
                 <div class="layui-inline">
                     <label class="layui-inline">编号</label>
                     <div class="layui-inline">
-                        <input type="text" name="number" lay-verify="title" autocomplete="off" placeholder="请输入" class="layui-input">
+                        <input type="text" name="number1" lay-verify="title" autocomplete="off" placeholder="请输入" class="layui-input">
                     </div>
                 </div>
-                <div class="layui-inline">
-                    <label class="layui-inline">最大编号</label>
-                    <div class="layui-inline">
-                        <input type="text" name="number" lay-verify="title" autocomplete="off" placeholder="请输入" class="layui-input">
-                    </div>
-                </div>
+
                 <div class="layui-inline">
                     <div class="layui-inline">
                         <button type="submit" class="layui-btn" lay-submit="" lay-filter="formDemo">查询</button>
@@ -347,7 +355,21 @@
         {{#  } }}
 
     </div>
-
+    <div style="text-align: center;width: 100%">
+    <form class="layui-form" action="" style="display: inline-block">
+        <div class="layui-inline">
+            <label class="layui-inline">最大编号</label>
+            <div class="layui-inline">
+                <input type="text" name="number" lay-verify="title" autocomplete="off" placeholder="请输入" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <div class="layui-inline">
+                <button type="submit" class="layui-btn" lay-submit="" lay-filter="queryN">最大编号查询</button>
+            </div>
+        </div>
+    </form>
+    </div>
 </script>
 <script type="text/html" id="barDemo">
     {{#  if(0 == types){ }}
