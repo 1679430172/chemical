@@ -8,26 +8,17 @@ import com.baomidou.mybatisplus.annotation.TableName;
 public class upload {
    @TableId(type = IdType.AUTO)
     private Integer id;
-    private String name;
     private String uploadDate;
     private String description;
     private String file;
-    private String type;
+    private Integer uid;
 
-    public String getType() {
-        return type;
+    public Integer getUid() {
+        return uid;
     }
 
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public void setUid(Integer uid) {
+        this.uid = uid;
     }
 
     public String getUploadDate() {
@@ -66,11 +57,10 @@ public class upload {
     public String toString() {
         return "upload{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
                 ", uploadDate='" + uploadDate + '\'' +
                 ", description='" + description + '\'' +
                 ", file='" + file + '\'' +
-                ", type=" + type +
+                ", uid=" + uid +
                 '}';
     }
 }

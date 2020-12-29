@@ -24,8 +24,7 @@ public class uploadService extends ServiceImpl<uploadMapper, upload> {
 
     public upload pictures(MultipartFile pictureFile, HttpServletRequest req) throws IOException {
         HttpSession session = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession();
-        String userType= (String) session.getAttribute("userType");
-        String userName=(String) session.getAttribute("userName");
+        Integer userId=(Integer) session.getAttribute("userId");
         if(pictureFile != null){
             String picName = UUID.randomUUID().toString();// 设置图片名称，不能重复，可以使用uuid
             String oriName = pictureFile.getOriginalFilename();//获取文件名
@@ -40,8 +39,7 @@ public class uploadService extends ServiceImpl<uploadMapper, upload> {
                 pictureFile.transferTo(pic);
                 upload upload=new upload();
                 upload.setFile(oriName);
-                upload.setName(userName);
-                upload.setType(userType);
+                upload.setUid(userId);
                 SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
                 upload.setUploadDate(simpleDateFormat.format(new Date()));
                 return upload;
