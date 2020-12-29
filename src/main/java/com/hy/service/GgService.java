@@ -35,6 +35,11 @@ public class GgService extends ServiceImpl<GgMapper, Gg> {
         System.out.println(gg.toString());
         return true;
 
+<<<<<<< HEAD
+public List<Gg> list(){
+        return ggMapper.list();
+}
+=======
     }
 
     //删除
@@ -56,4 +61,5 @@ public class GgService extends ServiceImpl<GgMapper, Gg> {
         ggMapper.UpdatId(id);
     }
 
+>>>>>>> b738226a43824aae2134a62e2973ed459b6344e9
 }

@@ -34,6 +34,12 @@ public class GgController {
         return new ParseData(0,"",Integer.parseInt(Long.toString(iPage.getTotal())),list);
     }
 
+    @RequestMapping("/Gglist")
+    @ResponseBody
+    public ParseData Gglist() {
+        List<Gg> gg = ggService.list();
+        return new ParseData(0, "", gg.size(), gg);
+    }
     @RequestMapping("/addGg.do")
     @ResponseBody
     public  String addPurchase(Gg gg) throws Exception {

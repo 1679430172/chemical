@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -57,4 +58,28 @@ public class uploadController {
         return 0;
     }
 
+    @RequestMapping("/up")
+    @ResponseBody
+    public ParseData up(){
+        List<upload> up=uploadService.up();
+        return new ParseData(0,"",up.size(),up);
+    }
+    @RequestMapping("/uploads")
+    @ResponseBody
+    public ParseData uploads(){
+        List<upload> uploads=uploadService.uploads();
+        return new ParseData(0,"",uploads.size(),uploads);
+    }
+
+    @RequestMapping("/downloads")
+    @ResponseBody
+    public String downloads(HttpServletRequest req, HttpServletResponse response, String id){
+        try {
+            uploadService.downloads(req,response,id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Util.fail;
+        }
+        return Util.succeed;
+    }
 }

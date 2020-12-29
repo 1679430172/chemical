@@ -82,7 +82,7 @@ public class CommodityController {
         }else{
             SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
             commodity.setCreateTime(simpleDateFormat.format(new Date()));
-            commodity.setUpdateTime(new Date());
+            commodity.setUpdateTime(new Date()); 
             boolean b= commodityService.save(commodity);
             supplierService.updateById(commodity.getSupplierId());
             if(b == true){

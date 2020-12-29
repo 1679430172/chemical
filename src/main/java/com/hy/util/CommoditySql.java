@@ -7,6 +7,8 @@ import com.hy.bean.SupplierUsers;
 import org.apache.ibatis.annotations.Param;
 import org.apache.poi.util.SystemOutLogger;
 
+import java.lang.reflect.Type;
+
 public class CommoditySql {
 
     public String CommoditySql(@Param("commoditys")Commoditys commoditys, @Param("supplierId") String sid){
@@ -29,7 +31,7 @@ public class CommoditySql {
         return sql.toString();
     }
 
-    public String sql(@Param("sid")String sid,@Param("priceInfo") String priceInfo){
+     public String sql(@Param("sid")String sid,@Param("priceInfo") String priceInfo){
         StringBuffer sql=new StringBuffer("update commodity set price_info=#{priceInfo} where  sid=#{id}");
         return sql.toString();
     }
@@ -80,4 +82,5 @@ public class CommoditySql {
         }
         return sql;
     }
+
 }
