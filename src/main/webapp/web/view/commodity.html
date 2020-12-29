@@ -49,7 +49,7 @@
                     ,{field:"right",title:'操作',toolbar:'#barDemo',width:'350', fixed: 'right'}
                 ]
             ]
-            ,done: function (response) {
+            /*,done: function (response) {
                 //定位当前table视图
                 var tableView = this.elem.next();
                 $.each(response.data, function (index, item) {
@@ -58,13 +58,13 @@
                         //改变TR标签内字体颜色
                         tableView.find('tbody tr[data-index="' + index + '"]').css('background-color', '#33a1c9');
                         tableView.find('tbody tr[data-index="' + index + '"]').css('color', '#F0F0F0');
-                    }else if(item.amount === 0){
+                    }else if(item.amount == 0){
                         //改变TR标签内字体颜色
                         tableView.find('tbody tr[data-index="' + index + '"]').css('background-color', '#1E9FFF');
                         tableView.find('tbody tr[data-index="' + index + '"]').css('color', '#F0F0F0');
                     }
                 })
-            }
+            }*/
         })
 
         //监听行工具
