@@ -14,12 +14,19 @@ public interface GgMapper extends BaseMapper<Gg> {
     public IPage<Gg> quergg(Page page);
 
 
-    @Insert("insert into gg(bt,nr,fjr,zt,sj) values(#{bt},#{nr},#{fjr},#{zt},now())")
-    public int addgg(Gg gg);
+    @Insert("insert into gg(bt,nr,fjr,zt,create_time) values(#{gg.bt},#{gg.nr},#{gg.fjr},2,now())")
+    public int addgg(@Param("gg") Gg gg);
 
     @Delete("delete from gg where id=#{id}")
     public Gg detelep(@Param("id")Integer id);
 
-    @Update("update gg set bt=#{bt},nr=#{nr},fjr=#{fjr},zt=#{zt},create_time=now()")
+
+    @Update("update gg set zt=2 where id=#{id}")
+    public boolean UpdateId(@Param("id")Integer id);
+
+    @Update("update gg set zt=1 where id=#{id}")
+    public boolean UpdatId(@Param("id")Integer id);
+
+    @Update("update gg set bt=#{bt},nr=#{nr},fjr=#{fjr},zt=2,create_time=now()")
     public boolean autoUpdate(@Param("id")Integer id);
 }

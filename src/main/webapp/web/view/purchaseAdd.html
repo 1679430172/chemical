@@ -151,9 +151,9 @@
                 <input type="text"  lay-verify="required" lay-reqtext="请输入商品单价"  name="price" required  placeholder="单价" autocomplete="off" class="layui-input">
             </div>
         </div>
-        <div class="layui-inline" style="width: 146px;">
-            <select name="priceStatus">
-                <option>请选择是否含税</option>
+        <div class="layui-inline" style="width: 146px; ">
+            <select name="priceStatus" lay-verify="required">
+                <option value="">请选择是否含税</option>
                 <option value="0">含税</option>
                 <option value="1">不含税</option>
             </select>
@@ -188,7 +188,7 @@
     <div class="layui-form-item">
         <label class="layui-form-label">供应商名称</label>
         <div class="layui-input-inline" style="width: 255px;">
-            <select id ="supplierName" name="supplierName"  lay-filter="aihao"  onabort="is()" >
+            <select id ="supplierName"  lay-verify="required" name="supplierName"  lay-filter="aihao"  onabort="is()">
                 <option>请选择</option>
             </select>
         </div>

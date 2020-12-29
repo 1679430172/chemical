@@ -14,7 +14,7 @@ public class Gg {
     private  String fjr;
     private  int zt;
     @TableId("create_time")
-    private Spring createTime;
+    private String createTime;
     @TableField(exist = false)
     private String type;//当前登录权限
 
@@ -28,11 +28,11 @@ public class Gg {
     }
 
 
-    public Spring getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Spring createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 

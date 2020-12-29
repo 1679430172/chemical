@@ -31,11 +31,6 @@ public class GgController {
     public ParseData Gg(Integer page, Integer limit){
         IPage<Gg> iPage= ggService.iPage(page,limit);
         List<Gg> list = iPage.getRecords();
-        page = page == 0 ? 1 : page;
-        limit = limit == 0 ? 20 : limit;
-        for (int i = 0; i < list.size(); i++) {
-            list.get(i).setId((page - 1) * limit + (i + 1));
-        }
         return new ParseData(0,"",Integer.parseInt(Long.toString(iPage.getTotal())),list);
     }
 
@@ -58,9 +53,18 @@ public class GgController {
 
     @RequestMapping ("/autoUpdate.do" )
     @ResponseBody
-    public Integer autoUpdate(Gg gg){
-        return ggService.autoUpdateBySid(gg);
+    public void autoUpdate(Integer id){
+        ggService.autoUpdateBySid(id);
     }
+
+    @RequestMapping ("/auUpdate.do" )
+    @ResponseBody
+    public void auUpdate(Integer id){
+        System.out.println(id);
+        ggService.auUpdateByid(id);
+
+    }
+
 }
 
 

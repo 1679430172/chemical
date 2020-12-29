@@ -39,7 +39,7 @@
                 ,{field:'bt', width:100, title: '标题'}
                 ,{field:'nr', title: '内容', Width: 10,templet:'#nr'}
                 ,{field:'fjr', width:100, title: '发布人'}
-                ,{field:'create_time',  width:100, title: '发布时间'}
+                ,{field:'createTime',  width:100, title: '发布时间'}
                 ,{field: 'zt', width:100,title: '状态',templet: function (d) {if (d.zt == 1) { return '发布中'} else {return '未发布'}}}
                 ,{fixed: 'right', title: '操作', width: 220, align:'center', toolbar: '#barDemo'}
 
@@ -164,29 +164,54 @@
         table.on('tool(test)', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
             var data = obj.data //获得当前行数据
                 ,layEvent = obj.event; //获得 lay-event 对应的值
-            if(layEvent === 'detail'){ //查看
-                layer.prompt({
-                    formType: 2,
-                    value: '',
-                    title: '请输入需要添加的数量',
-                    area: ['100px', '40px'] //自定义文本域宽高
-                }, function(value, index, elem){
-                    $.post("/inventory/autoUpdate.do",{kid:data.kid,amount:value},function (data) {
-                        if (data==1){
-                            layer.msg('修改成功');
-                            table.reload('test', {
-                                url: '/inventory/inventory.do'
-                            });
-                        }else {
-                            layer.msg('修改失败');
-                            table.reload('test', {
-                                url: '/inventory/inventory.do'
-                            });
-                        }
+            if (layEvent === 'getFp') {
+                layer.open({
+                    type: 1,
+                    area: ['250px', '150px'],
+                    btn: ['确定', '点错了'],
+                    content: '  <div align="center">确认发布？</div>  ',
 
-                    });
-                    layer.close(index);
+                    btn1: function (index, layero) {
+                        $.ajax({
+                            type: "GET",
+                            url: "/Gg/autoUpdate.do?id=" + data.id,
+                            dataType: "json",
+                        });
+                        table.reload('test', {
+                            url: '/Gg/Gg.do'
+
+                        });
+                        layer.closeAll();
+                    },
+                    btn2: function (index, layero) {
+                        layer.closeAll();
+                    },
                 });
+
+            }else if (layEvent === 'detail') {
+                layer.open({
+                    type: 1,
+                    area: ['250px', '150px'],
+                    btn: ['确定', '点错了'],
+                    content: '  <div align="center">是要取消发布吗？</div>  ',
+
+                    btn1: function (index, layero) {
+                        $.ajax({
+                            type: "GET",
+                            url: "/Gg/auUpdate.do?id=" + data.id,
+                            dataType: "json",
+                        });
+                        table.reload('test', {
+                            url: '/Gg/Gg.do'
+
+                        });
+                        layer.closeAll();
+                    },
+                    btn2: function (index, layero) {
+                        layer.closeAll();
+                    },
+                });
+
             }
         });
     });
@@ -208,7 +233,7 @@
 </script>
 <script type="text/html" id="barDemo">
     {{#  if(d.zt === 1 ){ }}
-    <a class="layui-btn  layui-btn-xs" lay-event="delete1">取消发布</a>
+    <a class="layui-btn  layui-btn-xs" lay-event="getFp">取消发布</a>
     {{#  } else if(d.zt == 2){ }}
     <a class="layui-btn  layui-btn-xs" lay-event="detail">发布</a>
     {{#  } }}

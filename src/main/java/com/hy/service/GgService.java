@@ -29,8 +29,10 @@ public class GgService extends ServiceImpl<GgMapper, Gg> {
         }
         return iPage;
     }
+
     public boolean addgg(Gg gg) {
         ggMapper.addgg(gg);
+        System.out.println(gg.toString());
         return true;
 
     }
@@ -45,12 +47,13 @@ public class GgService extends ServiceImpl<GgMapper, Gg> {
         return Util.sueess;
     }
    //修改
-   public Integer autoUpdateBySid(Gg gg){
-       boolean bl=ggMapper.autoUpdate(gg.getId());
-       if(!bl){
-           return 0;
-       }
-       return 1;
-   }
+    public void autoUpdateBySid(Integer id){
+        ggMapper.UpdateId(id);
+    }
+
+    //修改
+    public void auUpdateByid(Integer id){
+        ggMapper.UpdatId(id);
+    }
 
 }
