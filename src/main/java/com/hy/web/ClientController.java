@@ -1,10 +1,11 @@
 package com.hy.web;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.hy.bean.Client;
-import com.hy.bean.Order;
 import com.hy.service.ClientService;
 import com.hy.util.ParseData;
 import io.swagger.annotations.Api;
+import javafx.scene.control.Alert;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -71,5 +72,21 @@ public class ClientController {
     @ResponseBody
     public Client get(Integer cid){
         return service.getById(cid);
+    }
+
+    @GetMapping("/name")
+    @ResponseBody
+    public ParseData name(String name){
+        System.out.println(123);
+        QueryWrapper queryWrapper=new QueryWrapper();
+        queryWrapper.like("name",name);
+        List<Client> list=service.list(queryWrapper);
+        for(Client s:list){
+            String did=""+s.getCid();
+            String id="KH00000";
+            id=id.substring(0,id.length()-did.length())+did;
+            s.setCids(id);
+        }
+        return new ParseData(0,"",null,list);
     }
 }

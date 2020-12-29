@@ -10,8 +10,9 @@
     <script src="/web/component/layui/layui.js"></script>
     <script type="text/javascript" src="/web/component/js/jquery-3.3.1.min.js" th:src="@{/web/component/js/jquery-3.3.1.min.js}"></script>
     <script>
-        layui.use(['table'], function(){
+        layui.use(['table','form'], function(){
             var table = layui.table;
+            var form = layui.form;
 
             table.render({
                 elem: '#demo'
@@ -108,9 +109,30 @@
                     });
                 }
             });
+
+            //监听提交
+            form.on('submit(demo1)', function(data){
+                table.reload('demo', {
+                    url: '/Client/name'
+                    ,where: data.field //设定异步数据接口的额外参数
+                });
+                return false;
+            });
         });
     </script>
     <script type="text/html" id="toolbarDemo">
+        <div style="text-align: center">
+            <form class="layui-form" action="" style="display: inline-block;">
+            <div class="layui-input-inline">
+                <input type="text" name="name" autocomplete="off"  placeholder="客户名称" class="layui-input" style="width: 220px;display: inline-block">
+            </div>
+                &nbsp;&nbsp;&nbsp;
+            <div class="layui-input-inline">
+                <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">查询</button>
+            </div>
+        </form>
+        </div>
+        <br>
         <button type="button" class="layui-btn layui-btn-normal" lay-event="import" id="test1">添加</button>
         <button type="button" class="layui-btn layui-btn-normal" lay-event="upd" >修改</button>
         <button type="button" class="layui-btn layui-btn-normal" lay-event="del" >删除</button>
