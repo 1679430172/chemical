@@ -38,6 +38,7 @@ public class GgController {
         return new ParseData(0,"",Integer.parseInt(Long.toString(iPage.getTotal())),list);
     }
 
+    
     @RequestMapping("/Gglist")
     @ResponseBody
     public ParseData Gglist(){

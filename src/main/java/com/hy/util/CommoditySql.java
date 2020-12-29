@@ -7,6 +7,8 @@ import com.hy.bean.SupplierUsers;
 import org.apache.ibatis.annotations.Param;
 import org.apache.poi.util.SystemOutLogger;
 
+import java.lang.reflect.Type;
+
 public class CommoditySql {
 
     public String CommoditySql(@Param("commoditys")Commoditys commoditys, @Param("supplierId") String sid){
@@ -80,4 +82,5 @@ public class CommoditySql {
         }
         return sql;
     }
+
 }

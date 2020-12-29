@@ -1,6 +1,7 @@
 package com.hy.bean;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
@@ -12,6 +13,26 @@ public class upload {
     private String description;
     private String file;
     private Integer uid;
+    @TableField(exist = false)
+    private String type;
+    @TableField(exist = false)
+    private String userName;
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 
     public Integer getUid() {
         return uid;

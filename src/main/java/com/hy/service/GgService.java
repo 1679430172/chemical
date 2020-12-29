@@ -28,5 +28,7 @@ public class GgService extends ServiceImpl<GgMapper, Gg> {
         return iPage;
     }
 
-
+public List<Gg> list(){
+        return ggMapper.list();
+}
 }
