@@ -41,13 +41,13 @@
                             ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
                             ,cols: [[
                                 {type: 'radio', fixed: 'left'},
-                                {field:'id', width:20, title: 'ID'}
+                                {field:'id', width:40, title: 'ID'}
                                 ,{field:'bt', width:100, title: '标题'}
                                 ,{field:'nr', Width: 100,title: '内容', Width: 10,templet:'#nr'}
                                 ,{field:'fjr', width:100, title: '发布人'}
                                 ,{field:'createTime',  width:200, title: '发布时间'}
                                 ,{field: 'zt', width:100,title: '状态',templet: function (d) {if (d.zt == 1) { return '发布中'} else {return '未发布'}}}
-                                ,{fixed: 'right', title: '操作', width: 220, align:'center', toolbar: '#barDemo'}
+                                ,{fixed: 'right', title: '操作', width: 200, align:'center', toolbar: '#barDemo'}
 
 
                             ]]
