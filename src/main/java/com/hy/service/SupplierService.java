@@ -32,7 +32,7 @@ public class SupplierService extends ServiceImpl<SupplierMapper, Supplier> {
         String userType= (String) session.getAttribute("userType");
         Integer userId= (Integer) session.getAttribute("userId");
         IPage<SupplierUsers> iPage=null;
-        if(userType.equals("0") || userType.equals("1")){
+        if(userType.equals("0") || userType.equals("2")){
              iPage= supplierMapper.suppliers(new Page(page,limit),name);
             List<SupplierUsers> list=iPage.getRecords();
             for(SupplierUsers s:list){

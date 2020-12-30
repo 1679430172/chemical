@@ -16,7 +16,6 @@
 
 
 <script>
-
 $(function () {
     layui.use(['layedit','form'], function(){
         var layedit = layui.layedit,
@@ -28,7 +27,6 @@ $(function () {
 
         form.on('submit(formDemo)', function(data){
             var nr=layedit.getContent(index);
-            alert(nr);
             $.post("/Gg/addGg.do",{bt:data.field.bt,nr:nr,fjr:data.field.fjr},function (d) {
                 if(d==="1"){
                     layer.msg('添加成功！！！', {
@@ -62,11 +60,6 @@ $(function () {
             active[type] ? active[type].call(this) : '';
         });
 
-        //自定义工具栏
-        layedit.build('LAY_demo2', {
-            tool: ['face', 'link', 'unlink', '|', 'left', 'center', 'right']
-            ,height: 100
-        })
     });
 })
 </script>
@@ -80,14 +73,6 @@ $(function () {
         </div>
 
     <textarea id="nr" name="nr" style="display: none;"></textarea>
-
-        <div class="layui-form-item">
-            <label class="layui-form-label">发布人</label>
-            <div class="layui-input-inline" style="width: 255px;">
-                <input type="text" lay-verify="required" lay-reqtext="数量不能为空" name="fjr" required   placeholder="请输入发布人" autocomplete="off" class="layui-input">
-            </div>
-        </div>
-
 
         <div class="layui-form-item" style="text-align: center">
             <button class="layui-btn " lay-submit lay-filter="formDemo" data-type="content"   id="sub">立即发布</button>

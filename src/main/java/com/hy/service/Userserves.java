@@ -71,6 +71,7 @@ public class Userserves extends ServiceImpl<UserMapper, User> {
      * @param request
      * @return
      */
+
     public String getsession(HttpServletRequest request) {
         HttpSession session = request.getSession();
         String id = (String) session.getAttribute("userType");
