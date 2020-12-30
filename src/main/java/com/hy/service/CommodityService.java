@@ -121,8 +121,8 @@ public class CommodityService extends ServiceImpl<CommodityMapper, Commodity> {
         Commodity commodity=commodityMapper.byid(sid);
         //设置内容作为附件下载  fileName有后缀,比如1.jpg
         String file=commodity.getImgPath();
-        String l=file.substring(file.length()-3);
-        response.setHeader("Content-Disposition", "attachment; filename=image."+l);
+        String[] l=file.split(".");
+        response.setHeader("Content-Disposition", "attachment; filename=image."+l[1]);
         ServletOutputStream out = null;
         try {
             // 通过文件路径获得File对象(假如此路径中有一个download.pdf文件)
@@ -164,8 +164,8 @@ public class CommodityService extends ServiceImpl<CommodityMapper, Commodity> {
         Commodity commodity=commodityMapper.byid(sid);
         //设置内容作为附件下载  fileName有后缀,比如1.jpg
         String file=commodity.getFilePath();
-        String l=file.substring(file.length()-3);
-        response.setHeader("Content-Disposition", "attachment; filename=file."+l);
+        String[] l=file.split(".");
+        response.setHeader("Content-Disposition", "attachment; filename=file."+l[1]);
         ServletOutputStream out = null;
         try {
             // 通过文件路径获得File对象(假如此路径中有一个download.pdf文件)

@@ -43,7 +43,7 @@ public class uploadService extends ServiceImpl<uploadMapper, upload> {
                 File pic = new File(uploadFile,"/"+ picName + extName);
                 pictureFile.transferTo(pic);
                 upload upload=new upload();
-                upload.setFile(oriName);
+                upload.setFile("/image/"+ picName + extName);
                 upload.setUid(userId);
                 SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
                 upload.setUploadDate(simpleDateFormat.format(new Date()));
@@ -59,7 +59,6 @@ public class uploadService extends ServiceImpl<uploadMapper, upload> {
     public List<upload> uploads(){
         List<upload> list=uploadMapper.upload();
         for(int i=0; i<list.size();i++){
-            System.out.println(list.get(i).getType()+"=======================");
             if(list.get(i).getType().equals("1") ){
                 list.remove(i);
             }
@@ -79,14 +78,20 @@ public class uploadService extends ServiceImpl<uploadMapper, upload> {
         response.setContentType("application/zip");
         upload upload=uploadMapper.selectById(sid);
         //设置内容作为附件下载  fileName有后缀,比如1.jpg
-        String file=upload.getDescription();
-        response.setHeader("Content-Disposition", "attachment; filename=file.");
+        String file=upload.getFile();
+        System.out.println(file+"========================");
+        String[] l=file.split("\\.");
+        for (int i=0;i<l.length;i++){
+            System.out.println(l[i]+"-----------------");
+        }
+        response.setHeader("Content-Disposition", "attachment; filename=file."+l[1]);
         ServletOutputStream out = null;
         try {
             // 通过文件路径获得File对象(假如此路径中有一个download.pdf文件)
             String webAppPath= imgDowloadFile;
 //            file=file.substring(1);
             webAppPath+=file;
+            System.out.println(webAppPath);
             InputStream inputStream = new FileInputStream(webAppPath);//此处是为了获得输出流
             // 3.通过response获取ServletOutputStream对象(out)
             out = response.getOutputStream();
