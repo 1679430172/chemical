@@ -37,9 +37,9 @@
                 {type: 'radio', fixed: 'left'},
                 {field:'id', width:20, title: 'ID'}
                 ,{field:'bt', width:100, title: '标题'}
-                ,{field:'nr', title: '内容', Width: 10,templet:'#nr'}
+                ,{field:'nr', Width: 100,title: '内容', Width: 10,templet:'#nr'}
                 ,{field:'fjr', width:100, title: '发布人'}
-                ,{field:'createTime',  width:100, title: '发布时间'}
+                ,{field:'createTime',  width:200, title: '发布时间'}
                 ,{field: 'zt', width:100,title: '状态',templet: function (d) {if (d.zt == 1) { return '发布中'} else {return '未发布'}}}
                 ,{fixed: 'right', title: '操作', width: 220, align:'center', toolbar: '#barDemo'}
 
@@ -169,7 +169,7 @@
                     type: 1,
                     area: ['250px', '150px'],
                     btn: ['确定', '点错了'],
-                    content: '  <div align="center">确认发布？</div>  ',
+                    content: '  <div align="center">确认取消发布？</div>  ',
 
                     btn1: function (index, layero) {
                         $.ajax({
@@ -193,7 +193,7 @@
                     type: 1,
                     area: ['250px', '150px'],
                     btn: ['确定', '点错了'],
-                    content: '  <div align="center">是要取消发布吗？</div>  ',
+                    content: '  <div align="center">确认要发布吗？</div>  ',
 
                     btn1: function (index, layero) {
                         $.ajax({
