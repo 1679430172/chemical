@@ -40,10 +40,10 @@ public class uploadService extends ServiceImpl<uploadMapper, upload> {
                 if(!uploadFile.exists()){
                     uploadFile.mkdirs();
                 }
-                File pic = new File(uploadFile,"/"+ picName + extName);
+                File pic = new File(uploadFile,"/"+ oriName );
                 pictureFile.transferTo(pic);
                 upload upload=new upload();
-                upload.setFile("/image/"+ picName + extName);
+                upload.setFile("/image/"+ oriName );
                 upload.setUid(userId);
                 SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
                 upload.setUploadDate(simpleDateFormat.format(new Date()));
@@ -79,11 +79,7 @@ public class uploadService extends ServiceImpl<uploadMapper, upload> {
         upload upload=uploadMapper.selectById(sid);
         //设置内容作为附件下载  fileName有后缀,比如1.jpg
         String file=upload.getFile();
-        System.out.println(file+"========================");
         String[] l=file.split("\\.");
-        for (int i=0;i<l.length;i++){
-            System.out.println(l[i]+"-----------------");
-        }
         response.setHeader("Content-Disposition", "attachment; filename=file."+l[1]);
         ServletOutputStream out = null;
         try {

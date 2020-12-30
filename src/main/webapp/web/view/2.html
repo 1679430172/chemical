@@ -73,8 +73,8 @@
             table.on('rowDouble(test)', function(obj){
                 var data = obj.data;
                 layer.open({
-                    area: ['300px', '300px'],
-                    title:"产品名称",
+                    area: ['500px', '500px'],
+                    title:"内容",
                     type: 1,
                     content:"<div style='padding: 10px;'>"+data.nr+"</div>"
                     //这里content是一个普通的String
@@ -105,7 +105,7 @@
             table.render({
                 elem: '#demo2'
                 ,height: 312
-                ,url: '/upload/up' //数据接口
+                ,url:"/upload/up"
                 ,page: false //开启分页
                 ,cols: [[ //表头
                     {field: 'uploadDate', title: '上传时间'}
