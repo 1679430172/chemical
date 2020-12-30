@@ -9,6 +9,7 @@ import javax.swing.*;
 @TableName(value = "gg")
 public class Gg {
     private  int id;
+    private Integer userId;       //业务员id
     private  String bt;
     private  String nr;
     private  String fjr;
@@ -27,6 +28,14 @@ public class Gg {
         this.type = type;
     }
 
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
 
     public String getCreateTime() {
         return createTime;

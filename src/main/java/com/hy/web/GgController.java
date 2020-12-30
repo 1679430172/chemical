@@ -15,7 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Api
@@ -43,6 +46,7 @@ public class GgController {
     @RequestMapping("/addGg.do")
     @ResponseBody
     public  String addPurchase(Gg gg) throws Exception {
+
         try {
             ggService.addgg(gg);
         } catch (Exception e) {
@@ -69,6 +73,11 @@ public class GgController {
         System.out.println(id);
         ggService.auUpdateByid(id);
 
+    }
+    public Integer wwww(){
+        HttpSession session = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession();
+        Integer userId= (Integer) session.getAttribute("userId");
+        return userId;
     }
 
 }

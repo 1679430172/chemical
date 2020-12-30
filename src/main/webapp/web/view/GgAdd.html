@@ -28,6 +28,7 @@ $(function () {
 
         form.on('submit(formDemo)', function(data){
             var nr=layedit.getContent(index);
+            alert(nr);
             $.post("/Gg/addGg.do",{bt:data.field.bt,nr:nr,fjr:data.field.fjr},function (d) {
                 if(d==="1"){
                     layer.msg('添加成功！！！', {
@@ -79,12 +80,6 @@ $(function () {
         </div>
 
     <textarea id="nr" name="nr" style="display: none;"></textarea>
-    <script>
-        layui.use('layedit', function(){
-            var layedit = layui.layedit;
-            layedit.build('nr'); //建立编辑器
-        });
-    </script>
 
         <div class="layui-form-item">
             <label class="layui-form-label">发布人</label>
