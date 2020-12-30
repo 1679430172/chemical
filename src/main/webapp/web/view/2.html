@@ -72,9 +72,12 @@
             //监听行单击事件（双击事件为：rowDouble）
             table.on('rowDouble(test)', function(obj){
                 var data = obj.data;
-
-                layer.alert(JSON.stringify(data.nr), {
-                    title: '内容：'
+                layer.open({
+                    area: ['300px', '300px'],
+                    title:"产品名称",
+                    type: 1,
+                    content:"<div style='padding: 10px;'>"+data.nr+"</div>"
+                    //这里content是一个普通的String
                 });
 
                 //标注选中样式
@@ -95,14 +98,7 @@
             //监听行单击事件（双击事件为：rowDouble）
             table.on('rowDouble(test1)', function(obj){
                 var data = obj.data;
-                $.get("/upload/downloads?id="+data.id,function (d) {
-                    if(d=="1"){
-                        layer.msg('已下载', {icon: 2, time: 3000});
-                    }else if(d=="0"){
-                        layer.msg('下载失败！请重新再试', {icon: 2, time: 3000});
-                    }
-                })
-
+                window.location.href="/upload/downloads?id="+data.id
                 //标注选中样式
                 obj.tr.addClass('layui-table-click').siblings().removeClass('layui-table-click');
             });
