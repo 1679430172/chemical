@@ -2,12 +2,8 @@ package com.hy.web;
 
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hy.bean.Gg;
-import com.hy.bean.Inventory;
-import com.hy.bean.Purchase;
 import com.hy.service.GgService;
-import com.hy.service.PurchaseService;
 import com.hy.util.ParseData;
 import com.hy.util.Util;
 import io.swagger.annotations.Api;
@@ -46,7 +42,6 @@ public class GgController {
     @RequestMapping("/addGg.do")
     @ResponseBody
     public  String addPurchase(Gg gg) throws Exception {
-
         try {
             ggService.addgg(gg);
         } catch (Exception e) {

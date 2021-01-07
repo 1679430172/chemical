@@ -22,199 +22,211 @@
 <script>
     var types=localStorage.getItem("types");
 
-    layui.use(["form","table","layer","upload"], function(){
-        var table = layui.table;
-        var form = layui.form;
-        var layer = layui.layer;
-        var upload = layui.upload;
-
-        table.render({
-            elem: '#test'
-            ,url:'/Gg/Gg.do'
-            ,toolbar: '#toolbarDemo'
-            ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
-            ,cols: [[
-                {type: 'radio', fixed: 'left'},
-                {field:'id', width:20, title: 'ID'}
-                ,{field:'bt', width:100, title: '标题'}
-                ,{field:'nr', Width: 100,title: '内容', Width: 10,templet:'#nr'}
-                ,{field:'fjr', width:100, title: '发布人'}
-                ,{field:'createTime',  width:200, title: '发布时间'}
-                ,{field: 'zt', width:100,title: '状态',templet: function (d) {if (d.zt == 1) { return '发布中'} else {return '未发布'}}}
-                ,{fixed: 'right', title: '操作', width: 220, align:'center', toolbar: '#barDemo'}
-
-
-            ]]
-        });
-
-
-        /**
-         *
-         * 查询按钮
-         */
-        form.on('submit(formDemo)', function(data){
-            console.log(data.field);
-            table.reload('test', {
-                url: '/inventory/queryinventory.do'
-                ,where: data.field//设定异步数据接口的额外参数
-            });
-            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
-        });
-
-        $(document).on("dblclick",".nr",function () {
-            var that=this;
-            console.log(that.id)
-            layer.open({
-                area: ['300px', '300px'],
-                title:"内容",
-                type: 1,
-                content:"<div style='padding: 10px;'>"+that.id+"</div>"
-                //这里content是一个普通的String
-            });
-        })
+    $(function(){
+        $.ajax({
+            type: "GET",
+            url:'/login/session',
+            dataType: "json",
+            success: function (data) {
+                layui.use(["form","table","layer","upload"], function(){
+                    var table = layui.table;
+                    var form = layui.form;
+                    var layer = layui.layer;
+                    var upload = layui.upload;
+                    if (data=="0"||data=="2") {
+                        table.render({
+                            elem: '#test'
+                            ,url:'/Gg/Gg.do'
+                            ,toolbar: '#toolbarDemo'
+                            ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+                            ,cols: [[
+                                {type: 'radio', fixed: 'left'},
+                                {field:'id', width:40, title: 'ID'}
+                                ,{field:'bt', width:100, title: '标题'}
+                                ,{field:'nr', Width: 100,title: '内容', Width: 10,templet:'#nr'}
+                                ,{field:'fjr', width:100, title: '发布人'}
+                                ,{field:'createTime',  width:200, title: '发布时间'}
+                                ,{field: 'zt', width:100,title: '状态',templet: function (d) {if (d.zt == 1) { return '发布中'} else {return '未发布'}}}
+                                ,{fixed: 'right', title: '操作', width: 200, align:'center', toolbar: '#barDemo'}
 
 
-        table.on('row(test)', function (obj) {
-            obj.tr.addClass('layui-table-click').siblings().removeClass('layui-table-click')
-            obj.tr.find('div.layui-unselect.layui-form-radio')[1].click();
-        })
-
-
-        //监听表头
-        table.on('toolbar(test)',function (obj) {
-            var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
-            if(layEvent == 'add'){
-                layer.open({
-                    type: 2,
-                    //offset: 'auto',、
-                    skin: 'layui-layer-rim',
-                    area: ['800px', '650px'],
-                    content: '/web/view/GgAdd.html?', //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
-                    end:function () {
-                        table.reload('test', {
-                            url:'/Gg/Gg.do'
+                            ]]
                         });
-                    }
-                });
-            }else if(layEvent === 'del'){ //删除
-                var checkStatus = table.checkStatus(obj.config.id); //获取选中行状态
-                var data = checkStatus.data;
-                if(data.length==0){
-                    layer.msg('请选择一行');
-                    return;
-                }
 
-                layer.confirm('确认删除？', function (index) {
-                    // obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
-                    layer.close(index);
-                    $.ajax({
-                        url: '/Gg/delete?id='+data[0].id,
-                        type: 'get',
-                        dataType:"json",
-                        contentType:"application/json",
-                        success: function (data1) {
+
+                        /**
+                         *
+                         * 查询按钮
+                         */
+                        form.on('submit(formDemo)', function(data){
+                            console.log(data.field);
                             table.reload('test', {
-                                url:'/Gg/Gg.do'
+                                url: '/inventory/queryinventory.do'
+                                ,where: data.field//设定异步数据接口的额外参数
                             });
-                            if (data1==="1"){
-                                layer.msg('删除成功！！！', {
-                                    icon: 1,
-                                    time: 1000 //2秒关闭（如果不配置，默认是3秒）
-                                }, function(){
-                                    // //假设这是iframe页
-                                    // var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
-                                    // parent.layer.close(index); //再执行关闭
+                            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+                        });
+
+                        $(document).on("dblclick",".nr",function () {
+                            var that=this;
+                            console.log(that.id)
+                            layer.open({
+                                area: ['600px', '600px'],
+                                title:"内容",
+                                type: 1,
+                                content:"<div style='padding: 10px;'>"+that.id+"</div>"
+                                //这里content是一个普通的String
+                            });
+                        })
+
+
+                        table.on('row(test)', function (obj) {
+                            obj.tr.addClass('layui-table-click').siblings().removeClass('layui-table-click')
+                            obj.tr.find('div.layui-unselect.layui-form-radio')[1].click();
+                        })
+
+
+                        //监听表头
+                        table.on('toolbar(test)',function (obj) {
+                            var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+                            if(layEvent == 'add'){
+                                layer.open({
+                                    type: 2,
+                                    //offset: 'auto',、
+                                    skin: 'layui-layer-rim',
+                                    area: ['800px', '650px'],
+                                    content: '/web/view/GgAdd.html?', //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
+                                    end:function () {
+                                        table.reload('test', {
+                                            url:'/Gg/Gg.do'
+                                        });
+                                    }
+                                });
+                            }else if(layEvent === 'del'){ //删除
+                                var checkStatus = table.checkStatus(obj.config.id); //获取选中行状态
+                                var data = checkStatus.data;
+                                if(data.length==0){
+                                    layer.msg('请选择一行');
+                                    return;
+                                }
+
+                                layer.confirm('确认删除？', function (index) {
+                                    // obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
+                                    layer.close(index);
+                                    $.ajax({
+                                        url: '/Gg/delete?id='+data[0].id,
+                                        type: 'get',
+                                        dataType:"json",
+                                        contentType:"application/json",
+                                        success: function (data1) {
+                                            table.reload('test', {
+                                                url:'/Gg/Gg.do'
+                                            });
+                                            if (data1==="1"){
+                                                layer.msg('删除成功！！！', {
+                                                    icon: 1,
+                                                    time: 1000 //2秒关闭（如果不配置，默认是3秒）
+                                                }, function(){
+                                                    // //假设这是iframe页
+                                                    // var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                                                    // parent.layer.close(index); //再执行关闭
+                                                });
+
+                                            }
+                                            if(data1==="2"){
+                                                layer.msg("删除失败");
+                                            }
+                                        }
+                                    });
+                                });
+                            }else if(layEvent=='upd'){
+                                var checkStatus = table.checkStatus(obj.config.id); //获取选中行状态
+                                var data = checkStatus.data;
+                                if(data.length==0){
+                                    layer.msg('请选择一行');
+                                    return;
+                                }
+                                console.log()
+
+                                layer.open({
+                                    type: 2,
+                                    //offset: 'auto',、
+                                    skin: 'layui-layer-rim',
+                                    area: ['370px', '500px'],
+                                    content: '/web/view/inventoryEdit.html?id='+encodeURI(JSON.stringify(data[0])), //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
+                                    end:function () {
+                                        table.reload('test', {
+                                            url: '/Gg/Gg.do'
+                                        });
+                                    }
+                                });
+                            }
+                        });
+
+
+
+
+                        //监听行
+                        table.on('tool(test)', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+                            var data = obj.data //获得当前行数据
+                                ,layEvent = obj.event; //获得 lay-event 对应的值
+                            if (layEvent === 'getFp') {
+                                layer.open({
+                                    type: 1,
+                                    area: ['250px', '150px'],
+                                    btn: ['确定', '点错了'],
+                                    content: '  <div align="center">确认取消发布？</div>  ',
+
+                                    btn1: function (index, layero) {
+                                        $.ajax({
+                                            type: "GET",
+                                            url: "/Gg/autoUpdate.do?id=" + data.id,
+                                            dataType: "json",
+                                        });
+                                        table.reload('test', {
+                                            url: '/Gg/Gg.do'
+
+                                        });
+                                        layer.closeAll();
+                                    },
+                                    btn2: function (index, layero) {
+                                        layer.closeAll();
+                                    },
+                                });
+
+                            }else if (layEvent === 'detail') {
+                                layer.open({
+                                    type: 1,
+                                    area: ['250px', '150px'],
+                                    btn: ['确定', '点错了'],
+                                    content: '  <div align="center">确认要发布吗？</div>  ',
+
+                                    btn1: function (index, layero) {
+                                        $.ajax({
+                                            type: "GET",
+                                            url: "/Gg/auUpdate.do?id=" + data.id,
+                                            dataType: "json",
+                                        });
+                                        table.reload('test', {
+                                            url: '/Gg/Gg.do'
+
+                                        });
+                                        layer.closeAll();
+                                    },
+                                    btn2: function (index, layero) {
+                                        layer.closeAll();
+                                    },
                                 });
 
                             }
-                            if(data1==="2"){
-                                layer.msg("删除失败");
-                            }
-                        }
-                    });
-                });
-            }else if(layEvent=='upd'){
-                var checkStatus = table.checkStatus(obj.config.id); //获取选中行状态
-                var data = checkStatus.data;
-                if(data.length==0){
-                    layer.msg('请选择一行');
-                    return;
-                }
-                console.log()
-
-                layer.open({
-                    type: 2,
-                    //offset: 'auto',、
-                    skin: 'layui-layer-rim',
-                    area: ['370px', '500px'],
-                    content: '/web/view/inventoryEdit.html?id='+encodeURI(JSON.stringify(data[0])), //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
-                    end:function () {
-                        table.reload('test', {
-                            url: '/Gg/Gg.do'
                         });
+                    }else {
+                        layer.msg('你没有权限访问', {icon: 6});
                     }
-                });
+                })
             }
         });
-
-
-
-
-        //监听行
-        table.on('tool(test)', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
-            var data = obj.data //获得当前行数据
-                ,layEvent = obj.event; //获得 lay-event 对应的值
-            if (layEvent === 'getFp') {
-                layer.open({
-                    type: 1,
-                    area: ['250px', '150px'],
-                    btn: ['确定', '点错了'],
-                    content: '  <div align="center">确认取消发布？</div>  ',
-
-                    btn1: function (index, layero) {
-                        $.ajax({
-                            type: "GET",
-                            url: "/Gg/autoUpdate.do?id=" + data.id,
-                            dataType: "json",
-                        });
-                        table.reload('test', {
-                            url: '/Gg/Gg.do'
-
-                        });
-                        layer.closeAll();
-                    },
-                    btn2: function (index, layero) {
-                        layer.closeAll();
-                    },
-                });
-
-            }else if (layEvent === 'detail') {
-                layer.open({
-                    type: 1,
-                    area: ['250px', '150px'],
-                    btn: ['确定', '点错了'],
-                    content: '  <div align="center">确认要发布吗？</div>  ',
-
-                    btn1: function (index, layero) {
-                        $.ajax({
-                            type: "GET",
-                            url: "/Gg/auUpdate.do?id=" + data.id,
-                            dataType: "json",
-                        });
-                        table.reload('test', {
-                            url: '/Gg/Gg.do'
-
-                        });
-                        layer.closeAll();
-                    },
-                    btn2: function (index, layero) {
-                        layer.closeAll();
-                    },
-                });
-
-            }
-        });
-    });
+    })
 
 
 </script>

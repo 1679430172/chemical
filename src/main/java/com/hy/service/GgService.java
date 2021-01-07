@@ -19,18 +19,25 @@ import java.util.List;
 public class GgService extends ServiceImpl<GgMapper, Gg> {
     @Autowired
     private GgMapper ggMapper;
-    public IPage<Gg> iPage(Integer page, Integer limit){
+    public IPage<Gg> iPage(Integer page, Integer limit) {
         HttpSession session = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession();
-        String type= (String) session.getAttribute("userType");
-        IPage<Gg> iPage= ggMapper.quergg(new Page(page,limit));
-        List<Gg> list=iPage.getRecords();
-        for(Gg s:list){
-            s.setType(type);
-        }
-        return iPage;
-    }
+        String type = (String) session.getAttribute("userType");
+        if (type.equals("0") || type.equals("2")) {
+            IPage<Gg> iPage = ggMapper.quergg(new Page(page, limit));
+            List<Gg> list = iPage.getRecords();
+            for (Gg s : list) {
+                s.setType(type);
+            }
 
+            return iPage;
+        }else{
+            return null;
+        }
+    }
     public boolean addgg(Gg gg) {
+        HttpSession session = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession();
+        String name = (String) session.getAttribute("userName");
+        gg.setFjr(name);
         ggMapper.addgg(gg);
         System.out.println(gg.toString());
         return true;
@@ -58,5 +65,12 @@ public class GgService extends ServiceImpl<GgMapper, Gg> {
     public void auUpdateByid(Integer id){
         ggMapper.UpdatId(id);
     }
+
+    public String getSessionUserId() {
+        HttpSession session = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession();
+        String id = (String) session.getAttribute("userType");
+        return String.valueOf(id);
+    }
+
 
 }
