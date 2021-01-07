@@ -27,6 +27,10 @@ public class uploadService extends ServiceImpl<uploadMapper, upload> {
     @Autowired
     private uploadMapper uploadMapper;
 
+    public List<upload> list(){
+        return uploadMapper.upload();
+    }
+
     public upload pictures(MultipartFile pictureFile, HttpServletRequest req) throws IOException {
         HttpSession session = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession();
         Integer userId=(Integer) session.getAttribute("userId");
