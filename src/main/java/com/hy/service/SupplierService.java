@@ -42,7 +42,7 @@ public class SupplierService extends ServiceImpl<SupplierMapper, Supplier> {
                 s.setId(id);
             }
             return iPage;
-        }else {
+        }else { 
             name.setUid(userId);
             iPage=supplierMapper.suppliers(new Page(page,limit),name);
             List<SupplierUsers> list=iPage.getRecords();

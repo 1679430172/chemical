@@ -54,7 +54,6 @@
 
         <a th:each="d"  class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">{{d.bt}}</a>
     </script>
-    </body>
     <script>
         layui.use(["table","layer"], function(){
             var table = layui.table;
@@ -91,8 +90,8 @@
                 ,page: false //开启分页
                 ,cols: [[ //表头
                     {field: 'userName', title: '上传人'}
+                    ,{field: 'file', title: '文件名称'}
                     ,{field: 'uploadDate', title: '上传时间'}
-                    ,{field: 'file', title: '上传文件'}
                 ]]
             });
             //监听行单击事件（双击事件为：rowDouble）
@@ -108,8 +107,8 @@
                 ,url:"/upload/up"
                 ,page: false //开启分页
                 ,cols: [[ //表头
-                    {field: 'uploadDate', title: '上传时间'}
-                    ,{field: 'file', title: '上传文件'}
+                    {field: 'file', title: '文件名称'}
+                    ,{field: 'uploadDate', title: '上传时间'}
                 ]]
             });
 
@@ -121,5 +120,6 @@
                 obj.tr.addClass('layui-table-click').siblings().removeClass('layui-table-click');
             });
         });
-     </script>
+    </script>
+    </body>
 </html>

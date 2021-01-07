@@ -15,7 +15,6 @@ public class upload {
     private Integer uid;
     @TableField(exist = false)
     private String type;
-    @TableField(exist = false)
     private String userName;
 
     public String getType() {
