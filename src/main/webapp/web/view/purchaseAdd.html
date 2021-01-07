@@ -60,11 +60,6 @@
 
             })
 
-            form.on("select(aihao)",function (d) {
-                var s=$("#supplierName option:selected").attr("id");
-                $("#phone").val(s);
-            })
-
             //监听提交
             form.on('submit(formDemo)', function(data){
                 $("#sub").attr("disabled",true);//按钮禁用
@@ -87,37 +82,23 @@
                 });
                 return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
             });
-            //供应商查询
-            form.on('submit(sid)', function(data){
-                $.post("/supplier/supplierlist.do",data.field,function (d) {
-                    var e=eval(d);
-                    if(e.length==0){
-                        layer.msg("暂无记录")
-                        return;
-                    }
-                    var select = 'dd[lay-value=' + e[0].name + ']';
-                    $('#supplierName').siblings("div.layui-form-select").find('dl').find(select).click();
-                    var s=$("#supplierName option:selected").attr("id");
-                    $("#phone").val(s);
-                })
-                return false;
+
+            form.on('select(aihao)',function (data) {
+                //获取当前选中下拉项的索引
+                var indexGID = data.elem.selectedIndex;
+                //获取当前选中下拉项的自定义属性值 title
+                var tit = data.elem[indexGID].title;
+                var val = data.elem[indexGID].value;
+                $.get("/supplier/supplierlist",{name:val},function (data) {
+                    var list=eval(data);
+                    $("#phone").val(list[0].phone);
+                    $("#linkman").val(list[0].linkman);
+                });
             });
         });
     </script>
 </head>
 <body>
-<div style="display: inline-block;margin-bottom: 15px;">
-    <form id="form" class="layui-form" action="" lay-filter="dd">
-        <div class="layui-form-item" style="display: inline-block;">
-            <label class="layui-form-label">供应商名称</label>
-            <div class="layui-input-inline">
-                <input type="text" id="sname" name="name" style="width: 150px"   placeholder="请输入供应商名" autocomplete="off" class="layui-input">
-
-            </div>
-            <button class="layui-btn" lay-submit lay-filter="sid">查询</button>
-        </div>
-    </form>
-</div>
 <form class="layui-form" action="">
     <div class="layui-form-item">
         <label class="layui-form-label">库存编号</label>
@@ -159,11 +140,6 @@
             </select>
         </div>
     </div>
-
-
-
-
-
 <!--    <div class="layui-form-item">-->
 <!--        <label class="layui-form-label">总价</label>-->
 <!--        <div class="layui-input-inline">-->
@@ -188,8 +164,8 @@
     <div class="layui-form-item">
         <label class="layui-form-label">供应商名称</label>
         <div class="layui-input-inline" style="width: 255px;">
-            <select id ="supplierName"  lay-verify="required" name="supplierName"  lay-filter="aihao"  onabort="is()">
-                <option>请选择</option>
+            <select id ="supplierName"  lay-verify="required" name="supplierName"  lay-filter="aihao" lay-search>
+                <option value="">请选择</option>
             </select>
         </div>
     </div>
@@ -202,7 +178,7 @@
     <div class="layui-form-item">
         <label class="layui-form-label">联系人</label>
         <div class="layui-input-block" style="width: 255px;">
-            <input type="text" lay-verify="required" lay-reqtext="联系人不能为空"  name="lxr" required   placeholder="请输入联系人" autocomplete="off" class="layui-input">
+            <input type="text" id="linkman" lay-verify="required" lay-reqtext="联系人不能为空"  name="lxr" required   placeholder="请输入联系人" autocomplete="off" class="layui-input">
         </div>
     </div>
 

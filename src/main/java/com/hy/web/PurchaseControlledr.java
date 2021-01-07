@@ -84,6 +84,7 @@ import java.util.List;
     @RequestMapping("/add.do")
     @ResponseBody
     public  String addPurchase(Purchase purchase) throws Exception {
+        purchase.setBh(purchase.getBh().toUpperCase());
         purchase.setSumPrice(purchase.getAmount()*purchase.getPrice());
 //        System.out.println(purchase.getSumPrice());
         purchase.setUserId(purchaseService.wwww());
