@@ -13,7 +13,6 @@
         layui.use('table', function(){
             $("#sub").click(function () {
                 var data1="name="+$("#name").text()+"&count="+$("#count").text()+"&company="+$("#company").text()+"&number="+$("#number").text()+"&phone="+$("#phone").text();
-                alert(data1);
                 window.location.href="/Order/imgUpload?"+data1;
             });
 
@@ -33,7 +32,7 @@
             for (var i=0;i<vars.length;i++) {
                 var pair = vars[i].split("=");
                 if(pair[0] == variable){
-                    return pair[1];
+                    return decodeURI(pair[1]);
                 }
             }
             return(false);

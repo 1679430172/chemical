@@ -70,7 +70,7 @@
                         layer.msg('已出库！！！', {
                             icon: 1,
                             time: 2000 //1秒关闭（如果不配置，默认是3秒）
-                        })
+                        });
                         table.reload('demo', {
                             url: '/Order/'
                             ,done:function (response) {
@@ -187,6 +187,10 @@
                         "  </tr>" +
                         "  <tr>" +
                         "    <td>利润率</td>" +
+                        "    <td>"+data.profit/data.zcb+"</td>" +
+                        "  </tr>" +
+                        "  <tr>" +
+                        "    <td>利润率</td>" +
                         "    <td>"+(data.profit/data.zcb*100)+"%"+"</td>" +
                         "  </tr>" +
                         "  <tr>" +
@@ -218,7 +222,7 @@
                              //这里content是一个普通的String
                     });
                 }else if(layEvent=="imgUpload"){
-                    var data1="name="+data.name+"&amount="+data.amount+"&companyName="+data.userName+"&phone="+data.phone
+                    var data1="name="+data.name+"&amount="+data.amount+"&companyName="+data.userName+"&phone="+data.phone;
                     layer.open({
                         area: ['470px', '300px'],
                         title:"生成标签",
