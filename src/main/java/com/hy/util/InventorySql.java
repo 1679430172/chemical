@@ -23,7 +23,6 @@ public class InventorySql {
             if (inventory.getNumber1() != null&&!"".equals(inventory.getNumber1())){
                 sql.append(" and number like'%"+inventory.getNumber1()+"%'");
             }
-            System.out.println(sql);
         }
         return sql.toString();
     }
