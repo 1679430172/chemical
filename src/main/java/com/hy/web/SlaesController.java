@@ -132,9 +132,8 @@ public class SlaesController {
     public String deleteSales(@Param("did") Integer did,String orderId){
        boolean b= salesServices.removeById(did);
         UpdateWrapper<Order> updateWrapper=new UpdateWrapper();
-        updateWrapper.set("status","1");
         updateWrapper.eq("did",orderId);
-        service.update(updateWrapper);
+        service.remove(updateWrapper);
         if (b==true){
             return Util.sueess;
         }else{
