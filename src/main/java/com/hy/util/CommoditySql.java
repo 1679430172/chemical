@@ -52,7 +52,7 @@ public class CommoditySql {
     }
 
     public String equals(@Param("commodity")Commodity commodity){
-        String sql="update commodity set commodity_info=#{commodity.commodityInfo} , price_info=#{commodity.priceInfo},name=#{commodity.name},cas=#{commodity.cas} ";
+        String sql="update commodity set commodity_info=#{commodity.commodityInfo} , price_info=#{commodity.priceInfo},name=#{commodity.name},cas=#{commodity.cas},cost=#{commodity.cost} ";
         if(commodity.getImgPath() != null){
             sql+=" ,img_path='"+commodity.getImgPath()+"'";
         }
