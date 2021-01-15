@@ -35,11 +35,13 @@
                     ,{field: 'id', title: '编号', sort: true, width:90}
                     // ,{field: '', title: '标签' ,width:240,templet:'#biaoqian'}
                     ,{field: 'name', title: '商品名称', sort: true, totalRowText: '合计行', width:170}
+                    ,{field: 'cname', title: '客户名称', sort: true,  width:170}
                     ,{field: 'amount', title: '数量', sort: true,templet:"#amount", width:120}
                     ,{field: 'price', title: '单价', sort: true, templet:"#price", width:120}
                     ,{field: 'sumPrice', title: '总价', sort: true, templet:"#sumPrice", totalRow: true, width:120}
                     ,{field: 'costPrice', title: '成本', templet:"#costPrice", totalRow: true, width:120}
                     ,{field: 'otherCost', title: '其他成本', templet:"#otherCost", totalRow: true, width:120}
+                    ,{field: 'profit', title: '利润', totalRow: true, width:120}
                     ,{field: '', title: '总成本', templet:"#zcb", width:120}
                     ,{field: 'royalties', title: '提成', templet:"#royalties", totalRow: true, width:120}
                     ,{field: 'status', title: '是否出库', sort: true, templet:"#status", width:120}
@@ -186,8 +188,8 @@
                     content+="</td>" +
                         "  </tr>" +
                         "  <tr>" +
-                        "    <td>利润率</td>" +
-                        "    <td>"+data.profit/data.zcb+"</td>" +
+                        "    <td>利润</td>" +
+                        "    <td>"+data.profit+"</td>" +
                         "  </tr>" +
                         "  <tr>" +
                         "    <td>利润率</td>" +
@@ -196,6 +198,10 @@
                         "  <tr>" +
                         "    <td>客户姓名,地址,电话</td>" +
                         "    <td>"+data.cname+"  "+data.address+"  "+data.phone+"</td>" +
+                        "  </tr>" +
+                        "  <tr>" +
+                        "    <td>开票资料</td>" +
+                        "    <td>"+data.invoice+"</td>" +
                         "  </tr>" +
                         "  <tr>" +
                         "    <td>收票地址</td>" +

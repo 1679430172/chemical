@@ -52,8 +52,19 @@ public class Order {
     private String address;
     @TableField(exist = false)
     private String phone;
+
+    public String getInvoice() {
+        return invoice;
+    }
+
+    public void setInvoice(String invoice) {
+        this.invoice = invoice;
+    }
+
     @TableField(exist = false)
     private String invoiceAddress;
+    @TableField(exist = false)
+    private String invoice;
 
     public Double getProfit() {
         return price*amount-costPrice*amount-otherCost;
@@ -316,6 +327,7 @@ public class Order {
                 ", address='" + address + '\'' +
                 ", phone='" + phone + '\'' +
                 ", invoiceAddress='" + invoiceAddress + '\'' +
+                ", invoice='" + invoice + '\'' +
                 '}';
     }
 }

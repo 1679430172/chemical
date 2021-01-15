@@ -12,8 +12,15 @@
     <script>
         layui.use('table', function(){
             $("#sub").click(function () {
-                var data1="name="+$("#name").text()+"&count="+$("#count").text()+"&company="+$("#company").text()+"&number="+$("#number").text()+"&phone="+$("#phone").text();
-                window.location.href="/Order/imgUpload?"+data1;
+
+                var bdhtml=window.document.body.innerHTML;
+                window.document.body.innerHTML=document.getElementById("dy").innerHTML;
+                window.print();
+                window.document.body.innerHTML=bdhtml;
+                window.location.reload();
+
+                /*var data1="name="+$("#name").text()+"&count="+$("#count").text()+"&company="+$("#company").text()+"&number="+$("#number").text()+"&phone="+$("#phone").text();
+                window.location.href="/Order/imgUpload?"+data1;*/
             });
 
             var nowTime=new Date();
@@ -52,31 +59,34 @@
 <body>
 <center>
     <br>
-    <table border="1" cellspacing="0px" style="font-size: 20px;">
-        <tr><th colspan="2">产品标签</th></tr>
-        <tr>
-            <td width="160px">产品名称</td>
-            <td width="230px" contenteditable='true' id="name">123</td>
-        </tr>
-        <tr>
-            <td>数量(kg)</td>
-            <td contenteditable='true' id="count">123</td>
-        </tr>
-        <tr>
-            <td>批号</td>
-            <td contenteditable='true' id="number">123</td>
-        </tr>
-        <tr>
-            <td>公司名称</td>
-            <td contenteditable='true' id="company">123</td>
-        </tr>
-        <tr>
-            <td>联系电话</td>
-            <td contenteditable='true' id="phone">18620540041</td>
-        </tr>
-    </table>
+    <div id="dy">
+        <table border="1" cellspacing="0px" style="font-size: 20px;">
+            <tr><th colspan="2">产品标签</th></tr>
+            <tr>
+                <td width="160px">产品名称</td>
+                <td width="230px" contenteditable='true' id="name">123</td>
+            </tr>
+            <tr>
+                <td>数量(kg)</td>
+                <td contenteditable='true' id="count">123</td>
+            </tr>
+            <tr>
+                <td>批号</td>
+                <td contenteditable='true' id="number">123</td>
+            </tr>
+            <tr>
+                <td>公司名称</td>
+                <td contenteditable='true' id="company">123</td>
+            </tr>
+            <tr>
+                <td>联系电话</td>
+                <td contenteditable='true' id="phone">18620540041</td>
+            </tr>
+        </table>
+    </div>
     <br>
     <button class="layui-btn layui-btn-lg" id="sub">打印</button>
 </center>
+<img id="omg">
 </body>
 </html>
