@@ -27,15 +27,15 @@
             , cols: [
                 [ //表头
                     {type: 'radio', fixed: 'left'},
-                    {field:'id',title: '序号'}
-                    , {field: 'userName', title: '业务员'}
-                    , {field: 'name', title: '供应商名称'}
-                    , {field: 'linkman', title: '联系人'}
-                    , {field: 'phone', title: '电话'}
-                    , {field: 'wechat', title: '微信或qq', width: 177}
-                    , {field: 'status', title: '商品关联状态',templet: function(d){if(d.status == 0){return '未关联'}else{return '已关联'}}}
-                    , {field: 'createTime', title: '创建时间'}
-                    ,{field:'remark',title:'备注'}
+                    {field:'id',title: '序号',width:100}
+                    , {field: 'userName', title: '业务员',width:120}
+                    , {field: 'name', title: '供应商名称',width:500}
+                    , {field: 'linkman', title: '联系人',width:100}
+                    , {field: 'phone', title: '电话',width:120}
+                    , {field: 'wechat', title: '微信或qq', width: 120}
+                    , {field: 'status', title: '商品关联状态',width:100,templet: function(d){if(d.status == 0){return '未关联'}else{return '已关联'}}}
+                    , {field: 'createTime', title: '创建时间',width:120}
+                    ,{field:'remark',title:'备注',width:120}
                     // ,{field:"right",title:'操作',toolbar:'#barDemo', fixed: 'right'}
                 ]
             ]

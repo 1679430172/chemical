@@ -21,7 +21,7 @@ public class Commodity {
     private String createTime;
     private Date updateTime;
     private String remark;//备注
-    private Double cost;
+    private double cost;
     @TableField(exist = false)
     private Integer supplier;
 
@@ -168,7 +168,10 @@ public class Commodity {
                 ", filePath='" + filePath + '\'' +
                 ", supplierId=" + supplierId +
                 ", createTime='" + createTime + '\'' +
-                ", updateTime='" + updateTime + '\'' +
+                ", updateTime=" + updateTime +
+                ", remark='" + remark + '\'' +
+                ", cost=" + cost +
+                ", supplier=" + supplier +
                 '}';
     }
 }

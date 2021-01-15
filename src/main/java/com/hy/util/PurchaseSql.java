@@ -70,7 +70,7 @@ public class PurchaseSql {
     public String queryBycass(@Param("name") String name, @Param("cas") String cas) {
         StringBuffer sql = new StringBuffer("select * from invoice where 1=1 ");
         if (cas != null && !"".equals(cas)) {
-            sql.append(" and cas=" + cas);
+            sql.append(" and cas like '%"+cas+"%'");
         }
         if (name != null && !"".equals(name)) {
             sql.append(" and name like  '%" + name + "%'");

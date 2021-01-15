@@ -21,7 +21,7 @@ public class InventorySql {
                 sql.append(" and cas='"+inventory.getCas()+"'");
             }
             if (inventory.getNumber1() != null&&!"".equals(inventory.getNumber1())){
-                sql.append(" and number="+inventory.getNumber1());
+                sql.append(" and number like'%"+inventory.getNumber1()+"%'");
             }
         }
         return sql.toString();
