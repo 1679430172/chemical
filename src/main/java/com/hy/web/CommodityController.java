@@ -109,10 +109,10 @@ public class CommodityController {
 
     @RequestMapping("/equals.do")
     @ResponseBody
-    public String  equals(Commodity commodity,HttpServletRequest req){
+    public String  equals(Commodity commodity){
         System.out.println(commodity.toString());
         try {
-            commodityService.equals(commodity,req);
+            commodityService.equals(commodity);
         } catch (Exception e) {
             e.printStackTrace();
             return Util.fail;

@@ -58,7 +58,7 @@ public class CommodityService extends ServiceImpl<CommodityMapper, Commodity> {
         return commodityMapper.byid(sid);
     }
 
-    public void   equals(Commodity commodity,HttpServletRequest req){
+    public void   equals(Commodity commodity){
         commodityMapper.equals(commodity);
     }
 
