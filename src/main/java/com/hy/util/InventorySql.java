@@ -13,7 +13,7 @@ public class InventorySql {
         StringBuffer sql = null;
         if(inventory!=null&&!inventory.equals("")){
             System.out.println(inventory.toString());
-            sql = new StringBuffer("select * from Inventory where 1=1");
+            sql = new StringBuffer("select * from inventory where 1=1");
             if(inventory.getName() != null&&!"".equals(inventory.getName())){
                 sql.append(" and name like '%"+inventory.getName()+"%'");
             }

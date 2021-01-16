@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Api
@@ -64,7 +66,8 @@ public class InvoiceController  {
     @ResponseBody
     @RequestMapping ("/add.do" )
     public String add(Invoice invoice){
-        System.out.println("createTime="+invoice.getCreateTime());
+        String time= new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+        invoice.setCreateTime(time);
         try {
             service.save(invoice);
         } catch (Exception e) {
