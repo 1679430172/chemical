@@ -73,13 +73,7 @@ public class uploadController {
 
     @RequestMapping("/downloads")
     @ResponseBody
-    public String downloads(HttpServletRequest req, HttpServletResponse response, String id){
-        try {
+    public void downloads(HttpServletRequest req, HttpServletResponse response, String id){
             uploadService.downloads(req,response,id);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Util.fail;
-        }
-        return Util.succeed;
     }
 }

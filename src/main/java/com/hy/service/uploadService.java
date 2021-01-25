@@ -83,8 +83,7 @@ public class uploadService extends ServiceImpl<uploadMapper, upload> {
         upload upload=uploadMapper.selectById(sid);
         //设置内容作为附件下载  fileName有后缀,比如1.jpg
         String file=upload.getFile();
-        String[] l=file.split("\\.");
-        response.setHeader("Content-Disposition", "attachment; filename=file."+l[1]);
+        response.setHeader("Content-Disposition", "attachment; filename=file"+file.substring(file.lastIndexOf(".")));
         ServletOutputStream out = null;
         try {
             // 通过文件路径获得File对象(假如此路径中有一个download.pdf文件)

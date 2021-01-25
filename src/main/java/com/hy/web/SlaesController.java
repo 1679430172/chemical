@@ -87,13 +87,13 @@ public class SlaesController {
             salesServices.update(updateWrapper);
             return Util.sueess;
         }
-        if(sales.getTrackingName().equals("") ||sales.getTrackingNumber().equals("")){
-            sales.setTrackingName("");
-            sales.setTrackingName("");
-            sales.setStatus("2");
-            salesServices.save(sales);
-            return salesServices.updateOrder(sales.getOrderId());
-        }
+//        if(sales.getTrackingName().equals("") ||sales.getTrackingNumber().equals("")){
+//            sales.setTrackingName("");
+//            sales.setTrackingName("");
+//            sales.setStatus("2");
+//            salesServices.save(sales);
+//            return salesServices.updateOrder(sales.getOrderId());
+//        }
         sales.setStatus("0");
         salesServices.save(sales);
         return  salesServices.updateOrder(sales.getOrderId());
