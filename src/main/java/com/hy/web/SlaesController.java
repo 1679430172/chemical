@@ -2,10 +2,12 @@ package com.hy.web;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.hy.bean.Inventory;
 import com.hy.bean.Order;
 import com.hy.bean.Sales;
 import com.hy.mapper.InventoryMapper;
 import com.hy.mapper.OrderMapper;
+import com.hy.service.InventoService;
 import com.hy.service.OrderService;
 import com.hy.service.SalesService;
 import com.hy.util.ParseData;
@@ -32,6 +34,10 @@ public class SlaesController {
 
     @Autowired
     private OrderService service;
+
+    @Autowired
+    private com.hy.service.InventoService InventoService;
+
     @Autowired
     private InventoryMapper inventoryMapper;
     /**
@@ -96,6 +102,17 @@ public class SlaesController {
 //        }
         sales.setStatus("0");
         salesServices.save(sales);
+        UpdateWrapper<Order> updateWrapper = new UpdateWrapper();
+        updateWrapper.set("other_cost", 0);
+        updateWrapper.eq("did", sales.getOrderId());
+        service.update(updateWrapper);
+        //修改库存数量
+        UpdateWrapper<Order> updateWrappertwo = new UpdateWrapper();
+        updateWrappertwo.eq("did", sales.getOrderId());
+        Order order=service.getOne(updateWrappertwo);
+        UpdateWrapper<Inventory> updateWrapperthreed = new UpdateWrapper();
+        updateWrapperthreed.eq("kid",order.getInvoiceId());
+       /* Inventory inventory=inventoryM*/
         return  salesServices.updateOrder(sales.getOrderId());
     }
 

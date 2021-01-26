@@ -70,13 +70,11 @@ public class SalesOrdet {
         this.status = status;
     }
 
-    public Integer getInvoiceId() {
-        return invoiceId;
-    }
+    public Integer getNumber() { return number; }
 
-    public void setInvoiceId(Integer invoiceId) {
-        this.invoiceId = invoiceId;
-    }
+    public void setNumber(Integer number) { this.number = number; }
+
+
 
     @Override
     public String toString() {
@@ -141,8 +139,9 @@ public class SalesOrdet {
     @TableField(exist = false)
     private String amount;
 
+
     @TableField(exist = false)
-    private Integer invoiceId;//库存标号
+    private Integer number;//库存标号
 
 
 }

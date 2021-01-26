@@ -67,6 +67,9 @@ public class Order {
     private String invoice;
 
     public Double getProfit() {
+        if(this.status.equals("2")){
+            return  profit=0.0;
+        }
         return price*amount-costPrice*amount-otherCost;
     }
 
