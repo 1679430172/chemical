@@ -70,11 +70,13 @@ public class SalesOrdet {
         this.status = status;
     }
 
-    public Integer getNumber() { return number; }
+    public String getNumber() {
+        return number;
+    }
 
-    public void setNumber(Integer number) { this.number = number; }
-
-
+    public void setNumber(String number) {
+        this.number = number;
+    }
 
     @Override
     public String toString() {
@@ -141,7 +143,7 @@ public class SalesOrdet {
 
 
     @TableField(exist = false)
-    private Integer number;//库存标号
+    private String number;//库存标号
 
 
 }
